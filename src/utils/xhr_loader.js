@@ -115,4 +115,4 @@ XHRLoader.prototype.load = function (request) {
     this.xhr_.send();
   };
 
-  export default XHRLoader;
+// export default XHRLoader;

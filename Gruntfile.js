@@ -27,7 +27,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', ['clean', 'browserify:dist']);
-    grunt.registerTask('test', ['clean:dist']);
+    grunt.registerTask('clean', ['clean:dist']);
 };
 
 

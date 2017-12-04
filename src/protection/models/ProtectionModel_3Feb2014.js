@@ -1,5 +1,5 @@
 import FactoryMaker from '../../core/FactoryMaker';
-import TypeConverter from '../../utils/TypeConverter';
+import StringUtils from '../../utils/string_utils';
 
 import MediaCapability from '../vo/MediaCapability';
 import KeySystemConfiguration from '../vo/KeySystemConfiguration';

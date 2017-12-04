@@ -256,11 +256,46 @@
 	"buffers":
 	[
 		{
-			"file": "src/text_engine.js",
+			"file": "test/hls/hls_parser_unit.html",
 			"settings":
 			{
-				"buffer_size": 7245,
+				"buffer_size": 722,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/utils/xhr_loader.js",
+			"settings":
+			{
+				"buffer_size": 3106,
 				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/utils/xhr_loader_unit.html",
+			"settings":
+			{
+				"buffer_size": 641,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/hls/hls_parser.js",
+			"settings":
+			{
+				"buffer_size": 538,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 747,
 				"line_ending": "Windows"
 			}
 		}
@@ -298,10 +333,29 @@
 	"expanded_folders":
 	[
 		"/D/xampp/htdocs/1/LiteH5Player",
-		"/D/xampp/htdocs/1/LiteH5Player/src"
+		"/D/xampp/htdocs/1/LiteH5Player/src",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils",
+		"/D/xampp/htdocs/1/LiteH5Player/test",
+		"/D/xampp/htdocs/1/LiteH5Player/test/hls",
+		"/D/xampp/htdocs/1/LiteH5Player/test/utils"
 	],
 	"file_history":
 	[
+		"/D/xampp/htdocs/2/myhls/common/test.m3u8",
+		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/TestFeature.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/string_utils.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_21Jan2015.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_3Feb2014.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
+		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/SourceBufferWrapper.js",
+		"/D/xampp/htdocs/opensource/shaka-player/test/hls/hls_parser_unit.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/text_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1201.html",
@@ -415,21 +469,7 @@
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myCastVideos.debug.js",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/solution.sublime-project",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/Gruntfile.js",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/index.js",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/index.html",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/Gruntfile.js",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/package.json",
-		"/D/pj_company/main/Source/MTV/TS/FormatInit.cpp",
-		"/D/xampp/htdocs/opensource/CastVideos-chrome/CastVideos.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/css/CastVideos.css",
-		"/D/xampp/htdocs/tasklink/65421_chromecast/chromecast_from_opensource/player.js",
-		"/D/xampp/htdocs/opensource/CastReferencePlayer/player.js",
-		"/D/xampp/htdocs/opensource/CastVideos-chrome/index.html",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/src/vowebvttthumbnail/voWebvttThumbnail.js",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/samples/player/sampleplayer/index.html",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/samples/player/sampleplayer/app/main.js",
-		"/D/xampp/htdocs/tasklink/65421_chromecast/chromecast_from_opensource/player.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/test_player.html"
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/index.js"
 	],
 	"find":
 	{
@@ -437,9 +477,10 @@
 	},
 	"find_in_files":
 	{
-		"height": 90.0,
+		"height": 104.0,
 		"where_history":
 		[
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
 			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
 			"<current file>",
@@ -472,6 +513,10 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"utils/StringUtils",
+			"TypeConverter",
+			"test_xhrloader",
+			"Test",
 			"spinner",
 			"screenPlayPauseClick",
 			"onDiv02Click",
@@ -595,11 +640,7 @@
 			"getInitData",
 			"generateLicense",
 			"dumpKSConfig",
-			"ksString",
-			"dumpKSConfig",
-			"initPDContent_ClearKey",
-			"onWaitingforKey",
-			"media_"
+			"ksString"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -607,6 +648,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"utils/string_utils",
+			"StringUtils",
+			"TestFeature",
 			"this.media_",
 			"initWV_MP4",
 			"initCK_MP4",
@@ -737,30 +781,148 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/text_engine.js",
-					"semi_transient": true,
+					"file": "test/hls/hls_parser_unit.html",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7245,
+						"buffer_size": 722,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								443,
-								443
+								492,
+								492
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/utils/xhr_loader.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3106,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								72,
+								81
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "test/utils/xhr_loader_unit.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 641,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								387,
+								387
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/hls/hls_parser.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 538,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								419,
+								419
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "package.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 747,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								744,
+								744
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -850,7 +1012,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 252.0,
+	"side_bar_width": 227.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+
+  <script type="text/javascript" src="../../src/utils/xhr_loader.js"></script>
+  <script type="text/javascript" src="../../src/hls/hls_parser.js"></script>
+</head>
+<body>
+  <button type="button" onclick="onBtnTest()">Test</button>
+
+  <script>
+    var xhr = new XHRLoader();
+    var parser = new HlsParser();
+
+    function onBtnTest() {
+        function cbSuccess(bytes) {
+            
+            parser.parsePlaylist(ab2str_v1(bytes));
+          //console.log('response data: ' + ab2str_v1(bytes));
+      }
+
+      var request = { url: 'http://localhost/2/myhls/common/test.m3u8', cbSuccess: cbSuccess};
+      xhr.load(request);
+  }
+
+</script>
+</body>
+</html>
+
+
+
+

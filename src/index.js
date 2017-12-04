@@ -1,6 +1,6 @@
 ﻿import Events from './core/CoreEvents';
 import Player from './Player';
-import TestPlayer from './TestPlayer';
+import TestFeature from './TestFeature';
 import CastSender from './cast/cast_sender';
 import CastReceiver from './cast/cast_receiver';
 
@@ -14,10 +14,11 @@ if (!micromtn) {
 
 micromtn.Player = Player;
 micromtn.Events = Events;
-micromtn.TestPlayer = TestPlayer;
+micromtn.TestFeature = TestFeature;
 micromtn.CastSender = CastSender;
 micromtn.CastReceiver = CastReceiver;
 
 
 export default micromtn;
+
 

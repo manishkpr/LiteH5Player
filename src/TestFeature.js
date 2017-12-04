@@ -20,7 +20,7 @@ var context = window;
 
 
 //////////////////////////////////////////////////////////////////////////////
-function Test() {
+function TestFeature() {
   let context_ = this.context;
   let instance;
   let xhrLoader;
@@ -158,20 +158,25 @@ function Test() {
     xhrLoader.load(content, onSuccess);
   }
 
+  function test_hlsparser() {
+    
+  }
+
   instance = {
     test1: test1,
     test_readfile: test_readfile,
     test_vtt: test_vtt,
     test_cea608: test_cea608,
     test_aes128: test_aes128,
-    test_xhrloader: test_xhrloader
+    test_xhrloader: test_xhrloader,
+    test_hlsparser: test_hlsparser
   };
 
   setup();
   return instance;
 }
 
-Test.__h5player_factory_name = 'Test';
-let factory = FactoryMaker.getClassFactory(Test);
+TestFeature.__h5player_factory_name = 'TestFeature';
+let factory = FactoryMaker.getClassFactory(TestFeature);
 export default factory;
 

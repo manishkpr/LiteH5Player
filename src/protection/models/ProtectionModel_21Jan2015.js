@@ -1,5 +1,5 @@
 import FactoryMaker from '../../core/FactoryMaker';
-import TypeConverter from '../../utils/TypeConverter';
+import StringUtils from '../../utils/string_utils';
 import CommonEncryption from '../vo/CommonEncryption';
 import MediaCapability from '../vo/MediaCapability';
 import KeySystemConfiguration from '../vo/KeySystemConfiguration';
@@ -21,7 +21,7 @@ function generateLicense(message, key) {
         kty: 'oct',
         //alg: 'A128KW',
         kid: request.kids[0],
-        k: TypeConverter.u8arrToB64(key)
+        k: StringUtils.u8arrToB64(key)
     };
     return new TextEncoder().encode(JSON.stringify({
         keys: [keyObj]
@@ -99,7 +99,7 @@ ProtectionModel_21Jan2015.prototype.setKeySystem = function (keySystem) {
 ProtectionModel_21Jan2015.prototype.onNeedKey = function (ev) {
     console.log('onNeedKey, initDataType: ' +  ev.initDataType);
     console.log('onNeedKey, initData length: ' +  ev.initData.byteLength);
-    console.log('onNeedKey, initData', TypeConverter.ab2str_v1(ev.initData));
+    console.log('onNeedKey, initData', StringUtils.ab2str_v1(ev.initData));
 
     // 
     if (this.streamInfo_.drm.initDataType && this.streamInfo_.drm.initData) {
@@ -112,8 +112,8 @@ ProtectionModel_21Jan2015.prototype.onNeedKey = function (ev) {
 
     // BD
     // var pssh = CommonEncryption.parsePSSHList(ev.initData);
-    // let a1 = TypeConverter.ab2str_v1(pssh['edef8ba9-79d6-4ace-a3c8-27dcd51d21ed']);
-    // let a2 = TypeConverter.ab2str_v1(pssh['9a04f079-9840-4286-ab92-e65be0885f95']);
+    // let a1 = StringUtils.ab2str_v1(pssh['edef8ba9-79d6-4ace-a3c8-27dcd51d21ed']);
+    // let a2 = StringUtils.ab2str_v1(pssh['9a04f079-9840-4286-ab92-e65be0885f95']);
     // console.log('DRM, a1: ' + a1);
     // console.log('DRM, a2: ' + a2);
     // ED
@@ -130,7 +130,7 @@ ProtectionModel_21Jan2015.prototype.onSessionMessage = function (ev) {
     // the hard-coded KEY at the top.
 
     console.log('session message, length: ' + ev.message.byteLength);
-    console.log('session message, data:', TypeConverter.ab2str_v1(ev.message));
+    console.log('session message, data:', StringUtils.ab2str_v1(ev.message));
 
     // Determine license server URL
     let laUrl = this.streamInfo_.drm.laUrl;
@@ -160,7 +160,7 @@ ProtectionModel_21Jan2015.prototype.onSessionMessage = function (ev) {
     console.log('DRM: open method: POST');
     console.log('DRM: timeout: ' + xhr.timeout);
     console.log('DRM: withCredentials: ' + xhr.withCredentials);
-    console.log('DRM: message: ' + TypeConverter.ab2str_v1(ev.message));
+    console.log('DRM: message: ' + StringUtils.ab2str_v1(ev.message));
     xhr.onload = function(event) {
         if (this.status == 200) {
             let data = this.response;

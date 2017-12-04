@@ -1,5 +1,5 @@
 
-const TypeConverter = {
+const StringUtils = {
 
     // ArrayBuffer转为字符串，参数为ArrayBuffer对象
     ab2str: function(buf) {
@@ -36,4 +36,4 @@ const TypeConverter = {
 };
 
 
-module.exports = TypeConverter;
+module.exports = StringUtils;
