@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+
+  <script src="../dist/liteH5Player.debug.js"></script>
+</head>
+
+<body>
+  <button onclick="test1()">test1</button>
+  <button onclick="test_vtt()">test_vtt</button>
+  <button onclick="test_ttml()">test_ttml</button>
+  <button onclick="test_cea608()">test_cea608</button>
+  <button onclick="test_cea708()">test_cea708</button>
+  <button onclick="test_aes128()">test_aes128</button>
+  <button onclick="test_xhrloader()">test_xhrloader</button>
+
+  <script>
+    var player = h5player.TestPlayer().create();
+
+    function test1() {
+      player.test1();
+    }
+
+    function test_vtt() {
+      player.test_vtt();
+    }
+
+    function test_ttml() {
+      player.test_ttml();
+    }
+
+    function test_cea608() {
+      player.test_cea608();
+    }
+
+    function test_cea708() {
+      player.test_cea708();
+    }
+
+    function test_aes128() {
+      player.test_aes128();
+    }
+
+    function test_xhrloader() {
+      player.test_xhrloader();
+    }
+
+  </script>
+
+</body>
+</html>

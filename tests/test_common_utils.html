@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+
+  <script type="text/javascript" src="../src/utils/common_utils.js"></script>
+</head>
+<body>
+  <script>
+
+    function onBtnTest() {
+      var info = CommonUtils.getBrowserName();
+
+      alert('browser name: ' + info.browser + ', version: ' + parseInt(info.version));
+
+      if (CommonUtils.isChromecast()) {
+        var a1 = 'window.cast: ' + window.cast;
+        var a2 = 'window.cast.__platform__: ' + window.cast.__platform__;
+
+        var idTextarea1 = document.getElementById('idTextarea1');
+        idTextarea1.innerText = a1 + ', ' + a2;
+      }
+
+      console.log('isChrome: ' + CommonUtils.isChrome());
+      console.log('isEdge: ' + CommonUtils.isEdge());
+      console.log('isFirefox: ' + CommonUtils.isFirefox());
+      console.log('isIE: ' + CommonUtils.isIE());
+      console.log('isSafari: ' + CommonUtils.isSafari());
+    }
+
+    function onBtnTest2() {
+      CommonUtils.getOSVersion();
+    }
+  </script>
+
+  <button type="button" onclick="onBtnTest()">Test</button>
+  <button type="button" onclick="onBtnTest2()">Test2</button>
+
+  <textarea id='idTextarea1'></textarea>
+</body>
+</html>
+
+
+
+
+

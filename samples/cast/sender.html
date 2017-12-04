@@ -1,0 +1,122 @@
+<!--
+// Copyright 2016 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cast Videos: Google Cast Chrome Sender SDK Demo App</title>
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <!-- <script src="./111.js"></script> -->
+  <script src="./base.js"></script>
+  <script src="../../dist/liteH5Player.debug.js"></script>
+</head>
+<body>
+  <div id='idDivPlayer'>
+    <button is="google-cast-button" id="castbutton"></button>
+    <button onClick="init()">Init</button>
+    <button onClick="requestSession()">requestSession</button>
+    <button onClick="endSession()">endSession</button>
+    <button onClick="loadMedia()">Load</button>
+    <button onClick="loadMedia2()">Load2</button>
+    <button onClick="stop()">Stop</button>
+    <button onClick="play()">play</button>
+    <button onClick="pause()">pause</button>
+    <button onClick="addVolume()">AddVolume</button>
+    <button onClick="delVolume()">DelVolume</button>
+    <button onClick="attribute()">Attribute</button>
+    <button onClick="onTest()">test</button>
+  </div>
+  <div>
+    <label>seek to: </label>
+    <input type="text" id="seekedTime"/>
+    <button type="button" onclick="onBtnSeek()">OK</button>
+  </div>
+  <br />
+
+  <script>
+    var castSender = new micromtn.CastSender();
+    function init() {
+      //options.receiverApplicationId = '4F8B3483';
+      //options.receiverApplicationId = 'E19ACDB8'; // joseph test app1
+      //options.receiverApplicationId = 'FAC6871E';   // joseph test app2
+      //options.receiverApplicationId = '91580C19'; // shaka receiver app id
+
+      //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
+      var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
+      castSender.init(receiverAppId);
+    }
+    function endSession() {
+      castSender.endSession();
+    }
+    function stopCast() {
+      castSender.stopCast();
+    }
+    function loadMedia() {
+      var url, type;
+
+      // dash
+      url = 'http://10.2.68.51/6/dash/envivio/test1_main_timeline/test.mpd';
+      //url = 'http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-events.mpd';
+      type = 'application/dash+xml';
+
+      // url = 'http://dash.edgesuite.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd';
+      // type = 'application/dash+xml';
+
+      // hls
+      // url = 'http://stream1.visualon.com:8082/hls/videoonly/stream/videoonly.m3u8';
+      // type = 'application/x-mpegurl';
+
+      castSender.loadMedia(url, type);
+    }
+    function loadMedia2() {
+      var url = 'http://stream1.visualon.com:8082/hls/v10/gear/bipbop_16x9_variant_v10_2.m3u8';
+      var type = 'application/x-mpegurl';
+
+      castSender.loadMedia(url, type);
+    }
+    function stop() {
+      castSender.stop();
+    }
+    function play() {
+      castSender.play();
+    }
+    function pause() {
+      castSender.pause();
+    }
+    function addVolume() {
+      castSender.addVolume();
+    }
+    function delVolume() {
+      castSender.delVolume();
+    }
+    function onBtnSeek() {
+      var time = document.getElementById('seekedTime').value;
+      castSender.seek(time);
+    }
+    function attribute() {
+      castSender.attribute();
+    }
+    function onTest() {
+      castSender.test();
+    }
+
+    window.onload = function () {
+      init();
+    };
+  </script>
+  
+</body>
+</html>

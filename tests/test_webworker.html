@@ -1,0 +1,30 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="../build/temp/liteH5Player.all.debug.js"></script>
+</head>
+
+<body>
+    <button id="test1" type="button" onclick="test_fibonacci_js()">test_fibonacci_js</button>
+
+    <button type="button" onclick="onPostMsg01()">postmsg01</button>
+    <button type="button" onclick="onPostMsg02()">postmsg02</button>
+
+    <button type="button" onclick="close1()">close1</button>
+
+    <script>
+        var testwebworker = h5player.TestWebWorker().create();
+        testwebworker.createWorker();
+
+        function onPostMsg01() {
+            testwebworker.postmsg01();
+        }
+        function onPostMsg02() {
+            testwebworker.postmsg02();
+        }
+    </script>
+</body>
+</html>
+
+

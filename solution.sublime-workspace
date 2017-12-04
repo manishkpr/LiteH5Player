@@ -1,0 +1,858 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"border-bottom",
+				"border-bottom-width"
+			],
+			[
+				"bor",
+				"border-bottom"
+			],
+			[
+				"padd",
+				"padding-left"
+			],
+			[
+				"vi",
+				"visible"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"recei",
+				"receiverApplicationId"
+			],
+			[
+				"requ",
+				"requestSession"
+			],
+			[
+				"initD",
+				"initData_"
+			],
+			[
+				"ab",
+				"ab2str_v1"
+			],
+			[
+				"ar",
+				"ab2str_v1"
+			],
+			[
+				"update",
+				"updateHeaders"
+			],
+			[
+				"sys",
+				"systemString"
+			],
+			[
+				"load",
+				"loadCertificate"
+			],
+			[
+				"tota",
+				"totalTimeElement_"
+			],
+			[
+				"onMedi",
+				"onMediaEnded"
+			],
+			[
+				"Cast",
+				"CastReceiver"
+			],
+			[
+				"remote",
+				"remotePlayerHandler"
+			],
+			[
+				"ca",
+				"castSender"
+			],
+			[
+				"RemotePlay",
+				"RemotePlayerHandler"
+			],
+			[
+				"retry",
+				"retryInterval"
+			],
+			[
+				"strea",
+				"streamInfo_"
+			],
+			[
+				"media",
+				"media_"
+			],
+			[
+				"medi",
+				"mediaSrc_"
+			],
+			[
+				"keyS",
+				"keySystem"
+			],
+			[
+				"KeyS",
+				"KeySystemClearKey"
+			],
+			[
+				"Rec",
+				"Rectangle3"
+			],
+			[
+				"pla",
+				"player"
+			],
+			[
+				"con",
+				"content"
+			],
+			[
+				"cas",
+				"castSession"
+			],
+			[
+				"me",
+				"mediaManager_"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"remo",
+				"remotePlayerController"
+			],
+			[
+				"play",
+				"playerHandler"
+			],
+			[
+				"idle",
+				"idleTimerId_"
+			],
+			[
+				"onSetVo",
+				"onSetVolumeOrig_"
+			],
+			[
+				"volu",
+				"volumeLevel"
+			],
+			[
+				"fn",
+				"function"
+			],
+			[
+				"prot",
+				"prototype"
+			],
+			[
+				"sample",
+				"sampleplayer"
+			],
+			[
+				"playread",
+				"playready"
+			],
+			[
+				"licen",
+				"licenseUrl"
+			],
+			[
+				"dr",
+				"drmType"
+			],
+			[
+				"keySy",
+				"keySystem"
+			],
+			[
+				"key",
+				"keySystem_"
+			],
+			[
+				"KeySyste",
+				"KeySystemPlayReady"
+			],
+			[
+				"g",
+				"GetKSString"
+			],
+			[
+				"st",
+				"streamInfo_"
+			],
+			[
+				"config",
+				"configIdx"
+			],
+			[
+				"pro",
+				"protectionModel"
+			],
+			[
+				"robust",
+				"robustnessLevel"
+			],
+			[
+				"rob",
+				"robustnessLevel"
+			],
+			[
+				"vid",
+				"videoCapabilities"
+			],
+			[
+				"video",
+				"videoCodec"
+			],
+			[
+				"gene",
+				"generateRequest"
+			],
+			[
+				"curr",
+				"currentMediaURL"
+			],
+			[
+				"cur",
+				"currentMediaURL"
+			],
+			[
+				"asb",
+				"asbCtrl"
+			],
+			[
+				"cont",
+				"contentsA"
+			],
+			[
+				"mim",
+				"mimeCodecV"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"Tet",
+				"TestWebWorker"
+			],
+			[
+				"onMe",
+				"onMediaSourceClose"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/text_engine.js",
+			"settings":
+			{
+				"buffer_size": 7245,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/xampp/htdocs/1/LiteH5Player",
+		"/D/xampp/htdocs/1/LiteH5Player/src"
+	],
+	"file_history":
+	[
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1201.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/index",
+		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/sampleplayer/index.html",
+		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/sampleplayer/app/main.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_html.html",
+		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/index.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/3.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/2.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/test.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/4.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/common_utils.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/1124.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_subtitles.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_recursion_sum.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/main.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_mse.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/index.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/tmp.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/app/main.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/app/main.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/Player.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/media_engine.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/CoreEvents.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_tmp.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastReferencePlayer/player.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/sender.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/cast_sender.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_common_utils.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/xhr_loader.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/TestPlayer.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/media_source_engine.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/SourceBufferWrapper.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/logger.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/fp/index.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastReferencePlayer/player.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/fp/fp.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/cast_receiver.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/index.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver/main.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/cast_utils.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/models/ProtectionModel_21Jan2015.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/models/ProtectionModel_3Feb2014.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/KeySystemConfiguration.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemWidevine.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemPlayReady.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/CommonEncryption.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/TypeConverter.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_aes.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_pd.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver/main.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastReferencePlayer/player.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastVideos-chrome/index.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemClearKey.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/drm_engine.js",
+		"/C/Users/huang_hao/Downloads/1.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/timeRanges.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/test_simple.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/MediaCapability.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/VideoWrapper.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_receiver.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/sender2.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/EMEWrapper.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/EventBus.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/base.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_sender.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/text_engine.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/TextTrackController.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_CommonUtils.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/commonUtil.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/FactoryMaker.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/controller/ProtectionKeyController.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/XHRLoader.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemCCPlayReady.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_xhrloader.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tool/download.html",
+		"/D/xampp/htdocs/1/ark64_frontend/source/samples/features/save2file/fun_save2File.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/download.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/MediaSourceWrapper.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/MediaPlayer.js",
+		"/D/xampp/htdocs/tasklink/65275/master.m3u8",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_utils.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/myproject.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/myproject2.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/start.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/receiver.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/sender.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/index.html",
+		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_proxy.js",
+		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_sender.js",
+		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_receiver.js",
+		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_utils.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/receiver.html",
+		"/D/xampp/htdocs/opensource/shaka-player/demo/cast_receiver/receiver_app.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myCastVideos.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/myPlayer.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/CastReferencePlayer/player.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/CastVideos.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myIndex.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player_old.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player.css",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player_joseph_demo.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myCastVideos.debug.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/solution.sublime-project",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/Gruntfile.js",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/index.js",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/index.html",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/Gruntfile.js",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/tests/demo_cast_sender/package.json",
+		"/D/pj_company/main/Source/MTV/TS/FormatInit.cpp",
+		"/D/xampp/htdocs/opensource/CastVideos-chrome/CastVideos.js",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/css/CastVideos.css",
+		"/D/xampp/htdocs/tasklink/65421_chromecast/chromecast_from_opensource/player.js",
+		"/D/xampp/htdocs/opensource/CastReferencePlayer/player.js",
+		"/D/xampp/htdocs/opensource/CastVideos-chrome/index.html",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/src/vowebvttthumbnail/voWebvttThumbnail.js",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/samples/player/sampleplayer/index.html",
+		"/D/xampp/htdocs/1/voSamplePlayer/trunk/samples/player/sampleplayer/app/main.js",
+		"/D/xampp/htdocs/tasklink/65421_chromecast/chromecast_from_opensource/player.html",
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/test_player.html"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
+			"<current file>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"spinner",
+			"screenPlayPauseClick",
+			"onDiv02Click",
+			"italic",
+			"beginBuffering",
+			"attribute",
+			"beginBuffering",
+			"onMediaSeeking",
+			"onMediaWaiting",
+			"onMediaReadyState",
+			"onMediaWaiting",
+			"onMediaSeeked",
+			"initData",
+			"idBufferingContainer",
+			"idVideoContainer",
+			"div1",
+			"video",
+			"clsIdVideoOverlay",
+			"bufferingSpinner",
+			"css",
+			"bufferingHandler_",
+			"onBuffering_",
+			"bufferingHandler_",
+			"onBuffering_",
+			"BUFFERING",
+			"onBuffering_",
+			"bufferingHandler_",
+			"BUFFERING",
+			"LAUNCHING",
+			"buffering",
+			"this.onConnectedChangedCb",
+			"onBtnTest1",
+			"onBtnTest3",
+			"prototype.init",
+			"MSE_OPENED",
+			"this.media",
+			"resetSrc",
+			"this.textEngine_",
+			"removeBuffer",
+			"this.streamInfo_",
+			"XHRLoader",
+			"onMediaSeeking",
+			"-onMediaMetadata--",
+			"initAudioContent",
+			"initVideoContent",
+			"prototype.loadVideo_",
+			"onLoad(",
+			"onLoad",
+			"onLoad_",
+			"onLoad",
+			"this.mediaEngine_",
+			"this.media",
+			"onMediaLoadedMetadata",
+			"onPlaybackSeeked",
+			"initVideoContent",
+			"this.mediaEngine_",
+			"this.mediaSrc_",
+			"this.context",
+			"this.streamInfo_",
+			"this.eventBus_",
+			"this.player_",
+			"thirdparty",
+			"addEventListener",
+			"onTest",
+			"onConnectedChanged",
+			"stop",
+			"onConnectedChanged",
+			"this.session_ =",
+			"this.castSession_",
+			"this.session_ =",
+			"loadMedia(",
+			"loadMedia",
+			"initMseCase01",
+			"initDRM_CK_Test1",
+			"initWV_MP4",
+			"initDRM_WV",
+			"initMP4_ClearKey",
+			"initWebM_ClearKey",
+			"initDRM_WV",
+			"initPDContent_ClearKey",
+			"initWebM_ClearKey",
+			"initMP4_ClearKey",
+			"initWebM_ClearKey",
+			"initPDContent_ClearKey",
+			"211",
+			"initPDContent_ClearKey",
+			"initPDContent",
+			"initDRM_CK_Test1",
+			"clearkey",
+			"initDRM_CK",
+			"initDRM_PR",
+			"initPDContent_ClearKey",
+			"initDataType",
+			"initPD",
+			"initPDContent_ClearKey",
+			"parsePSSHList",
+			"initPDContent_ClearKey\ninitPDContent_ClearKey",
+			"initPDContent_ClearKey",
+			"initPDContent_Cle",
+			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcHREYXRhIjoie1wibWVyY2hhbnRcIjpcInczYy1lbWUtdGVzdFwiLFwidXNlcklkXCI6XCIxMjM0NVwiLFwic2Vzc2lvbklkXCI6XCJcIn0iLCJjcnQiOiJbe1wiYXNzZXRJZFwiOlwibXA0LWJhc2ljXCIsXCJvdXRwdXRQcm90ZWN0aW9uXCI6e1wiZGlnaXRhbFwiOmZhbHNlLFwiYW5hbG9ndWVcIjpmYWxzZSxcImVuZm9yY2VcIjpmYWxzZX0sXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZSxcInByb2ZpbGVcIjp7XCJwdXJjaGFzZVwiOnt9fX1dIiwiaWF0IjoxNTA5NTI3NjY2LCJqdGkiOiJoYkcxMkdCWnZUZlZDTFJ5bFBBa3BBIn0.iO-n8y26wcUOti9B5NMEqCv5yWzCcg_WW29VJXg8jQ8",
+			"initPDContent_ClearKey",
+			"b64ToU8arr",
+			"base64ToU8arr",
+			"TypeConvert",
+			"b64Tou8arr",
+			"b642u8arr",
+			"base64ToU8Arr",
+			"initPDContent_ClearKey",
+			"trailer",
+			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcHREYXRhIjoie1wibWVyY2hhbnRcIjpcInczYy1lbWUtdGVzdFwiLFwidXNlcklkXCI6XCIxMjM0NVwiLFwic2Vzc2lvbklkXCI6XCJcIn0iLCJjcnQiOiJbe1wiYXNzZXRJZFwiOlwibXA0LWJhc2ljXCIsXCJvdXRwdXRQcm90ZWN0aW9uXCI6e1wiZGlnaXRhbFwiOmZhbHNlLFwiYW5hbG9ndWVcIjpmYWxzZSxcImVuZm9yY2VcIjpmYWxzZX0sXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZSxcInByb2ZpbGVcIjp7XCJwdXJjaGFzZVwiOnt9fX1dIiwiaWF0IjoxNTA5NTEwMDQ5LCJqdGkiOiIycExyMHdlbG5zQXU2VmRRdEx6SmpnIn0.WfvgQU3zKaZ9Sm9nGseaqhLl6gmzigJlkQopzFD81Xk",
+			"laURL",
+			"initPDContent_ClearKey",
+			"progressBar",
+			"initPDContent_ClearKey",
+			"initPDContent",
+			"this.element_.setAttribute",
+			"this.element_",
+			"setType_",
+			".load",
+			"initPDContent_ClearKey",
+			"getInitData",
+			"generateLicense",
+			"dumpKSConfig",
+			"ksString",
+			"dumpKSConfig",
+			"initPDContent_ClearKey",
+			"onWaitingforKey",
+			"media_"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"this.media_",
+			"initWV_MP4",
+			"initCK_MP4",
+			"initCK_WebM",
+			"laUrl",
+			"this.laUrl_",
+			"this.certificateUrl_",
+			"this.certificateUrl",
+			"this.laUrl",
+			"xhr2",
+			"10.2.68.51",
+			"this.mseEngine_",
+			"this.drmEngine_",
+			"DRMEngine",
+			"this.mediaEngine_",
+			"MediaEngine",
+			"CastUtils",
+			"CastReceiver",
+			"CastUtils",
+			"RemotePlayerHandler",
+			"CastSender",
+			"CastUtils",
+			"onTimeupdate",
+			"this.textEngine_",
+			"TextEngine",
+			"var",
+			"xhr",
+			"browser",
+			"CommonUtils",
+			"CommonUtil",
+			"xhr",
+			"localhost",
+			"MediaSourceEngine",
+			"65421_chromecast",
+			"request",
+			"this.request_",
+			"remainingAttempts_",
+			"this.xhr_",
+			"media",
+			"onSessionMessage",
+			"onNeedKey",
+			"ProtectionModel_fp",
+			"console.log",
+			"Player",
+			"micromtn",
+			"MediaPlayer.prototype.",
+			"initWebM",
+			"session_",
+			"micromtn.RemotePlayerHandler",
+			"micromtn.CastSender.",
+			"CastSender",
+			"micromtn",
+			"microMtn.CastReceiver.prototype",
+			"CastReceiver",
+			"LiteCastReceiver",
+			"oldmtn",
+			"CastReceiver",
+			"OMReceiver",
+			"this.remotePlayerHandler",
+			"RemotePlayerHandler",
+			"10.2.72.6",
+			"this.castSession",
+			"this.remotePlayerController",
+			"this.remotePlayer",
+			"castSession",
+			"remotePlayerController",
+			"remotePlayer",
+			"initCast",
+			"addVolume2",
+			"addVolume",
+			"loadMedia",
+			"onMediaLoadedChanged",
+			"onConnectedChanged",
+			"my_onMediaLoadedChanged",
+			"console.log",
+			"10.2.72.133",
+			"10.2.68.51",
+			"10.2.72.157",
+			"laURL",
+			"10.2.72.157",
+			"10.2.72.150",
+			"laURL",
+			"10.2.72.107",
+			"10.2.72.67",
+			"10.2.72.9",
+			"KeySystemCCPlayReady",
+			"10.2.72.9",
+			"instance_",
+			"onSessionChange",
+			"onNeedKey",
+			"onSessionClose",
+			"onSessionAdded",
+			"onSessionError",
+			"onSessionMessage",
+			"onSessionKeyStatusesChange",
+			"onSessionMessage",
+			"context_",
+			"buffer_",
+			"session_",
+			"streamInfo_",
+			"mediaSrc_",
+			"media_",
+			"aSBCtrl",
+			"vCurrIndex",
+			"vContents",
+			"videoCodec",
+			"vContents",
+			"videoCodec",
+			"vCodecMime",
+			"mseCtrl",
+			"sb",
+			"buffer",
+			"sb",
+			"currIndexA",
+			"contentsV",
+			"asbCtrl",
+			"workerInstance",
+			"arrBuf",
+			"msCtrl",
+			"ms"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/text_engine.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 7245,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								443,
+								443
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "solution.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 252.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

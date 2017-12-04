@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="./main.css"/>
+  <script src="../../dist/liteH5Player.debug.js"></script>
+  <script src="./main.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+</head>
+<body>
+  <h2>LiteH5Player</h2>
+
+  <div id='idRoot'>
+    <div id="idVideoContainer">
+      <video id="idVideo" controls="true">
+      </video>
+
+      <div id="idBufferingContainer">
+        <svg class="spinnerSvg" viewBox="25 25 50 50">
+          <circle class="spinnerPath" cx="50" cy="50" r="20"
+          fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+      </div>
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <div id="idBtnController">
+    <button type="button" onclick="onBtnOpen()">open</button>
+    <button type="button" onclick="onBtnAddA()">addA</button>
+    <button type="button" onclick="onBtnAddV()">addV</button>
+    <button type="button" onclick="onBtnAddPD()">addPD</button>
+    <button type="button" onclick="onBtnDelAll()">del all</button>
+    <button type="button" onclick="onBtnClose()">close</button>
+    <button type="button" onclick="onBtnStop()" style="display:none">stop</button>
+    <button type="button" onclick="onBtnCast()">cast</button>
+
+    <div>
+      <label>seek to: </label>
+      <input type="text" id="seekedTime"/>
+      <button type="button" onclick="onBtnSeek()">OK</button>
+    </div>
+    <br />
+
+    <br />
+    <button type="button" onclick="onBtnAddTextTrack()">add text track</button>
+    <br />
+    <button type="button" onclick="onBtnRemoveTextTrack()">remove text track</button>
+    <br />
+    <button type="button" onclick="setTextTrackHidden()">set text track hidden</button>
+    <br />
+    <form>
+      set cue align:
+      <label><input name="Fruit" type="radio" value="" onclick="setCueAlign('start')"/>start</label>
+      <label><input name="Fruit" type="radio" value="" onclick="setCueAlign('center')"/>center</label>
+      <label><input name="Fruit" type="radio" value="" onclick="setCueAlign('end')"/>end</label>
+      <label><input name="Fruit" type="radio" value="" onclick="setCueAlign('left')"/>left</label>
+      <label><input name="Fruit" type="radio" value="" onclick="setCueAlign('right')"/>right</label>
+    </form>
+
+    <br />
+    <button type="button" onclick="onBtnAttribute()">attribute</button>
+    <button type="button" onclick="onBtnTest()">test</button>
+    <button type="button" onclick="onBtnTest2()">test2</button>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,105 @@
+
+body {
+  background-color: #FFF;
+}
+
+.player {
+  background-image: url("assets/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f1f1f1;
+  font-family: 'Open Sans',sans-serif;
+  font-weight: 300;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.player video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-fit: fill;
+}
+
+.player .controls {
+  display: block;
+  bottom: 0;
+  height: 30px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  margin-bottom: 10px;
+}
+
+.player .controls-play-pause {
+  background-image: url("assets/playing.png");
+  background-size: cover;
+  border: 0;
+  float: left;
+  height: 36px;
+  width: 32px;
+}
+
+.player .controls-cur-time,
+.player .controls-total-time {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.player .controls-cur-time {
+  float: left;
+  line-height: 30px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.player .controls-total-time {
+  float: right;
+  line-height: 30px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.player .controls-progress {
+  background-color: rgba(255, 255, 255, 0.2);
+  height: 8px;
+  margin-top: 11px;
+  margin-bottom: 11px;
+  margin-left: 15px;
+  margin-right: 15px;
+  overflow: hidden;
+  position: relative;
+  width: auto
+}
+
+.player .controls-progress-inner {
+  background-color: rgb(250, 178, 49);
+  height: 100%;
+  opacity: 0.8;
+}
+
+.player .controls-progress-thumb {
+  height: 100%;
+  width: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 0;
+  margin-left: -3px;
+}
+
+
+
+
+
+
+
+

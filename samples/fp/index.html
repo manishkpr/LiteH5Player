@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>fp test</title>
+
+  <script src="./fp.js"></script>
+</head>
+<body>
+  <div id='div1'>
+    <video controls width="640" height="320" preload='auto' webkit-playsinline playsline autoplay="true"></video>
+  </div>
+
+  <button type="button" onclick="test1()">test1</button>
+  <button type="button" onclick="test2()">test2</button>
+  <button type="button" onclick="test3()">test3</button>
+
+  <script type="text/javascript">
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    var media = document.querySelector('video');
+    var source1 = {
+        url: 'http://videopass-testing-tmp.s3.amazonaws.com/theater/04/999304_499c2573917d4b3979144fc4ac60c40b/1411000004_hls.m3u8',
+        drm: {
+          fairplay: {
+            laUrl: 'http://52.192.152.70:8000/',
+            certificateUrl: 'http://52.192.152.70:8000/fairplay_cert'
+          }
+        }
+    };
+
+    var source2 = {
+      uri: "http://wowpackagensdevjpeast.streaming.mediaservices.windows.net/202762f3-4c05-4bda-81be-e53b2f901f5b/000001-sp.ism/manifest(format=m3u8-aapl,audio-only=false,encryption=cbcs-aapl)",
+      drm: {
+        fairplay: {
+          laUrl: "http://wow-lcs-fps-ns.trafficmanager.net/LicenseChallenge/WMOD",
+          certificateUrl: "http://wownsplayer.blob.core.windows.net/player/fairplay.cer",
+          headers: { 'Content-Type': 'application/json' },
+          licenseResponseType: 'text',
+          isResponseBase64Encode: true,
+          buildMessage: function (event, session) {
+            return JSON.stringify({ spc: event.messageBase64Encoded });
+          },
+          processLicense: function (responseText) {
+            return JSON.parse(responseText).ckc;
+          },
+          extractContentId: function (contentId) {
+            var hostname = "invalid.";
+            var pos = contentId.indexOf('skd://');
+            if (pos >= 0) {
+              hostname = contentId.substring(pos + 6);
+            }
+            return hostname;
+          }
+        }
+      }
+    };
+
+    var source = source1;
+    function test1() {
+      //var fp = new ProtectionModel_fp(media, source.drm.fairplay);//'http://52.192.152.70:8000/fairplay_cert', 'http://52.192.152.70:8000/');
+      //fp.loadCertificate();
+    }
+
+    function test2() {
+      //media.src = 'http://10.2.68.51/2/myhls/drm/fp/1411000004_hls/360p_764k.m3u8';
+      //media.src = source.url;
+    }
+
+    function test3() {
+      var mediaEngine = new MediaEngine(media);
+      media.src = 'https://nsvisualontest.streaming.mediaservices.windows.net/3c1ed80c-a45e-4723-ae32-c56f0e142d31/6feb72a1-678b-4b94-9d8f-6fdd2cb7f18b.ism/manifest(format=m3u8-aapl)';
+
+      //media.src = 'http://nscreenn-chtmod.cdn.hinet.net/live/Home/index.m3u8';
+      //media.play();
+
+      media.load();
+    }
+
+  </script>
+</body>
+</html>
+
+
+

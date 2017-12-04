@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+
+  <script src="../build/temp/liteH5Player.all.debug.js"></script>
+</head>
+
+<body>
+  <div>
+    <label>key url: </label>
+    <input type="text" id="idKeyUrl" />
+    <br/>
+    <label>test link: </label>
+    <input type="text" id="idLinkUrl" />
+    <br/>
+    <button type="button" onclick="onBtnDecrypt()">OK</button>
+  </div>
+
+  <script>
+    var player = h5player.TestPlayer().create();
+
+    function onBtnDecrypt() {
+      var keyUrl = document.getElementById('idKeyUrl').value;
+      var linkUrl = document.getElementById('idLinkUrl').value;
+
+      player.test_aes128(keyUrl, linkUrl);
+    }
+
+  </script>
+
+</body>
+</html>

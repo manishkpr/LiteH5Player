@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+</head>
+<body>
+
+  <button type="button" onclick="onBtnTest()">Test</button>
+    <button type="button" onclick="onBtnTest2()">Test2</button>
+  <video id="video1" width="320" height="240" controls="true" />
+
+  <script>
+    var config = {};
+    var source = new MediaSource();
+    var videoSourceBuffer;
+
+    config.videoType = 'video/webm; codecs="vp9,opus"';
+    var url = 'http://10.2.72.137/2/pd/webm/cilla_black_bean_sauce_vp9.webm';
+    
+    //config.videoType = 'video/mp4;codecs="avc1.4d401e"';
+
+    function onBtnTest() {
+        //video1.src = 'http://10.2.68.51/2/pd/trailer.mp4';
+        
+        //video1.src = 'http://10.2.68.51/2/drm/pd/Chrome_44-enc_av.webm';
+        //video1.src = 'http://10.2.68.51/2/drm/pd/video_512x288_h264-360k_enc_dashinit.mp4';
+
+
+        //video1.src = 'http://10.2.68.51/opensource/web-platform-tests/encrypted-media/content/video_512x288_h264-360k_dashinit.mp4';
+
+        //video1.src = "http://10.2.68.51/2/mydash/drm/case01/v-0480p-1000k-libx264.mp4";
+    }
+
+    function onBtnTest2() {
+        // Fetch the media resources
+        //var url = 'http://10.2.68.51/2/pd/drm/video_512x288_h264-360k_enc_dashinit.mp4';
+        //var url = 'http://10.2.68.51/opensource/web-platform-tests/encrypted-media/content/video_512x288_h264-360k_dashinit.mp4';
+        //var url = "http://10.2.72.137/2/mydash/drm/case01/v-0480p-1000k-libx264.mp4";
+
+        var fetches = [url].map(function(path) {
+            return fetch(path).then(function(response) {
+                if (!response.ok) throw new Error('Resource fetch failed');
+                return response.arrayBuffer();
+            });
+        });
+
+        Promise.all(fetches).then(function(resources) {
+            config.videoMedia = resources[0];
+            
+            videoSourceBuffer.appendBuffer(config.videoMedia);
+            var a = 2;
+            var b = a;
+        });
+    }
+
+    function onEncrypted(e) {
+        console.log('--onEncrypted--');
+    }
+
+    function initUI() {
+        config.video = document.getElementById('video1');
+        config.video.addEventListener('encrypted', onEncrypted, true);
+    }
+
+    function initData() {
+        config.video.src = URL.createObjectURL(source);
+
+        function onSourceOpen() {
+            videoSourceBuffer = source.addSourceBuffer(config.videoType);
+
+            videoSourceBuffer.addEventListener('updateend',onUpdateEnd);
+
+            function onUpdateEnd(event) {
+                event.target.removeEventListener('updateend', onUpdateEnd);
+                    //source.endOfStream();
+            }
+        }
+
+        source.addEventListener('sourceopen', onSourceOpen);
+    }
+
+    window.onload = function () {
+        initUI();
+        initData();
+    };
+  </script>
+</body>
+</html>
+
+
+
+

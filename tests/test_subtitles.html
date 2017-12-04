@@ -1,0 +1,191 @@
+<html>
+
+<head>
+
+    <style>
+    .boxShadow {
+        width: 480px;
+        height: 480px;
+        /* For IE 5.5 - 7 */
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=135, Color='#000000');
+        /* For IE 8 */
+        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=10, Direction=135, Color='#000000')";
+
+        /* Firefox */
+        -moz-box-shadow: 3px 3px 10px #000;
+        /* WebKit */
+        -webkit-box-shadow: 3px 3px 10px #000;
+        /* Standard */
+        box-shadow: 3px 3px 10px #000;
+    }
+
+
+    .clsDiv {
+        position: relative;
+        width: 640px;
+        height: 480px;
+        background-color: lightgray;
+    }
+    .clsDiv2 {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .clsSpan {
+        
+    }
+</style>
+
+</head>
+<!--
+subtitles: {
+   enable: true,
+   previewSubtitle: default,
+   fontBackgroundColor: white/black(default)/red/green/blue/yellow/magenta/cyan,
+   fontBackgroundOpacity: 50,
+   fontColor: white(default)/black/red/green/blue/yellow/magenta/cyan,
+   fontOpacity: 100,
+   fontFamily: Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic 
+   fontEdgeType: none/dropshadow/raised(default)/depressed/uniform,
+   fontEdgeColor: white/black/red/green/blue(default)/yellow/magenta/cyan,
+   fontEdgeOpacity: 100,
+   fontSize: 20,
+   fontBold: false,
+   fontUnderline: false,
+   fontItalic: false,
+   windowColor: white/black(default)/red/green/blue/yellow/magenta/cyan,
+   windowOpacity: 100,
+   boundingBox: {       ==> mainly for cc
+    enable: false,
+    left: 10,
+    right: 90,
+    top: 84,
+    bottom: 92
+   }
+   fontPosition:{       ==> ?
+    horizontal: left/center(default)/right,
+    vertical: top/middle(default)/bottom
+   }
+   subtitleTrim: string //not display the trimmed string
+   enableAutoAdjustment: false          ==> 暂时先不考虑
+  }
+-->
+
+
+<!--
+    <span style="color: rgba(0, 0, 255, 0.75); display: inline-block; font-family: &quot;Comic Sans MS&quot;, cursive, sans-serif; font-style: normal; font-weight: normal; text-align: center; text-decoration: none; word-wrap: break-word; text-shadow: rgba(0, 0, 0, 0.75) 0px 2px 1px; background-color: rgba(0, 255, 0, 0.75); max-width: 610px; font-size: 21px; line-height: 29px; padding: 1px 10px;">(Howling blizzard)</span>
+-->
+
+<body>
+    <div class='clsDiv'>
+        <div id='idDiv2' class='clsDiv2'>
+            <span id="idSpan" class='clsSpan'>
+                abcd 1234
+            </span>
+        </div>
+    </div>
+
+    <script>
+        var idDiv2 = document.getElementById('idDiv2');
+        var idSpan = document.getElementById('idSpan');
+        var spanText = 'Good day, Good stroy';
+
+        function setSpanText() {
+            idSpan.textContent = spanText;
+        }
+
+        function setTrimText() {
+            var ret = spanText.replace(/Good/g,'');
+            idSpan.textContent = ret;
+        }
+
+        function setFontColor(rgb) {
+            idSpan.style.color = rgb;
+        }
+
+        function setFontOpacity(opacity) {
+            var color = idSpan.style.color;
+        }
+
+        function setFontBackgroundColor(rgb) {
+            idSpan.style.backgroundColor = rgb;
+        }
+
+        function setFontBackgroundOpacity(opacity) {
+            var rgba = idSpan.style.backgroundColor;
+
+            var a=2;
+            var b=a;
+        }
+
+        function setFontFamily(family) {
+            idSpan.style.fontFamily = family;
+        }
+
+        function setFontEdgeType() {
+            // Actually, it's text-shadow property
+            idSpan.style.textShadow = "5px 5px 1px #ff0000, 10px 10px 1px #0000ff";
+        }
+
+        function setFontSize() {
+            // object.style.fontSize = "value|initial|inherit"
+            // xx-small; x-small; small; medium; large; x-large; xx-large
+            idSpan.style.fontSize = 'xx-large';
+        }
+
+        function setFontBold() {
+            //object.style.fontWeight = "normal|lighter|bold|bolder|value|initial|inherit"
+            idSpan.style.fontWeight = 'bold';
+        }
+
+        function setFontUnderline() {
+            // overline| line-through| underline
+            idSpan.style.textDecoration = 'underline';
+        }
+
+        function setFontItalic() {
+            // font-style: normal|italic|oblique|initial|inherit;
+            idSpan.style.fontStyle = 'italic';
+        }
+
+        function setMarginLeft() {
+            idDiv2.style.left = 120;
+        }
+
+        function setMarginTop() {
+            idDiv2.style.top = 120;
+        }
+
+        ///////////////////////////////////////////////////
+        function initUI() {
+            setSpanText();
+            setTrimText();
+
+            setFontColor('rgb(00, 123, 00)');
+            setFontOpacity(0.2);
+            setFontBackgroundColor('rgb(255, 255, 162)');
+            setFontBackgroundOpacity(0.4);
+            //setFontFamily('"Times New Roman",Georgia,Serif');
+            //setFontEdgeType();
+
+            setFontSize();
+            setFontBold();
+            setFontUnderline();
+            setFontItalic();
+
+            // setMarginLeft();
+            // setMarginTop();
+
+            //idDiv2.style.top = '10%';
+        }
+
+        //initUI();
+    </script>
+</body>
+
+</html>
+
+
+
+
+

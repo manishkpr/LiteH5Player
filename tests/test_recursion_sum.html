@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+</head>
+
+<body>
+
+
+  <button onclick="onBtnTest1()">test1</button>
+  <button onclick="onBtnTest3()">test3</button>
+  <button onclick="onBtnTest4()">test4</button>
+
+  <script>
+  //使用递归将求和过程复杂化
+  function sum_v1(x, y) {
+    if (y > 0) {
+      return sum_v1(x + 1, y - 1);
+    } else {
+      return x;
+    }
+  }
+
+  function sum_v2(x, y) {
+    function recur(a, b) {
+      if (b > 0) {
+        return recur(a + 1, b - 1);
+      } else {
+        return a;
+      }
+    }
+//尾递归即在程序尾部调用自身，注意这里没有其他的运算
+return recur(x, y);
+}
+
+
+    //放入trampoline中的函数将被转换为函数的输出结果
+    function trampoline(f) {
+      while (f && f instanceof Function) {
+        f = f();
+      }
+      return f;
+    }
+
+    function sum_v3(x, y) {
+      function recur(x, y) {
+        if (y > 0) {
+          return recur.bind(null, x + 1, y - 1);
+        } else {
+          return x;
+        }
+      }
+//
+return trampoline(recur.bind(null, x, y));
+}
+
+
+function tco(f) {
+  var value;
+  var active = false;
+  var accumulated = [];
+
+  return function accumulator() {
+    accumulated.push(arguments);
+
+    if (!active) {
+      active = true;
+
+      while (accumulated.length) {
+        value = f.apply(this, accumulated.shift());
+      }
+
+      active = false;
+
+      return value;
+    }
+  }
+}
+//这种方式确实有点奇怪，但的确没有改动很多源码，只是以直接量的形式使用tco函数包裹源码
+var sum_v4 = tco(function(x, y) {
+  if (y > 0) {
+    return sum_v4(x + 1, y - 1)
+  }
+  else {
+    return x
+  }
+});
+
+function test1(i) {
+  var counts = 10000;
+
+  var time1 = window.performance.now();
+  var ret = sum_v1(1, counts);
+  var time2 = window.performance.now();
+  console.log(i.toString() + ': sum_v1(1, ' + counts.toString() + ') = ' + ret + ', cost time: ' + (time2 - time1) + ' ms');
+}
+
+function onBtnTest3() {
+      //console.log('sum_v2(1, 10000) = ' + sum_v2(1, 100000));
+      //console.log('sum_v3(1, 1000000) = ' + sum_v3(1, 10000000));
+      console.log('sum_v3(1, 1000000) = ' + sum_v3(1, 10000000));
+    }
+
+    function test4(i) {
+      var counts = 100000;
+
+      var time1 = window.performance.now();
+      var ret = sum_v4(1, counts);
+      var time2 = window.performance.now();
+
+      console.log(i.toString() + ': sum_v4(1, ' + counts.toString() + ') = ' + ret + ', cost time: ' + (time2 - time1) + ' ms');
+    }
+
+    function onBtnTest4() {
+      for (var i = 0; i < 50; i ++) {
+        //test1(i);
+      }
+
+      for (var i = 0; i < 50; i ++) {
+        test4(i);
+      }
+    }
+
+    onBtnTest4();
+
+  </script>
+</body>
+</html>

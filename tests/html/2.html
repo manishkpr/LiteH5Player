@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <style>
+  .cls01 {
+    width: 120px; height: 148px; background-color: lightgray;
+
+    display: flex;
+    align-items: center;
+  }
+  
+  .cls02 {
+    padding-left: 20px;
+    width: 32px; height: 32px; background-color: orange;
+  }
+  .cls03 {
+    padding-left: 20px;
+    width: 32px; height: 32px; background-color: green;
+    border-width: 5px;
+    border-color: red;
+  }
+
+  .divcss5 { width: 32px;
+  height: 32px;
+   border-style:solid;
+   border-left-width: 0px;
+   border-top-width: 0px;
+   border-right-width: 0px;
+   border-bottom-width:1px; border-color:#000;
+ } 
+  </style>
+</head>
+
+<body>
+  <div id="div01" class="cls01">
+    <div id="div02" class="cls02">
+    </div>
+    <div id="div03" class="cls03">
+    </div>
+  </div>
+
+  <div class="divcss5">
+    
+  </div>
+
+  <script type="text/javascript">
+    function onDiv01Click(e) {
+      console.log('--onDiv01Click--');
+    }
+
+    function onDiv02Click(e) {
+      console.log('--onDiv02Click--');
+    }
+
+    window.onload = function () {
+      var div01 = document.getElementById('div01');
+      var div02 = document.getElementById('div02');
+
+      div01.addEventListener('click', onDiv01Click, false);
+      div02.addEventListener('click', onDiv02Click, false);
+    };
+  </script>
+
+
+</body>
+</html>
+
+
