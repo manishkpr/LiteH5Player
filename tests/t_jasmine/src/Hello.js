@@ -1,7 +1,7 @@
 function Hello() {};
 
 Hello.prototype.foo = "foo";
-Hello.prototype.bar = null    ;
+Hello.prototype.bar = null;
 
 Hello.prototype.helloWorld = function() {
     return "Hello World!";

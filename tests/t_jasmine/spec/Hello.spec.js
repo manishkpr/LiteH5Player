@@ -1,5 +1,5 @@
 describe("Hello", function () {
-    var Hello = require("../js/Hello");
+    var Hello = require("../src/Hello");
     var hello;
 
     beforeEach(function () {

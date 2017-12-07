@@ -1,3 +1,10 @@
+// Title: 如何应用jasmine模块
+
+
+1. 使用 Jasmine 测试 Node 项目
+2. 如何添加report
+3. 如何测试es6代码
+
 
 
 
@@ -5,13 +12,14 @@
 
 
 jasmine网站: https://www.npmjs.com/package/jasmine
+https://github.com/bcaudan/jasmine-spec-reporter/tree/040de21f85962e396478840f8f2cbcdddc6bb6dc/examples/node
 
 JavaScript 单元测试框架：Jasmine 初探: https://www.ibm.com/developerworks/cn/web/1404_changwz_jasmine/index.html
 
 
 使用 Jasmine 测试 Node 项目: http://www.cnblogs.com/zhaoxiaoji/p/jasmine-node.html
 
-
+npm install --save 与 npm install --save-dev 的区别: https://www.cnblogs.com/hollen/p/5956012.html
 
 
 
