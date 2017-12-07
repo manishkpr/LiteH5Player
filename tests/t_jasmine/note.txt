@@ -1,0 +1,18 @@
+
+
+
+
+
+
+jasmine网站: https://www.npmjs.com/package/jasmine
+
+JavaScript 单元测试框架：Jasmine 初探: https://www.ibm.com/developerworks/cn/web/1404_changwz_jasmine/index.html
+
+
+使用 Jasmine 测试 Node 项目: http://www.cnblogs.com/zhaoxiaoji/p/jasmine-node.html
+
+
+
+
+
+

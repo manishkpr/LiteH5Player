@@ -1,0 +1,124 @@
+// Title: dash.js自动构建js库的流程
+最近在研究dashjs(link: https://github.com/Dash-Industry-Forum/dash.js)，
+但是当你打开它的sample(https://github.com/Dash-Industry-Forum/dash.js/blob/development/samples/dash-if-reference-player/index.html)，你会发现它将所有的.js文件模块化，并最终打包成一个dash.all.debug.js文件，浏览器只要包含这一个js文件就可以播放dash流了。
+
+我很好奇浏览器, 是如何加载这一个js文件的。
+
+因此我开始思考这一系列的问题。
+
+1. chrome浏览器如何加载js的?
+首先了解一下webkit。Webkit是苹果发起的一个开源项目，后来谷歌用这个项目以webkit创建了一个新的项目 Chromium，我们平常用的 Chrome 浏览器一般都是基于 Chromium 开发出来的稳定版本。webkit 作为浏览器的渲染引擎能够将 html/css/js文本及相应的资源文件转换成图像结果，并显示出来。
+
+浏览器内部一般由多个模块组成，如下图：(插入"浏览器内部结构图" from 参考1)
+而每个模块都负责特定的功能，其中"javascript引擎"就用于解析javascript代码。
+
+对于webkit内核而言，其用于解析javascript的模块被称为V8.
+<code>
+V8 is Google’s open source high-performance JavaScript engine, written in C++ and used in Google Chrome, the open source browser from Google, and in Node.js, among others. It implements ECMAScript as specified in ECMA-262, and runs on Windows 7 or later, macOS 10.5+, and Linux systems that use IA-32, ARM, or MIPS processors. V8 can run standalone, or can be embedded into any C++ application. More information can be found on V8's public wiki.
+</code>
+
+2. Node.js和Browser运行js有什么区别?
+我们都知道几乎所有现代主流浏览器都全面支持了ECMAScript 5.1版标准，而JavaScript的标准是ECMAScript。那么我们就容易认为JavaScript是一种浏览器端的解释型编程脚本。那么脱离了浏览器，JavaScript还能够解释运行吗？ 答案是肯定的，也就是说脱离了浏览器，在特定环境下JavaScript还是能运行的。JavaScript向来以Web网页的脚本语言而著称，但现在也可以用在许多非浏览器环境，例如node.js或者Apache CouchDB。
+
+<code>
+Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+</code>
+因此我们只要在本地安装node.js，然后在命令行输入: $ node test.js
+就可以运行该test.js，并打印其输出了。
+
+例如:
+<code>
+// test1.js, js版本为es5
+function test() {
+    return 'Hello world, node.js.';
+}
+</code>
+但是Javascript版本目前常见的有ES5和ES6，而V8引擎对ES6的支持还很有限（比如不支持import, export关键字）。
+因此若想在运行ES6版本的js代码，需要先将ES6版本的js代码转为ES5版本的js代码。
+而目前有一个工具"babel"可以做这个工作。
+
+3. 使用babel转码
+Babel 是一个广泛使用的 ES6 转码器，可以将 ES6 代码转为 ES5 代码，从而在现有环境执行。这意味着，你可以用 ES6 的方式编写程序，又不用担心现有环境是否支持。
+
+
+下面用es6的语法写了2个文件：
+<code>
+// test2_lib.js
+function test() {
+    return 'i am es6 module syntax.';
+}
+
+export default test;
+
+// test2.js
+import test from './test2_lib';
+
+console.log('main.js: ' + test());
+</code>
+
+你会发现通过: $ node test2.js 来运行js文件;
+
+现在就提出了2个问题:
+1. 如何将test2.js和test2_out.js转码为ES5版本的js代码呢?
+2. 如何将这个2个转码后的文件打包为一个js文件呢?
+
+这是就需要用到babel, babelify和browserfiy;
+
+4. 使用babel, babelify和browserfiy转码es6文件
+首先在文件夹下新建package.json文件:
+<code>
+{
+  "name": "t_browserify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
+    "browserify-derequire": "^0.9.4"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  }
+}
+</code>
+
+package.json各个属性的的含义，可通过"参考资料8"获得更多了解。
+然后执行$ npm install, 这会将devDependencies所制定的库安装到node_moduel文件夹下。
+
+然后再执行: $ browserify test2.js -o test2_out.js
+这会将test2.js及其依赖的所有js文件，都转码并输出到test2_out.js;
+
+然后浏览器就可以引用test2_out.js里面的类或者函数了。
+
+
+参考资料:
+1. webkit框架结构图: http://www.cnblogs.com/QingFlye/p/4175868.html
+2. V8简介: https://developers.google.com/v8/
+3. 初识NodeJS，一个基于GoogleV8引擎的Javascript运行环境: https://www.cnblogs.com/CodeGuy/archive/2013/04/19/3030567.html
+4. nodejs官网: https://nodejs.org/en/
+5. ECMAScript简介：http://es6.ruanyifeng.com/#docs/intro
+6. babel 入门教程: http://www.ruanyifeng.com/blog/2016/01/babel.html
+7. browserify教程: http://egorsmirnov.me/2015/05/25/browserify-babelify-and-es6.html
+8. package.json简介: https://docs.npmjs.com/getting-started/using-a-package.json
+9. browserify网站：http://browserify.org; https://github.com/browserify/browserify
+10. babelify网站: https://www.npmjs.com/package/babelify
+
+
+
