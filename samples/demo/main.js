@@ -473,7 +473,7 @@ function onBtnTest() {
 function onBtnTest2() {
   //player.test2();
 
-  endBuffering();
+  //endBuffering();
 }
 
 function onBtnAttribute() {
