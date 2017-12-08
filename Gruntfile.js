@@ -4,6 +4,9 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: {
+            options: {
+                force: true
+            },
             dist: ['dist']
         },
         browserify: {
@@ -26,8 +29,10 @@ module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['clean', 'browserify:dist']);
-    grunt.registerTask('clean', ['clean:dist']);
+
+    grunt.registerTask('default', ['clean:dist', 'browserify:dist']);
+    grunt.registerTask('omClean', ['clean:dist']);
+    grunt.registerTask('omBuild', ['browserify:dist']);
 };
 
 
