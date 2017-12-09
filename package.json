@@ -33,5 +33,17 @@
     "round10": "^1.0.3"
   },
   "author": "oldmtn",
-  "license": "BSD"
+  "license": "BSD",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  }
 }
