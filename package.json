@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "My test client implementation for testing Javascript functions.",
   "main": "liteH5Player.min.js",
-  "scripts": {},
+  "scripts": {
+    "test": "babel-node spec/run.js"
+  },
   "devDependencies": {
     "babel": "^5.3.1",
     "babel-core": "^6.26.0",
@@ -19,6 +21,7 @@
     "grunt-browserify": "^4.0.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^1.0.0",
+    "jasmine": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
     "load-grunt-tasks": "^3.1.0",
     "time-grunt": "^1.2.0"

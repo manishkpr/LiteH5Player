@@ -1,4 +1,4 @@
-// Title: 如何应用jasmine模块
+// Title: 使用Jasmine测试你的项目
 
 
 1. 使用Jasmine测试Node项目

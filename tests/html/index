@@ -10,12 +10,38 @@ http://zh.learnlayout.com/flexbox.html
 
 
 // 1124 - input, type(range) usage;
-
 // 1201 - 动态旋转图片
 
 /////////////////////////////////////////////////////////////////////////
-// Title: 
-flex属性学习: https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+// Title: css学习部分
+1. "盒模型"哪些部分显示background-color指定的颜色?
+2.颜色条效果如何实现?
+    background:linear-gradient(
+        to right,
+        red 0%,
+        red 14.3%,
+        orange 14.3%,
+        orange 28.6%,
+        yellow 28.6%,
+        yellow 57.2%,
+        blue 57.2%,
+        blue 85.8%,
+        violet 85.8%,
+        violet 100%
+    );
+参考: http://www.jianshu.com/p/bf862535dd30
+3. flex属性学习: https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+/////////////////////////////////////////////////////////////////////////
+// Title: AngularJS学习部分
+
+
+
+
+
+
+
+
 
 
 
