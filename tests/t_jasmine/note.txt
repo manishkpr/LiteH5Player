@@ -1,25 +1,225 @@
 // Title: 如何应用jasmine模块
 
 
-1. 使用 Jasmine 测试 Node 项目
+1. 使用Jasmine测试Node项目
+当我们写服务端的JS代码时，有的时候需要先写相应的测试用例，因为当将测试用例写好的话，这端程序的逻辑也就通了，代码就是分分钟的事情了。
+
+1.1. 新建待测试文件Hello.js
+首先，需要在本地文件夹(例如: t_jasmine)下新建一个文件"./src/Hello.js"
+其内容为:
+<code>
+function Hello() {};
+
+Hello.prototype.foo = "foo";
+Hello.prototype.bar = null;
+
+Hello.prototype.helloWorld = function() {
+    return "Hello World!";
+}
+
+Hello.prototype.helloSomeone = function(toGreet) {
+    return this.sayHello() + " " + toGreet;
+}
+
+Hello.prototype.sayHello = function() {
+    return "Hello";
+}
+
+module.exports = Hello;
+</code>
+
+1.2. 安装 Jasmine Module
+使用 npm 全局安装 jasmine 模块：
+$ npm install -g jasmine
+
+1.3. 进行全局安装后，我们就可以直接在终端执行 jasmine 命令了。执行:
+$ jasmine -v
+就可以看到当前安装的 jasmine 版本。
+
+1.4. 初始化
+接下来，我们就需要对测试项目进行初始化了。我们可以手动进行初始化，但更简单的方式是直接在项目目录下运行命令:
+$ jasmine init
+jasmine 会在当前目录下生成一个配置文件 spec/support/jasmine.json
+<code>
+{
+  "spec_dir": "spec",
+  "spec_files": [
+    "**/*[sS]pec.js"
+  ],
+  "helpers": [
+    "helpers/**/*.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": false
+}
+</code>
+
+
+1.5. 添加测试用例代码 以及 测试辅助代码
+接下来，就该添加我们的测试代码了。分别添加 spec/Hello.spec.js
+<code>
+describe("Hello", function () {
+    var Hello = require("../js/Hello");
+    var hello;
+
+    beforeEach(function () {
+        hello = new Hello();
+    });
+
+    it("a newly created Hello instance should not be the same instance with the origin one", function () {
+        expect(hello).not.toBe(new Hello());
+        expect(hello).toEqual(new Hello());
+    });
+
+    describe("helloWorld function", function () {
+        it("should return hello statement", function () {
+            expect(hello.helloWorld()).toBe("Hello World!");
+        });
+
+        it("should contain word 'World'", function () {
+            expect(hello.helloWorld()).toContainWord("World!");
+        });
+
+        it("an undefined variable should pass 'toBeUndefined' matcher", function () {
+            expect(hello.a).toBeUndefined();
+        });
+
+        it("a null variable should pass 'toBeNull' matcher", function () {
+            expect(hello.bar).toBeNull();
+        });
+
+        it("variable after boolean casting should pass 'toBeTruthy' 'toBeFalsy' matcher", function () {
+            expect(hello.foo).toBeTruthy();
+            expect(hello.bar).toBeFalsy();
+        });
+        it("should pass the 'toMatch' matcher for regular expressions", function (){
+            expect(hello.helloWorld()).toMatch(/^\w*\s\w*!$/);
+        });
+    });
+
+    describe("helloSomeone function", function () {
+        it("should calls the sayHello() function", function () {
+            spyOn(hello, "sayHello");
+            hello.helloSomeone("Chou");
+            expect(hello.sayHello).toHaveBeenCalled();
+            expect(hello.sayHello).toHaveBeenCalledTimes(1);
+        });
+        it("should greet the 'World'", function () {
+            spyOn(hello, "helloSomeone");
+            hello.helloSomeone("World");
+            expect(hello.helloSomeone).toHaveBeenCalledWith("World");
+            expect(hello.helloSomeone).not.toHaveBeenCalledWith("world");
+        });
+        it("should calls the fake sayHello()", function () {
+            hello.sayHello = jasmine.createSpy("'sayHello' spy");
+            hello.helloSomeone("world");
+            expect(hello.sayHello).toHaveBeenCalled();
+        });
+    });
+});
+</code>
+　
+测试辅助代码(spec/helpers/SpecHelper.js):
+<code>
+beforeEach(function () {
+    jasmine.addMatchers({
+        toContainWord: function () {
+            return {
+                compare: function (actual, expected) {
+                    var result = {};
+                    result.pass = (actual.indexOf(expected) !== -1);
+                    if( result.pass ) {
+                        result.message = "Expected " + actual + " to contain " + expected + ".";
+                    } else {
+                        result.message = "Expected " + actual + " to contain " + expected + ", but it does not.";
+                    }
+                    return result;
+                }
+            }
+        }
+    });
+});
+</code>
+
+1.6. 运行测试
+当我们添加了测试代码，并且配置好了配置文件 jasmine.json ，就可以回到根目录下，直接执行命令:
+$ jasmine
+含义: jasmine首先会自动加载"./spec/support/jasmine.json"，然后执行jasmine.json里面指定的测试用例代码;
+
+<img>
+20171209_01.png
+</img>
+
 2. 如何添加report
+但是测试并没有显示report这些详细的信息, 都是一个"小绿点"代表一个测试用例成功, 一个"小红点"代表一个测试用例失败.
+为了能更清楚的显示测试用例的名称以及测试结果，我们需要添加一个文件: "./spec/helpers/reporter.js"，其内容如下:
+<code>
+const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+
+jasmine.getEnv().clearReporters();               // remove default reporter logs
+jasmine.getEnv().addReporter(new SpecReporter({  // add jasmine-spec-reporter
+  spec: {
+    displayPending: true
+  }
+}));
+</code>
+
+运行"$ jasmine"，会得到如下结果:
+<img>
+20171209_02.png
+</img>
+
+PS: 需要说明一下"$ jasmine ./spec/Hello.spec.js"是指定执行单个测试用例;
+
 3. 如何测试es6代码
+刚才我们添加的都是ES5格式的代码，并且Hello.js里面的模块是按照CommonJS模块标准写的。
+倘若添加的是ES6格式的js代码，怎么办呢?
+比如，在当前的例子中，我就添加了一个ES6格式的文件"./src/Hello2.js"及其对应的测试文件"./spec/Hello2.spec.js"
+
+有兴趣的同学，可以使用"$ jasmine ./spec/Hello2.spec.js"测试一下，会发现无法运行该测试用例;
+此时需要先将"Hello2.spec.js"转换为ES5格式的代码，然后再使用jasmine来测试;
+
+具体的话可以使用"$ browserify ./spec/Hello2.spec.js -o ./lib/Hello2.spec.js"来生成转码后的测试用例;
+在本地安装browserify可先新建一个package.json，然后"npm install"，完成后就可以在本地文件夹使用browserify命令了;
+
+4. 运行多个es6的测试用例
+上面我们每个测试用例都需要用"browserify"先转码，然后在"jasmine"来测试的话，太麻烦了。
+有的时候，我们希望以此运行多个测试用例，怎么办呢？
+有办法，我们可以使用"bable-node"来帮助我们。
+
+首先在package.json添加一个测试脚本:
+<code>
+"scripts": {
+  "test": "babel-node spec/run.js"
+}
+</code>
+
+然后新建一个文件: "./spec/run.js"，其内容为:
+<code>
+import Jasmine from 'jasmine'
+
+var jasmine = new Jasmine()
+jasmine.loadConfigFile('spec/support/jasmine.json')
+jasmine.execute()
+</code>
+
+接下来使用:
+"$ npm run test"就可以一次运行多个测试用例了.
 
 
+代码
+https://github.com/oldmtn/LiteH5Player/tree/master/tests/t_jasmine
 
 
+参考:
+1. jasmine网站: https://www.npmjs.com/package/jasmine
+2. jasmine-spec-reporter: https://github.com/bcaudan/jasmine-spec-reporter/tree/040de21f85962e396478840f8f2cbcdddc6bb6dc/examples/node
+3. JavaScript 单元测试框架：Jasmine 初探: https://www.ibm.com/developerworks/cn/web/1404_changwz_jasmine/index.html
+4. 使用 Jasmine 测试 Node 项目: http://www.cnblogs.com/zhaoxiaoji/p/jasmine-node.html
+5. npm install --save 与 npm install --save-dev 的区别: https://www.cnblogs.com/hollen/p/5956012.html
+6. jasmine一次运行多个测试用例: https://gist.github.com/mauvm/172878a9646095d03fd7
 
 
-
-jasmine网站: https://www.npmjs.com/package/jasmine
-https://github.com/bcaudan/jasmine-spec-reporter/tree/040de21f85962e396478840f8f2cbcdddc6bb6dc/examples/node
-
-JavaScript 单元测试框架：Jasmine 初探: https://www.ibm.com/developerworks/cn/web/1404_changwz_jasmine/index.html
-
-
-使用 Jasmine 测试 Node 项目: http://www.cnblogs.com/zhaoxiaoji/p/jasmine-node.html
-
-npm install --save 与 npm install --save-dev 的区别: https://www.cnblogs.com/hollen/p/5956012.html
 
 
 
