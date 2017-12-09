@@ -6,7 +6,7 @@ describe("Hello", function () {
         hello = new Hello();
     });
 
-    it("a newly created Hello instance should not be the same instance with the origin one", function () {
+    it("2222a newly created Hello instance should not be the same instance with the origin one", function () {
         expect(hello).not.toBe(new Hello());
         expect(hello).toEqual(new Hello());
     });
