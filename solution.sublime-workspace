@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"back",
+				"background"
+			],
+			[
 				"border-bottom",
 				"border-bottom-width"
 			],
@@ -122,10 +126,6 @@
 			[
 				"me",
 				"mediaManager_"
-			],
-			[
-				"back",
-				"background-color"
 			],
 			[
 				"remo",
@@ -256,39 +256,30 @@
 	"buffers":
 	[
 		{
-			"file": "tests/t_babelify/test.js",
+			"file": "test/utils/xhr_loader_unit.js",
 			"settings":
 			{
-				"buffer_size": 86,
+				"buffer_size": 417,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "tests/t_npm/package.json",
+			"file": "src/utils/common_utils.js",
 			"settings":
 			{
-				"buffer_size": 231,
+				"buffer_size": 6498,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 1135,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "tests/t_npm/test1.js",
-			"settings":
-			{
-				"buffer_size": 35,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "tests/t_babelify/es6.js",
-			"settings":
-			{
-				"buffer_size": 101,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
 			}
 		}
 	],
@@ -325,34 +316,84 @@
 	"expanded_folders":
 	[
 		"/D/xampp/htdocs/1/LiteH5Player",
-		"/D/xampp/htdocs/1/LiteH5Player/tests",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/t_node",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/t_npm"
+		"/D/xampp/htdocs/1/LiteH5Player/samples",
+		"/D/xampp/htdocs/1/LiteH5Player/src",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils",
+		"/D/xampp/htdocs/1/LiteH5Player/test"
 	],
 	"file_history":
 	[
-		"/D/xampp/htdocs/1/LiteH5Player/tests/t_npm/test.js",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babelify/test_out.js",
-		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.html",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babel/note.txt",
-		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/xhr_loader.js",
 		"/D/xampp/htdocs/1/LiteH5Player/test/utils/xhr_loader_unit.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello2.spec.js",
 		"/D/xampp/htdocs/1/LiteH5Player/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/support/jasmine.json",
+		"/D/xampp/htdocs/1/LiteH5Player/test1/Hello_unit.js",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello_unit.js",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello2_unit.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/xhr_loader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.html",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/run.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/Hello.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/tmp/Hello.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/tmp/Hello2.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/test/tmp/Hello2.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/note.txt",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/run.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/helpers/reporter.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/support/jasmine.json",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/lib/Hello.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/Hello2.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/lib/Hello2.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/Hello2.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html/index",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1207/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/test_simple.html",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/css/note.txt",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/css/linear-gradient.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_proxy.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/Hello.spec.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/src/Hello.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/src/Hello2.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/node.txt",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/test2.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/test2_lib.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/test1.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/test.html",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/es6_01.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/lib_es6.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/main_es6_out.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/lib.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_browserify/main_es6.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babel/es6.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babelify/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babel/test.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babelify/test.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babelify/test_out.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_npm/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_npm/test1.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babelify/es6.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_npm/test.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_babel/note.txt",
 		"/D/xampp/htdocs/2/myhls/common/test.m3u8",
 		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/TestFeature.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/utils/string_utils.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_21Jan2015.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_3Feb2014.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/SourceBufferWrapper.js",
 		"/D/xampp/htdocs/opensource/shaka-player/test/hls/hls_parser_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/text_engine.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1201.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/index",
 		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/sampleplayer/index.html",
@@ -409,56 +450,7 @@
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastReferencePlayer/player.css",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastVideos-chrome/index.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemClearKey.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/drm_engine.js",
-		"/C/Users/huang_hao/Downloads/1.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/timeRanges.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/test_simple.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/MediaCapability.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/VideoWrapper.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_receiver.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/sender2.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/EMEWrapper.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/EventBus.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/base.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver.css",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_sender.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/text_engine.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/TextTrackController.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_CommonUtils.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/commonUtil.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/FactoryMaker.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/controller/ProtectionKeyController.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/XHRLoader.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemCCPlayReady.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_xhrloader.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tool/download.html",
-		"/D/xampp/htdocs/1/ark64_frontend/source/samples/features/save2file/fun_save2File.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/download.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/MediaSourceWrapper.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/MediaPlayer.js",
-		"/D/xampp/htdocs/tasklink/65275/master.m3u8",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/Gruntfile.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/cast_utils.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/myproject.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/myproject2.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/myproject/start.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/receiver.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/sender.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/index.html",
-		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_proxy.js",
-		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_sender.js",
-		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_receiver.js",
-		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_utils.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/receiver.html",
-		"/D/xampp/htdocs/opensource/shaka-player/demo/cast_receiver/receiver_app.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myCastVideos.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/myPlayer.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/CastReferencePlayer/player.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/CastVideos.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_sender/myIndex.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast_receiver/player_old.html"
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/drm_engine.js"
 	],
 	"find":
 	{
@@ -502,6 +494,9 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"browserify",
+			"myFunc",
+			"idBtnController",
 			"utils/StringUtils",
 			"TypeConverter",
 			"test_xhrloader",
@@ -626,10 +621,7 @@
 			"setType_",
 			".load",
 			"initPDContent_ClearKey",
-			"getInitData",
-			"generateLicense",
-			"dumpKSConfig",
-			"ksString"
+			"getInitData"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -770,57 +762,29 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "tests/t_babelify/test.js",
+					"file": "test/utils/xhr_loader_unit.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 86,
+						"buffer_size": 417,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								86,
-								86
+								417,
+								417
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "tests/t_npm/package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 231,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								231,
-								231
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -830,59 +794,63 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "tests/t_npm/test1.js",
-					"semi_transient": false,
+					"buffer": 1,
+					"file": "src/utils/common_utils.js",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 35,
+						"buffer_size": 6498,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13,
-								32
+								652,
+								652
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1938.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "tests/t_babelify/es6.js",
+					"buffer": 2,
+					"file": "package.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 101,
+						"buffer_size": 1135,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								101,
-								101
+								292,
+								292
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 43.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -965,7 +933,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 227.0,
+	"side_bar_width": 265.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
