@@ -4,6 +4,16 @@ import Events from './core/CoreEvents';
 import TimeRanges from './utils/timeRanges';
 
 
+/* During the loading process of an audio/video, the following events occur, in this order:
+loadstart
+durationchange
+loadedmetadata
+loadeddata
+progress
+canplay
+canplaythrough
+*/
+
 var MediaEngine = function (media) {
   this.media_ = media;
   this.eventBus_ = EventBus(micromtn).getInstance();
@@ -17,6 +27,11 @@ MediaEngine.prototype.play = function () {
 // End -- public functions
 
 // Begin - private function 
+MediaEngine.prototype.onMediaCanplay = function () {
+  //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
+  console.log('--onMediaCanplay--');
+};
+
 MediaEngine.prototype.onMediaEnded = function () {
   console.log('--onMediaEnded--');
 };
@@ -30,7 +45,7 @@ MediaEngine.prototype.onMediaPaused = function () {
 };
 
 MediaEngine.prototype.onMediaPlaying = function () {
-  console.log('--onMediaPlaying--');
+  //console.log('--onMediaPlaying--');
   this.eventBus_.trigger(Events.MEDIA_PLAYING);
 };
 
@@ -58,6 +73,7 @@ MediaEngine.prototype.onMediaWaiting = function () {
 
 // public function
 MediaEngine.prototype.addEventListeners = function () {
+  this.media_.addEventListener('canplay', this.onMediaCanplay.bind(this));
   this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
   this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
@@ -70,6 +86,7 @@ MediaEngine.prototype.addEventListeners = function () {
 };
 
 MediaEngine.prototype.removeEventsListeners = function () {
+  this.media_.removeEventListener('canplay', this.onMediaCanplay.bind(this));
   this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
   this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));

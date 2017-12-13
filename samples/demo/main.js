@@ -345,6 +345,10 @@ function onVideoClick() {
 function initUI() {
   div1 = document.getElementById('div1');
   media = document.getElementById('idVideo');
+
+  // BD
+  media.autoplay = false;
+  // ED
 }
 
 function initData() {

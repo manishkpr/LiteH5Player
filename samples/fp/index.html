@@ -63,7 +63,9 @@
 
     function test2() {
       //media.src = 'http://10.2.68.51/2/myhls/drm/fp/1411000004_hls/360p_764k.m3u8';
-      //media.src = source.url;
+      var mediaEngine = new MediaEngine(media);
+      media.src = 'http://stream1.visualon.com:8082/hls/v10/gear/bipbop_16x9_variant_v10_2.m3u8';
+      media.load();
     }
 
     function test3() {
