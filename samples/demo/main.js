@@ -16,7 +16,7 @@ var initDataType;
 var initData;
 
 ///////////////////////////////////////////////////////////////////////////
-// UI reference functions
+// Title: UI reference functions
 function beginBuffering() {
   var idBufferingContainer = document.getElementById('idBufferingContainer');
   idBufferingContainer.style.display = 'block';
@@ -27,6 +27,20 @@ function endBuffering() {
   idBufferingContainer.style.display = 'none';
 }
 
+///////////////////////////////////////////////////////////////////////////
+// Title: Tool function
+function enterFullScreen() {
+  var v = document.querySelector('.h5p-root');
+  if (v.requestFullscreen) {
+    v.requestFullscreen();
+  } else if (v.msRequestFullscreen) {
+    v.msRequestFullscreen();
+  } else if (v.mozRequestFullScreen) {
+    v.mozRequestFullScreen();
+  } else {
+    v.webkitRequestFullScreen();
+  }
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // assets
@@ -35,34 +49,34 @@ function initAudioContent() {
 
   //
   aContents = [];
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/all.mp4');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/all.mp4');
   return;
 
   aContents = [];
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/init.mp4');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/1.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/2.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/3.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/4.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/5.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/6.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/7.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/8.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/9.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/10.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/11.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/12.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/13.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/14.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/15.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/16.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/17.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/18.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/19.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/20.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/21.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/22.m4s');
-  aContents.push('http://localhost/2/mydash/features/av_nonmuxed/A48/23.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/init.mp4');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/1.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/2.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/3.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/4.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/5.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/6.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/7.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/8.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/9.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/10.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/11.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/12.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/13.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/14.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/15.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/16.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/17.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/18.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/19.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/20.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/21.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/22.m4s');
+  aContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/A48/23.m4s');
 }
 
 function initVideoContent() {
@@ -71,36 +85,36 @@ function initVideoContent() {
   // case 1
   //vContents = [];
   //vContents.push('http://10.2.72.19/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4');
-  //vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/all.mp4');
+  //vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/all.mp4');
   //return;
 
   vContents = [];
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/1.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/2.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/3.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/4.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/5.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/6.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/7.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/8.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/9.m4s');
-  vContents.push('http://localhost/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/10.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/1.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/2.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/3.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/4.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/5.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/6.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/7.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/8.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/9.m4s');
+  vContents.push('http://10.2.68.51/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/10.m4s');
 
   // case 2
-  //vContents.push('http://localhost/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-.mp4');
-  //vContents.push('http://localhost/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-1.m4s');
-  //vContents.push('http://localhost/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-2.m4s');
-  //vContents.push('http://localhost/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-3.m4s');
+  //vContents.push('http://10.2.68.51/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-.mp4');
+  //vContents.push('http://10.2.68.51/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-1.m4s');
+  //vContents.push('http://10.2.68.51/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-2.m4s');
+  //vContents.push('http://10.2.68.51/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-3.m4s');
 
   //// case 3
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_0.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_1.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_2.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_3.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_4.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_5.m4v');
-  //vContents.push('http://localhost/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_6.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_0.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_1.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_2.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_3.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_4.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_5.m4v');
+  //vContents.push('http://10.2.68.51/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_6.m4v');
 }
 
 function initMseCase01()
@@ -108,14 +122,14 @@ function initMseCase01()
   // video1
   videoCodec = 'video/mp4; codecs="avc1.4D4029"';
   
-  var baseUrl = 'http://localhost/2/mse/test2_main_index/Video1/';
+  var baseUrl = 'http://10.2.68.51/2/mse/test2_main_index/Video1/';
   vContents = [];
   vContents.push(baseUrl + 'Header.m4s');
   for (var i = 0; i < 48; i ++) {
     vContents.push(baseUrl + i.toString() + '.m4s');
   }
 
-  // baseUrl = 'http://localhost/2/mse/test2_main_index/Video4/';
+  // baseUrl = 'http://10.2.68.51/2/mse/test2_main_index/Video4/';
   // vContents.push(baseUrl + 'Header.m4s');
   // for (var i = 0; i < 12; i ++) {
   //   vContents.push(baseUrl + i.toString() + '.m4s');
@@ -127,9 +141,9 @@ function initAudioVideoContent() {
 
   // case 1
   vContents = [];
-  vContents.push('http://localhost/2/pd/mp4/sample_dashinit.mp4');
+  vContents.push('http://10.2.68.51/2/pd/mp4/sample_dashinit.mp4');
 
-  //vContents.push('http://localhost/2/dash_example/hh2/cuc_ieschool_dashinit.mp4');
+  //vContents.push('http://10.2.68.51/2/dash_example/hh2/cuc_ieschool_dashinit.mp4');
 
   return { videoCodec: videoCodec, vContents: vContents };
 }
@@ -137,11 +151,11 @@ function initAudioVideoContent() {
 function initPDContent() {
   // test webm vp8
   // videoCodec = 'video/webm; codecs="vorbis,vp8"';
-  // vContents.push('http://localhost/1/ark64_frontend/source/resource/movie/test.webm');
+  // vContents.push('http://10.2.68.51/1/ark64_frontend/source/resource/movie/test.webm');
 
   //
   videoCodec = 'video/webm; codecs="vp9,opus"';
-  pdContent = 'http://localhost/2/pd/webm/cilla_black_bean_sauce_vp9.webm';
+  pdContent = 'http://10.2.68.51/2/pd/webm/cilla_black_bean_sauce_vp9.webm';
 }
 
 function initPDContent_ClearKey() {
@@ -149,9 +163,9 @@ function initPDContent_ClearKey() {
   // mp4
   if (0) {
   videoCodec = 'video/mp4; codecs="avc1.4d401e"';
-  //pdContent = 'http://localhost/2/pd/drm/video_512x288_h264-360k_clear_enc_dashinit.mp4';
-  pdContent = 'http://localhost/2/pd/drm/video_512x288_h264-360k_enc_clear_dashinit.mp4';
-  //pdContent = 'http://localhost/2/pd/drm/video_512x288_h264-360k_enc_dashinit.mp4';
+  //pdContent = 'http://10.2.68.51/2/pd/drm/video_512x288_h264-360k_clear_enc_dashinit.mp4';
+  pdContent = 'http://10.2.68.51/2/pd/drm/video_512x288_h264-360k_enc_clear_dashinit.mp4';
+  //pdContent = 'http://10.2.68.51/2/pd/drm/video_512x288_h264-360k_enc_dashinit.mp4';
   drmType = 'org.w3.clearkey';
   key = new Uint8Array([
     0xbe, 0x7d, 0xf8, 0xa3, 0x66, 0x7a, 0x6a, 0x8f,
@@ -167,7 +181,7 @@ function initPDContent_ClearKey() {
     0x22, 0x5D, 0x7D
     ]);
 
-  // pdContent = 'http://localhost/2/pd/drm/video_512x288_h264-360k_enc_clear_dashinit.mp4';
+  // pdContent = 'http://10.2.68.51/2/pd/drm/video_512x288_h264-360k_enc_clear_dashinit.mp4';
   // drmType = 'com.widevine.alpha';
   // laUrl = 'https://lic.staging.drmtoday.com/license-proxy-widevine/cenc/';
   // headers = {
@@ -180,7 +194,7 @@ function initPDContent_ClearKey() {
 function initCK_WebM() {
   // 
   videoCodec = 'video/webm; codecs="vp8"';
-  pdContent = 'http://localhost/2/pd/drm/Chrome_44-enc_av.webm';
+  pdContent = 'http://10.2.68.51/2/pd/drm/Chrome_44-enc_av.webm';
   drmType = 'org.w3.clearkey';
 
   key = new Uint8Array([
@@ -192,7 +206,7 @@ function initCK_WebM() {
 function initCK_MP4() {
   // shaka test mp4
   videoCodec = 'video/mp4; codecs="avc1.4d401f"';
-  pdContent = 'http://localhost/2/pd/drm/v-0360p-0750k-libx264.mp4';
+  pdContent = 'http://10.2.68.51/2/pd/drm/v-0360p-0750k-libx264.mp4';
   drmType = 'org.w3.clearkey';
   laUrl = 'http://cwip-shaka-proxy.appspot.com/clearkey?_u3wDe7erb7v8Lqt8A3QDQ=ABEiM0RVZneImaq7zN3u_w';
 }
@@ -215,15 +229,15 @@ function initDRM_PR() {
     case 0:
     {
       videoCodec = 'video/mp4; codecs="avc1.42C014"';
-      //vContents.push('http://localhost/tasklink/65421_chromecast/content_pr/dash.mp4');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-0.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-49152.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-98304.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-147456.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-196608.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-245760.dash');
-      vContents.push('https://localhost/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-294912.dash');
+      //vContents.push('http://10.2.68.51/tasklink/65421_chromecast/content_pr/dash.mp4');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-0.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-49152.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-98304.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-147456.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-196608.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-245760.dash');
+      vContents.push('https://10.2.68.51/tasklink/65421_chromecast/content_pr/dash/tears-of-steel-dash-playready-video_eng=405000-294912.dash');
 
       laUrl = 'https://test.playready.microsoft.com/service/rightsmanager.asmx?PlayRight=1&UseSimpleNonPersistentLicense=1';
       drmType = 'com.microsoft.playready';
@@ -231,18 +245,18 @@ function initDRM_PR() {
     case 1:
     {
       videoCodec = 'video/mp4; codecs="avc1.4D400D"';
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/Header.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/0.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/1.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/2.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/3.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/4.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/5.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/6.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/7.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/8.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/9.m4s');
-      vContents.push('http://localhost/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/10.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/Header.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/0.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/1.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/2.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/3.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/4.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/5.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/6.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/7.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/8.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/9.m4s');
+      vContents.push('http://10.2.68.51/2/drm/content-tc/DASH/Encrypted/Envivio-0509/video5/10.m4s');
       drmType = 'com.microsoft.playready';
     } break;
     default:
@@ -253,72 +267,72 @@ function initDRM_PR() {
 function initTestTmp() {
   videoCodec = 'video/mp4;codecs="avc1.42c01f"';
 
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_begin_0_1.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_1_0.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_1_1.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_2_0.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_2_1.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_3_0.mp4');
-  vContents.push('http://localhost/tasklink/65071/mac_chrome/video_data_0_3_1.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_begin_0_1.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_1_0.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_1_1.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_2_0.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_2_1.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_3_0.mp4');
+  vContents.push('http://10.2.68.51/tasklink/65071/mac_chrome/video_data_0_3_1.mp4');
 
   return;
 
   videoCodec = 'video/mp4;codecs="avc1.4d401f"';
 
   
-  //vContents.push('http://localhost/tasklink/64128/dump_mf200/111.mp4');
+  //vContents.push('http://10.2.68.51/tasklink/64128/dump_mf200/111.mp4');
 
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_begin_4_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_0_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_0_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_1_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_1_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_2_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_2_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_3_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/video_data_4_3_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_begin_4_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_0_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_0_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_1_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_1_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_2_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_2_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_3_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/video_data_4_3_1.mp4');
 
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_begin_0_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_0_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_0_1.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_1_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_1_1.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_2_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear1/video_data_0_2_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_begin_0_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_0_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_0_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_1_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_1_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_2_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear1/video_data_0_2_1.mp4');
 
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_begin_4_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_0_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_0_1.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_1_0.mp4');
-// vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_1_1.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_2_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_2_1.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_3_0.mp4');
-vContents.push('http://localhost/tasklink/64153/dump_of_IE11/gear5/video_data_4_3_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_begin_4_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_0_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_0_1.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_1_0.mp4');
+// vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_1_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_2_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_2_1.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_3_0.mp4');
+vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/gear5/video_data_4_3_1.mp4');
 
 
-  vContents.push('http://localhost/tasklink/64153/dump_of_IE11/111.mp4');
-  //vContents.push('http://localhost/tasklink/64153/dump_gear5/dump_gear5.mp4');
+  vContents.push('http://10.2.68.51/tasklink/64153/dump_of_IE11/111.mp4');
+  //vContents.push('http://10.2.68.51/tasklink/64153/dump_gear5/dump_gear5.mp4');
 
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/Header.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/0.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/1.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/2.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/3.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/4.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/5.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/Header.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/0.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/1.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/2.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/3.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/4.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/5.m4s');
 
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/Header.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/0.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/1.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/2.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/6.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video4/7.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/Header.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/0.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/1.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/2.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/6.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video4/7.m4s');
 
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/Header.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/8.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/9.m4s');
-  vContents.push('http://localhost/2/dash_example/test2_main_index/Video1/10.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/Header.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/8.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/9.m4s');
+  vContents.push('http://10.2.68.51/2/dash_example/test2_main_index/Video1/10.m4s');
 
   return { videoCodec: videoCodec, vContents: vContents };
 }
@@ -336,9 +350,9 @@ function init1080i() {
 
 // tool functions
 function initUI() {
-  media = document.getElementById('h5p-video');
+  media = document.querySelector('.h5p-video');
 
-  h5pShade = document.getElementById('h5p-shade');
+  h5pShade = document.querySelector('.h5p-shade');
 
   // BD
   media.autoplay = false;
@@ -360,19 +374,70 @@ function initData() {
   }
 }
 
+function addH5PListeners() {
+  h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);
+  h5pShade.addEventListener('mousemove', onH5PShadeMousemove);
+  h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
+}
+
+///////////////////////////////////////////////////////////////////
+var timer;
 function onH5PShadeMouseenter() {
-  var v = document.getElementById('h5p-bottom');
-  v.style.display = 'block';
+  var v = document.querySelector('.h5p-bottom');
+  v.setAttribute('aria-hidden', false);
+  
+  var v3 = document.querySelector('.h5p-root');
+  v3.style.cursor = 'default';
+
+  // var v3 = document.querySelector('.h5p-play-button');
+  // // // v3.style.cursor = 'pointer';
+  // v3.setAttribute('test', 'true');
+
+  // var v = document.querySelector('.h5p-bottom');
+  // v.style.visibility = 'visible';
+  // v.style.opacity = 1.0;
+}
+
+function onH5PShadeMousemove() {
+  var v = document.querySelector('.h5p-bottom');
+  
+  // if (v.style.opacity !== 1.0) {
+  //   onH5PShadeMouseenter();
+  // }
+
+  var ret = v.getAttribute('aria-hidden');
+  if (ret === "true") {
+    console.log('h5p-bottom, aria-hidden: ' + ret);
+    onH5PShadeMouseenter();
+  }
+
+  if (timer) {
+    clearTimeout(timer);
+  }
+  timer = setTimeout(function() {
+    onH5PShadeMouseleave();
+  }, 2100);
 }
 
 function onH5PShadeMouseleave() {
-  var v = document.getElementById('h5p-bottom');
-  v.style.display = 'none';
-}
+  var v = document.querySelector('.h5p-bottom');
+  v.setAttribute('aria-hidden', true);
 
-function addH5PListeners() {
-  h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);
-  h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
+  // var v4 = document.querySelector('.h5p-play-button');
+  // v4.setAttribute('test', 'false');
+  // // v3.style.cursor = 'none';
+
+  // var v = document.querySelector('.h5p-bottom');
+  // //v.style.display = 'none';
+  // v.style.visibility = 'hidden';
+  // v.style.opacity = 0;
+
+  // var v2 = document.querySelector('.h5p-shade');
+  // v2.style.cursor = 'none';
+
+  var v3 = document.querySelector('.h5p-root');
+  v3.style.cursor = 'none';
+
 }
 
 // browser & UI callback functions
@@ -453,6 +518,10 @@ function onBtnSetting() {
   console.log('--onBtnSetting--');
 }
 
+function onBtnFullscreen() {
+  enterFullScreen();
+}
+
 function onBtnSeek() {
   var time = document.getElementById('seekedTime').value;
   player.seek(time);
@@ -488,13 +557,17 @@ function onBtnTest() {
   //   player.test();
   // }
 
-  beginBuffering();
+  //beginBuffering();
+  var v = document.querySelector('.h5p-bottom');
+  v.setAttribute('aria-hidden', false);
 }
 
 function onBtnTest2() {
   //player.test2();
-
   //endBuffering();
+
+  var v = document.querySelector('.h5p-bottom');
+  v.setAttribute('aria-hidden', true);
 }
 
 function onBtnAttribute() {
@@ -554,8 +627,6 @@ window.onload = function () {
   initUI();
   initData();
   addH5PListeners();
-
-  onBtnTest2();
 };
 
 window.onunload = function () {
