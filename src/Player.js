@@ -118,6 +118,12 @@ Player.prototype.addPD = function () {
     this.xhrLoader_.load(request);
 };
 
+Player.prototype.play = function () {
+    if (!this.mediaEngine_) { return; }
+
+    this.mediaEngine_.play();
+};
+
 Player.prototype.dellAll = function () {
     this.mseEngine_.removeBuffer();
 };

@@ -9,21 +9,27 @@
 <body>
   <h2>LiteH5Player</h2>
 
-  <div id='idRoot'>
-    <div id="idVideoContainer">
-      <video id="idVideo" controls="true">
+  <div id="h5p_root">
+    <div id="h5p_container" onclick="onVideoContainerClick()">
+      <video id="h5p_video" controls="true" onclick="onVideoClick()">
       </video>
-    </div>
-    <div id="idBufferingContainer">
+
+      <div id="idBufferingContainer" onclick="onBufferIconClick()">
         <svg class="spinnerSvg" viewBox="25 25 50 50">
           <circle class="spinnerPath" cx="50" cy="50" r="20"
           fill="none" stroke-width="2" stroke-miterlimit="10" />
         </svg>
+      </div>
+    </div>
+    <div id="h5p_shade" onclick="onVideoShadeClick()">
+      <div id="h5p_control_bar" onclick="onVideoControlBarClick()">
+      </div>
     </div>
   </div>
 
   <div id="idBtnController">
     <button type="button" onclick="onBtnOpen()">open</button>
+    <button type="button" onclick="onBtnPlay()">play</button>
     <button type="button" onclick="onBtnAddA()">addA</button>
     <button type="button" onclick="onBtnAddV()">addV</button>
     <button type="button" onclick="onBtnAddPD()">addPD</button>
@@ -60,6 +66,7 @@
     <button type="button" onclick="onBtnTest()">test</button>
     <button type="button" onclick="onBtnTest2()">test2</button>
   </div>
+
 </body>
 </html>
 

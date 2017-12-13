@@ -1,22 +1,42 @@
 body {
     margin: 0px;
-};
-
-#idRoot {
-  position: relative;
-  width: 100%;
 }
 
-#idVideoContainer {
-  position: absolute;
-  width: 640px;
+#h5p_root {
+  position: relative;
+  width: 100%;
   height: 320px;
+  background-color: red;
+}
+
+#h5p_container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   background-color: lightgray;
 }
 
-#idVideo {
-  width: 640px;
-  height: 320px;
+#h5p_video {
+  width: 100%;
+  height: 100%;
+}
+
+#h5p_shade {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+#h5p_control_bar {
+  position: absolute;
+  width: 100%;
+  height: 64px;
+
+  bottom: 0px;
+  background-color: orange;
+
+  opacity: 0.2;
 }
 
 #idBufferingContainer {
@@ -116,5 +136,4 @@ body {
 
 #idBtnController {
   position: relative;
-  top: 320px;
 }

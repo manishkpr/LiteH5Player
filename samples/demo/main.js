@@ -1,5 +1,4 @@
-﻿var div1 = null;
-var media = null;
+﻿var media = null;
 var player = null;
 var audioCodec = null;
 var videoCodec = null;
@@ -334,17 +333,8 @@ function init1080i() {
 }
 
 // tool functions
-function onDiv1Click() {
-    alert('click div1 element');
-}
-
-function onVideoClick() {
-    alert('click video element');
-}
-
 function initUI() {
-  div1 = document.getElementById('div1');
-  media = document.getElementById('idVideo');
+  media = document.getElementById('h5p_video');
 
   // BD
   media.autoplay = false;
@@ -403,6 +393,10 @@ function onBtnOpen() {
   };
 
   player.open(info);
+}
+
+function onBtnPlay() {
+  player.play();
 }
 
 function onBtnAddA() {
@@ -484,7 +478,27 @@ function onBtnAttribute() {
   player.attribute();
 }
 
-//
+function onVideoShadeClick(e) {
+  console.log('--onVideoShadeClick--');
+}
+
+function onVideoControlBarClick() {
+  console.log('--onVideoControlBarClick--');
+}
+
+function onVideoContainerClick() {
+  console.log('--onVideoContainerClick--');
+}
+
+function onVideoClick() {
+  console.log('--onVideoClick--');
+}
+
+function onBufferIconClick() {
+  console.log('--onBufferIconClick--');
+}
+
+// player event callback
 function onMSEOpened(ev) {
   console.log('--onMSEOpened--');
   //player.addV();
@@ -521,7 +535,7 @@ window.onload = function () {
 };
 
 window.onunload = function () {
-  onBtnStop();
+  //onBtnStop();
 };
 
 
