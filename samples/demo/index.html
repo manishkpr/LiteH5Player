@@ -9,9 +9,9 @@
 <body>
   <h2>LiteH5Player</h2>
 
-  <div id="h5p_root">
-    <div id="h5p_container" onclick="onVideoContainerClick()">
-      <video id="h5p_video" controls="true" onclick="onVideoClick()">
+  <div id="h5p-root">
+    <div id="h5p-container" onclick="onVideoContainerClick()">
+      <video id="h5p-video" controls="true" onclick="onVideoClick()">
       </video>
 
       <div id="idBufferingContainer" onclick="onBufferIconClick()">
@@ -21,8 +21,18 @@
         </svg>
       </div>
     </div>
-    <div id="h5p_shade" onclick="onVideoShadeClick()">
-      <div id="h5p_control_bar" onclick="onVideoControlBarClick()">
+    <div id="h5p-shade">
+      <div id="h5p-bottom">
+        <div id="h5p-progress-bar">
+        </div>
+        <div id="h5p-controls" onclick="onVideoControlBarClick()">
+          <div id="h5p-left-controls">
+            <button onclick="onBtnPlay()">Play</button>
+          </div>
+          <div id="h5p-right-controls">
+            <button onclick="onBtnSetting()">Setting</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

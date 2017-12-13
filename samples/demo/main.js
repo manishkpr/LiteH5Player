@@ -1,4 +1,6 @@
 ﻿var media = null;
+var h5pShade = null;
+
 var player = null;
 var audioCodec = null;
 var videoCodec = null;
@@ -334,7 +336,9 @@ function init1080i() {
 
 // tool functions
 function initUI() {
-  media = document.getElementById('h5p_video');
+  media = document.getElementById('h5p-video');
+
+  h5pShade = document.getElementById('h5p-shade');
 
   // BD
   media.autoplay = false;
@@ -354,6 +358,21 @@ function initData() {
     player.on(micromtn.Events.MEDIA_WAITING, onMediaWaiting, {});
     
   }
+}
+
+function onH5PShadeMouseenter() {
+  var v = document.getElementById('h5p-bottom');
+  v.style.display = 'block';
+}
+
+function onH5PShadeMouseleave() {
+  var v = document.getElementById('h5p-bottom');
+  v.style.display = 'none';
+}
+
+function addH5PListeners() {
+  h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);
+  h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
 }
 
 // browser & UI callback functions
@@ -428,6 +447,10 @@ function onBtnCast() {
   if (player) {
     player.cast();
   }
+}
+
+function onBtnSetting() {
+  console.log('--onBtnSetting--');
 }
 
 function onBtnSeek() {
@@ -530,6 +553,7 @@ function onMediaWaiting() {
 window.onload = function () {
   initUI();
   initData();
+  addH5PListeners();
 
   onBtnTest2();
 };

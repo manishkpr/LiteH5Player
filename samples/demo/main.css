@@ -2,42 +2,59 @@ body {
     margin: 0px;
 }
 
-#h5p_root {
+#h5p-root {
   position: relative;
   width: 100%;
   height: 320px;
   background-color: red;
 }
 
-#h5p_container {
+#h5p-container {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: lightgray;
 }
 
-#h5p_video {
+#h5p-video {
   width: 100%;
   height: 100%;
 }
 
-#h5p_shade {
+#h5p-shade {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 100;
 }
 
-#h5p_control_bar {
+#h5p-bottom {
   position: absolute;
   width: 100%;
   height: 64px;
 
   bottom: 0px;
-  background-color: orange;
-
-  opacity: 0.2;
+  display: none;
 }
+
+#h5p-progress-bar {
+  width: 100%;
+  height: 32px;
+}
+
+#h5p-controls {
+  width: 100%;
+  height: 32px;
+}
+
+#h5p-left-controls {
+  float: left;
+}
+
+#h5p-right-controls {
+  float: right;
+}
+
 
 #idBufferingContainer {
   position: absolute;
@@ -137,3 +154,6 @@ body {
 #idBtnController {
   position: relative;
 }
+
+/* before is basic ui defined, below is pseudo elements defined */
+
