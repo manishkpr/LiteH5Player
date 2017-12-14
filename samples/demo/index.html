@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+
   <link rel="stylesheet" href="./main.css"/>
   <script src="../../dist/liteH5Player.debug.js"></script>
   <script src="./main.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 </head>
 <body>
   <h2>LiteH5Player</h2>
 
-  <div class="h5p-root">
+  <div id="html5_player" class="h5p-root" onclick="onH5PRootClick()">
     <div class="h5p-container" onclick="onVideoContainerClick()">
       <video class="h5p-video" onclick="onVideoClick()">
       </video>
@@ -22,7 +24,7 @@
       </div>
     </div>
     <div class="h5p-shade">
-      <div class="h5p-bottom h5p-bottom-animation">
+      <div class="h5p-bottom">
         <div class="h5p-progress-bar">
         </div>
         <div class="h5p-controls" onclick="onVideoControlBarClick()">

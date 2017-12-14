@@ -378,66 +378,29 @@ function addH5PListeners() {
   h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);
   h5pShade.addEventListener('mousemove', onH5PShadeMousemove);
   h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
+
+  h5pShade.addEventListener('click', onH5PShadeClick);
 }
 
 ///////////////////////////////////////////////////////////////////
 var timer;
 function onH5PShadeMouseenter() {
-  var v = document.querySelector('.h5p-bottom');
-  v.setAttribute('aria-hidden', false);
-  
-  var v3 = document.querySelector('.h5p-root');
-  v3.style.cursor = 'default';
-
-  // var v3 = document.querySelector('.h5p-play-button');
-  // // // v3.style.cursor = 'pointer';
-  // v3.setAttribute('test', 'true');
-
-  // var v = document.querySelector('.h5p-bottom');
-  // v.style.visibility = 'visible';
-  // v.style.opacity = 1.0;
+  $('#html5_player').removeClass('h5p-autohide');
 }
 
 function onH5PShadeMousemove() {
-  var v = document.querySelector('.h5p-bottom');
-  
-  // if (v.style.opacity !== 1.0) {
-  //   onH5PShadeMouseenter();
-  // }
-
-  var ret = v.getAttribute('aria-hidden');
-  if (ret === "true") {
-    console.log('h5p-bottom, aria-hidden: ' + ret);
-    onH5PShadeMouseenter();
-  }
+  $('#html5_player').removeClass('h5p-autohide');
 
   if (timer) {
     clearTimeout(timer);
   }
   timer = setTimeout(function() {
     onH5PShadeMouseleave();
-  }, 2100);
+  }, 2000);
 }
 
 function onH5PShadeMouseleave() {
-  var v = document.querySelector('.h5p-bottom');
-  v.setAttribute('aria-hidden', true);
-
-  // var v4 = document.querySelector('.h5p-play-button');
-  // v4.setAttribute('test', 'false');
-  // // v3.style.cursor = 'none';
-
-  // var v = document.querySelector('.h5p-bottom');
-  // //v.style.display = 'none';
-  // v.style.visibility = 'hidden';
-  // v.style.opacity = 0;
-
-  // var v2 = document.querySelector('.h5p-shade');
-  // v2.style.cursor = 'none';
-
-  var v3 = document.querySelector('.h5p-root');
-  v3.style.cursor = 'none';
-
+  $('#html5_player').addClass('h5p-autohide');
 }
 
 // browser & UI callback functions
@@ -558,8 +521,12 @@ function onBtnTest() {
   // }
 
   //beginBuffering();
-  var v = document.querySelector('.h5p-bottom');
-  v.setAttribute('aria-hidden', false);
+  // var v = document.querySelector('.h5p-bottom');
+  // v.setAttribute('aria-hidden', false);
+
+  var v = document.querySelector('.h5p-shade');
+
+  //$('.h5p-shade').addClass('h5p-shade-test1');
 }
 
 function onBtnTest2() {
@@ -580,6 +547,14 @@ function onVideoShadeClick(e) {
 
 function onVideoControlBarClick() {
   console.log('--onVideoControlBarClick--');
+}
+
+function onH5PRootClick() {
+  console.log('--onH5PRootClick--');
+}
+
+function onH5PShadeClick(e) {
+  console.log('--onH5PShadeClick--');
 }
 
 function onVideoContainerClick() {
