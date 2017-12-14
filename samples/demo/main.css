@@ -111,7 +111,7 @@ body {
 }
 
 .h5p-play-button::before {
-  content:'';display:block;height:100%;width:12px;position:absolute;top:0;left:-12px
+  content:'';display:block;height:100%;width:12px;position:absolute;top:0;left:0px
 }
 
 /*End play button*/
