@@ -24,6 +24,14 @@ var MediaEngine = function (media) {
 MediaEngine.prototype.play = function () {
   this.media_.play();
 };
+
+MediaEngine.prototype.pause = function () {
+  this.media_.pause();
+};
+
+MediaEngine.prototype.isPaused = function () {
+  return this.media_.paused;
+};
 // End -- public functions
 
 // Begin - private function 

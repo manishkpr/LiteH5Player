@@ -1,5 +1,9 @@
 ﻿var media = null;
+// UI Controls
 var h5pShade = null;
+
+// UI Data
+var timerControlBar;
 
 var player = null;
 var audioCodec = null;
@@ -383,7 +387,6 @@ function addH5PListeners() {
 }
 
 ///////////////////////////////////////////////////////////////////
-var timer;
 function onH5PShadeMouseenter() {
   $('#html5_player').removeClass('h5p-autohide');
 }
@@ -391,10 +394,10 @@ function onH5PShadeMouseenter() {
 function onH5PShadeMousemove() {
   $('#html5_player').removeClass('h5p-autohide');
 
-  if (timer) {
-    clearTimeout(timer);
+  if (timerControlBar) {
+    clearTimeout(timerControlBar);
   }
-  timer = setTimeout(function() {
+  timerControlBar = setTimeout(function() {
     onH5PShadeMouseleave();
   }, 2000);
 }
@@ -442,8 +445,29 @@ function onBtnOpen() {
   player.open(info);
 }
 
-function onBtnPlay() {
+function onPlayInternal() {
   player.play();
+
+  var v = document.querySelector('.h5p-play-button');
+  var v1 = v.querySelector('.h5p-svg-fill');
+  v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
+
+}
+
+function onPauseInternal() {
+  player.pause();
+
+  var v = document.querySelector('.h5p-play-button');
+  var v1 = v.querySelector('.h5p-svg-fill');
+  v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
+}
+
+function onBtnPlay() {
+  if (player.isPaused()) {
+    onPlayInternal();
+  } else {
+    onPauseInternal();
+  }
 }
 
 function onBtnAddA() {
@@ -524,7 +548,10 @@ function onBtnTest() {
   // var v = document.querySelector('.h5p-bottom');
   // v.setAttribute('aria-hidden', false);
 
-  var v = document.querySelector('.h5p-shade');
+  var v = document.querySelector('.ytp-play-button');
+  var v1 = v.querySelector('.ytp-svg-fill');
+  v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
+
 
   //$('.h5p-shade').addClass('h5p-shade-test1');
 }
@@ -533,8 +560,12 @@ function onBtnTest2() {
   //player.test2();
   //endBuffering();
 
-  var v = document.querySelector('.h5p-bottom');
-  v.setAttribute('aria-hidden', true);
+  var v = document.querySelector('.ytp-play-button');
+  var v1 = v.querySelector('.ytp-svg-fill');
+  v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
+
+  // var v = document.querySelector('.h5p-bottom');
+  // v.setAttribute('aria-hidden', true);
 }
 
 function onBtnAttribute() {

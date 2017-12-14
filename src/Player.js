@@ -120,8 +120,17 @@ Player.prototype.addPD = function () {
 
 Player.prototype.play = function () {
     if (!this.mediaEngine_) { return; }
-
     this.mediaEngine_.play();
+};
+
+Player.prototype.pause = function () {
+    if (!this.mediaEngine_) { return; }
+    this.mediaEngine_.pause();
+};
+
+Player.prototype.isPaused = function () {
+    if (!this.mediaEngine_) { return; }
+    return this.mediaEngine_.isPaused();
 };
 
 Player.prototype.dellAll = function () {
