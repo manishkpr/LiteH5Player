@@ -451,7 +451,6 @@ function onPlayInternal() {
   var v = document.querySelector('.h5p-play-button');
   var v1 = v.querySelector('.h5p-svg-fill');
   v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
-
 }
 
 function onPauseInternal() {
@@ -545,7 +544,7 @@ function onBtnTest() {
   // }
 
   //beginBuffering();
-  // var v = document.querySelector('.h5p-bottom');
+  // var v = document.querySelector('.h5p-chrome-bottom');
   // v.setAttribute('aria-hidden', false);
 
   var v = document.querySelector('.ytp-play-button');
@@ -564,7 +563,7 @@ function onBtnTest2() {
   var v1 = v.querySelector('.ytp-svg-fill');
   v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
 
-  // var v = document.querySelector('.h5p-bottom');
+  // var v = document.querySelector('.h5p-chrome-bottom');
   // v.setAttribute('aria-hidden', true);
 }
 

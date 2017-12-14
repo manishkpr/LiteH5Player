@@ -4,45 +4,25 @@
   <title></title>
   <style>
   .cls01 {
-    position: absolute; width: 120px; height: 148px; background-color: lightgray;
+    position: absolute; width: 520px; height: 148px; background-color: lightgray;
   }
   .cls01 {
-     overflow: auto;
-  }
-  </style>
+   overflow: auto;
+ }
+</style>
 </head>
 
 <body>
 
   <div id="div01" class="cls01">
-    <div style="width: 64px; height: 64px; background-color: orange;">
-    </div>
-    <div style="width: 64px; height: 64px; background-color: white;">
-    </div>
-    <div style="width: 64px; height: 64px; background-color: black;">
-    </div>
-    <div style="width: 64px; height: 64px; background-color: orange;">
-    </div>
-    <div style="width: 64px; height: 64px; background-color: green;">
-    </div>
-    <div style="width: 64px; height: 64px; background-color: black;">
-    </div>
+    <span style="transform: scale(0.5, 0.5);font-size:6px;">1234</span>
+    <span style="-webkit-text-size-adjust: none;font-size:8px;">1234</span>
+    <span style="-webkit-text-size-adjust: none;font-size:10px;">1234</span>
+    <span style="transform: scale(1, 1);">1234</span>
+    <span style="transform: scale(5, 5);">1234</span>
+    <span style="-webkit-text-size-adjust: none;font-size:14px;">1234</span>
+    <span style="-webkit-text-size-adjust: none;font-size:16px;">1234</span>
   </div>
-
-  <script type="text/javascript">
-    var div01 = document.getElementById('div01');
-
-    function onDiv01Click(e) {
-      console.log('--onDiv01Click--');
-
-      console.log(`x: ${ e.clientX }, y: ${ e.clientY }`);
-    }
-
-    window.onload = function () {
-      div01.addEventListener('click', onDiv01Click, false);
-    };
-  </script>
-
 
 </body>
 </html>
