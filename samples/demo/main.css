@@ -51,7 +51,7 @@ body {
 .h5p-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:22;background-position:bottom }
 
 .h5p-chrome-bottom {position:absolute;text-shadow:0 0 2px rgba(0,0,0,.5)}
-.h5p-chrome-bottom {bottom:0;height:41px;width:100%;z-index:60;padding-top:3px;text-align:left;direction:ltr}
+.h5p-chrome-bottom {bottom:0;height:41px;z-index:60;text-align:left;direction:ltr;left:12px;right:12px;}
 .h5p-chrome-bottom {
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
@@ -121,7 +121,7 @@ body {
 }
 
 .h5p-play-button::before {
-  content:'';display:block;height:100%;width:12px;position:absolute;top:0;left:0px
+  content:'';display:block;height:100%;width:12px;position:absolute;top:0;left:-12px;
 }
 
 /*End play button*/

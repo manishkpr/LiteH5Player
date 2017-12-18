@@ -35,7 +35,8 @@ http://zh.learnlayout.com/flexbox.html
 4. display, hidden, aria-hidden的区别?
 https://developer.paciellogroup.com/blog/2012/05/html5-accessibility-chops-hidden-and-aria-hidden/
 
-
+5. font size less than 12px in chrome don't work
+see: http://blog.xuite.net/vexed/tech/59449347-Chrome+font-size+%E5%B0%8F%E6%96%BC+12px
 
 /////////////////////////////////////////////////////////////////////////
 // Title: AngularJS学习部分
