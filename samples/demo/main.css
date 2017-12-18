@@ -3,15 +3,25 @@ body {
   background-color: lightgray;
 }
 
-.h5p-root {
+.player {
   position: relative;
   width: 640px;
   height: 360px;
   margin: 16px;
 }
+
+.player-container {
+  width: 100%;
+  height: 100%;
+}
+
+.html5-video-player {
+  width: 100%;
+  height: 100%;
+}
 .h5p-autohide { cursor:none }
 
-.h5p-container {
+.h5p-video-container {
   position: absolute;
   width: 100%;
   height: 100%;

@@ -34,7 +34,12 @@ function endBuffering() {
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
 function enterFullScreen() {
-  var v = document.querySelector('.h5p-root');
+  //var v = document.querySelector('.player');
+  //var v = document.querySelector('.h5p-video-container');
+  //var v = document.querySelector('.h5p-video');
+  var v = document.querySelector('.player-container');
+
+  
   if (v.requestFullscreen) {
     v.requestFullscreen();
   } else if (v.msRequestFullscreen) {
@@ -44,6 +49,8 @@ function enterFullScreen() {
   } else {
     v.webkitRequestFullScreen();
   }
+  // v.style.width = '100%';
+  // v.style.height = '100%';
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -388,11 +395,11 @@ function addH5PListeners() {
 
 ///////////////////////////////////////////////////////////////////
 function onH5PShadeMouseenter() {
-  $('#html5_player').removeClass('h5p-autohide');
+  $('.html5-video-player').removeClass('h5p-autohide');
 }
 
 function onH5PShadeMousemove() {
-  $('#html5_player').removeClass('h5p-autohide');
+  $('.html5-video-player').removeClass('h5p-autohide');
 
   if (timerControlBar) {
     clearTimeout(timerControlBar);
@@ -403,7 +410,7 @@ function onH5PShadeMousemove() {
 }
 
 function onH5PShadeMouseleave() {
-  $('#html5_player').addClass('h5p-autohide');
+  $('.html5-video-player').addClass('h5p-autohide');
 }
 
 // browser & UI callback functions

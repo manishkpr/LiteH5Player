@@ -4,8 +4,28 @@
 		"selected_items":
 		[
 			[
+				"padd",
+				"padding"
+			],
+			[
 				"back",
-				"background"
+				"background-color"
+			],
+			[
+				"backgr",
+				"background-color"
+			],
+			[
+				"marg",
+				"margin-bottom"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"mar",
+				"margin-bottom"
 			],
 			[
 				"border-bottom",
@@ -16,16 +36,8 @@
 				"border-bottom"
 			],
 			[
-				"padd",
-				"padding-left"
-			],
-			[
 				"vi",
 				"visible"
-			],
-			[
-				"marg",
-				"margin-top"
 			],
 			[
 				"recei",
@@ -256,10 +268,37 @@
 	"buffers":
 	[
 		{
-			"file": "Gruntfile.js",
+			"file": "samples/demo/main.js",
 			"settings":
 			{
-				"buffer_size": 995,
+				"buffer_size": 24029,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "samples/demo/main.css",
+			"settings":
+			{
+				"buffer_size": 4362,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tests/html/test.html",
+			"settings":
+			{
+				"buffer_size": 1127,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tests/html/index",
+			"settings":
+			{
+				"buffer_size": 1148,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -268,44 +307,8 @@
 			"file": "samples/demo/index.html",
 			"settings":
 			{
-				"buffer_size": 2493,
+				"buffer_size": 3743,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Player.js",
-			"settings":
-			{
-				"buffer_size": 5640,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/media_engine.js",
-			"settings":
-			{
-				"buffer_size": 4166,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/index.js",
-			"settings":
-			{
-				"buffer_size": 600,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "samples/demo/main.js",
-			"settings":
-			{
-				"buffer_size": 20897,
-				"encoding": "UTF-8 with BOM",
 				"line_ending": "Windows"
 			}
 		}
@@ -346,16 +349,24 @@
 		"/D/xampp/htdocs/1/LiteH5Player/samples",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo",
 		"/D/xampp/htdocs/1/LiteH5Player/src",
-		"/D/xampp/htdocs/1/LiteH5Player/test"
+		"/D/xampp/htdocs/1/LiteH5Player/tests",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html"
 	],
 	"file_history":
 	[
-		"/D/xampp/htdocs/1/LiteH5Player/README.md",
-		"/D/xampp/htdocs/1/LiteH5Player/package.json",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html/test.html",
 		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/media_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/html/index",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main2.css",
+		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/fp/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
+		"/D/xampp/htdocs/1/LiteH5Player/README.md",
+		"/D/xampp/htdocs/1/LiteH5Player/package.json",
 		"/D/xampp/htdocs/1/LiteH5Player/node_modules/grunt-legacy-util/test/index.js",
 		"/D/xampp/htdocs/1/LiteH5Player/test/utils/xhr_loader_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/utils/common_utils.js",
@@ -366,7 +377,6 @@
 		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/spec/test/Hello2_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/utils/xhr_loader.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
 		"/D/xampp/htdocs/1/LiteH5Player/test/hls/hls_parser_unit.html",
 		"/D/xampp/htdocs/1/LiteH5Player/spec/run.js",
 		"/D/xampp/htdocs/1/LiteH5Player/test/Hello.spec.js",
@@ -384,12 +394,10 @@
 		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/Hello2.spec.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/lib/Hello2.spec.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/Hello2.spec.js",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/html/index",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1207/index.html",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/test_simple.html",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/css/note.txt",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/css/linear-gradient.html",
-		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
 		"/D/xampp/htdocs/opensource/shaka-player/lib/cast/cast_proxy.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/Hello.spec.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/src/Hello.js",
@@ -425,7 +433,6 @@
 		"/D/xampp/htdocs/1/LiteH5Player/src/SourceBufferWrapper.js",
 		"/D/xampp/htdocs/opensource/shaka-player/test/hls/hls_parser_unit.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/text_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/1201.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/index",
 		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/sampleplayer/index.html",
@@ -474,10 +481,7 @@
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/KeySystemConfiguration.js",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemWidevine.js",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/drm/KeySystemPlayReady.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/CommonEncryption.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/TypeConverter.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_aes.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_pd.html"
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/protection/vo/CommonEncryption.js"
 	],
 	"find":
 	{
@@ -488,6 +492,7 @@
 		"height": 104.0,
 		"where_history":
 		[
+			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
 			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\ark64_frontend\\LiteH5Player\\src",
@@ -518,9 +523,39 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"h5p-bottom",
+			"12px",
+			"timer",
+			".h5p-play-button",
+			"onH5PShadeClick",
+			"onH5PRootClick",
+			"onVideoShadeClick",
+			"html5_player",
+			"onH5PRootClick",
+			"onH5PRootMousemove",
+			"onH5PShadeMouseleave",
+			"cursor",
+			"querySelector('",
+			"getElementById('h5p",
+			"#h5p",
+			"id=\"h5p-",
+			"addH5PListeners",
+			"localhost",
+			"initVideoContent",
+			"initEvents",
+			"initData",
+			"onBufferIconClick",
+			"initData",
+			"onDiv1Click",
+			"div1",
+			"onVideoControlBarClick",
+			"onVideoShadeClick",
+			"onVideoClick",
+			"onBtnOpen",
+			"idRoot",
 			"play",
 			"initData",
 			"onMediaCanplay",
@@ -618,37 +653,7 @@
 			"initWebM_ClearKey",
 			"initPDContent_ClearKey",
 			"211",
-			"initPDContent_ClearKey",
-			"initPDContent",
-			"initDRM_CK_Test1",
-			"clearkey",
-			"initDRM_CK",
-			"initDRM_PR",
-			"initPDContent_ClearKey",
-			"initDataType",
-			"initPD",
-			"initPDContent_ClearKey",
-			"parsePSSHList",
-			"initPDContent_ClearKey\ninitPDContent_ClearKey",
-			"initPDContent_ClearKey",
-			"initPDContent_Cle",
-			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcHREYXRhIjoie1wibWVyY2hhbnRcIjpcInczYy1lbWUtdGVzdFwiLFwidXNlcklkXCI6XCIxMjM0NVwiLFwic2Vzc2lvbklkXCI6XCJcIn0iLCJjcnQiOiJbe1wiYXNzZXRJZFwiOlwibXA0LWJhc2ljXCIsXCJvdXRwdXRQcm90ZWN0aW9uXCI6e1wiZGlnaXRhbFwiOmZhbHNlLFwiYW5hbG9ndWVcIjpmYWxzZSxcImVuZm9yY2VcIjpmYWxzZX0sXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZSxcInByb2ZpbGVcIjp7XCJwdXJjaGFzZVwiOnt9fX1dIiwiaWF0IjoxNTA5NTI3NjY2LCJqdGkiOiJoYkcxMkdCWnZUZlZDTFJ5bFBBa3BBIn0.iO-n8y26wcUOti9B5NMEqCv5yWzCcg_WW29VJXg8jQ8",
-			"initPDContent_ClearKey",
-			"b64ToU8arr",
-			"base64ToU8arr",
-			"TypeConvert",
-			"b64Tou8arr",
-			"b642u8arr",
-			"base64ToU8Arr",
-			"initPDContent_ClearKey",
-			"trailer",
-			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcHREYXRhIjoie1wibWVyY2hhbnRcIjpcInczYy1lbWUtdGVzdFwiLFwidXNlcklkXCI6XCIxMjM0NVwiLFwic2Vzc2lvbklkXCI6XCJcIn0iLCJjcnQiOiJbe1wiYXNzZXRJZFwiOlwibXA0LWJhc2ljXCIsXCJvdXRwdXRQcm90ZWN0aW9uXCI6e1wiZGlnaXRhbFwiOmZhbHNlLFwiYW5hbG9ndWVcIjpmYWxzZSxcImVuZm9yY2VcIjpmYWxzZX0sXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZSxcInByb2ZpbGVcIjp7XCJwdXJjaGFzZVwiOnt9fX1dIiwiaWF0IjoxNTA5NTEwMDQ5LCJqdGkiOiIycExyMHdlbG5zQXU2VmRRdEx6SmpnIn0.WfvgQU3zKaZ9Sm9nGseaqhLl6gmzigJlkQopzFD81Xk",
-			"laURL",
-			"initPDContent_ClearKey",
-			"progressBar",
-			"initPDContent_ClearKey",
-			"initPDContent",
-			"this.element_.setAttribute"
+			"initPDContent_ClearKey"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -656,6 +661,13 @@
 		"regex": false,
 		"replace_history":
 		[
+			"h5p-chrome-bottom",
+			"timerControlBar",
+			"querySelector('.",
+			"querySelector('h5p",
+			".h5p",
+			"class=\"h5p-",
+			"10.2.68.51",
 			"utils/string_utils",
 			"StringUtils",
 			"TestFeature",
@@ -776,67 +788,95 @@
 			"contentsV",
 			"asbCtrl",
 			"workerInstance",
-			"arrBuf",
-			"msCtrl",
-			"ms"
+			"arrBuf"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Gruntfile.js",
+					"file": "samples/demo/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 995,
+						"buffer_size": 24029,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								995,
-								995
+								22053,
+								22053
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 10006.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "samples/demo/index.html",
+					"file": "samples/demo/main.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2493,
+						"buffer_size": 4362,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								434,
-								434
+								1146,
+								1146
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 733.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "tests/html/test.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								153,
+								235
 							]
 						],
 						"settings":
@@ -849,125 +889,67 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/Player.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5640,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5640,
-								5640
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 120.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/media_engine.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4166,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1369,
-								1369
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 505.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "src/index.js",
+					"buffer": 3,
+					"file": "tests/html/index",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 600,
+						"buffer_size": 1148,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								572,
-								572
+								1135,
+								1135
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 285.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "samples/demo/main.js",
+					"buffer": 4,
+					"file": "samples/demo/index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 20897,
+						"buffer_size": 3743,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								17973,
-								17973
+								1560,
+								1560
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6262.0,
+						"translation.y": 171.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1050,7 +1032,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 265.0,
+	"side_bar_width": 238.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
