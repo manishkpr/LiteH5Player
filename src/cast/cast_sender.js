@@ -76,7 +76,7 @@ CastSender.prototype.onConnectedChanged = function () {
 
     this.session_ = cast.framework.CastContext.getInstance().getCurrentSession();
     if (this.session_) {
-    this.session_.addMessageListener(CastUtils.MICROMTN_MESSAGE_NAMESPACE,
+    this.session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
         this.onMessageReceived_.bind(this));
     } else {
         console.log('cast, this.session_ is null');
@@ -271,7 +271,7 @@ CastSender.prototype.remoteCall_ = function(targetName, methodName) {
 CastSender.prototype.sendMessage_ = function(message) {
   var serialized = CastUtils.serialize(message);
   // TODO: have never seen this fail.  When would it and how should we react?
-  this.session_.sendMessage(CastUtils.MICROMTN_MESSAGE_NAMESPACE,
+  this.session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
     serialized, function() {},  // success callback
     function() {});  // error callback
 };

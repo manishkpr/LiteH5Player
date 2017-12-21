@@ -16,7 +16,7 @@ canplaythrough
 
 var MediaEngine = function (media) {
   this.media_ = media;
-  this.eventBus_ = EventBus(micromtn).getInstance();
+  this.eventBus_ = EventBus(oldmtn).getInstance();
   this.addEventListeners();
 };
 
@@ -49,7 +49,8 @@ MediaEngine.prototype.onMediaLoadedMetadata = function () {
 };
 
 MediaEngine.prototype.onMediaPaused = function () {
-  console.log('--onMediaPaused--');
+  //console.log('--onMediaPaused--');
+  this.eventBus_.trigger(Events.MEDIA_PAUSED);
 };
 
 MediaEngine.prototype.onMediaPlaying = function () {

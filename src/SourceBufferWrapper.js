@@ -9,7 +9,7 @@ var SourceBufferWrapper = function (mimeType) {
   this.mediaSrc_ = null;
   this.buffer_ = null;
 
-  this.eventBus_ = EventBus(micromtn).getInstance();
+  this.eventBus_ = EventBus(oldmtn).getInstance();
 };
 
 SourceBufferWrapper.prototype.init = function (mediaSource) {

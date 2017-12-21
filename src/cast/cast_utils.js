@@ -3,7 +3,7 @@ var CastUtils = function () {};
 ////////////////////////////////////////////////////////////////////////
 // Begin CastUtils
 CastUtils.GENERIC_MESSAGE_NAMESPACE = 'urn:x-cast:com.google.cast.media';
-CastUtils.MICROMTN_MESSAGE_NAMESPACE = 'urn:x-cast:com.google.micromtn.v2';
+CastUtils.OLDMTN_MESSAGE_NAMESPACE = 'urn:x-cast:com.google.oldmtn.v2';
 
 CastUtils.simulateTimeRanges_ = function(obj) {
   return {

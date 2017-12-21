@@ -3,7 +3,7 @@ import Events from './core/CoreEvents';
 import SourceBufferWrapper from './SourceBufferWrapper';
 
 var MediaSourceEngine = function () {
-  this.eventBus_ = EventBus(micromtn).getInstance();
+  this.eventBus_ = EventBus(oldmtn).getInstance();
   this.mediaSrc_ = null;
   this.streamInfo_ = null;
   this.sourceBuffers_ = {};

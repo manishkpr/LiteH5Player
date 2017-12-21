@@ -7,18 +7,18 @@ import CastReceiver from './cast/cast_receiver';
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
 
-var micromtn = context.micromtn;
-if (!micromtn) {
-    micromtn = context.micromtn = {};
+var oldmtn = context.oldmtn;
+if (!oldmtn) {
+    oldmtn = context.oldmtn = {};
 }
 
-micromtn.Player = Player;
-micromtn.Events = Events;
-micromtn.TestFeature = TestFeature;
-micromtn.CastSender = CastSender;
-micromtn.CastReceiver = CastReceiver;
+oldmtn.Player = Player;
+oldmtn.Events = Events;
+oldmtn.TestFeature = TestFeature;
+oldmtn.CastSender = CastSender;
+oldmtn.CastReceiver = CastReceiver;
 
 
-export default micromtn;
+export default oldmtn;
 
 

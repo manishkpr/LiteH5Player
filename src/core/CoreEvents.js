@@ -15,6 +15,7 @@ class CoreEvents {
         this.SB_UPDATE_ENDED = 'sbUpdateEnded';
 
         // media element events
+        this.MEDIA_PAUSED = 'mediaPaused';
         this.MEDIA_PLAYING = 'mediaPlaying';
         this.MEDIA_SEEKING = 'mediaSeeking';
         this.MEDIA_SEEKED = 'mediaSeeked';

@@ -65,9 +65,9 @@ var CastReceiver = function(element) {
   //     CastUtils.GENERIC_MESSAGE_NAMESPACE);
   // this.genericBus_.onMessage = this.onGenericMessage_.bind(this);
 
-  this.micromtnBus_ = this.receiverManager_.getCastMessageBus(
-      CastUtils.MICROMTN_MESSAGE_NAMESPACE);
-  this.micromtnBus_.onMessage = this.onMicromtnMessage_.bind(this);
+  this.oldmtnBus_ = this.receiverManager_.getCastMessageBus(
+      CastUtils.oldmtn_MESSAGE_NAMESPACE);
+  this.oldmtnBus_.onMessage = this.onoldmtnMessage_.bind(this);
 };
 
 //
@@ -144,7 +144,7 @@ CastReceiver.prototype.onTimeupdate = function() {
       curTime: curTime,
       totalTime: totalTime
     }
-  }, this.micromtnBus_);
+  }, this.oldmtnBus_);
 };
 
 CastReceiver.prototype.onSeekStart_ = function() {
@@ -209,11 +209,11 @@ CastReceiver.prototype.onGenericMessage_ = function(event) {
   }
 }
 
-CastReceiver.prototype.onMicromtnMessage_ = function(event) {
+CastReceiver.prototype.onoldmtnMessage_ = function(event) {
   var message = CastUtils.deserialize(event.data);
-  //console.log('+onMicromtnMessage_, type: ' + message['type'] + ', targetName: ' + message[targetName] + ', methodName: ' + message[methodName]);
+  //console.log('+onoldmtnMessage_, type: ' + message['type'] + ', targetName: ' + message[targetName] + ', methodName: ' + message[methodName]);
 
-  this.micromtnBus_.broadcast("abcd1234");
+  this.oldmtnBus_.broadcast("abcd1234");
 };
 
 CastReceiver.prototype.sendMessage_ =

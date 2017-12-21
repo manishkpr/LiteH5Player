@@ -16,7 +16,7 @@ import XHRLoader from './utils/xhr_loader';
 //////////////////////////////////////////////////////////////////////////////
 var Player = function (media) {
     this.media_ = media;
-    this.eventBus_ = EventBus(micromtn).getInstance();
+    this.eventBus_ = EventBus(oldmtn).getInstance();
 
     this.audioIndex_ = 0;
     this.videoIndex_ = 0;

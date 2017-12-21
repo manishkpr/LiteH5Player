@@ -372,15 +372,17 @@ function initUI() {
 
 function initData() {
   if (!player) {
-    player = new micromtn.Player(media);
+    player = new oldmtn.Player(media);
 
-    player.on(micromtn.Events.MSE_OPENED, onMSEOpened, {});
-    player.on(micromtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
+    player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+    player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
 
-    player.on(micromtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
-    player.on(micromtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
-    player.on(micromtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
-    player.on(micromtn.Events.MEDIA_WAITING, onMediaWaiting, {});
+
+    player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
+    player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
+    player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
+    player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
+    player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
     
   }
 }
@@ -617,6 +619,10 @@ function onSBUpdateEnded(ev) {
   //player.addV();
 }
 
+function onMediaPaused() {
+  console.log('--onMediaPaused--');
+}
+
 function onMediaPlaying() {
   console.log('--onMediaPlaying--');
   endBuffering();
@@ -639,6 +645,13 @@ window.onload = function () {
   initUI();
   initData();
   addH5PListeners();
+
+  // BD
+  var test1 = encodeURIComponent('http://www.oldmtn.com/blog/test/a _b.html');
+  console.log('test1: ' + test1);
+  var test2 = decodeURIComponent(test1);
+  console.log('test2: ' + test2);
+  // ED
 };
 
 window.onunload = function () {
