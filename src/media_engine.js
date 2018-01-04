@@ -32,6 +32,22 @@ MediaEngine.prototype.pause = function () {
 MediaEngine.prototype.isPaused = function () {
   return this.media_.paused;
 };
+
+MediaEngine.prototype.mute = function () {
+  this.media_.muted = true;
+};
+
+MediaEngine.prototype.isEnded = function () {
+  return this.media_.ended;
+};
+
+MediaEngine.prototype.duration = function () {
+  return this.media_.duration;
+};
+
+MediaEngine.prototype.currentTime = function () {
+  return this.media_.currentTime;
+};
 // End -- public functions
 
 // Begin - private function 
@@ -40,8 +56,12 @@ MediaEngine.prototype.onMediaCanplay = function () {
   console.log('--onMediaCanplay--');
 };
 
+MediaEngine.prototype.onMediaDurationChanged = function () {
+  this.eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
+};
+
 MediaEngine.prototype.onMediaEnded = function () {
-  console.log('--onMediaEnded--');
+  this.eventBus_.trigger(Events.MEDIA_END);
 };
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
@@ -71,6 +91,7 @@ MediaEngine.prototype.onMediaSeeked = function () {
 };
 
 MediaEngine.prototype.onMediaTimeUpdated = function (e) {
+  this.eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
   //console.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
 };
 
@@ -83,6 +104,7 @@ MediaEngine.prototype.onMediaWaiting = function () {
 // public function
 MediaEngine.prototype.addEventListeners = function () {
   this.media_.addEventListener('canplay', this.onMediaCanplay.bind(this));
+  this.media_.addEventListener('durationchange', this.onMediaDurationChanged.bind(this));
   this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
   this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
@@ -96,6 +118,7 @@ MediaEngine.prototype.addEventListeners = function () {
 
 MediaEngine.prototype.removeEventsListeners = function () {
   this.media_.removeEventListener('canplay', this.onMediaCanplay.bind(this));
+  this.media_.removeEventListener('durationchange', this.onMediaDurationChanged.bind(this));
   this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
   this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));

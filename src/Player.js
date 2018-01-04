@@ -8,25 +8,28 @@ import MediaSourceEngine from './media_source_engine';
 import TextEngine from './text_engine';
 import MediaEngine from './media_engine';
 import DRMEngine from './drm_engine';
+import AdsEngine from './ads/ads_engine';
 
 import TimeRanges from './utils/timeRanges';
-
 import XHRLoader from './utils/xhr_loader';
 
 //////////////////////////////////////////////////////////////////////////////
-var Player = function (media) {
-    this.media_ = media;
-    this.eventBus_ = EventBus(oldmtn).getInstance();
-
+var Player = function (cfg) {
+    this.cfg_ = cfg;
     this.audioIndex_ = 0;
     this.videoIndex_ = 0;
     this.streamInfo_ = null;
 
+    this.eventBus_ = EventBus(oldmtn).getInstance();
     this.xhrLoader_ = new XHRLoader();
-    this.mediaEngine_ = new MediaEngine(this.media_);
-    this.textEngine_ = new TextEngine(this.media_);
+    this.mediaEngine_ = new MediaEngine(this.cfg_.media);
+    this.textEngine_ = new TextEngine(this.cfg_.media);
     this.mseEngine_ = new MediaSourceEngine();
-    this.drmEngine_ = new DRMEngine(this.media_);
+    this.drmEngine_ = new DRMEngine(this.cfg_.media);
+    //this.adsEngine_ = new AdsEngine(null, null, null, null);
+
+    var a=2;
+    var b=a;
 };
 
 Player.prototype.open = function (info) {
@@ -54,13 +57,28 @@ Player.prototype.open = function (info) {
 
     let objURL = window.URL.createObjectURL(this.mseEngine_.getMediaSource());
     this.mediaEngine_.setSrc(objURL);
-    //URL.revokeObjectURL(this.media_.src);
+    //URL.revokeObjectURL(this.cfg_.media.src);
 
     this.drmEngine_.setDrmInfo(this.streamInfo_);
 
     console.log('Player, -open');
 };
 
+Player.prototype.dellAll = function () {
+    this.mseEngine_.removeBuffer();
+};
+
+Player.prototype.close = function () {
+    if (this.mediaEngine_) {
+        this.mediaEngine_.reset();
+    }
+
+    this.audioIndex_ = 0;
+    this.videoIndex_ = 0;
+    this.streamInfo_ = null;
+};
+
+//////////////////////////////////////////////////////////////
 Player.prototype.addA = function () {
     if (this.audioIndex_ >= this.streamInfo_.aContents.length) {
         console.log('There don\'t have more content to add.');
@@ -106,7 +124,8 @@ Player.prototype.addPD = function () {
     let url = this.streamInfo_.pdContent;
 
     // // Method1
-    // this.media_.src = this.streamInfo_.pdContent;
+    this.cfg_.media.src = this.streamInfo_.pdContent;
+    return;
 
     // Method2
     var self = this;
@@ -118,14 +137,11 @@ Player.prototype.addPD = function () {
     this.xhrLoader_.load(request);
 };
 
-Player.prototype.play = function () {
+//////////////////////////////////////////////////////////////////////////////////
+// 操作API
+Player.prototype.duration = function () {
     if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.play();
-};
-
-Player.prototype.pause = function () {
-    if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.pause();
+    return this.mediaEngine_.duration();
 };
 
 Player.prototype.isPaused = function () {
@@ -133,20 +149,33 @@ Player.prototype.isPaused = function () {
     return this.mediaEngine_.isPaused();
 };
 
-Player.prototype.dellAll = function () {
-    this.mseEngine_.removeBuffer();
+Player.prototype.isEnded = function () {
+    if (!this.mediaEngine_) { return; }
+    this.mediaEngine_.isEnded();
 };
 
-Player.prototype.close = function () {
-    if (this.mediaEngine_) {
-        this.mediaEngine_.reset();
-    }
-
-    this.audioIndex_ = 0;
-    this.videoIndex_ = 0;
-    this.streamInfo_ = null;
+Player.prototype.mute = function() {
+    if (!this.mediaEngine_) { return; }
+    this.mediaEngine_.mute();
 };
 
+Player.prototype.pause = function () {
+    if (!this.mediaEngine_) { return; }
+    this.mediaEngine_.pause();
+};
+
+Player.prototype.play = function () {
+    if (!this.mediaEngine_) { return; }
+    this.mediaEngine_.play();
+};
+
+Player.prototype.currentTime = function () {
+    if (!this.mediaEngine_) { return; }
+    return this.mediaEngine_.currentTime();
+};
+
+/////////////////////////////////////////////////////////////////////////////////
+//
 Player.prototype.on = function (type, listener, scope) {
     this.eventBus_.on(type, listener, scope);
 };
@@ -166,7 +195,7 @@ Player.prototype.signalEndOfStream = function () {
 };
 
 Player.prototype.seek = function (secs) {
-    this.media_.currentTime = secs;
+    this.cfg_.media.currentTime = secs;
 };
 
 // Begin - TextEngine
@@ -222,7 +251,7 @@ Player.prototype.test2 = function () {
 };
 
 Player.prototype.attribute = function () {
-    let media = this.media_;
+    let media = this.cfg_.media;
     console.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
 
     console.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);

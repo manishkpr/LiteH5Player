@@ -2,7 +2,10 @@
 <html>
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- google chromecast needs -->
   <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+  <!-- google ads needs -->
+  <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
   <link rel="stylesheet" href="./main.css"/>
   <script src="../../dist/liteH5Player.debug.js"></script>
@@ -39,6 +42,7 @@
                     </path>
                   </svg>
                 </button>
+                <div class="h5p-time-display"><span class="h5p-time-text">00:00</span></div>
               </div>
               <div class="h5p-right-controls">
                 <button onclick="onBtnSetting()">Setting</button>
