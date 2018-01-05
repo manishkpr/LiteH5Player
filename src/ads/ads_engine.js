@@ -171,4 +171,8 @@ AdsEngine.prototype.onAdEvent_ = function(adEvent) {
   }
 };
 
+AdsEngine.prototype.onMediaEnded = function () {
+  this.adsLoader_.contentComplete();
+};
+
 export default AdsEngine;

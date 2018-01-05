@@ -291,6 +291,12 @@ Player.prototype.initData = function () {
 };
 
 Player.prototype.addEventListeners = function () {
+    this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
+    this.on(oldmtn.Events.MEDIA_END, this.onMediaEnded.bind(this), {});
+
+    this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
+
+
     this.on(oldmtn.Events.ADS_CONTENT_PAUSE_REQUESTED, this.onAdsContentPauseRequested.bind(this), {});
     this.on(oldmtn.Events.ADS_CONTENT_RESUME_REQUESTED, this.onAdsContentResumeRequested.bind(this), {});
 
@@ -298,7 +304,22 @@ Player.prototype.addEventListeners = function () {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// Internal events listener functions 
+// Internal events listener functions
+Player.prototype.onMediaDurationChanged = function () {
+    
+};
+
+Player.prototype.onMediaEnded = function () {
+    this.adsEngine_.onMediaEnded();
+};
+
+Player.prototype.onSbUpdateEnded = function () {
+    // Need to signal end of stream when add pd to mse
+    if (this.streamInfo_.pdContent && this.streamInfo_.pdContent !== '') {
+        this.mseEngine_.signalEndOfStream();
+    }
+};
+
 Player.prototype.onAdsContentPauseRequested = function () {
     this.mediaEngine_.pause();
 };
