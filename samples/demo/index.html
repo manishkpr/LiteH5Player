@@ -15,12 +15,10 @@
   <h2>LiteH5Player</h2>
 
   <div class="player" onclick="onH5PRootClick()">
-    <div class="player-container">
-      <div class="html5-video-player">
+      <div id="player-container" class="html5-video-player">
         <div class="h5p-video-container" onclick="onVideoContainerClick()">
           <video class="h5p-video" onclick="onVideoClick()">
           </video>
-
           <div id="idBufferingContainer" onclick="onBufferIconClick()">
             <svg class="spinnerSvg" viewBox="25 25 50 50">
               <circle class="spinnerPath" cx="50" cy="50" r="20"
@@ -52,7 +50,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 
   <div id="idBtnController">

@@ -34,10 +34,11 @@ function endBuffering() {
 }
 
 function updateProgress() {
-  var c = parseInt(player.currentTime());
-  var d = parseInt(player.duration());
-  var fmtTime = c.toString() + ':' + d.toString();
-  console.log('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
+  var c = oldmtn.CommonUtils.timeToString(player.currentTime());
+  var d = oldmtn.CommonUtils.timeToString(player.duration());
+  var fmtTime = c + '/' + d;
+
+  //console.log('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
   var tDisplay = document.querySelector('.h5p-time-text');
   tDisplay.innerText = fmtTime;
 }
@@ -181,8 +182,8 @@ function initPDContent() {
 
   // 
   videoCodec = 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"';
-  //pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo/fmp4.mp4';
-  pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo.mp4';
+  pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo/fmp4.mp4';
+  //pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo2.mp4';
   pdDuration = 30;
 }
 
@@ -422,10 +423,10 @@ var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=
 // End ads test links
 
     var cfg = {
+      playerContainer: 'player-container',
       media: media,
       advertising: {
-        tag: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=',
-        locale: 'en'
+        tag: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator='
       }
     };
 
@@ -641,8 +642,6 @@ function onBtnTest2() {
 
 function onBtnAttribute() {
   //player.attribute();
-
-
 }
 
 function onVideoShadeClick(e) {
@@ -712,7 +711,7 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-  console.log('--onMediaTimeupdated--');
+  //console.log('--onMediaTimeupdated--');
   updateProgress();
 }
 

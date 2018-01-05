@@ -205,7 +205,17 @@ CommonUtils.getFormatTime = function () {
   return message;
 };
 
+CommonUtils.timeToString = function (value) {
+  function formatTimeUnit(time) {
+    return time < 10 ? '0' + time.toString() : time.toString();
+  }
 
+  value = Math.max(value, 0);
+  var h = Math.floor(value / 3600);
+  var m = Math.floor((value % 3600) / 60);
+  var s = Math.floor((value % 3600) % 60);
+  return (h === 0 ? '' : formatTimeUnit(h) + ':') + formatTimeUnit(m) + ':' + formatTimeUnit(s);
+};
 
 //
 CommonUtils.test1 = function(aa) {
@@ -225,6 +235,6 @@ CommonUtils.test1 = function(aa) {
     console.log('b3: ' + b3);
 };
 
-//export default CommonUtils;
+export default CommonUtils;
 
 

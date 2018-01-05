@@ -23,6 +23,10 @@ class CoreEvents {
         this.MEDIA_SEEKED = 'mediaSeeked';
         this.MEDIA_TIMEUPDATE = 'mediaTimeupdate';
         this.MEDIA_WAITING = 'mediaWaiting';
+
+        // ads internal events
+        this.ADS_CONTENT_PAUSE_REQUESTED = 'adsContentPauseRequested';
+        this.ADS_CONTENT_RESUME_REQUESTED = 'adsContentResumeRequested';
     }
 }
 

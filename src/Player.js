@@ -16,20 +16,10 @@ import XHRLoader from './utils/xhr_loader';
 //////////////////////////////////////////////////////////////////////////////
 var Player = function (cfg) {
     this.cfg_ = cfg;
-    this.audioIndex_ = 0;
-    this.videoIndex_ = 0;
-    this.streamInfo_ = null;
 
-    this.eventBus_ = EventBus(oldmtn).getInstance();
-    this.xhrLoader_ = new XHRLoader();
-    this.mediaEngine_ = new MediaEngine(this.cfg_.media);
-    this.textEngine_ = new TextEngine(this.cfg_.media);
-    this.mseEngine_ = new MediaSourceEngine();
-    this.drmEngine_ = new DRMEngine(this.cfg_.media);
-    //this.adsEngine_ = new AdsEngine(null, null, null, null);
-
-    var a=2;
-    var b=a;
+    this.initUI();
+    this.initData();
+    this.addEventListeners();
 };
 
 Player.prototype.open = function (info) {
@@ -60,6 +50,11 @@ Player.prototype.open = function (info) {
     //URL.revokeObjectURL(this.cfg_.media.src);
 
     this.drmEngine_.setDrmInfo(this.streamInfo_);
+
+    //
+    this.addPD();
+    this.adsEngine_.open(this.playerContainer_.clientWidth,
+        this.playerContainer_.clientHeight);
 
     console.log('Player, -open');
 };
@@ -124,8 +119,8 @@ Player.prototype.addPD = function () {
     let url = this.streamInfo_.pdContent;
 
     // // Method1
-    this.cfg_.media.src = this.streamInfo_.pdContent;
-    return;
+    // this.cfg_.media.src = this.streamInfo_.pdContent;
+    // return;
 
     // Method2
     var self = this;
@@ -260,6 +255,56 @@ Player.prototype.attribute = function () {
 
     let a = 2;
     let b = a;
+};
+
+/////////////////////////////////////////////////////////////////////////////////
+// private functions
+Player.prototype.initUI = function () {
+    this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
+
+    this.adContainer_ = document.createElement('div');
+    this.adContainer_.style.position = 'absolute';
+    this.adContainer_.style.top = '0px';
+    this.adContainer_.style.left = '0px';
+    this.adContainer_.style.width = '100%';
+    this.adContainer_.style.height = '100%';
+
+    //
+    this.playerContainer_.appendChild(this.adContainer_);
+};
+
+Player.prototype.initData = function () {
+    this.audioIndex_ = 0;
+    this.videoIndex_ = 0;
+    this.streamInfo_ = null;
+
+    this.eventBus_ = EventBus(oldmtn).getInstance();
+    this.xhrLoader_ = new XHRLoader();
+    this.mediaEngine_ = new MediaEngine(this.cfg_.media);
+    this.textEngine_ = new TextEngine(this.cfg_.media);
+    this.mseEngine_ = new MediaSourceEngine();
+    this.drmEngine_ = new DRMEngine(this.cfg_.media);
+    this.adsEngine_ = new AdsEngine(this.adContainer_, this.cfg_.media, this.cfg_.advertising);
+
+    var a=2;
+    var b=a;
+};
+
+Player.prototype.addEventListeners = function () {
+    this.on(oldmtn.Events.ADS_CONTENT_PAUSE_REQUESTED, this.onAdsContentPauseRequested.bind(this), {});
+    this.on(oldmtn.Events.ADS_CONTENT_RESUME_REQUESTED, this.onAdsContentResumeRequested.bind(this), {});
+
+    //player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Internal events listener functions 
+Player.prototype.onAdsContentPauseRequested = function () {
+    this.mediaEngine_.pause();
+};
+
+Player.prototype.onAdsContentResumeRequested = function () {
+    this.mediaEngine_.play();
 };
 
 export default Player;
