@@ -188,10 +188,9 @@ function initPDContent() {
 }
 
 function initPDContent_ClearKey() {
-
   // mp4
   if (0) {
-  videoCodec = 'video/mp4; codecs="avc1.4d401e"';
+    videoCodec = 'video/mp4; codecs="avc1.4d401e"';
   //pdContent = 'http://10.2.68.64/2/pd/drm/video_512x288_h264-360k_clear_enc_dashinit.mp4';
   pdContent = 'http://10.2.68.64/2/pd/drm/video_512x288_h264-360k_enc_clear_dashinit.mp4';
   //pdContent = 'http://10.2.68.64/2/pd/drm/video_512x288_h264-360k_enc_dashinit.mp4';
@@ -216,8 +215,8 @@ function initPDContent_ClearKey() {
   // headers = {
   //   'x-dt-auth-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcHREYXRhIjoie1wibWVyY2hhbnRcIjpcInczYy1lbWUtdGVzdFwiLFwidXNlcklkXCI6XCIxMjM0NVwiLFwic2Vzc2lvbklkXCI6XCJcIn0iLCJjcnQiOiJbe1wiYXNzZXRJZFwiOlwibXA0LWJhc2ljXCIsXCJvdXRwdXRQcm90ZWN0aW9uXCI6e1wiZGlnaXRhbFwiOmZhbHNlLFwiYW5hbG9ndWVcIjpmYWxzZSxcImVuZm9yY2VcIjpmYWxzZX0sXCJzdG9yZUxpY2Vuc2VcIjpmYWxzZSxcInByb2ZpbGVcIjp7XCJwdXJjaGFzZVwiOnt9fX1dIiwiaWF0IjoxNTA5NTI3NjY2LCJqdGkiOiJoYkcxMkdCWnZUZlZDTFJ5bFBBa3BBIn0.iO-n8y26wcUOti9B5NMEqCv5yWzCcg_WW29VJXg8jQ8'
   // }
-    return;
-  }
+  return;
+}
 }
 
 function initCK_WebM() {
@@ -227,8 +226,8 @@ function initCK_WebM() {
   drmType = 'org.w3.clearkey';
 
   key = new Uint8Array([
-      0xeb, 0xdd, 0x62, 0xf1, 0x68, 0x14, 0xd2, 0x7b,
-      0x68, 0xef, 0x12, 0x2a, 0xfc, 0xe4, 0xae, 0x3c
+    0xeb, 0xdd, 0x62, 0xf1, 0x68, 0x14, 0xd2, 0x7b,
+    0x68, 0xef, 0x12, 0x2a, 0xfc, 0xe4, 0xae, 0x3c
     ]);
 }
 
@@ -340,7 +339,7 @@ vContents.push('http://10.2.68.64/tasklink/64153/dump_of_IE11/gear5/video_data_4
 vContents.push('http://10.2.68.64/tasklink/64153/dump_of_IE11/gear5/video_data_4_3_1.mp4');
 
 
-  vContents.push('http://10.2.68.64/tasklink/64153/dump_of_IE11/111.mp4');
+vContents.push('http://10.2.68.64/tasklink/64153/dump_of_IE11/111.mp4');
   //vContents.push('http://10.2.68.64/tasklink/64153/dump_gear5/dump_gear5.mp4');
 
   vContents.push('http://10.2.68.64/2/dash_example/test2_main_index/Video1/Header.m4s');
@@ -422,29 +421,29 @@ var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=
 //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
 // End ads test links
 
-    var cfg = {
-      playerContainer: 'player-container',
-      media: media,
-      advertising: {
-        tag: SAMPLE_AD_TAG_
-      }
-    };
-
-    player = new oldmtn.Player(cfg);
-
-    player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
-    player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
-
-    player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-    player.on(oldmtn.Events.MEDIA_END, onMediaEnd, {});
-    player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
-    player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
-    player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
-    player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
-    player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
-    player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
-    
+var cfg = {
+  playerContainer: 'player-container',
+  media: media,
+  advertising: {
+    tag: SAMPLE_AD_TAG_
   }
+};
+
+player = new oldmtn.Player(cfg);
+
+player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
+
+player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
+player.on(oldmtn.Events.MEDIA_ENDED, onMediaEnd, {});
+player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
+player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
+player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
+player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
+player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
+player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
+
+}
 }
 
 function addH5PListeners() {
@@ -720,6 +719,7 @@ function onMediaWaiting() {
 }
 
 /////////////////////////////////////////////////////////////////////////
+// dynamic load main.css file
 window.onload = function () {
   initUI();
   initData();

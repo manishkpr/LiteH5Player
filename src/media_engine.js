@@ -61,7 +61,7 @@ MediaEngine.prototype.onMediaDurationChanged = function () {
 };
 
 MediaEngine.prototype.onMediaEnded = function () {
-  this.eventBus_.trigger(Events.MEDIA_END);
+  this.eventBus_.trigger(Events.MEDIA_ENDED);
 };
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {

@@ -4,6 +4,7 @@ import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 
+import UIEngine from './ui/ui_engine';
 import MediaSourceEngine from './media_source_engine';
 import TextEngine from './text_engine';
 import MediaEngine from './media_engine';
@@ -53,7 +54,8 @@ Player.prototype.open = function (info) {
 
     //
     this.addPD();
-    this.adsEngine_.open(this.playerContainer_.clientWidth,
+    this.adsEngine_.open(
+        this.playerContainer_.clientWidth,
         this.playerContainer_.clientHeight);
 
     console.log('Player, -open');
@@ -260,17 +262,12 @@ Player.prototype.attribute = function () {
 /////////////////////////////////////////////////////////////////////////////////
 // private functions
 Player.prototype.initUI = function () {
-    this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
+    this.uiEngine_ = new UIEngine(this.cfg_.playerContainer);
+    this.uiEngine_.initUIStyle();
+    let elements = this.uiEngine_.initUIElement();
 
-    this.adContainer_ = document.createElement('div');
-    this.adContainer_.style.position = 'absolute';
-    this.adContainer_.style.top = '0px';
-    this.adContainer_.style.left = '0px';
-    this.adContainer_.style.width = '100%';
-    this.adContainer_.style.height = '100%';
-
-    //
-    this.playerContainer_.appendChild(this.adContainer_);
+    this.playerContainer_ = elements.playerContainer;
+    this.adContainer_ = elements.adContainer;
 };
 
 Player.prototype.initData = function () {
@@ -292,7 +289,7 @@ Player.prototype.initData = function () {
 
 Player.prototype.addEventListeners = function () {
     this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
-    this.on(oldmtn.Events.MEDIA_END, this.onMediaEnded.bind(this), {});
+    this.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
 
     this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
 
@@ -325,7 +322,9 @@ Player.prototype.onAdsContentPauseRequested = function () {
 };
 
 Player.prototype.onAdsContentResumeRequested = function () {
-    this.mediaEngine_.play();
+    if (!this.mediaEngine_.isEnded()) {
+        this.mediaEngine_.play();
+    }
 };
 
 export default Player;
