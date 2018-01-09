@@ -19,14 +19,14 @@ function getVMAPItem(breakId, offset, tag) {
   return item;
 }
 
-var AdsEngine = function(adContainer, videoPlayer, adCfg) {
+var AdsEngine = function(adContainer, videoPlayer, advertising) {
   console.log('--new AdsEngine object--');
 
   this.eventBus_ = EventBus(oldmtn).getInstance();
 
   this.adContainer_ = adContainer;
   this.media_ = videoPlayer;
-  this.adCfg_ = adCfg;
+  this.advertising_ = advertising;
 
   //
   this.adsManager_ = null;
@@ -34,17 +34,17 @@ var AdsEngine = function(adContainer, videoPlayer, adCfg) {
       new google.ima.AdDisplayContainer(
           this.adContainer_,
           this.media_,
-          null);
+          this.advertising_.companion ? this.advertising_.companion.div : null);
 
   this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
   this.adsLoader_.addEventListener(
       google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-      this.onAdsManagerLoaded_,
+      this.onAdsManagerLoaded,
       false,
       this);
   this.adsLoader_.addEventListener(
       google.ima.AdErrorEvent.Type.AD_ERROR,
-      this.onAdError_,
+      this.onAdError,
       false,
       this);
 
@@ -57,25 +57,25 @@ var AdsEngine = function(adContainer, videoPlayer, adCfg) {
 AdsEngine.prototype.open = function(width, height) {
   console.log('--AdsEngine.open--');
 
-  this.width = width;
-  this.height = height;
+  this.width_ = this.adContainer_.clientWidth;
+  this.height_ = this.adContainer_.clientHeight;
   // var item = getVMAPItem('myAds', this.advertising_.offset, this.advertising_.tag);
   // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
   // console.log('ads: ' + ads);
 
   var adsRequest = new google.ima.AdsRequest();
-  adsRequest.adTagUrl = this.adCfg_.tag;
-  adsRequest.linearAdSlotWidth = this.width;
-  adsRequest.linearAdSlotHeight = this.height;
-  adsRequest.nonLinearAdSlotWidth = this.width;
-  adsRequest.nonLinearAdSlotHeight = this.height;
+  adsRequest.adTagUrl = this.advertising_.tag;
+  adsRequest.linearAdSlotWidth = this.width_;
+  adsRequest.linearAdSlotHeight = this.height_;
+  adsRequest.nonLinearAdSlotWidth = this.width_;
+  adsRequest.nonLinearAdSlotHeight = this.height_;
 
   adsRequest.forceNonLinearFullSlot = true;
 
   this.adsLoader_.requestAds(adsRequest);
 };
 
-AdsEngine.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
+AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
   console.log('--onAdsManagerLoaded--');
 
   var adsRenderingSettings = new google.ima.AdsRenderingSettings();
@@ -83,27 +83,12 @@ AdsEngine.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
 
   this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
       this.media_, adsRenderingSettings);
-  this.startAdsManager_(this.adsManager_);
-};
-
-AdsEngine.prototype.onAdError_ = function(adErrorEvent) {
-  console.log('--onAdEvent_--: ' + adErrorEvent.getError().toString());
-
-  if (this.adsManager_) {
-    this.adsManager_.destroy();
-  }
-  //this.application_.resumeAfterAd();
-};
-
-
-AdsEngine.prototype.startAdsManager_ = function(adsManager) {
-  console.log('--startAdsManager_--');
-
-  // Attach the pause/resume events.
+  
+    // Attach the pause/resume events.
   // Handle errors.
-  adsManager.addEventListener(
+  this.adsManager_.addEventListener(
       google.ima.AdErrorEvent.Type.AD_ERROR,
-      this.onAdError_,
+      this.onAdError,
       false,
       this);
   var events = [google.ima.AdEvent.Type.AD_METADATA,
@@ -120,24 +105,32 @@ AdsEngine.prototype.startAdsManager_ = function(adsManager) {
                 google.ima.AdEvent.Type.STARTED,
                 google.ima.AdEvent.Type.THIRD_QUARTILE];
   for (var index in events) {
-    adsManager.addEventListener(
+    this.adsManager_.addEventListener(
         events[index],
-        this.onAdEvent_,
+        this.onAdEvent,
         false,
         this);
   }
 
-  adsManager.init(
-    this.width,
-    this.height,
+  this.adsManager_.init(
+    this.width_,
+    this.height_,
     google.ima.ViewMode.NORMAL);
 
-  adsManager.start();
+  this.adsManager_.start();
 };
 
+AdsEngine.prototype.onAdError = function(adErrorEvent) {
+  console.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
 
-AdsEngine.prototype.onAdEvent_ = function(adEvent) {
-  console.log('--onAdEvent_--: ' + adEvent.type);
+  if (this.adsManager_) {
+    this.adsManager_.destroy();
+  }
+  //this.application_.resumeAfterAd();
+};
+
+AdsEngine.prototype.onAdEvent = function(adEvent) {
+  console.log('--onAdEvent--: ' + adEvent.type);
 
   switch (adEvent.type) {
     case google.ima.AdEvent.Type.AD_METADATA: {
@@ -148,11 +141,9 @@ AdsEngine.prototype.onAdEvent_ = function(adEvent) {
       //this.application_.adClicked();
     } break;
     case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
-      //this.application_.onContentPauseRequested_();
       this.eventBus_.trigger(Events.ADS_CONTENT_PAUSE_REQUESTED);
     } break;
     case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED: {
-      //this.application_.onContentResumeRequested_();
       this.eventBus_.trigger(Events.ADS_CONTENT_RESUME_REQUESTED);
     } break;
     case google.ima.AdEvent.Type.DURATION_CHANGE: {
@@ -160,13 +151,12 @@ AdsEngine.prototype.onAdEvent_ = function(adEvent) {
     case google.ima.AdEvent.Type.LOADED: {
       var ad = adEvent.getAd();
       if (!ad.isLinear()) {
-        //this.application_.onContentResumeRequested_();
         this.eventBus_.trigger(Events.ADS_CONTENT_RESUME_REQUESTED);
       }
     } break;
     case google.ima.AdEvent.Type.STARTED: {
       var ad = adEvent.getAd();
-      //this.application_.adStarted(ad);
+      this.eventBus_.trigger(Events.ADS_STARTED, {ad: ad});
     } break;
   }
 };

@@ -412,38 +412,38 @@ function initData() {
 //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=';
 
 // VMAP Pre-roll
-//var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';
+var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';
 
 // VMAP Post-roll
-var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
+//var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
 
 // VMAP Pre-, Mid-, and Post-rolls, Single Ads
 //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
 // End ads test links
 
-var cfg = {
-  playerContainer: 'player-container',
-  media: media,
-  advertising: {
-    tag: SAMPLE_AD_TAG_
+  var cfg = {
+    playerContainer: 'player-container',
+    media: media,
+    advertising: {
+      tag: SAMPLE_AD_TAG_,
+      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    }
+  };
+
+  player = new oldmtn.Player(cfg);
+
+  player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+  player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
+
+  player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
+  player.on(oldmtn.Events.MEDIA_ENDED, onMediaEnd, {});
+  player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
+  player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
+  player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
+  player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
+  player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
+  player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
   }
-};
-
-player = new oldmtn.Player(cfg);
-
-player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
-player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
-
-player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-player.on(oldmtn.Events.MEDIA_ENDED, onMediaEnd, {});
-player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
-player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
-player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
-player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
-player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
-player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
-
-}
 }
 
 function addH5PListeners() {

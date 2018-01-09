@@ -15,7 +15,7 @@ import TimeRanges from './utils/timeRanges';
 import XHRLoader from './utils/xhr_loader';
 
 //////////////////////////////////////////////////////////////////////////////
-var Player = function (cfg) {
+let Player = function (cfg) {
     this.cfg_ = cfg;
 
     this.initUI();
@@ -84,7 +84,7 @@ Player.prototype.addA = function () {
 
     let url = this.streamInfo_.aContents[this.audioIndex_];
 
-    var self = this;
+    let self = this;
     function cbSuccess(bytes) {
         //console.log('before my appendBuffer');
         this.mseEngine_.appendBuffer('audio', bytes);
@@ -105,7 +105,7 @@ Player.prototype.addV = function () {
 
     let url = this.streamInfo_.vContents[this.videoIndex_];
 
-    var self = this;
+    let self = this;
     function cbSuccess(bytes) {
         //console.log('before my appendBuffer');
         this.mseEngine_.appendBuffer('video', bytes);
@@ -125,7 +125,7 @@ Player.prototype.addPD = function () {
     // return;
 
     // Method2
-    var self = this;
+    let self = this;
     function cbSuccess(bytes) {
         this.mseEngine_.appendBuffer('video', bytes);
     }
@@ -283,8 +283,8 @@ Player.prototype.initData = function () {
     this.drmEngine_ = new DRMEngine(this.cfg_.media);
     this.adsEngine_ = new AdsEngine(this.adContainer_, this.cfg_.media, this.cfg_.advertising);
 
-    var a=2;
-    var b=a;
+    let a=2;
+    let b=a;
 };
 
 Player.prototype.addEventListeners = function () {
@@ -293,15 +293,15 @@ Player.prototype.addEventListeners = function () {
 
     this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
 
-
     this.on(oldmtn.Events.ADS_CONTENT_PAUSE_REQUESTED, this.onAdsContentPauseRequested.bind(this), {});
     this.on(oldmtn.Events.ADS_CONTENT_RESUME_REQUESTED, this.onAdsContentResumeRequested.bind(this), {});
-
+    this.on(oldmtn.Events.ADS_STARTED, this.onAdsStarted.bind(this), {});
+    
     //player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// Internal events listener functions
+// Begin -- internal events listener functions
 Player.prototype.onMediaDurationChanged = function () {
     
 };
@@ -326,6 +326,30 @@ Player.prototype.onAdsContentResumeRequested = function () {
         this.mediaEngine_.play();
     }
 };
+
+Player.prototype.onAdsStarted = function (e) {
+    let ad = e.ad;
+    let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
+    selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
+    selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
+    selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
+
+    for (let i = 0; i < this.cfg_.advertising.companions.length; i ++) {
+        let companion = this.cfg_.advertising.companions[i];
+        // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
+        let companionAds = ad.getCompanionAds(companion.width, companion.height, selectionCriteria);
+        if (companionAds) {
+            let companionAd = companionAds[0];
+            // Get HTML content from the companion ad.
+            let content = companionAd.getContent();
+            // Write the content to the companion ad slot.
+            let div = document.getElementById(companion.id);
+            div.innerHTML = content;
+        }
+    }
+};
+
+// End -- internal events listener functions
 
 export default Player;
 

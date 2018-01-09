@@ -18,12 +18,14 @@ UIEngine.prototype.initUIStyle = function () {
 };
 
 UIEngine.prototype.initUIElement = function () {
+    // create ads container
     this.adContainer_ = document.createElement('div');
     this.adContainer_.setAttribute('class', 'h5p-ads-container');
 
     // append ui elements to root div
     this.playerContainer_.appendChild(this.adContainer_);
 
+    // construct return values
     let ret = {};
     ret.playerContainer = this.playerContainer_;
     ret.adContainer = this.adContainer_;
