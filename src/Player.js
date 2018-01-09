@@ -142,13 +142,21 @@ Player.prototype.duration = function () {
 };
 
 Player.prototype.isPaused = function () {
-    if (!this.mediaEngine_) { return; }
-    return this.mediaEngine_.isPaused();
+    if (this.isPlayingAd_) {
+        return this.adsEngine_.isPaused();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        return this.mediaEngine_.isPaused();
+    }
 };
 
 Player.prototype.isEnded = function () {
-    if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.isEnded();
+    if (this.isPlayingAd_) {
+
+    } else {
+        if (!this.mediaEngine_) { return; }
+        this.mediaEngine_.isEnded();
+    }
 };
 
 Player.prototype.mute = function() {
@@ -157,13 +165,21 @@ Player.prototype.mute = function() {
 };
 
 Player.prototype.pause = function () {
-    if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.pause();
+    if (this.isPlayingAd_) {
+        this.adsEngine_.pause();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        this.mediaEngine_.pause();
+    }
 };
 
 Player.prototype.play = function () {
-    if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.play();
+    if (this.isPlayingAd_) {
+        this.adsEngine_.play();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        this.mediaEngine_.play();
+    }
 };
 
 Player.prototype.currentTime = function () {
@@ -274,6 +290,7 @@ Player.prototype.initData = function () {
     this.audioIndex_ = 0;
     this.videoIndex_ = 0;
     this.streamInfo_ = null;
+    this.isPlayingAd_ = false;
 
     this.eventBus_ = EventBus(oldmtn).getInstance();
     this.xhrLoader_ = new XHRLoader();
@@ -293,9 +310,10 @@ Player.prototype.addEventListeners = function () {
 
     this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
 
-    this.on(oldmtn.Events.ADS_CONTENT_PAUSE_REQUESTED, this.onAdsContentPauseRequested.bind(this), {});
-    this.on(oldmtn.Events.ADS_CONTENT_RESUME_REQUESTED, this.onAdsContentResumeRequested.bind(this), {});
-    this.on(oldmtn.Events.ADS_STARTED, this.onAdsStarted.bind(this), {});
+    this.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete.bind(this), {});
+    this.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, this.onAdContentPauseRequested.bind(this), {});
+    this.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, this.onAdContentResumeRequested.bind(this), {});
+    this.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
     
     //player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
 };
@@ -317,17 +335,19 @@ Player.prototype.onSbUpdateEnded = function () {
     }
 };
 
-Player.prototype.onAdsContentPauseRequested = function () {
+Player.prototype.onAdContentPauseRequested = function () {
     this.mediaEngine_.pause();
 };
 
-Player.prototype.onAdsContentResumeRequested = function () {
+Player.prototype.onAdContentResumeRequested = function () {
     if (!this.mediaEngine_.isEnded()) {
         this.mediaEngine_.play();
     }
 };
 
-Player.prototype.onAdsStarted = function (e) {
+Player.prototype.onAdStarted = function (e) {
+    this.isPlayingAd_ = true;
+
     let ad = e.ad;
     let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
     selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
@@ -347,6 +367,10 @@ Player.prototype.onAdsStarted = function (e) {
             div.innerHTML = content;
         }
     }
+};
+
+Player.prototype.onAdComplete = function () {
+    this.isPlayingAd_ = false;
 };
 
 // End -- internal events listener functions

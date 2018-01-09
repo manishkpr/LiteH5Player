@@ -28,6 +28,8 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   this.media_ = videoPlayer;
   this.advertising_ = advertising;
 
+  google.ima.settings.setLocale(this.advertising_.locale);
+
   //
   this.adsManager_ = null;
   this.adDisplayContainer_ =
@@ -54,6 +56,7 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   this.adDisplayContainer_.initialize();
 };
 
+// AdsEngine public functions
 AdsEngine.prototype.open = function(width, height) {
   console.log('--AdsEngine.open--');
 
@@ -75,6 +78,23 @@ AdsEngine.prototype.open = function(width, height) {
   this.adsLoader_.requestAds(adsRequest);
 };
 
+AdsEngine.prototype.isPaused = function () {
+  return this.isPaused_;
+};
+
+AdsEngine.prototype.play = function () {
+  if (this.adsManager_) {
+    this.adsManager_.resume();
+  }
+};
+
+AdsEngine.prototype.pause = function () {
+  if (this.adsManager_) {
+    this.adsManager_.pause();
+  }
+};
+
+////////////////////////////////////////////////////////////////////////
 AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
   console.log('--onAdsManagerLoaded--');
 
@@ -102,6 +122,7 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
                 google.ima.AdEvent.Type.LOADED,
                 google.ima.AdEvent.Type.MIDPOINT,
                 google.ima.AdEvent.Type.PAUSED,
+                google.ima.AdEvent.Type.RESUMED,
                 google.ima.AdEvent.Type.STARTED,
                 google.ima.AdEvent.Type.THIRD_QUARTILE];
   for (var index in events) {
@@ -140,23 +161,32 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
     case google.ima.AdEvent.Type.CLICK: {
       //this.application_.adClicked();
     } break;
+    case google.ima.AdEvent.Type.COMPLETE: {
+      this.eventBus_.trigger(Events.AD_COMPLETE);
+    } break;
     case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
-      this.eventBus_.trigger(Events.ADS_CONTENT_PAUSE_REQUESTED);
+      this.eventBus_.trigger(Events.AD_CONTENT_PAUSE_REQUESTED);
     } break;
     case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED: {
-      this.eventBus_.trigger(Events.ADS_CONTENT_RESUME_REQUESTED);
+      this.eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
     } break;
     case google.ima.AdEvent.Type.DURATION_CHANGE: {
     } break;
     case google.ima.AdEvent.Type.LOADED: {
       var ad = adEvent.getAd();
       if (!ad.isLinear()) {
-        this.eventBus_.trigger(Events.ADS_CONTENT_RESUME_REQUESTED);
+        this.eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
       }
+    } break;
+    case google.ima.AdEvent.Type.PAUSED: {
+      this.isPaused_ = true;
+    } break;
+    case google.ima.AdEvent.Type.RESUMED: {
+      this.isPaused_ = false;
     } break;
     case google.ima.AdEvent.Type.STARTED: {
       var ad = adEvent.getAd();
-      this.eventBus_.trigger(Events.ADS_STARTED, {ad: ad});
+      this.eventBus_.trigger(Events.AD_STARTED, {ad: ad});
     } break;
   }
 };

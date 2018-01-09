@@ -25,9 +25,10 @@ class CoreEvents {
         this.MEDIA_WAITING = 'mediaWaiting';
 
         // ads internal events
-        this.ADS_STARTED = 'adsStarted';
-        this.ADS_CONTENT_PAUSE_REQUESTED = 'adsContentPauseRequested';
-        this.ADS_CONTENT_RESUME_REQUESTED = 'adsContentResumeRequested';
+        this.AD_STARTED = 'adStarted';
+        this.AD_COMPLETE = 'adComplete';
+        this.AD_CONTENT_PAUSE_REQUESTED = 'adContentPauseRequested';
+        this.AD_CONTENT_RESUME_REQUESTED = 'adContentResumeRequested';
     }
 }
 
