@@ -6,7 +6,7 @@ var UIEngine = function (playerContainer) {
     this.playerContainer_ = document.getElementById(playerContainer);
     this.uiElements_ = null;
 
-    this.initUIStyle();
+    //this.initUIStyle();
     this.initUIElement();
 };
 

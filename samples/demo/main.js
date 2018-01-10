@@ -427,7 +427,7 @@ var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&
     advertising: {
       tag: Single_Non_linear_Inline,
       locale: 'fr',
-      forceNonLinearFullSlot: true,
+      forceNonLinearFullSlot: false,
       companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
     }
   };
