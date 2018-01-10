@@ -28,7 +28,23 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   this.media_ = videoPlayer;
   this.advertising_ = advertising;
 
-  google.ima.settings.setLocale(this.advertising_.locale);
+  if (this.advertising_.vpaidmode) {
+    let mode = -1;
+    if (this.advertising_.vpaidmode === 'disabled') {
+      mode = google.ima.ImaSdkSettings.VpaidMode.DISABLED;
+    } else if (this.advertising_.vpaidmode === 'enabled') {
+      mode = google.ima.ImaSdkSettings.VpaidMode.ENABLED;
+    } else if (this.advertising_.vpaidmode === 'insecure') {
+      mode = google.ima.ImaSdkSettings.VpaidMode.INSECURE;
+    }
+    if (mode !== -1) {
+      google.ima.settings.setVpaidMode(mode);
+    }
+  }
+
+  if (this.advertising_.locale) {
+    google.ima.settings.setLocale(this.advertising_.locale);
+  }
 
   //
   this.adsManager_ = null;
@@ -73,7 +89,9 @@ AdsEngine.prototype.open = function(width, height) {
   adsRequest.nonLinearAdSlotWidth = this.width_;
   adsRequest.nonLinearAdSlotHeight = this.height_;
 
-  adsRequest.forceNonLinearFullSlot = true;
+  if (this.advertising_.forceNonLinearFullSlot) {
+    adsRequest.forceNonLinearFullSlot = this.advertising_.forceNonLinearFullSlot;
+  }
 
   this.adsLoader_.requestAds(adsRequest);
 };

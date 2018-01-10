@@ -142,7 +142,7 @@ Player.prototype.duration = function () {
 };
 
 Player.prototype.isPaused = function () {
-    if (this.isPlayingAd_) {
+    if (this.isPlayingAd_ && this.isLinearAd_) {
         return this.adsEngine_.isPaused();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -151,7 +151,7 @@ Player.prototype.isPaused = function () {
 };
 
 Player.prototype.isEnded = function () {
-    if (this.isPlayingAd_) {
+    if (this.isPlayingAd_ && this.isLinearAd_) {
 
     } else {
         if (!this.mediaEngine_) { return; }
@@ -165,7 +165,7 @@ Player.prototype.mute = function() {
 };
 
 Player.prototype.pause = function () {
-    if (this.isPlayingAd_) {
+    if (this.isPlayingAd_ && this.isLinearAd_) {
         this.adsEngine_.pause();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -174,7 +174,7 @@ Player.prototype.pause = function () {
 };
 
 Player.prototype.play = function () {
-    if (this.isPlayingAd_) {
+    if (this.isPlayingAd_ && this.isLinearAd_) {
         this.adsEngine_.play();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -279,8 +279,7 @@ Player.prototype.attribute = function () {
 // private functions
 Player.prototype.initUI = function () {
     this.uiEngine_ = new UIEngine(this.cfg_.playerContainer);
-    this.uiEngine_.initUIStyle();
-    let elements = this.uiEngine_.initUIElement();
+    let elements = this.uiEngine_.getUIElements();
 
     this.playerContainer_ = elements.playerContainer;
     this.adContainer_ = elements.adContainer;
@@ -346,9 +345,10 @@ Player.prototype.onAdContentResumeRequested = function () {
 };
 
 Player.prototype.onAdStarted = function (e) {
-    this.isPlayingAd_ = true;
-
     let ad = e.ad;
+    this.isPlayingAd_ = true;
+    this.isLinearAd_ = ad.isLinear();
+
     let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
     selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
     selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;

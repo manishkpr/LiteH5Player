@@ -4,6 +4,7 @@
 
 var UIEngine = function (playerContainer) {
     this.playerContainer_ = document.getElementById(playerContainer);
+    this.uiElements_ = null;
 
     this.initUIStyle();
     this.initUIElement();
@@ -26,10 +27,13 @@ UIEngine.prototype.initUIElement = function () {
     this.playerContainer_.appendChild(this.adContainer_);
 
     // construct return values
-    let ret = {};
-    ret.playerContainer = this.playerContainer_;
-    ret.adContainer = this.adContainer_;
-    return ret;
+    this.uiElements_ = {};
+    this.uiElements_.playerContainer = this.playerContainer_;
+    this.uiElements_.adContainer = this.adContainer_;
+};
+
+UIEngine.prototype.getUIElements = function () {
+    return this.uiElements_;
 };
 
 export default UIEngine;
