@@ -3,6 +3,7 @@
 import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
+import Debug from './core/Debug';
 
 import UIEngine from './ui/ui_engine';
 import MediaSourceEngine from './media_source_engine';
@@ -28,19 +29,29 @@ Player.prototype.open = function (info) {
 
     //
     if (info.audioCodec) {
-        console.log('Player, +open: ' + info.audioCodec);
+        this.debug_.log('Player, +open: ' + info.audioCodec);
     }
     if (info.videoCodec) {
-        console.log('Player, +open: ' + info.videoCodec);
+        this.debug_.log('Player, +open: ' + info.videoCodec);
     }
 
-    if (info.audioCodec && !MediaSource.isTypeSupported(info.audioCodec)) {
-        alert('Don\'t support: ' + info.audioCodec);
+    // BD
+    // if (MediaSource === undefined || MediaSource === null) {
+    //     this.debug_.log('MediaSource not null');
+    // } else {
+    //     this.debug_.log('MediaSource is null');
+    // }
+    // ED
+
+    this.debug_.log('before audio codec');
+    if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
+        this.debug_.log('Don\'t support: ' + info.audioCodec);
         return;
     }
 
-    if (info.videoCodec && !MediaSource.isTypeSupported(info.videoCodec)) {
-        alert('Don\'t support: ' + info.videoCodec);
+    this.debug_.log('before video codec');
+    if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
+        this.debug_.log('Don\'t support: ' + info.videoCodec);
         return;
     }
 
@@ -58,7 +69,7 @@ Player.prototype.open = function (info) {
         this.playerContainer_.clientWidth,
         this.playerContainer_.clientHeight);
 
-    console.log('Player, -open');
+    this.debug_.log('Player, -open');
 };
 
 Player.prototype.dellAll = function () {
@@ -78,7 +89,7 @@ Player.prototype.close = function () {
 //////////////////////////////////////////////////////////////
 Player.prototype.addA = function () {
     if (this.audioIndex_ >= this.streamInfo_.aContents.length) {
-        console.log('There don\'t have more content to add.');
+        this.debug_.log('There don\'t have more content to add.');
         return;
     }
 
@@ -86,11 +97,11 @@ Player.prototype.addA = function () {
 
     let self = this;
     function cbSuccess(bytes) {
-        //console.log('before my appendBuffer');
+        //this.debug_.log('before my appendBuffer');
         this.mseEngine_.appendBuffer('audio', bytes);
 
         this.audioIndex_ ++;
-        //console.log('after my appendBuffer');
+        //this.debug_.log('after my appendBuffer');
     }
 
     let request = {url: url, cbSuccess: cbSuccess.bind(self)};
@@ -99,7 +110,7 @@ Player.prototype.addA = function () {
 
 Player.prototype.addV = function () {
     if (this.videoIndex_ >= this.streamInfo_.vContents.length) {
-        console.log('There don\'t have more content to add.');
+        this.debug_.log('There don\'t have more content to add.');
         return;
     }
 
@@ -107,10 +118,10 @@ Player.prototype.addV = function () {
 
     let self = this;
     function cbSuccess(bytes) {
-        //console.log('before my appendBuffer');
+        //this.debug_.log('before my appendBuffer');
         this.mseEngine_.appendBuffer('video', bytes);
         this.videoIndex_ ++;
-        //console.log('after my appendBuffer');
+        //this.debug_.log('after my appendBuffer');
     }
 
     let request = { url: url, cbSuccess: cbSuccess.bind(self) };
@@ -241,7 +252,7 @@ Player.prototype.test = function () {
     //this.mseEngine_.signalEndOfStream();
 
     //this.mseEngine_.setDuration(12);
-    //console.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
+    //this.debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
 
     //
     function sum_v2(x, y) {
@@ -256,7 +267,7 @@ Player.prototype.test = function () {
         return recur(x, y);
     }
 
-    console.log('sum_v2(1,100000) = ' + sum_v2(1,100000));
+    this.debug_.log('sum_v2(1,100000) = ' + sum_v2(1,100000));
 };
 
 Player.prototype.test2 = function () {
@@ -265,9 +276,9 @@ Player.prototype.test2 = function () {
 
 Player.prototype.attribute = function () {
     let media = this.cfg_.media;
-    console.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
+    this.debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
 
-    console.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
+    this.debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
 
     this.mseEngine_.setDuration(200);
 
@@ -292,6 +303,7 @@ Player.prototype.initData = function () {
     this.isPlayingAd_ = false;
 
     this.eventBus_ = EventBus(oldmtn).getInstance();
+    this.debug_ = Debug(oldmtn).getInstance();
     this.xhrLoader_ = new XHRLoader();
     this.mediaEngine_ = new MediaEngine(this.cfg_.media);
     this.textEngine_ = new TextEngine(this.cfg_.media);

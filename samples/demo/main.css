@@ -250,5 +250,17 @@ body {
 
 /****************************************************************************************/
 
-
+#idConsole {
+  font-family: courier, monospace;
+  font-size: 12px;
+  margin-top: 20px;
+  height: 200px;
+  width: auto;
+  padding: 5px;
+  border: 1px #ccc solid;
+  background-color: white;
+  overflow-y: scroll;
+  margin-left: auto;
+  margin-right: auto;
+}
 

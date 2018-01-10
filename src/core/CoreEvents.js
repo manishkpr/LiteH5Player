@@ -29,6 +29,9 @@ class CoreEvents {
         this.AD_COMPLETE = 'adComplete';
         this.AD_CONTENT_PAUSE_REQUESTED = 'adContentPauseRequested';
         this.AD_CONTENT_RESUME_REQUESTED = 'adContentResumeRequested';
+
+        // log event
+        this.LOG = 'log';
     }
 }
 

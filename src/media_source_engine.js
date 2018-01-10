@@ -1,15 +1,21 @@
 ﻿import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
+import Debug from './core/Debug';
 import SourceBufferWrapper from './SourceBufferWrapper';
 
 var MediaSourceEngine = function () {
   this.eventBus_ = EventBus(oldmtn).getInstance();
+  this.debug_ = Debug(oldmtn).getInstance();
   this.mediaSrc_ = null;
   this.streamInfo_ = null;
   this.sourceBuffers_ = {};
+
+  this.debug_.log('MediaSourceEngine, constructor');
 };
 
 MediaSourceEngine.prototype.init = function (streamInfo) {
+    this.debug_.log('MediaSourceEngine, +init');
+
     this.streamInfo_ = streamInfo;
 
     if (this.streamInfo_.audioCodec) {
@@ -32,6 +38,8 @@ MediaSourceEngine.prototype.init = function (streamInfo) {
       this.mediaSrc_ = new WebKitMediaSource();
       this.mediaSrc_.addEventListener('webkitsourceopen', this.onMediaSourceOpen().bind(this), false);
     }
+
+    this.debug_.log('MediaSourceEngine, -init');
 };
 
 MediaSourceEngine.prototype.onMediaSourceOpen = function () {

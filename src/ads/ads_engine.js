@@ -117,6 +117,9 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
   console.log('--onAdsManagerLoaded--');
 
   var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+  if (this.advertising_.enablePreloading) {
+    adsRenderingSettings.enablePreloading = this.advertising_.enablePreloading;
+  }
   adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
 
   this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
