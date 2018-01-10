@@ -36,13 +36,15 @@ MediaSourceEngine.prototype.init = function (streamInfo) {
       this.mediaSrc_.addEventListener('sourceclose', this.onMediaSourceClose.bind(this), false);
     } else if (hasWebKit) {
       this.mediaSrc_ = new WebKitMediaSource();
-      this.mediaSrc_.addEventListener('webkitsourceopen', this.onMediaSourceOpen().bind(this), false);
+      this.mediaSrc_.addEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this), false);
     }
 
     this.debug_.log('MediaSourceEngine, -init');
 };
 
 MediaSourceEngine.prototype.onMediaSourceOpen = function () {
+  this.debug_.log('+MediaSourceOpen');
+
   this.mediaSrc_.removeEventListener('sourceopen', this.onMediaSourceOpen.bind(this));
   this.mediaSrc_.removeEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this));
 

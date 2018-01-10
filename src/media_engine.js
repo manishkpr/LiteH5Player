@@ -1,6 +1,7 @@
 ﻿import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
+import Debug from './core/Debug';
 import TimeRanges from './utils/timeRanges';
 
 
@@ -17,16 +18,25 @@ canplaythrough
 var MediaEngine = function (media) {
   this.media_ = media;
   this.eventBus_ = EventBus(oldmtn).getInstance();
+  this.debug_ = Debug(oldmtn).getInstance();
   this.addEventListeners();
 };
 
 // Begin -- public functions
-MediaEngine.prototype.play = function () {
-  this.media_.play();
+MediaEngine.prototype.currentTime = function () {
+  return this.media_.currentTime;
 };
 
-MediaEngine.prototype.pause = function () {
-  this.media_.pause();
+MediaEngine.prototype.duration = function () {
+  return this.media_.duration;
+};
+
+MediaEngine.prototype.isEnded = function () {
+  return this.media_.ended;
+};
+
+MediaEngine.prototype.isMuted = function () {
+  return this.media_.muted;
 };
 
 MediaEngine.prototype.isPaused = function () {
@@ -37,23 +47,24 @@ MediaEngine.prototype.mute = function () {
   this.media_.muted = true;
 };
 
-MediaEngine.prototype.isEnded = function () {
-  return this.media_.ended;
+MediaEngine.prototype.play = function () {
+  this.media_.play();
 };
 
-MediaEngine.prototype.duration = function () {
-  return this.media_.duration;
+MediaEngine.prototype.pause = function () {
+  this.media_.pause();
 };
 
-MediaEngine.prototype.currentTime = function () {
-  return this.media_.currentTime;
+MediaEngine.prototype.unmute = function () {
+  this.media_.muted = false;
 };
+
 // End -- public functions
 
 // Begin - private function 
 MediaEngine.prototype.onMediaCanplay = function () {
   //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
-  console.log('--onMediaCanplay--');
+  this.debug_.log('--onMediaCanplay--');
 };
 
 MediaEngine.prototype.onMediaDurationChanged = function () {
@@ -65,21 +76,21 @@ MediaEngine.prototype.onMediaEnded = function () {
 };
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
-  console.log('--onMediaMetadata--, width: ' + this.media_.width + ', height: ' + this.media_.height);
+  this.debug_.log('--onMediaMetadata--, width: ' + this.media_.width + ', height: ' + this.media_.height);
 };
 
 MediaEngine.prototype.onMediaPaused = function () {
-  //console.log('--onMediaPaused--');
+  //this.debug_.log('--onMediaPaused--');
   this.eventBus_.trigger(Events.MEDIA_PAUSED);
 };
 
 MediaEngine.prototype.onMediaPlaying = function () {
-  //console.log('--onMediaPlaying--');
+  //this.debug_.log('--onMediaPlaying--');
   this.eventBus_.trigger(Events.MEDIA_PLAYING);
 };
 
 MediaEngine.prototype.onMediaReadyState = function (e) {
-  console.log('--onMediaReadyState--', e);
+  this.debug_.log('--onMediaReadyState--', e);
 };
 
 MediaEngine.prototype.onMediaSeeking = function () {
@@ -92,11 +103,11 @@ MediaEngine.prototype.onMediaSeeked = function () {
 
 MediaEngine.prototype.onMediaTimeUpdated = function (e) {
   this.eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
-  //console.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
+  //this.debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
 };
 
 MediaEngine.prototype.onMediaWaiting = function () {
-  console.log('--onMediaWaiting--');
+  this.debug_.log('--onMediaWaiting--');
   this.eventBus_.trigger(Events.MEDIA_WAITING);
 };
 // End

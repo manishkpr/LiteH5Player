@@ -43,13 +43,11 @@ Player.prototype.open = function (info) {
     // }
     // ED
 
-    this.debug_.log('before audio codec');
     if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
         this.debug_.log('Don\'t support: ' + info.audioCodec);
         return;
     }
 
-    this.debug_.log('before video codec');
     if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
         this.debug_.log('Don\'t support: ' + info.videoCodec);
         return;
@@ -62,12 +60,6 @@ Player.prototype.open = function (info) {
     //URL.revokeObjectURL(this.cfg_.media.src);
 
     this.drmEngine_.setDrmInfo(this.streamInfo_);
-
-    //
-    this.addPD();
-    this.adsEngine_.open(
-        this.playerContainer_.clientWidth,
-        this.playerContainer_.clientHeight);
 
     this.debug_.log('Player, -open');
 };
@@ -143,17 +135,38 @@ Player.prototype.addPD = function () {
 
     let request = { url: url, cbSuccess: cbSuccess.bind(self) };
     this.xhrLoader_.load(request);
+
+    //
+    if (this.adsEngine_) {
+        this.adsEngine_.open(
+            this.playerContainer_.clientWidth,
+            this.playerContainer_.clientHeight);
+    }
 };
 
 //////////////////////////////////////////////////////////////////////////////////
 // 操作API
+Player.prototype.currentTime = function () {
+    if (!this.mediaEngine_) { return; }
+    return this.mediaEngine_.currentTime();
+};
+
 Player.prototype.duration = function () {
     if (!this.mediaEngine_) { return; }
     return this.mediaEngine_.duration();
 };
 
+Player.prototype.isMuted = function () {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+        return this.adsEngine_.isMuted();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        return this.mediaEngine_.isMuted();
+    }
+};
+
 Player.prototype.isPaused = function () {
-    if (this.isPlayingAd_ && this.isLinearAd_) {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
         return this.adsEngine_.isPaused();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -162,7 +175,7 @@ Player.prototype.isPaused = function () {
 };
 
 Player.prototype.isEnded = function () {
-    if (this.isPlayingAd_ && this.isLinearAd_) {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
 
     } else {
         if (!this.mediaEngine_) { return; }
@@ -171,12 +184,16 @@ Player.prototype.isEnded = function () {
 };
 
 Player.prototype.mute = function() {
-    if (!this.mediaEngine_) { return; }
-    this.mediaEngine_.mute();
+    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+        this.adsEngine_.mute();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        this.mediaEngine_.mute();
+    }
 };
 
 Player.prototype.pause = function () {
-    if (this.isPlayingAd_ && this.isLinearAd_) {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
         this.adsEngine_.pause();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -185,7 +202,7 @@ Player.prototype.pause = function () {
 };
 
 Player.prototype.play = function () {
-    if (this.isPlayingAd_ && this.isLinearAd_) {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
         this.adsEngine_.play();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -193,9 +210,13 @@ Player.prototype.play = function () {
     }
 };
 
-Player.prototype.currentTime = function () {
-    if (!this.mediaEngine_) { return; }
-    return this.mediaEngine_.currentTime();
+Player.prototype.unmute = function() {
+    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+        this.adsEngine_.unmute();
+    } else {
+        if (!this.mediaEngine_) { return; }
+        this.mediaEngine_.unmute();
+    }
 };
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -289,18 +310,19 @@ Player.prototype.attribute = function () {
 /////////////////////////////////////////////////////////////////////////////////
 // private functions
 Player.prototype.initUI = function () {
-    this.uiEngine_ = new UIEngine(this.cfg_.playerContainer);
-    let elements = this.uiEngine_.getUIElements();
+    if (this.cfg_.advertising) {
+        this.uiEngine_ = new UIEngine(this.cfg_.playerContainer);
+        let elements = this.uiEngine_.getUIElements();
 
-    this.playerContainer_ = elements.playerContainer;
-    this.adContainer_ = elements.adContainer;
+        this.playerContainer_ = elements.playerContainer;
+        this.adContainer_ = elements.adContainer;
+    }
 };
 
 Player.prototype.initData = function () {
     this.audioIndex_ = 0;
     this.videoIndex_ = 0;
     this.streamInfo_ = null;
-    this.isPlayingAd_ = false;
 
     this.eventBus_ = EventBus(oldmtn).getInstance();
     this.debug_ = Debug(oldmtn).getInstance();
@@ -309,13 +331,24 @@ Player.prototype.initData = function () {
     this.textEngine_ = new TextEngine(this.cfg_.media);
     this.mseEngine_ = new MediaSourceEngine();
     this.drmEngine_ = new DRMEngine(this.cfg_.media);
-    this.adsEngine_ = new AdsEngine(this.adContainer_, this.cfg_.media, this.cfg_.advertising);
-
-    let a=2;
-    let b=a;
+    if (this.cfg_.advertising) {
+        this.adsEngine_ = new AdsEngine(this.adContainer_, this.cfg_.media, this.cfg_.advertising);
+    }
 };
 
 Player.prototype.addEventListeners = function () {
+    function onFullscreenChange(e) {
+        this.debug_.log('onFullscreenChange');
+        if (this.adsEngine_) {
+            this.adsEngine_.resize();
+        }
+    }
+
+    document.addEventListener("fullscreenchange", onFullscreenChange.bind(this));
+    document.addEventListener("mozfullscreenchange", onFullscreenChange.bind(this));
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange.bind(this));
+    document.addEventListener("msfullscreenchange", onFullscreenChange.bind(this));
+
     this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
 
@@ -336,7 +369,9 @@ Player.prototype.onMediaDurationChanged = function () {
 };
 
 Player.prototype.onMediaEnded = function () {
-    this.adsEngine_.onMediaEnded();
+    if (this.adsEngine_) {
+        this.adsEngine_.onMediaEnded();
+    }
 };
 
 Player.prototype.onSbUpdateEnded = function () {
@@ -358,8 +393,6 @@ Player.prototype.onAdContentResumeRequested = function () {
 
 Player.prototype.onAdStarted = function (e) {
     let ad = e.ad;
-    this.isPlayingAd_ = true;
-    this.isLinearAd_ = ad.isLinear();
 
     let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
     selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
@@ -382,7 +415,6 @@ Player.prototype.onAdStarted = function (e) {
 };
 
 Player.prototype.onAdComplete = function () {
-    this.isPlayingAd_ = false;
 };
 
 // End -- internal events listener functions

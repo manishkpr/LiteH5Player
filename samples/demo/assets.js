@@ -2,7 +2,8 @@ var audioCodec = null;
 var videoCodec = null;
 var aContents = [];
 var vContents = [];
-var pdContent = [];
+var pdContent = null;
+var pdDuration = null;
 var drmType = null;
 var laUrl = null;
 var headers;
@@ -118,6 +119,8 @@ function initAudioVideoContent() {
 }
 
 function initPDContent() {
+  pdContent = [];
+  
   // test webm vp8
   // videoCodec = 'video/webm; codecs="vorbis,vp8"';
   // vContents.push('http://10.2.68.64/1/ark64_frontend/source/resource/movie/test.webm');

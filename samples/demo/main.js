@@ -37,9 +37,8 @@ function enterFullScreen() {
   //var v = document.querySelector('.player');
   //var v = document.querySelector('.h5p-video-container');
   //var v = document.querySelector('.h5p-video');
-  var v = document.querySelector('.player-container');
+  var v = document.querySelector('.html5-video-player');
 
-  
   if (v.requestFullscreen) {
     v.requestFullscreen();
   } else if (v.msRequestFullscreen) {
@@ -104,13 +103,13 @@ function initData() {
   var cfg = {
     playerContainer: 'player-container',
     media: media,
-    advertising: {
-      tag: Single_Non_linear_Inline,
-      enablePreloading: true,
-      forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   tag: Single_Inline_Linear,
+    //   enablePreloading: true,
+    //   forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
   };
 
   player = new oldmtn.Player(cfg);
@@ -169,9 +168,9 @@ function onH5PShadeMouseleave() {
 // browser & UI callback functions
 function onBtnOpen() {
   //initAudioContent();
-  //initVideoContent();
+  initVideoContent();
   //initAudioVideoContent();
-  initPDContent();
+  //initPDContent();
 
   /* drm content part */
   //initDRM_PR();
@@ -228,6 +227,14 @@ function onBtnPlay() {
     onPlayInternal();
   } else {
     onPauseInternal();
+  }
+}
+
+function onBtnMute() {
+  if (player.isMuted()) {
+    player.unmute();
+  } else {
+    player.mute();
   }
 }
 

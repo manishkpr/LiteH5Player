@@ -74,6 +74,7 @@ body {
 
 .h5p-left-controls {
   height: 100%;
+  width: auto;
   float: left;
 }
 
@@ -93,23 +94,12 @@ body {
   font-size:100%;
   font-family:inherit;
   cursor:default;
-  line-height:inherit
+  line-height:inherit;
+  cursor: pointer;
 }
 .h5p-button:focus,
 .h5p-button {outline:0}
 .h5p-button::-moz-focus-inner {padding:0;border:0}
-
-/* time unit */
-.h5p-time-display {
-  float: left;
-}
-
-.h5p-time-text {
-  color: white;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
 
 /* */
 .h5p-svg-shadow {
@@ -125,7 +115,6 @@ body {
 
 .h5p-play-button {
   float: left;
-  cursor: pointer;
 }
 .h5p-autohide .h5p-play-button {
   cursor: none;
@@ -133,6 +122,26 @@ body {
 
 .h5p-play-button::before {
   content:'';display:block;height:100%;width:12px;position:absolute;top:0;left:-12px;
+}
+
+/* time unit */
+.h5p-time-display {
+  float: left;
+  height: 100%;
+  width: auto;
+  display:table;
+}
+
+.h5p-time-text {
+  color: white;
+  display:table-cell;
+  vertical-align:middle;
+}
+
+.h5p-mute-button {
+  padding-left: 6px;
+  float: left;
+  color: white;
 }
 
 /*End play button*/
@@ -258,9 +267,9 @@ body {
   width: auto;
   padding: 5px;
   border: 1px #ccc solid;
-  background-color: white;
   overflow-y: scroll;
   margin-left: auto;
   margin-right: auto;
+  background-color: white;
 }
 

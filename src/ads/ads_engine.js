@@ -28,6 +28,9 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   this.media_ = videoPlayer;
   this.advertising_ = advertising;
 
+  this.isPlayingAd_ = false;
+  this.isLinearAd_ = false;
+
   if (this.advertising_.vpaidmode) {
     let mode = -1;
     if (this.advertising_.vpaidmode === 'disabled') {
@@ -100,6 +103,30 @@ AdsEngine.prototype.isPaused = function () {
   return this.isPaused_;
 };
 
+AdsEngine.prototype.isPlaying = function () {
+  return this.isPlayingAd_;
+};
+
+AdsEngine.prototype.isLinearAd = function () {
+  return this.isLinearAd_;
+};
+
+AdsEngine.prototype.isMuted = function () {
+  if (this.adsManager_.getVolume() === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+AdsEngine.prototype.mute = function () {
+  this.adsManager_.setVolume(0);
+};
+
+AdsEngine.prototype.unmute = function () {
+  this.adsManager_.setVolume(1);
+};
+
 AdsEngine.prototype.play = function () {
   if (this.adsManager_) {
     this.adsManager_.resume();
@@ -109,6 +136,15 @@ AdsEngine.prototype.play = function () {
 AdsEngine.prototype.pause = function () {
   if (this.adsManager_) {
     this.adsManager_.pause();
+  }
+};
+
+AdsEngine.prototype.resize = function(width, height) {
+  if (this.adsManager_) {
+    this.adsManager_.resize(
+      this.adContainer_.clientWidth,
+      this.adContainer_.clientHeight,
+      google.ima.ViewMode.FULLSCREEN);
   }
 };
 
@@ -183,6 +219,7 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
       //this.application_.adClicked();
     } break;
     case google.ima.AdEvent.Type.COMPLETE: {
+      this.isPlayingAd_ = false;
       this.eventBus_.trigger(Events.AD_COMPLETE);
     } break;
     case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
@@ -207,6 +244,9 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
     } break;
     case google.ima.AdEvent.Type.STARTED: {
       var ad = adEvent.getAd();
+      this.isPlayingAd_ = true;
+      this.isLinearAd_ = ad.isLinear();
+
       this.eventBus_.trigger(Events.AD_STARTED, {ad: ad});
     } break;
   }
