@@ -103,14 +103,14 @@ body {
 
 /* */
 .h5p-svg-shadow {
-  stroke:#000;
-  stroke-opacity:.15;
-  stroke-width:2px;
-  fill:none
+  stroke: #000;
+  stroke-opacity: .15;
+  stroke-width: 2px;
+  fill: none;
 }
 
 .h5p-svg-fill {
-  fill:#fff
+  fill: #fff;
 }
 
 .h5p-play-button {
@@ -134,8 +134,8 @@ body {
 
 .h5p-time-text {
   color: white;
-  display:table-cell;
-  vertical-align:middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .h5p-mute-button {
