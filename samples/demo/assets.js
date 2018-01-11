@@ -60,16 +60,10 @@ function initVideoContent() {
 
   vContents = [];
   vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/1.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/2.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/3.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/4.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/5.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/6.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/7.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/8.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/9.m4s');
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/10.m4s');
+  for (var i = 1; i <= 180; i ++) {
+    var content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
+    vContents.push(content);
+  }
 
   // case 2
   //vContents.push('http://10.2.68.64/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-.mp4');
@@ -120,7 +114,7 @@ function initAudioVideoContent() {
 
 function initPDContent() {
   pdContent = [];
-  
+
   // test webm vp8
   // videoCodec = 'video/webm; codecs="vorbis,vp8"';
   // vContents.push('http://10.2.68.64/1/ark64_frontend/source/resource/movie/test.webm');

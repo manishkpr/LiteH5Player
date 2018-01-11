@@ -14,7 +14,7 @@ class CoreEvents {
         // source buffer events
         this.SB_UPDATE_ENDED = 'sbUpdateEnded';
 
-        // media element events
+        // media element eventsa
         this.MEDIA_DURATION_CHANGED = 'mediaDurationChanged';
         this.MEDIA_ENDED = 'mediaEnded';
         this.MEDIA_PAUSED = 'mediaPaused';

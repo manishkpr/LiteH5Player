@@ -157,7 +157,7 @@ Player.prototype.duration = function () {
 };
 
 Player.prototype.isMuted = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
         return this.adsEngine_.isMuted();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -166,7 +166,7 @@ Player.prototype.isMuted = function () {
 };
 
 Player.prototype.isPaused = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
         return this.adsEngine_.isPaused();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -175,7 +175,7 @@ Player.prototype.isPaused = function () {
 };
 
 Player.prototype.isEnded = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
 
     } else {
         if (!this.mediaEngine_) { return; }
@@ -184,7 +184,7 @@ Player.prototype.isEnded = function () {
 };
 
 Player.prototype.mute = function() {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
         this.adsEngine_.mute();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -193,7 +193,7 @@ Player.prototype.mute = function() {
 };
 
 Player.prototype.pause = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
         this.adsEngine_.pause();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -202,7 +202,7 @@ Player.prototype.pause = function () {
 };
 
 Player.prototype.play = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying() && this.adsEngine_.isLinearAd()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
         this.adsEngine_.play();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -211,7 +211,7 @@ Player.prototype.play = function () {
 };
 
 Player.prototype.unmute = function() {
-    if (this.adsEngine_ && this.adsEngine_.isPlaying()) {
+    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
         this.adsEngine_.unmute();
     } else {
         if (!this.mediaEngine_) { return; }
@@ -323,6 +323,7 @@ Player.prototype.initData = function () {
     this.audioIndex_ = 0;
     this.videoIndex_ = 0;
     this.streamInfo_ = null;
+    this.adsEngine_ = null;
 
     this.eventBus_ = EventBus(oldmtn).getInstance();
     this.debug_ = Debug(oldmtn).getInstance();
@@ -376,7 +377,7 @@ Player.prototype.onMediaEnded = function () {
 
 Player.prototype.onSbUpdateEnded = function () {
     // Need to signal end of stream when add pd to mse
-    if (this.streamInfo_.pdContent && this.streamInfo_.pdContent !== '') {
+    if (this.adsEngine_) {
         this.mseEngine_.signalEndOfStream();
     }
 };

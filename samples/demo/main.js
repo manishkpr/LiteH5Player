@@ -103,13 +103,13 @@ function initData() {
   var cfg = {
     playerContainer: 'player-container',
     media: media,
-    // advertising: {
-    //   tag: Single_Inline_Linear,
-    //   enablePreloading: true,
-    //   forceNonLinearFullSlot: false,
-    //   locale: 'fr',
-    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    // }
+    advertising: {
+      tag: Single_Inline_Linear,
+      enablePreloading: true,
+      forceNonLinearFullSlot: false,
+      locale: 'fr',
+      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    }
   };
 
   player = new oldmtn.Player(cfg);
@@ -168,9 +168,9 @@ function onH5PShadeMouseleave() {
 // browser & UI callback functions
 function onBtnOpen() {
   //initAudioContent();
-  initVideoContent();
+  //initVideoContent();
   //initAudioVideoContent();
-  //initPDContent();
+  initPDContent();
 
   /* drm content part */
   //initDRM_PR();

@@ -80,12 +80,16 @@ MediaEngine.prototype.onMediaLoadedMetadata = function () {
 };
 
 MediaEngine.prototype.onMediaPaused = function () {
-  //this.debug_.log('--onMediaPaused--');
+  console.log('Test--onMediaPaused--');
   this.eventBus_.trigger(Events.MEDIA_PAUSED);
 };
 
+MediaEngine.prototype.onMediaPlay = function () {
+  console.log('Test--onMediaPlay--');
+};
+
 MediaEngine.prototype.onMediaPlaying = function () {
-  //this.debug_.log('--onMediaPlaying--');
+  console.log('Test--onMediaPlaying--');
   this.eventBus_.trigger(Events.MEDIA_PLAYING);
 };
 
@@ -107,7 +111,7 @@ MediaEngine.prototype.onMediaTimeUpdated = function (e) {
 };
 
 MediaEngine.prototype.onMediaWaiting = function () {
-  this.debug_.log('--onMediaWaiting--');
+  console.log('Test--onMediaWaiting--');
   this.eventBus_.trigger(Events.MEDIA_WAITING);
 };
 // End
@@ -119,6 +123,7 @@ MediaEngine.prototype.addEventListeners = function () {
   this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
   this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
+  this.media_.addEventListener('play', this.onMediaPlay.bind(this));
   this.media_.addEventListener('playing', this.onMediaPlaying.bind(this));
   this.media_.addEventListener('readyState', this.onMediaReadyState.bind(this));
   this.media_.addEventListener('seeking', this.onMediaSeeking.bind(this));
@@ -133,6 +138,7 @@ MediaEngine.prototype.removeEventsListeners = function () {
   this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
   this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));
+  this.media_.removeEventListener('play', this.onMediaPlay.bind(this));
   this.media_.removeEventListener('playing', this.onMediaPlaying.bind(this));
   this.media_.removeEventListener('readyState', this.onMediaReadyState.bind(this));
   this.media_.removeEventListener('seeking', this.onMediaSeeking.bind(this));

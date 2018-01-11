@@ -103,7 +103,7 @@ AdsEngine.prototype.isPaused = function () {
   return this.isPaused_;
 };
 
-AdsEngine.prototype.isPlaying = function () {
+AdsEngine.prototype.isPlayingAd = function () {
   return this.isPlayingAd_;
 };
 
@@ -181,7 +181,8 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
                 google.ima.AdEvent.Type.PAUSED,
                 google.ima.AdEvent.Type.RESUMED,
                 google.ima.AdEvent.Type.STARTED,
-                google.ima.AdEvent.Type.THIRD_QUARTILE];
+                google.ima.AdEvent.Type.THIRD_QUARTILE,
+                google.ima.AdEvent.Type.VOLUME_CHANGED];
   for (var index in events) {
     this.adsManager_.addEventListener(
         events[index],
@@ -210,6 +211,8 @@ AdsEngine.prototype.onAdError = function(adErrorEvent) {
 AdsEngine.prototype.onAdEvent = function(adEvent) {
   console.log('--onAdEvent--: ' + adEvent.type);
 
+  let ad = adEvent.getAd();
+
   switch (adEvent.type) {
     case google.ima.AdEvent.Type.AD_METADATA: {
       var cuePts = adEvent.getAdCuePoints();
@@ -231,7 +234,6 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
     case google.ima.AdEvent.Type.DURATION_CHANGE: {
     } break;
     case google.ima.AdEvent.Type.LOADED: {
-      var ad = adEvent.getAd();
       if (!ad.isLinear()) {
         this.eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
       }
@@ -243,11 +245,13 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
       this.isPaused_ = false;
     } break;
     case google.ima.AdEvent.Type.STARTED: {
-      var ad = adEvent.getAd();
       this.isPlayingAd_ = true;
       this.isLinearAd_ = ad.isLinear();
 
       this.eventBus_.trigger(Events.AD_STARTED, {ad: ad});
+    } break;
+    case google.ima.AdEvent.Type.VOLUME_CHANGED: {
+      console.log('ad volume: ' + this.adsManager_.getVolume());
     } break;
   }
 };
