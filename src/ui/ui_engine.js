@@ -2,11 +2,11 @@
 
 
 
-var UIEngine = function (playerContainer) {
-    this.playerContainer_ = document.getElementById(playerContainer);
-    this.uiElements_ = null;
+var UIEngine = function (cfg) {
+    this.cfg_ = cfg;
+    this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
+    this.uiElements_ = {};
 
-    //this.initUIStyle();
     this.initUIElement();
 };
 
@@ -19,17 +19,24 @@ UIEngine.prototype.initUIStyle = function () {
 };
 
 UIEngine.prototype.initUIElement = function () {
-    // create ads container
-    this.adContainer_ = document.createElement('div');
-    this.adContainer_.setAttribute('class', 'h5p-ads-container');
+    // need to create video element here, currently just add a 'playsinline' attribute
+    let video = document.querySelector('.h5p-video');
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
 
-    // append ui elements to root div
-    this.playerContainer_.appendChild(this.adContainer_);
+    // create ads container
+    if (this.cfg_.advertising) {
+        this.adContainer_ = document.createElement('div');
+        this.adContainer_.setAttribute('class', 'h5p-ads-container');
+
+        this.playerContainer_.appendChild(this.adContainer_);
+    }
 
     // construct return values
-    this.uiElements_ = {};
     this.uiElements_.playerContainer = this.playerContainer_;
-    this.uiElements_.adContainer = this.adContainer_;
+    if (this.cfg_.advertising) {
+        this.uiElements_.adContainer = this.adContainer_;
+    }
 };
 
 UIEngine.prototype.getUIElements = function () {

@@ -33,27 +33,59 @@ function updateProgress() {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
+function isFullScreen() {
+  printLog('--isFullScreen--');
+  return document.fullscreenElement ||
+    document.msFullscreenElement ||
+    document.mozFullScreen ||
+    document.webkitIsFullScreen;
+}
+
 function enterFullScreen() {
+  printLog('--enterFullScreen--');
   //var v = document.querySelector('.player');
   //var v = document.querySelector('.h5p-video-container');
   //var v = document.querySelector('.h5p-video');
   var v = document.querySelector('.html5-video-player');
 
-  if (v.requestFullscreen) {
-    v.requestFullscreen();
-  } else if (v.msRequestFullscreen) {
-    v.msRequestFullscreen();
-  } else if (v.mozRequestFullScreen) {
-    v.mozRequestFullScreen();
+  // Try to enter fullscreen mode in the browser
+  // var requestFullscreen = v.requestFullscreen ||
+  //     v.webkitRequestFullscreen ||
+  //     v.mozRequestFullscreen ||
+  //     v.requestFullScreen ||
+  //     v.webkitRequestFullScreen ||
+  //     v.mozRequestFullScreen;
+  //requestFullscreen.call(v);
+
+  var requestFullscreen = document.documentElement.requestFullscreen ||
+    document.documentElement.webkitRequestFullscreen ||
+    document.documentElement.mozRequestFullscreen ||
+    document.documentElement.requestFullScreen ||
+    document.documentElement.webkitRequestFullScreen ||
+    document.documentElement.mozRequestFullScreen;
+  if (!requestFullscreen) {
+    printLog('requestFullscreen is not NULL2');
+    requestFullscreen.call(document.documentElement);
+    //v.webkitSupportsFullscreen();
   } else {
-    v.webkitRequestFullScreen();
+    printLog('requestFullscreen is NULL');
+    v.webkitSupportsFullscreen();
   }
-  // v.style.width = '100%';
-  // v.style.height = '100%';
 }
 
+function leaveFullScreen() {
+  printLog('--leaveFullScreen--');
 
-// tool functions
+  var cancelFullscreen = document.exitFullscreen ||
+        document.exitFullScreen ||
+        document.webkitCancelFullScreen ||
+        document.mozCancelFullScreen ||
+        document.msExitFullscreen;
+  if (cancelFullscreen) {
+      cancelFullscreen.call(document);
+  }
+}
+
 function initUI() {
   media = document.querySelector('.h5p-video');
 
@@ -102,14 +134,14 @@ function initData() {
 
   var cfg = {
     playerContainer: 'player-container',
-    media: media,
-    advertising: {
-      tag: Single_Inline_Linear,
-      enablePreloading: true,
-      forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    }
+    media: media
+    // advertising: {
+    //   tag: Single_Inline_Linear,
+    //   enablePreloading: true,
+    //   forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
   };
 
   player = new oldmtn.Player(cfg);
@@ -274,7 +306,12 @@ function onBtnSetting() {
 }
 
 function onBtnFullscreen() {
-  enterFullScreen();
+  printLog('--onBtnFullscreen--');
+  if (isFullScreen()) {
+    leaveFullScreen();
+  } else {
+    enterFullScreen();
+  }
 }
 
 function onBtnSeek() {
@@ -427,6 +464,11 @@ window.onload = function () {
   initUI();
   initData();
   addH5PListeners();
+
+  // BD
+  onBtnOpen();
+  onBtnAddPD();
+  // ED
 };
 
 window.onunload = function () {

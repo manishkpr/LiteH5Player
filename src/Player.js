@@ -14,6 +14,7 @@ import AdsEngine from './ads/ads_engine';
 
 import TimeRanges from './utils/timeRanges';
 import XHRLoader from './utils/xhr_loader';
+import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
 let Player = function (cfg) {
@@ -26,40 +27,32 @@ let Player = function (cfg) {
 
 Player.prototype.open = function (info) {
     this.streamInfo_ = info;
+    this.debug_.log('Player, +open');
+    if (!CommonUtils.isSafari()) {
+        if (info.audioCodec) {
+            this.debug_.log('Player, +open: ' + info.audioCodec);
+        }
+        if (info.videoCodec) {
+            this.debug_.log('Player, +open: ' + info.videoCodec);
+        }
 
-    //
-    if (info.audioCodec) {
-        this.debug_.log('Player, +open: ' + info.audioCodec);
+        if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
+            this.debug_.log('Don\'t support: ' + info.audioCodec);
+            return;
+        }
+
+        if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
+            this.debug_.log('Don\'t support: ' + info.videoCodec);
+            return;
+        }
+
+        this.mseEngine_.init(this.streamInfo_);
+
+        let objURL = window.URL.createObjectURL(this.mseEngine_.getMediaSource());
+        this.mediaEngine_.setSrc(objURL);
+        //URL.revokeObjectURL(this.cfg_.media.src);
+        this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
-    if (info.videoCodec) {
-        this.debug_.log('Player, +open: ' + info.videoCodec);
-    }
-
-    // BD
-    // if (MediaSource === undefined || MediaSource === null) {
-    //     this.debug_.log('MediaSource not null');
-    // } else {
-    //     this.debug_.log('MediaSource is null');
-    // }
-    // ED
-
-    if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
-        this.debug_.log('Don\'t support: ' + info.audioCodec);
-        return;
-    }
-
-    if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
-        this.debug_.log('Don\'t support: ' + info.videoCodec);
-        return;
-    }
-
-    this.mseEngine_.init(this.streamInfo_);
-
-    let objURL = window.URL.createObjectURL(this.mseEngine_.getMediaSource());
-    this.mediaEngine_.setSrc(objURL);
-    //URL.revokeObjectURL(this.cfg_.media.src);
-
-    this.drmEngine_.setDrmInfo(this.streamInfo_);
 
     this.debug_.log('Player, -open');
 };
@@ -124,8 +117,8 @@ Player.prototype.addPD = function () {
     let url = this.streamInfo_.pdContent;
 
     // // Method1
-    // this.cfg_.media.src = this.streamInfo_.pdContent;
-    // return;
+    this.cfg_.media.src = this.streamInfo_.pdContent;
+    return;
 
     // Method2
     let self = this;
@@ -298,7 +291,6 @@ Player.prototype.test2 = function () {
 Player.prototype.attribute = function () {
     let media = this.cfg_.media;
     this.debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
-
     this.debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
 
     this.mseEngine_.setDuration(200);
@@ -310,8 +302,8 @@ Player.prototype.attribute = function () {
 /////////////////////////////////////////////////////////////////////////////////
 // private functions
 Player.prototype.initUI = function () {
+    this.uiEngine_ = new UIEngine(this.cfg_);
     if (this.cfg_.advertising) {
-        this.uiEngine_ = new UIEngine(this.cfg_.playerContainer);
         let elements = this.uiEngine_.getUIElements();
 
         this.playerContainer_ = elements.playerContainer;
@@ -344,7 +336,7 @@ Player.prototype.addEventListeners = function () {
             this.adsEngine_.resize();
         }
     }
-
+    this.debug_.log('--addEventListeners--');
     document.addEventListener("fullscreenchange", onFullscreenChange.bind(this));
     document.addEventListener("mozfullscreenchange", onFullscreenChange.bind(this));
     document.addEventListener("webkitfullscreenchange", onFullscreenChange.bind(this));

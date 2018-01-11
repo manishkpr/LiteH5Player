@@ -58,6 +58,9 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
           this.advertising_.companion ? this.advertising_.companion.div : null);
 
   this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
+  // Mobile Skippable Ads
+  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/skippable-ads
+  this.adsLoader_.getSettings().setDisableCustomPlaybackForIOS10Plus(true);
   this.adsLoader_.addEventListener(
       google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
       this.onAdsManagerLoaded,
@@ -180,6 +183,7 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
                 google.ima.AdEvent.Type.MIDPOINT,
                 google.ima.AdEvent.Type.PAUSED,
                 google.ima.AdEvent.Type.RESUMED,
+                google.ima.AdEvent.Type.SKIPPED,
                 google.ima.AdEvent.Type.STARTED,
                 google.ima.AdEvent.Type.THIRD_QUARTILE,
                 google.ima.AdEvent.Type.VOLUME_CHANGED];
@@ -243,6 +247,9 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
     } break;
     case google.ima.AdEvent.Type.RESUMED: {
       this.isPaused_ = false;
+    } break;
+    case google.ima.AdEvent.Type.SKIPPED: {
+      this.debug_.log('--google.ima.AdEvent.Type.SKIPPED--');
     } break;
     case google.ima.AdEvent.Type.STARTED: {
       this.isPlayingAd_ = true;
