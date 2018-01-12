@@ -77,6 +77,7 @@ MediaEngine.prototype.onMediaEnded = function () {
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
   this.debug_.log('--onMediaMetadata--, width: ' + this.media_.width + ', height: ' + this.media_.height);
+  this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
 };
 
 MediaEngine.prototype.onMediaPaused = function () {

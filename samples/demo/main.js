@@ -45,32 +45,32 @@ function enterFullScreen() {
   printLog('--enterFullScreen--');
   //var v = document.querySelector('.player');
   //var v = document.querySelector('.h5p-video-container');
-  //var v = document.querySelector('.h5p-video');
-  var v = document.querySelector('.html5-video-player');
+  var v = document.querySelector('.h5p-video');
+  //var v = document.querySelector('.html5-video-player');
 
   // Try to enter fullscreen mode in the browser
-  // var requestFullscreen = v.requestFullscreen ||
-  //     v.webkitRequestFullscreen ||
-  //     v.mozRequestFullscreen ||
-  //     v.requestFullScreen ||
-  //     v.webkitRequestFullScreen ||
-  //     v.mozRequestFullScreen;
-  //requestFullscreen.call(v);
+  var requestFullscreen = v.requestFullscreen ||
+      v.webkitRequestFullscreen ||
+      v.mozRequestFullscreen ||
+      v.requestFullScreen ||
+      v.webkitRequestFullScreen ||
+      v.mozRequestFullScreen;
+  requestFullscreen.call(v);
 
-  var requestFullscreen = document.documentElement.requestFullscreen ||
-    document.documentElement.webkitRequestFullscreen ||
-    document.documentElement.mozRequestFullscreen ||
-    document.documentElement.requestFullScreen ||
-    document.documentElement.webkitRequestFullScreen ||
-    document.documentElement.mozRequestFullScreen;
-  if (!requestFullscreen) {
-    printLog('requestFullscreen is not NULL2');
-    requestFullscreen.call(document.documentElement);
-    //v.webkitSupportsFullscreen();
-  } else {
-    printLog('requestFullscreen is NULL');
-    v.webkitSupportsFullscreen();
-  }
+  // var requestFullscreen = document.documentElement.requestFullscreen ||
+  //   document.documentElement.webkitRequestFullscreen ||
+  //   document.documentElement.mozRequestFullscreen ||
+  //   document.documentElement.requestFullScreen ||
+  //   document.documentElement.webkitRequestFullScreen ||
+  //   document.documentElement.mozRequestFullScreen;
+  // if (!requestFullscreen) {
+  //   printLog('requestFullscreen is not NULL2');
+  //   requestFullscreen.call(document.documentElement);
+  //   //v.webkitSupportsFullscreen();
+  // } else {
+  //   printLog('requestFullscreen is NULL');
+  //   v.webkitSupportsFullscreen();
+  // }
 }
 
 function leaveFullScreen() {
@@ -134,14 +134,14 @@ function initData() {
 
   var cfg = {
     playerContainer: 'player-container',
-    media: media
-    // advertising: {
-    //   tag: Single_Inline_Linear,
-    //   enablePreloading: true,
-    //   forceNonLinearFullSlot: false,
-    //   locale: 'fr',
-    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    // }
+    media: media,
+    advertising: {
+      tag: Single_Inline_Linear,
+      enablePreloading: true,
+      forceNonLinearFullSlot: false,
+      locale: 'fr',
+      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    }
   };
 
   player = new oldmtn.Player(cfg);
@@ -364,15 +364,17 @@ function onBtnTest() {
 }
 
 function onBtnTest2() {
+  printLog('--onBtnTest2--');
   //player.test2();
   //endBuffering();
 
-  var v = document.querySelector('.ytp-play-button');
-  var v1 = v.querySelector('.ytp-svg-fill');
-  v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
+  // var v = document.querySelector('.ytp-play-button');
+  // var v1 = v.querySelector('.ytp-svg-fill');
+  // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
 
-  // var v = document.querySelector('.h5p-chrome-bottom');
-  // v.setAttribute('aria-hidden', true);
+  var v = document.querySelector('.h5p-video');
+  v.webkitEnterFullScreen();
+  //v.setAttribute('aria-hidden', true);
 }
 
 function onBtnAttribute() {
@@ -466,8 +468,7 @@ window.onload = function () {
   addH5PListeners();
 
   // BD
-  onBtnOpen();
-  onBtnAddPD();
+  //onBtnOpen();
   // ED
 };
 

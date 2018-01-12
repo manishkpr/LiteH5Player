@@ -17,6 +17,7 @@ class CoreEvents {
         // media element eventsa
         this.MEDIA_DURATION_CHANGED = 'mediaDurationChanged';
         this.MEDIA_ENDED = 'mediaEnded';
+        this.MEDIA_LOADEDMETADATA = 'mediaLoadedMetadata';
         this.MEDIA_PAUSED = 'mediaPaused';
         this.MEDIA_PLAYING = 'mediaPlaying';
         this.MEDIA_SEEKING = 'mediaSeeking';

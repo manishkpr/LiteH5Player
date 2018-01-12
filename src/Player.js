@@ -28,7 +28,7 @@ let Player = function (cfg) {
 Player.prototype.open = function (info) {
     this.streamInfo_ = info;
     this.debug_.log('Player, +open');
-    if (!CommonUtils.isSafari()) {
+    if (0) {
         if (info.audioCodec) {
             this.debug_.log('Player, +open: ' + info.audioCodec);
         }
@@ -54,6 +54,7 @@ Player.prototype.open = function (info) {
         this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
 
+    this.adsEngine_.init();
     this.debug_.log('Player, -open');
 };
 
@@ -114,27 +115,29 @@ Player.prototype.addV = function () {
 };
 
 Player.prototype.addPD = function () {
+    this.debug_.log('+addPD');
     let url = this.streamInfo_.pdContent;
 
-    // // Method1
-    this.cfg_.media.src = this.streamInfo_.pdContent;
-    return;
+    let method = 1;
+    if (method === 1) {
+        this.cfg_.media.src = this.streamInfo_.pdContent;
+        this.cfg_.media.load();
+    } else {
+        let self = this;
+        function cbSuccess(bytes) {
+            this.mseEngine_.appendBuffer('video', bytes);
+        }
 
-    // Method2
-    let self = this;
-    function cbSuccess(bytes) {
-        this.mseEngine_.appendBuffer('video', bytes);
+        let request = { url: url, cbSuccess: cbSuccess.bind(self) };
+        this.xhrLoader_.load(request);
     }
 
-    let request = { url: url, cbSuccess: cbSuccess.bind(self) };
-    this.xhrLoader_.load(request);
-
-    //
+    // add ads
     if (this.adsEngine_) {
-        this.adsEngine_.open(
-            this.playerContainer_.clientWidth,
-            this.playerContainer_.clientHeight);
+        this.adsEngine_.open();
     }
+
+    this.debug_.log('-addPD');
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -344,6 +347,7 @@ Player.prototype.addEventListeners = function () {
 
     this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
+    this.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetadata.bind(this), {});
 
     this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
 
@@ -365,6 +369,9 @@ Player.prototype.onMediaEnded = function () {
     if (this.adsEngine_) {
         this.adsEngine_.onMediaEnded();
     }
+};
+
+Player.prototype.onMediaLoadedMetadata = function () {
 };
 
 Player.prototype.onSbUpdateEnded = function () {

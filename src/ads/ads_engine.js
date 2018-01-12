@@ -1,5 +1,6 @@
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
 
 function formatAdsTimeOffset(offset) {
   var hour = parseInt(offset / 3600);
@@ -23,7 +24,7 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   console.log('--new AdsEngine object--');
 
   this.eventBus_ = EventBus(oldmtn).getInstance();
-
+  this.debug_ = Debug(oldmtn).getInstance();
   this.adContainer_ = adContainer;
   this.media_ = videoPlayer;
   this.advertising_ = advertising;
@@ -71,16 +72,22 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
       this.onAdError,
       false,
       this);
-
-  // On iOS and Android devices, video playback must begin in a user action.
-  // AdDisplayContainer provides a initialize() API to be called at appropriate
-  // time.
-  this.adDisplayContainer_.initialize();
 };
 
 // AdsEngine public functions
-AdsEngine.prototype.open = function(width, height) {
-  console.log('--AdsEngine.open--');
+AdsEngine.prototype.init = function () {
+  this.debug_.log('+AdsEngine.init');
+  // On iOS and Android devices, video playback must begin in a user action.
+  // AdDisplayContainer provides a initialize() API to be called at appropriate
+  // time.
+  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
+  this.adDisplayContainer_.initialize();
+
+  this.debug_.log('-AdsEngine.init');
+};
+
+AdsEngine.prototype.open = function() {
+  this.debug_.log('+AdsEngine.open');
 
   this.width_ = this.adContainer_.clientWidth;
   this.height_ = this.adContainer_.clientHeight;
@@ -88,6 +95,7 @@ AdsEngine.prototype.open = function(width, height) {
   // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
   // console.log('ads: ' + ads);
 
+  this.debug_.log('this.advertising_.tag: ' + this.advertising_.tag);
   var adsRequest = new google.ima.AdsRequest();
   adsRequest.adTagUrl = this.advertising_.tag;
   adsRequest.linearAdSlotWidth = this.width_;
@@ -100,6 +108,12 @@ AdsEngine.prototype.open = function(width, height) {
   }
 
   this.adsLoader_.requestAds(adsRequest);
+
+  this.debug_.log('-AdsEngine.open');
+};
+
+AdsEngine.prototype.requestAds = function () {
+
 };
 
 AdsEngine.prototype.isPaused = function () {
@@ -142,7 +156,7 @@ AdsEngine.prototype.pause = function () {
   }
 };
 
-AdsEngine.prototype.resize = function(width, height) {
+AdsEngine.prototype.resize = function() {
   if (this.adsManager_) {
     this.adsManager_.resize(
       this.adContainer_.clientWidth,
@@ -153,7 +167,7 @@ AdsEngine.prototype.resize = function(width, height) {
 
 ////////////////////////////////////////////////////////////////////////
 AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
-  console.log('--onAdsManagerLoaded--');
+  this.debug_.log('+onAdsManagerLoaded');
 
   var adsRenderingSettings = new google.ima.AdsRenderingSettings();
   if (this.advertising_.enablePreloading) {
@@ -195,16 +209,15 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
         this);
   }
 
-  this.adsManager_.init(
-    this.width_,
-    this.height_,
-    google.ima.ViewMode.NORMAL);
-
+  this.debug_.log('this.width_: ' + this.width_ + ', this.height_: ' + this.height_);
+  this.adsManager_.init(this.width_, this.height_, google.ima.ViewMode.NORMAL);
   this.adsManager_.start();
+
+  this.debug_.log('-onAdsManagerLoaded');
 };
 
 AdsEngine.prototype.onAdError = function(adErrorEvent) {
-  console.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
+  this.debug_.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
 
   if (this.adsManager_) {
     this.adsManager_.destroy();
@@ -213,7 +226,7 @@ AdsEngine.prototype.onAdError = function(adErrorEvent) {
 };
 
 AdsEngine.prototype.onAdEvent = function(adEvent) {
-  console.log('--onAdEvent--: ' + adEvent.type);
+  this.debug_.log('--onAdEvent--: ' + adEvent.type);
 
   let ad = adEvent.getAd();
 
