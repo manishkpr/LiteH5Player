@@ -112,10 +112,6 @@ AdsEngine.prototype.open = function() {
   this.debug_.log('-AdsEngine.open');
 };
 
-AdsEngine.prototype.requestAds = function () {
-
-};
-
 AdsEngine.prototype.isPaused = function () {
   return this.isPaused_;
 };
@@ -263,8 +259,11 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
     } break;
     case google.ima.AdEvent.Type.SKIPPED: {
       this.debug_.log('--google.ima.AdEvent.Type.SKIPPED--');
+      // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
+      this.isPlayingAd_ = false;
     } break;
     case google.ima.AdEvent.Type.STARTED: {
+      this.debug_.log('--google.ima.AdEvent.Type.STARTED--');
       this.isPlayingAd_ = true;
       this.isLinearAd_ = ad.isLinear();
 

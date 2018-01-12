@@ -45,8 +45,8 @@ function enterFullScreen() {
   printLog('--enterFullScreen--');
   //var v = document.querySelector('.player');
   //var v = document.querySelector('.h5p-video-container');
-  var v = document.querySelector('.h5p-video');
-  //var v = document.querySelector('.html5-video-player');
+  //var v = document.querySelector('.h5p-video');
+  var v = document.querySelector('.html5-video-player');
 
   // Try to enter fullscreen mode in the browser
   var requestFullscreen = v.requestFullscreen ||
@@ -108,7 +108,7 @@ function initData() {
   var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
 
   // Single Skippable Inline
-  var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';
+  var Single_Skippable_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';
 
   // Single Redirect Linear
   //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dredirectlinear&correlator=';
@@ -135,13 +135,13 @@ function initData() {
   var cfg = {
     playerContainer: 'player-container',
     media: media,
-    advertising: {
-      tag: Single_Inline_Linear,
-      enablePreloading: true,
-      forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   tag: Single_Skippable_Inline,
+    //   enablePreloading: true,
+    //   forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
   };
 
   player = new oldmtn.Player(cfg);
@@ -202,11 +202,11 @@ function onBtnOpen() {
   //initAudioContent();
   //initVideoContent();
   //initAudioVideoContent();
-  initPDContent();
+  //itPDContent();
 
   /* drm content part */
   //initDRM_PR();
-  //initWV_MP4();
+  initWV_MP4();
   //initPDContent_ClearKey();
   //initCK_WebM();
   //initCK_MP4();
@@ -372,7 +372,14 @@ function onBtnTest2() {
   // var v1 = v.querySelector('.ytp-svg-fill');
   // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
 
+
+
   var v = document.querySelector('.h5p-video');
+  v.addEventListener("webkitfullscreenchange", function() {
+    printLog('--webkitfullscreenchange--');
+      //console.log(document.webkitIsFullScreen);
+  }, false);
+
   v.webkitEnterFullScreen();
   //v.setAttribute('aria-hidden', true);
 }

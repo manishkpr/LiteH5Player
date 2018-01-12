@@ -167,6 +167,11 @@ CommonUtils.getOSVersion = function () {
     let b = a;
 };
 
+CommonUtils.isMobilePlatform = function() {
+  return (navigator.userAgent.match(/(iPod|iPhone|iPad)/) ||
+       navigator.userAgent.toLowerCase().indexOf('android') > -1);
+};
+
 
 /////////////////////////////////////////////////////////////
 CommonUtils.init = function () {

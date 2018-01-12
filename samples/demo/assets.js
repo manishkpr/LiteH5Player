@@ -183,12 +183,15 @@ function initCK_MP4() {
 }
 
 function initWV_MP4() {
+  vContents = [];
+  
   // case01
   //audioCodec = 'audio/mp4; codecs="mp4a.40.2"';
   //aContents.push('http://10.2.68.64/tasklink/65421_chromecast/content_wv_shaka/a-eng-0128k-aac.mp4');
 
   videoCodec = 'video/mp4; codecs="avc1.42c01e"';
-  pdContent.push('http://10.2.68.64/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');
+  vContents.push('http://10.2.68.64/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');
+  //pdContent.push('http://10.2.68.64/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');
 
   laUrl = 'https://widevine-proxy.appspot.com/proxy';
   drmType = 'com.widevine.alpha';
@@ -318,3 +321,4 @@ function init1080i() {
   vContents.push('http://10.2.72.133/7/8082/dash-if/ba/ondemand/testcard/1/avc3-events/1920x1080i25/000004.m4s');
   vContents.push('http://10.2.72.133/7/8082/dash-if/ba/ondemand/testcard/1/avc3-events/1920x1080i25/000005.m4s');
 }
+

@@ -28,7 +28,7 @@ let Player = function (cfg) {
 Player.prototype.open = function (info) {
     this.streamInfo_ = info;
     this.debug_.log('Player, +open');
-    if (0) {
+    if (1) {
         if (info.audioCodec) {
             this.debug_.log('Player, +open: ' + info.audioCodec);
         }
@@ -54,7 +54,10 @@ Player.prototype.open = function (info) {
         this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
 
-    this.adsEngine_.init();
+    if (this.adsEngine_) {
+        this.adsEngine_.init();
+    }
+
     this.debug_.log('Player, -open');
 };
 
@@ -339,7 +342,6 @@ Player.prototype.addEventListeners = function () {
             this.adsEngine_.resize();
         }
     }
-    this.debug_.log('--addEventListeners--');
     document.addEventListener("fullscreenchange", onFullscreenChange.bind(this));
     document.addEventListener("mozfullscreenchange", onFullscreenChange.bind(this));
     document.addEventListener("webkitfullscreenchange", onFullscreenChange.bind(this));

@@ -21,7 +21,7 @@ UIEngine.prototype.initUIStyle = function () {
 UIEngine.prototype.initUIElement = function () {
     // need to create video element here, currently just add a 'playsinline' attribute
     let video = document.querySelector('.h5p-video');
-    video.setAttribute('playsinline', 'true');
+    video.setAttribute('playsinline', 'false');
 
     // create ads container
     if (this.cfg_.advertising) {
