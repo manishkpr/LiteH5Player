@@ -54,10 +54,6 @@ Player.prototype.open = function (info) {
         this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
 
-    if (this.adsEngine_) {
-        this.adsEngine_.init();
-    }
-
     this.debug_.log('Player, -open');
 };
 
@@ -405,7 +401,7 @@ Player.prototype.onAdStarted = function (e) {
         let companion = this.cfg_.advertising.companions[i];
         // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
         let companionAds = ad.getCompanionAds(companion.width, companion.height, selectionCriteria);
-        if (companionAds) {
+        if (companionAds && companionAds.length > 0) {
             let companionAd = companionAds[0];
             // Get HTML content from the companion ad.
             let content = companionAd.getContent();

@@ -126,7 +126,7 @@ function initData() {
   //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';
 
   // VMAP Post-roll
-  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
+  //var VMAP_Post_roll = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
 
   // VMAP Pre-, Mid-, and Post-rolls, Single Ads
   var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
@@ -135,13 +135,14 @@ function initData() {
   var cfg = {
     playerContainer: 'player-container',
     media: media,
-    // advertising: {
-    //   tag: Single_Skippable_Inline,
-    //   enablePreloading: true,
-    //   forceNonLinearFullSlot: false,
-    //   locale: 'fr',
-    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    // }
+    advertising: {
+      tag: Single_Inline_Linear,
+      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+      enablePreloading: true,
+      forceNonLinearFullSlot: false,
+      locale: 'fr',
+      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    }
   };
 
   player = new oldmtn.Player(cfg);
@@ -202,11 +203,11 @@ function onBtnOpen() {
   //initAudioContent();
   //initVideoContent();
   //initAudioVideoContent();
-  //itPDContent();
+  initPDContent();
 
   /* drm content part */
   //initDRM_PR();
-  initWV_MP4();
+  //initWV_MP4();
   //initPDContent_ClearKey();
   //initCK_WebM();
   //initCK_MP4();

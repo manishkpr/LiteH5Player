@@ -31,6 +31,7 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
 
   this.isPlayingAd_ = false;
   this.isLinearAd_ = false;
+  this.adsManager_ = null;
 
   if (this.advertising_.vpaidmode) {
     let mode = -1;
@@ -50,8 +51,11 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
     google.ima.settings.setLocale(this.advertising_.locale);
   }
 
-  //
-  this.adsManager_ = null;
+  this.init();
+  this.requestAds();
+};
+
+AdsEngine.prototype.init = function() {
   this.adDisplayContainer_ =
       new google.ima.AdDisplayContainer(
           this.adContainer_,
@@ -74,21 +78,7 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
       this);
 };
 
-// AdsEngine public functions
-AdsEngine.prototype.init = function () {
-  this.debug_.log('+AdsEngine.init');
-  // On iOS and Android devices, video playback must begin in a user action.
-  // AdDisplayContainer provides a initialize() API to be called at appropriate
-  // time.
-  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
-  this.adDisplayContainer_.initialize();
-
-  this.debug_.log('-AdsEngine.init');
-};
-
-AdsEngine.prototype.open = function() {
-  this.debug_.log('+AdsEngine.open');
-
+AdsEngine.prototype.requestAds = function() {
   this.width_ = this.adContainer_.clientWidth;
   this.height_ = this.adContainer_.clientHeight;
   // var item = getVMAPItem('myAds', this.advertising_.offset, this.advertising_.tag);
@@ -108,6 +98,21 @@ AdsEngine.prototype.open = function() {
   }
 
   this.adsLoader_.requestAds(adsRequest);
+};
+
+// AdsEngine public functions
+AdsEngine.prototype.open = function() {
+  this.debug_.log('+AdsEngine.open');
+
+  // On iOS and Android devices, video playback must begin in a user action.
+  // AdDisplayContainer provides a initialize() API to be called at appropriate
+  // time.
+  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
+  this.adDisplayContainer_.initialize();
+
+  this.debug_.log('this.width_: ' + this.width_ + ', this.height_: ' + this.height_);
+  this.adsManager_.init(this.width_, this.height_, google.ima.ViewMode.NORMAL);
+  this.adsManager_.start();
 
   this.debug_.log('-AdsEngine.open');
 };
@@ -204,10 +209,6 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
         false,
         this);
   }
-
-  this.debug_.log('this.width_: ' + this.width_ + ', this.height_: ' + this.height_);
-  this.adsManager_.init(this.width_, this.height_, google.ima.ViewMode.NORMAL);
-  this.adsManager_.start();
 
   this.debug_.log('-onAdsManagerLoaded');
 };
