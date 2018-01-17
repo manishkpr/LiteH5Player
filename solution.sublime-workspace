@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"ads",
+				"adsEngine_"
+			],
+			[
+				"pad",
+				"padding-left"
+			],
+			[
 				"padding",
 				"padding-left"
 			],
@@ -296,55 +304,10 @@
 	"buffers":
 	[
 		{
-			"file": "src/Player.js",
+			"file": "src/ads/ads_engine.js",
 			"settings":
 			{
-				"buffer_size": 12493,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/media_engine.js",
-			"settings":
-			{
-				"buffer_size": 5547,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/media_source_engine.js",
-			"settings":
-			{
-				"buffer_size": 3022,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/core/CoreEvents.js",
-			"settings":
-			{
-				"buffer_size": 1110,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/core/Debug.js",
-			"settings":
-			{
-				"buffer_size": 5797,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "samples/demo/main.css",
-			"settings":
-			{
-				"buffer_size": 5119,
+				"buffer_size": 9365,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -353,7 +316,7 @@
 			"file": "samples/demo/main.js",
 			"settings":
 			{
-				"buffer_size": 11613,
+				"buffer_size": 13188,
 				"encoding": "UTF-8 with BOM",
 				"line_ending": "Windows"
 			}
@@ -362,26 +325,17 @@
 			"file": "samples/demo/assets.js",
 			"settings":
 			{
-				"buffer_size": 16828,
+				"buffer_size": 16961,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/ads/ads_engine.js",
+			"file": "src/Player.js",
 			"settings":
 			{
-				"buffer_size": 8298,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "samples/demo/index.html",
-			"settings":
-			{
-				"buffer_size": 4403,
-				"encoding": "UTF-8",
+				"buffer_size": 12695,
+				"encoding": "UTF-8 with BOM",
 				"line_ending": "Windows"
 			}
 		}
@@ -422,24 +376,30 @@
 		"/D/xampp/htdocs/1/LiteH5Player/samples",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo",
 		"/D/xampp/htdocs/1/LiteH5Player/src",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ads"
+		"/D/xampp/htdocs/1/LiteH5Player/src/ads",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils"
 	],
 	"file_history":
 	[
+		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/common_utils.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/assets.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media_engine.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/core/CoreEvents.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media_source_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/core/Debug.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/test_subtitles.html",
+		"/D/xampp/htdocs/1/LiteH5Player/tool/download.html",
+		"/D/xampp/htdocs/1/frontDemo/samples/css/css_display.html",
 		"/D/xampp/htdocs/1/LiteH5Player/src/core/EventBus.js",
 		"/D/xampp/htdocs/opensource/dash.js/src/core/Debug.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/core/Debug.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
 		"/D/xampp/htdocs/1/LiteH5Player/src/drm_engine.js",
 		"/D/xampp/htdocs/2/pd/mp4/jwplayer_demo/jwplayer_demo_dash.mpd",
-		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/common_utils.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
 		"/D/xampp/htdocs/1/LiteH5Player/solution.sublime-project",
 		"/D/xampp/htdocs/1/LiteH5Player/src/protection/controller/ProtectionKeyController.js",
@@ -448,7 +408,6 @@
 		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_sender.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_utils.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media_source_engine.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/SourceBufferWrapper.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/test.html",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/index",
@@ -549,11 +508,7 @@
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/CastReferencePlayer/player.js",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/sender.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/cast/cast_sender.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_common_utils.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/xhr_loader.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/TestPlayer.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/media_source_engine.js"
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/cast/receiver.html"
 	],
 	"find":
 	{
@@ -607,9 +562,43 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"initWV_MP4",
+			"media =",
+			"player.",
+			"printLog",
+			"enterFullScreen",
+			"SKIPPED",
+			"onMediaLoadedMetadata",
+			"onBtnAddPD",
+			"addPD",
+			"addAdd",
+			"onMediaEnded",
+			"onMediaLoadedMetadata",
+			"oldmtn.Player",
+			"AdsEngine",
+			"this.adsEngine_",
+			"this.adsEngine_ =",
+			"new Player",
+			"player.init",
+			"onBtnTest2",
+			"this.adContainer_",
+			"onBtnOpen",
+			"player.open",
+			"addEventListeners",
+			"init",
+			"init(",
+			"enterFullScreen",
+			"isFullScreen",
+			"enterFullScreen",
+			"h5p-video",
+			"enterFullScreen",
+			"addPD",
+			"initPDContent",
+			"STARTED",
+			"h5p-play-button",
 			"adsEngine_.isPlaying",
 			"isPlaying",
 			".play",
@@ -703,41 +692,7 @@
 			"addEventListeners",
 			"updateProgress",
 			"onMediaTimeupdated",
-			"voAdsPlayer",
-			"this.eventBus_",
-			"onAdEvent_",
-			"startAdsManager_",
-			"onAdError_",
-			"onAdsManagerLoaded_",
-			"this.videoPlayer",
-			"onAdsManagerLoaded_",
-			"this.adsManager_",
-			"open",
-			"this.contentPlayer",
-			"this.adContainer",
-			"AdsEngine",
-			"media",
-			"initPDContent",
-			"updateProgress",
-			"onMediaDuration",
-			"this.mediaEngine_",
-			"onMediaSeeked",
-			"onMediaTimeUpdated",
-			"initUI",
-			"endBuffering",
-			"onMediaDu",
-			"onMediaEnd",
-			"onMediaCanplay",
-			"videoCodec",
-			"videoCodec =",
-			"initPDContent",
-			"setDuration",
-			"player-container",
-			"initUI",
-			"initData",
-			"initDataType",
-			"initUI",
-			"initData("
+			"voAdsPlayer"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -877,60 +832,30 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/Player.js",
+					"file": "src/ads/ads_engine.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12493,
+						"buffer_size": 9365,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5621,
-								5621
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3711.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/media_engine.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5547,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3063,
-								3063
+								6885,
+								6885
 							]
 						],
 						"settings":
@@ -940,177 +865,57 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1691.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/media_source_engine.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3022,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								639,
-								653
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 324.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/core/CoreEvents.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1110,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1038,
-								1038
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 153.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/core/Debug.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5797,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4856,
-								4870
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 554.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "samples/demo/main.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5119,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4981,
-								4981
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4742.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "samples/demo/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11613,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4851,
-								4851
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1611.0,
+						"translation.y": 3535.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 1,
+					"file": "samples/demo/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13188,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6264,
+								6027
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2586.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "samples/demo/assets.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16828,
+						"buffer_size": 16961,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3108,
-								3108
+								7998,
+								7998
 							]
 						],
 						"settings":
@@ -1120,70 +925,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 971.0,
+						"translation.y": 3466.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "src/ads/ads_engine.js",
+					"buffer": 3,
+					"file": "src/Player.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8298,
+						"buffer_size": 12695,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6266,
-								6266
+								895,
+								895
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3271.0,
+						"translation.y": 198.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "samples/demo/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4403,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1520,
-								1529
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 343.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1266,7 +1041,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 229.0,
+	"side_bar_width": 231.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

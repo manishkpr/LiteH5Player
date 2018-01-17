@@ -46,11 +46,10 @@ Player.prototype.open = function (info) {
             return;
         }
 
-        this.mseEngine_.init(this.streamInfo_);
+        this.mseEngine_.open(this.streamInfo_);
 
         let objURL = window.URL.createObjectURL(this.mseEngine_.getMediaSource());
         this.mediaEngine_.setSrc(objURL);
-        //URL.revokeObjectURL(this.cfg_.media.src);
         this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
 
@@ -343,6 +342,8 @@ Player.prototype.addEventListeners = function () {
     document.addEventListener("webkitfullscreenchange", onFullscreenChange.bind(this));
     document.addEventListener("msfullscreenchange", onFullscreenChange.bind(this));
 
+    this.on(oldmtn.Events.MSE_OPENED, this.onMSEOpened.bind(this), {});
+
     this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
     this.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetadata.bind(this), {});
@@ -354,11 +355,15 @@ Player.prototype.addEventListeners = function () {
     this.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, this.onAdContentResumeRequested.bind(this), {});
     this.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
     
-    //player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+    
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Begin -- internal events listener functions
+Player.prototype.onMSEOpened = function () {
+    this.mediaEngine_.revokeSrc();
+};
+
 Player.prototype.onMediaDurationChanged = function () {
     
 };

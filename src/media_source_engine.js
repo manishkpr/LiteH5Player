@@ -13,8 +13,8 @@ var MediaSourceEngine = function () {
   this.debug_.log('MediaSourceEngine, constructor');
 };
 
-MediaSourceEngine.prototype.init = function (streamInfo) {
-    this.debug_.log('MediaSourceEngine, +init');
+MediaSourceEngine.prototype.open = function (streamInfo) {
+    this.debug_.log('MediaSourceEngine, +open');
 
     this.streamInfo_ = streamInfo;
 
@@ -39,7 +39,7 @@ MediaSourceEngine.prototype.init = function (streamInfo) {
       this.mediaSrc_.addEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this), false);
     }
 
-    this.debug_.log('MediaSourceEngine, -init');
+    this.debug_.log('MediaSourceEngine, -open');
 };
 
 MediaSourceEngine.prototype.onMediaSourceOpen = function () {
