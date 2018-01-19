@@ -3,297 +3,351 @@ import Events from '../core/CoreEvents';
 import Debug from '../core/Debug';
 
 function formatAdsTimeOffset(offset) {
-  var hour = parseInt(offset / 3600);
-  var min = parseInt(parseInt((offset % 3600)) / 60);
-  var sec = parseInt(parseInt((offset % 3600)) % 60);
-  
-  return hour.toString() + ':' + min.toString() + ':' + sec.toString() + '.000';
+    var hour = parseInt(offset / 3600);
+    var min = parseInt(parseInt((offset % 3600)) / 60);
+    var sec = parseInt(parseInt((offset % 3600)) % 60);
+
+    return hour.toString() + ':' + min.toString() + ':' + sec.toString() + '.000';
 }
 
 function getVMAPItem(breakId, offset, tag) {
-  var breakType = 'linear,nonlinear';
-  var breakId = breakId;
-  var timeOffset = formatAdsTimeOffset(offset);
-  var url = tag;
+    var breakType = 'linear,nonlinear';
+    var breakId = breakId;
+    var timeOffset = formatAdsTimeOffset(offset);
+    var url = tag;
 
-  var item = '<vmap:AdBreak breakType="_type_" breakId="_adbreakname_" timeOffset="_offset_"><vmap:AdSource allowMultipleAds="true" followRedirects="true" id="_adbreakname_-ad-1"><vmap:AdTagURI><![CDATA[_url_]]></vmap:AdTagURI></vmap:AdSource></vmap:AdBreak>'.replace(/_type_/g, breakType).replace(/_adbreakname_/g, breakId).replace(/_offset_/g, timeOffset).replace(/_url_/g, url);
-  return item;
+    var item = '<vmap:AdBreak breakType="_type_" breakId="_adbreakname_" timeOffset="_offset_"><vmap:AdSource allowMultipleAds="true" followRedirects="true" id="_adbreakname_-ad-1"><vmap:AdTagURI><![CDATA[_url_]]></vmap:AdTagURI></vmap:AdSource></vmap:AdBreak>'.replace(/_type_/g, breakType).replace(/_adbreakname_/g, breakId).replace(/_offset_/g, timeOffset).replace(/_url_/g, url);
+    return item;
 }
 
-var AdsEngine = function(adContainer, videoPlayer, advertising) {
-  console.log('--new AdsEngine object--');
+function AdsEngine(adContainer, videoPlayer, advertising) {
+    console.log('--new AdsEngine object--');
 
-  this.eventBus_ = EventBus(oldmtn).getInstance();
-  this.debug_ = Debug(oldmtn).getInstance();
-  this.adContainer_ = adContainer;
-  this.media_ = videoPlayer;
-  this.advertising_ = advertising;
+    let eventBus_ = EventBus(oldmtn).getInstance();
+    let debug_ = Debug(oldmtn).getInstance();
+    let adContainer_ = adContainer;
+    let media_ = videoPlayer;
+    let advertising_ = advertising;
 
-  this.isPlayingAd_ = false;
-  this.isLinearAd_ = false;
-  this.adsManager_ = null;
+    // IMA SDK Needs
+    let adDisplayContainer_ = null;
+    let adsLoader_ = null;
+    let adsManager_ = null;
 
-  if (this.advertising_.vpaidmode) {
-    let mode = -1;
-    if (this.advertising_.vpaidmode === 'disabled') {
-      mode = google.ima.ImaSdkSettings.VpaidMode.DISABLED;
-    } else if (this.advertising_.vpaidmode === 'enabled') {
-      mode = google.ima.ImaSdkSettings.VpaidMode.ENABLED;
-    } else if (this.advertising_.vpaidmode === 'insecure') {
-      mode = google.ima.ImaSdkSettings.VpaidMode.INSECURE;
+    //
+    let width_;
+    let height_;
+
+    // flag
+    let isPlayingAd_ = false;
+    let isLinearAd_ = false;
+    let isPaused_ = false;
+
+    function setup() {
+        if (advertising_.vpaidmode) {
+            let mode = -1;
+            if (advertising_.vpaidmode === 'disabled') {
+                mode = google.ima.ImaSdkSettings.VpaidMode.DISABLED;
+            } else if (advertising_.vpaidmode === 'enabled') {
+                mode = google.ima.ImaSdkSettings.VpaidMode.ENABLED;
+            } else if (advertising_.vpaidmode === 'insecure') {
+                mode = google.ima.ImaSdkSettings.VpaidMode.INSECURE;
+            }
+            if (mode !== -1) {
+                google.ima.settings.setVpaidMode(mode);
+            }
+        }
+
+        if (advertising_.locale) {
+            google.ima.settings.setLocale(advertising_.locale);
+        }
     }
-    if (mode !== -1) {
-      google.ima.settings.setVpaidMode(mode);
+
+    function init() {
+        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
+
+        //
+        adDisplayContainer_ =
+            new google.ima.AdDisplayContainer(
+                adContainer_,
+                media_,
+                advertising_.companion ? advertising_.companion.div : null);
+
+        adsLoader_ = new google.ima.AdsLoader(adDisplayContainer_);
+        // Mobile Skippable Ads
+        // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/skippable-ads
+        adsLoader_.getSettings().setDisableCustomPlaybackForIOS10Plus(true);
+        adsLoader_.addEventListener(
+            google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+            onAdsManagerLoaded,
+            false,
+            this);
+        adsLoader_.addEventListener(
+            google.ima.AdErrorEvent.Type.AD_ERROR,
+            onAdError,
+            false,
+            this);
+
+        initialUserAction();
     }
-  }
 
-  if (this.advertising_.locale) {
-    google.ima.settings.setLocale(this.advertising_.locale);
-  }
-};
+    function initialUserAction() {
+        // On iOS and Android devices, video playback must begin in a user action.
+        // AdDisplayContainer provides a initialize() API to be called at appropriate
+        // time.
+        // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
+        adDisplayContainer_.initialize();
+    }
 
-AdsEngine.prototype.init = function() {
-  this.adDisplayContainer_ =
-      new google.ima.AdDisplayContainer(
-          this.adContainer_,
-          this.media_,
-          this.advertising_.companion ? this.advertising_.companion.div : null);
+    function requestAds() {
+        width_ = adContainer_.clientWidth;
+        height_ = adContainer_.clientHeight;
+        // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
+        // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
+        // console.log('ads: ' + ads);
 
-  this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
-  // Mobile Skippable Ads
-  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/skippable-ads
-  this.adsLoader_.getSettings().setDisableCustomPlaybackForIOS10Plus(true);
-  this.adsLoader_.addEventListener(
-      google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-      this.onAdsManagerLoaded,
-      false,
-      this);
-  this.adsLoader_.addEventListener(
-      google.ima.AdErrorEvent.Type.AD_ERROR,
-      this.onAdError,
-      false,
-      this);
+        debug_.log('advertising_.tag: ' + advertising_.tag);
+        var adsRequest = new google.ima.AdsRequest();
+        adsRequest.adTagUrl = advertising_.tag;
+        adsRequest.linearAdSlotWidth = width_;
+        adsRequest.linearAdSlotHeight = height_;
+        adsRequest.nonLinearAdSlotWidth = width_;
+        adsRequest.nonLinearAdSlotHeight = height_;
 
-  this.initialUserAction();
-};
+        if (advertising_.forceNonLinearFullSlot) {
+            adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
+        }
 
-AdsEngine.prototype.initialUserAction = function () {
-  // On iOS and Android devices, video playback must begin in a user action.
-  // AdDisplayContainer provides a initialize() API to be called at appropriate
-  // time.
-  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
-  this.adDisplayContainer_.initialize();
-};
+        //adsLoader_.getSettings().setAutoPlayAdBreaks(false);
+        adsLoader_.requestAds(adsRequest);
+    };
 
-AdsEngine.prototype.requestAds = function() {
-  this.width_ = this.adContainer_.clientWidth;
-  this.height_ = this.adContainer_.clientHeight;
-  // var item = getVMAPItem('myAds', this.advertising_.offset, this.advertising_.tag);
-  // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
-  // console.log('ads: ' + ads);
+    // AdsEngine public functions
+    function startAds() {
+        debug_.log('+AdsEngine.startAds');
 
-  this.debug_.log('this.advertising_.tag: ' + this.advertising_.tag);
-  var adsRequest = new google.ima.AdsRequest();
-  adsRequest.adTagUrl = this.advertising_.tag;
-  adsRequest.linearAdSlotWidth = this.width_;
-  adsRequest.linearAdSlotHeight = this.height_;
-  adsRequest.nonLinearAdSlotWidth = this.width_;
-  adsRequest.nonLinearAdSlotHeight = this.height_;
+        // sometimes, requestAds may be caught an error, so we return here directly.
+        if (!adsManager_) {
+            return;
+        }
 
-  if (this.advertising_.forceNonLinearFullSlot) {
-    adsRequest.forceNonLinearFullSlot = this.advertising_.forceNonLinearFullSlot;
-  }
+        debug_.log('width_: ' + width_ + ', height_: ' + height_);
+        adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
+        adsManager_.start();
 
-  this.adsLoader_.getSettings().setAutoPlayAdBreaks(false);
-  this.adsLoader_.requestAds(adsRequest);
-};
+        debug_.log('-AdsEngine.startAds');
+    }
 
-// AdsEngine public functions
-AdsEngine.prototype.startAds = function() {
-  this.debug_.log('+AdsEngine.startAds');
+    function isPaused() {
+        return isPaused_;
+    }
 
-  // sometimes, requestAds may be caught an error, so we return here directly.
-  if (!this.adsManager_) { return; }
+    function isPlayingAd() {
+        return isPlayingAd_;
+    }
 
-  this.debug_.log('this.width_: ' + this.width_ + ', this.height_: ' + this.height_);
-  this.adsManager_.init(this.width_, this.height_, google.ima.ViewMode.NORMAL);
-  this.adsManager_.start();
+    function isLinearAd() {
+        return isLinearAd_;
+    }
 
-  this.debug_.log('-AdsEngine.startAds');
-};
+    function isMuted() {
+        if (adsManager_.getVolume() === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-AdsEngine.prototype.isPaused = function () {
-  return this.isPaused_;
-};
+    function mute() {
+        adsManager_.setVolume(0);
+    }
 
-AdsEngine.prototype.isPlayingAd = function () {
-  return this.isPlayingAd_;
-};
+    function unmute() {
+        adsManager_.setVolume(1);
+    }
 
-AdsEngine.prototype.isLinearAd = function () {
-  return this.isLinearAd_;
-};
+    function play() {
+        if (adsManager_) {
+            adsManager_.resume();
+        }
+    }
 
-AdsEngine.prototype.isMuted = function () {
-  if (this.adsManager_.getVolume() === 0) {
-    return true;
-  } else {
-    return false;
-  }
-};
+    function pause() {
+        if (adsManager_) {
+            adsManager_.pause();
+        }
+    }
 
-AdsEngine.prototype.mute = function () {
-  this.adsManager_.setVolume(0);
-};
+    function resize() {
+        if (adsManager_) {
+            adsManager_.resize(
+                adContainer_.clientWidth,
+                adContainer_.clientHeight,
+                google.ima.ViewMode.FULLSCREEN);
+        }
+    }
 
-AdsEngine.prototype.unmute = function () {
-  this.adsManager_.setVolume(1);
-};
+    ////////////////////////////////////////////////////////////////////////
+    function onAdsManagerLoaded(adsManagerLoadedEvent) {
+        debug_.log('+onAdsManagerLoaded');
 
-AdsEngine.prototype.play = function () {
-  if (this.adsManager_) {
-    this.adsManager_.resume();
-  }
-};
+        var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+        if (advertising_.enablePreloading) {
+            adsRenderingSettings.enablePreloading = advertising_.enablePreloading;
+        }
+        adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
 
-AdsEngine.prototype.pause = function () {
-  if (this.adsManager_) {
-    this.adsManager_.pause();
-  }
-};
+        adsManager_ = adsManagerLoadedEvent.getAdsManager(
+                media_, adsRenderingSettings);
 
-AdsEngine.prototype.resize = function() {
-  if (this.adsManager_) {
-    this.adsManager_.resize(
-      this.adContainer_.clientWidth,
-      this.adContainer_.clientHeight,
-      google.ima.ViewMode.FULLSCREEN);
-  }
-};
+        // Attach the pause/resume events.
+        // Handle errors.
+        adsManager_.addEventListener(
+            google.ima.AdErrorEvent.Type.AD_ERROR,
+            onAdError,
+            false,
+            this);
+        var events = [google.ima.AdEvent.Type.AD_BREAK_READY,
+            google.ima.AdEvent.Type.AD_METADATA,
+            google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+            google.ima.AdEvent.Type.CLICK,
+            google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
+            google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+            google.ima.AdEvent.Type.COMPLETE,
+            google.ima.AdEvent.Type.DURATION_CHANGE,
+            google.ima.AdEvent.Type.FIRST_QUARTILE,
+            google.ima.AdEvent.Type.LOADED,
+            google.ima.AdEvent.Type.MIDPOINT,
+            google.ima.AdEvent.Type.PAUSED,
+            google.ima.AdEvent.Type.RESUMED,
+            google.ima.AdEvent.Type.SKIPPED,
+            google.ima.AdEvent.Type.STARTED,
+            google.ima.AdEvent.Type.THIRD_QUARTILE,
+            google.ima.AdEvent.Type.VOLUME_CHANGED];
+        for (var index in events) {
+            adsManager_.addEventListener(
+                events[index],
+                onAdEvent,
+                false,
+                this);
+        }
 
-////////////////////////////////////////////////////////////////////////
-AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
-  this.debug_.log('+onAdsManagerLoaded');
+        startAds();
 
-  var adsRenderingSettings = new google.ima.AdsRenderingSettings();
-  if (this.advertising_.enablePreloading) {
-    adsRenderingSettings.enablePreloading = this.advertising_.enablePreloading;
-  }
-  adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+        debug_.log('-onAdsManagerLoaded');
+    }
 
-  this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
-      this.media_, adsRenderingSettings);
-  
-    // Attach the pause/resume events.
-  // Handle errors.
-  this.adsManager_.addEventListener(
-      google.ima.AdErrorEvent.Type.AD_ERROR,
-      this.onAdError,
-      false,
-      this);
-  var events = [google.ima.AdEvent.Type.AD_BREAK_READY,
-                google.ima.AdEvent.Type.AD_METADATA,
-                google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
-                google.ima.AdEvent.Type.CLICK,
-                google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
-                google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
-                google.ima.AdEvent.Type.COMPLETE,
-                google.ima.AdEvent.Type.DURATION_CHANGE,
-                google.ima.AdEvent.Type.FIRST_QUARTILE,
-                google.ima.AdEvent.Type.LOADED,
-                google.ima.AdEvent.Type.MIDPOINT,
-                google.ima.AdEvent.Type.PAUSED,
-                google.ima.AdEvent.Type.RESUMED,
-                google.ima.AdEvent.Type.SKIPPED,
-                google.ima.AdEvent.Type.STARTED,
-                google.ima.AdEvent.Type.THIRD_QUARTILE,
-                google.ima.AdEvent.Type.VOLUME_CHANGED];
-  for (var index in events) {
-    this.adsManager_.addEventListener(
-        events[index],
-        this.onAdEvent,
-        false,
-        this);
-  }
+    function onAdError(adErrorEvent) {
+        debug_.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
+        let err = adErrorEvent.getError();
+        // deserialize, getErrorCode, getInnerError, getMessage, getType, getVastErrorCode, serialize, toString
+        console.log('ad err: ', err);
 
-  this.startAds();
+        let errCode = err.getErrorCode();
+        let errMsg = err.getMessage();
 
-  this.debug_.log('-onAdsManagerLoaded');
-};
+        if (adsManager_) {
+            adsManager_.destroy();
+        }
+        //application_.resumeAfterAd();
+    }
 
-AdsEngine.prototype.onAdError = function(adErrorEvent) {
-  this.debug_.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
-  let err = adErrorEvent.getError();
-  // deserialize, getErrorCode, getInnerError, getMessage, getType, getVastErrorCode, serialize, toString
-  console.log('ad err: ', err);
+    function onAdEvent(adEvent) {
+        debug_.log('--onAdEvent--: ' + adEvent.type);
 
-  let errCode = err.getErrorCode();
-  let errMsg = err.getMessage();
+        let ad = adEvent.getAd();
 
-  if (this.adsManager_) {
-    this.adsManager_.destroy();
-  }
-  //this.application_.resumeAfterAd();
-};
+        switch (adEvent.type) {
+        case google.ima.AdEvent.Type.AD_BREAK_READY: {}
+            break;
+        case google.ima.AdEvent.Type.AD_METADATA: {
+                var cuePts = adEvent.getAdCuePoints();
+                console.log('cue points: ' + cuePts.h.join(","));
+            }
+            break;
+        case google.ima.AdEvent.Type.CLICK: {
+                //application_.adClicked();
+            }
+            break;
+        case google.ima.AdEvent.Type.COMPLETE: {
+                isPlayingAd_ = false;
+                eventBus_.trigger(Events.AD_COMPLETE);
+            }
+            break;
+        case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
+                eventBus_.trigger(Events.AD_CONTENT_PAUSE_REQUESTED);
+            }
+            break;
+        case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED: {
+                eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
+            }
+            break;
+        case google.ima.AdEvent.Type.DURATION_CHANGE: {}
+            break;
+        case google.ima.AdEvent.Type.LOADED: {
+                if (!ad.isLinear()) {
+                    eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
+                }
+            }
+            break;
+        case google.ima.AdEvent.Type.PAUSED: {
+                isPaused_ = true;
+            }
+            break;
+        case google.ima.AdEvent.Type.RESUMED: {
+                isPaused_ = false;
+            }
+            break;
+        case google.ima.AdEvent.Type.SKIPPED: {
+                debug_.log('--google.ima.AdEvent.Type.SKIPPED--');
+                // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
+                isPlayingAd_ = false;
+            }
+            break;
+        case google.ima.AdEvent.Type.STARTED: {
+                debug_.log('--google.ima.AdEvent.Type.STARTED--');
+                isPlayingAd_ = true;
+                isLinearAd_ = ad.isLinear();
 
-AdsEngine.prototype.onAdEvent = function(adEvent) {
-  this.debug_.log('--onAdEvent--: ' + adEvent.type);
+                eventBus_.trigger(Events.AD_STARTED, {
+                    ad: ad
+                });
+            }
+            break;
+        case google.ima.AdEvent.Type.VOLUME_CHANGED: {
+                console.log('ad volume: ' + adsManager_.getVolume());
+            }
+            break;
+        }
+    }
 
-  let ad = adEvent.getAd();
+    function onMediaLoadedMetadata() {
+        eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
+        debug_.log('+onMediaLoadedMetadata');
+        requestAds();
+        debug_.log('-onMediaLoadedMetadata');
+    }
 
-  switch (adEvent.type) {
-    case google.ima.AdEvent.Type.AD_BREAK_READY: {
-    } break;
-    case google.ima.AdEvent.Type.AD_METADATA: {
-      var cuePts = adEvent.getAdCuePoints();
-      console.log('cue points: ' + cuePts.h.join(","));
-    } break;
-    case google.ima.AdEvent.Type.CLICK: {
-      //this.application_.adClicked();
-    } break;
-    case google.ima.AdEvent.Type.COMPLETE: {
-      this.isPlayingAd_ = false;
-      this.eventBus_.trigger(Events.AD_COMPLETE);
-    } break;
-    case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
-      this.eventBus_.trigger(Events.AD_CONTENT_PAUSE_REQUESTED);
-    } break;
-    case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED: {
-      this.eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
-    } break;
-    case google.ima.AdEvent.Type.DURATION_CHANGE: {
-    } break;
-    case google.ima.AdEvent.Type.LOADED: {
-      if (!ad.isLinear()) {
-        this.eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
-      }
-    } break;
-    case google.ima.AdEvent.Type.PAUSED: {
-      this.isPaused_ = true;
-    } break;
-    case google.ima.AdEvent.Type.RESUMED: {
-      this.isPaused_ = false;
-    } break;
-    case google.ima.AdEvent.Type.SKIPPED: {
-      this.debug_.log('--google.ima.AdEvent.Type.SKIPPED--');
-      // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
-      this.isPlayingAd_ = false;
-    } break;
-    case google.ima.AdEvent.Type.STARTED: {
-      this.debug_.log('--google.ima.AdEvent.Type.STARTED--');
-      this.isPlayingAd_ = true;
-      this.isLinearAd_ = ad.isLinear();
+    function onMediaEnded() {
+        adsLoader_.contentComplete();
+    }
 
-      this.eventBus_.trigger(Events.AD_STARTED, {ad: ad});
-    } break;
-    case google.ima.AdEvent.Type.VOLUME_CHANGED: {
-      console.log('ad volume: ' + this.adsManager_.getVolume());
-    } break;
-  }
-};
-
-AdsEngine.prototype.onMediaEnded = function () {
-  this.adsLoader_.contentComplete();
-};
+    let instance = {
+        init: init,
+        isPlayingAd: isPlayingAd,
+        isLinearAd: isLinearAd,
+        play: play,
+        pause: pause,
+        isPaused: isPaused,
+        mute: mute,
+        unmute: unmute,
+        isMuted: isMuted,
+        resize: resize,
+        onMediaEnded: onMediaEnded,
+        requestAds: requestAds
+    }
+    setup();
+    return instance;
+}
 
 export default AdsEngine;

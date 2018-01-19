@@ -267,6 +267,10 @@ function Player(cfg) {
         }
     }
 
+    function seek(secs) {
+        cfg_.media.currentTime = secs;
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Events API
     function cast() {};
@@ -275,11 +279,7 @@ function Player(cfg) {
         if (mseEngine_) {
             mseEngine_.signalEndOfStream();
         }
-    };
-
-    function seek(secs) {
-        cfg_.media.currentTime = secs;
-    };
+    }
 
     // Begin - TextEngine
     function addTextTrack() {
@@ -351,7 +351,6 @@ function Player(cfg) {
 
         eventBus_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
         eventBus_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
-        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
 
         eventBus_.on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {})
 
@@ -373,13 +372,6 @@ function Player(cfg) {
         if (adsEngine_) {
             adsEngine_.onMediaEnded();
         }
-    }
-
-    function onMediaLoadedMetadata() {
-        eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
-        debug_.log('+onMediaLoadedMetadata');
-        adsEngine_.requestAds();
-        debug_.log('-onMediaLoadedMetadata');
     }
 
     function onSbUpdateEnded() {
@@ -466,6 +458,7 @@ function Player(cfg) {
         mute: mute,
         unmute: unmute,
         isMuted: isMuted,
+        seek: seek,
         test: test,
         test2: test2
     };
