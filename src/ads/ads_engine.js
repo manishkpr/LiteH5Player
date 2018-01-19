@@ -52,7 +52,6 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   }
 
   this.init();
-  this.requestAds();
 };
 
 AdsEngine.prototype.init = function() {
@@ -78,6 +77,14 @@ AdsEngine.prototype.init = function() {
       this);
 };
 
+AdsEngine.prototype.initialUserAction = function () {
+  // On iOS and Android devices, video playback must begin in a user action.
+  // AdDisplayContainer provides a initialize() API to be called at appropriate
+  // time.
+  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
+  this.adDisplayContainer_.initialize();
+};
+
 AdsEngine.prototype.requestAds = function() {
   this.width_ = this.adContainer_.clientWidth;
   this.height_ = this.adContainer_.clientHeight;
@@ -97,24 +104,22 @@ AdsEngine.prototype.requestAds = function() {
     adsRequest.forceNonLinearFullSlot = this.advertising_.forceNonLinearFullSlot;
   }
 
+  this.adsLoader_.getSettings().setAutoPlayAdBreaks(false);
   this.adsLoader_.requestAds(adsRequest);
 };
 
 // AdsEngine public functions
-AdsEngine.prototype.open = function() {
-  this.debug_.log('+AdsEngine.open');
+AdsEngine.prototype.startAds = function() {
+  this.debug_.log('+AdsEngine.startAds');
 
-  // On iOS and Android devices, video playback must begin in a user action.
-  // AdDisplayContainer provides a initialize() API to be called at appropriate
-  // time.
-  // see: https://developers.google.com/interactive-media-ads/docs/sdks/html5/mobile_video
-  this.adDisplayContainer_.initialize();
+  // sometimes, requestAds may be caught an error, so we return here directly.
+  if (!this.adsManager_) { return; }
 
   this.debug_.log('this.width_: ' + this.width_ + ', this.height_: ' + this.height_);
   this.adsManager_.init(this.width_, this.height_, google.ima.ViewMode.NORMAL);
   this.adsManager_.start();
 
-  this.debug_.log('-AdsEngine.open');
+  this.debug_.log('-AdsEngine.startAds');
 };
 
 AdsEngine.prototype.isPaused = function () {
@@ -186,7 +191,8 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
       this.onAdError,
       false,
       this);
-  var events = [google.ima.AdEvent.Type.AD_METADATA,
+  var events = [google.ima.AdEvent.Type.AD_BREAK_READY,
+                google.ima.AdEvent.Type.AD_METADATA,
                 google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
                 google.ima.AdEvent.Type.CLICK,
                 google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
@@ -210,11 +216,19 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
         this);
   }
 
+  this.eventBus_.trigger(Events.AD_ADS_MANAGER_LOADED);
+
   this.debug_.log('-onAdsManagerLoaded');
 };
 
 AdsEngine.prototype.onAdError = function(adErrorEvent) {
   this.debug_.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
+  let err = adErrorEvent.getError();
+  // deserialize, getErrorCode, getInnerError, getMessage, getType, getVastErrorCode, serialize, toString
+  console.log('ad err: ', err);
+
+  let errCode = err.getErrorCode();
+  let errMsg = err.getMessage();
 
   if (this.adsManager_) {
     this.adsManager_.destroy();
@@ -228,6 +242,8 @@ AdsEngine.prototype.onAdEvent = function(adEvent) {
   let ad = adEvent.getAd();
 
   switch (adEvent.type) {
+    case google.ima.AdEvent.Type.AD_BREAK_READY: {
+    } break;
     case google.ima.AdEvent.Type.AD_METADATA: {
       var cuePts = adEvent.getAdCuePoints();
       console.log('cue points: ' + cuePts.h.join(","));

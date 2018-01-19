@@ -26,13 +26,17 @@ class CoreEvents {
         this.MEDIA_WAITING = 'mediaWaiting';
 
         // ads internal events
+        this.AD_ERROR = 'adError';
         this.AD_STARTED = 'adStarted';
         this.AD_COMPLETE = 'adComplete';
         this.AD_CONTENT_PAUSE_REQUESTED = 'adContentPauseRequested';
         this.AD_CONTENT_RESUME_REQUESTED = 'adContentResumeRequested';
+        this.AD_ADS_MANAGER_LOADED = 'adAdsManagerLoaded';
 
         // log event
         this.LOG = 'log';
+
+        this.TEST_MSG = 'testMsg';
     }
 }
 

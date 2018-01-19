@@ -76,7 +76,9 @@ MediaEngine.prototype.onMediaEnded = function () {
 };
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
-  this.debug_.log('--onMediaMetadata--, width: ' + this.media_.width + ', height: ' + this.media_.height);
+  this.debug_.log('--onMediaMetadata--, width: ' + this.media_.width +
+   ', height: ' + this.media_.height +
+   ', duration: ' + this.media_.duration);
   this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
 };
 

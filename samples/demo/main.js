@@ -45,8 +45,8 @@ function enterFullScreen() {
   printLog('--enterFullScreen--');
   //var v = document.querySelector('.player');
   //var v = document.querySelector('.h5p-video-container');
-  //var v = document.querySelector('.h5p-video');
-  var v = document.querySelector('.html5-video-player');
+  var v = document.querySelector('.h5p-video');
+  //var v = document.querySelector('.html5-video-player');
 
   // Try to enter fullscreen mode in the browser
   var requestFullscreen = v.requestFullscreen ||
@@ -136,10 +136,13 @@ function initData() {
     playerContainer: 'player-container',
     media: media,
     advertising: {
+      //tag: 'http://10.2.64.68/tmp/1123.aa',
       tag: Single_Inline_Linear,
+      //tag: Single_Skippable_Inline,
+      //tag: VMAP_Pre_Mid_Post,
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      enablePreloading: true,
-      forceNonLinearFullSlot: false,
+      //enablePreloading: true,
+      //forceNonLinearFullSlot: false,
       locale: 'fr',
       companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
     }
@@ -217,6 +220,7 @@ function onBtnOpen() {
   //initTestTmp();
   //init1080i();
 
+  //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     audioCodec: audioCodec,
     aContents: aContents,
@@ -359,14 +363,16 @@ function onBtnTest() {
   // v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
 
 
-  if (player) {
-    player.mute();
-  }
+  // if (player) {
+  //   player.mute();
+  // }
+
+  player.test();
 }
 
 function onBtnTest2() {
   printLog('--onBtnTest2--');
-  //player.test2();
+  player.test2();
   //endBuffering();
 
   // var v = document.querySelector('.ytp-play-button');
@@ -375,13 +381,14 @@ function onBtnTest2() {
 
 
 
-  var v = document.querySelector('.h5p-video');
-  v.addEventListener("webkitfullscreenchange", function() {
-    printLog('--webkitfullscreenchange--');
-      //console.log(document.webkitIsFullScreen);
-  }, false);
+  // var v = document.querySelector('.h5p-video');
+  // v.addEventListener("webkitfullscreenchange", function() {
+  //   printLog('--webkitfullscreenchange--');
+  //     //console.log(document.webkitIsFullScreen);
+  // }, false);
 
-  v.webkitEnterFullScreen();
+  // v.webkitEnterFullScreen();
+
   //v.setAttribute('aria-hidden', true);
 }
 

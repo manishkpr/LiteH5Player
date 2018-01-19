@@ -19,6 +19,7 @@ import CommonUtils from './utils/common_utils';
 //////////////////////////////////////////////////////////////////////////////
 let Player = function (cfg) {
     this.cfg_ = cfg;
+    this.context_ = {};
 
     this.initUI();
     this.initData();
@@ -28,7 +29,7 @@ let Player = function (cfg) {
 Player.prototype.open = function (info) {
     this.streamInfo_ = info;
     this.debug_.log('Player, +open');
-    if (1) {
+    if (0) {
         if (info.audioCodec) {
             this.debug_.log('Player, +open: ' + info.audioCodec);
         }
@@ -52,6 +53,8 @@ Player.prototype.open = function (info) {
         this.mediaEngine_.setSrc(objURL);
         this.drmEngine_.setDrmInfo(this.streamInfo_);
     }
+
+    this.addPD();
 
     this.debug_.log('Player, -open');
 };
@@ -113,8 +116,12 @@ Player.prototype.addV = function () {
 };
 
 Player.prototype.addPD = function () {
-    this.debug_.log('+addPD');
+    this.debug_.log('+addPD, pdContent: ' + this.streamInfo_.pdContent);
     let url = this.streamInfo_.pdContent;
+
+    if (this.adsEngine_) {
+        this.adsEngine_.initialUserAction();
+    }
 
     let method = 1;
     if (method === 1) {
@@ -128,11 +135,6 @@ Player.prototype.addPD = function () {
 
         let request = { url: url, cbSuccess: cbSuccess.bind(self) };
         this.xhrLoader_.load(request);
-    }
-
-    // add ads
-    if (this.adsEngine_) {
-        this.adsEngine_.open();
     }
 
     this.debug_.log('-addPD');
@@ -263,30 +265,20 @@ Player.prototype.setCueLineAlign = function (lineAlign) {
 };
 // End - TextEngine
 
+///////////////////////////////////////////////////////////////////////////
+//Player.prototype.onTestMsg = function () {
+function onTestMsg() {
+    console.log('+onTestMsg');
+};
+
 Player.prototype.test = function () {
-    //this.mseEngine_.signalEndOfStream();
-
-    //this.mseEngine_.setDuration(12);
-    //this.debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
-
-    //
-    function sum_v2(x, y) {
-        function recur(a, b) {
-        if (b > 0) {
-            return recur(a + 1, b - 1);
-          } else {
-            return a;
-          }
-        }
-        // 尾递归即在程序尾部调用自身，注意这里没有其他的运算
-        return recur(x, y);
-    }
-
-    this.debug_.log('sum_v2(1,100000) = ' + sum_v2(1,100000));
+    this.on(oldmtn.Events.TEST_MSG, onTestMsg, this.context_);
+    this.eventBus_.trigger(oldmtn.Events.TEST_MSG);
 };
 
 Player.prototype.test2 = function () {
-    
+    this.off(oldmtn.Events.TEST_MSG, onTestMsg, this.context_);
+    this.eventBus_.trigger(oldmtn.Events.TEST_MSG);
 };
 
 Player.prototype.attribute = function () {
@@ -317,6 +309,8 @@ Player.prototype.initData = function () {
     this.videoIndex_ = 0;
     this.streamInfo_ = null;
     this.adsEngine_ = null;
+    this.contentInitialized_ = false;
+    this.adsLoaded_ = false;
 
     this.eventBus_ = EventBus(oldmtn).getInstance();
     this.debug_ = Debug(oldmtn).getInstance();
@@ -354,7 +348,7 @@ Player.prototype.addEventListeners = function () {
     this.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, this.onAdContentPauseRequested.bind(this), {});
     this.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, this.onAdContentResumeRequested.bind(this), {});
     this.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
-    
+    this.on(oldmtn.Events.AD_ADS_MANAGER_LOADED, this.onAdAdsManagerLoaded.bind(this), {});
     
 };
 
@@ -375,6 +369,16 @@ Player.prototype.onMediaEnded = function () {
 };
 
 Player.prototype.onMediaLoadedMetadata = function () {
+    this.debug_.log('+onMediaLoadedMetadata');
+    this.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetadata.bind(this), {});
+    this.adsEngine_.requestAds();
+
+    // this.contentInitialized_ = true;
+    // if (this.adsLoaded_) {
+    //     if (this.adsEngine_) {
+    //         this.adsEngine_.requestAds();
+    //     }
+    // }
 };
 
 Player.prototype.onSbUpdateEnded = function () {
@@ -415,6 +419,17 @@ Player.prototype.onAdStarted = function (e) {
             div.innerHTML = content;
         }
     }
+};
+
+Player.prototype.onAdAdsManagerLoaded = function () {
+    this.adsEngine_.startAds();
+
+    // this.adsLoaded_ = true;
+    // if (this.contentInitialized_) {
+    //     if (this.adsEngine_) {
+            
+    //     }
+    // }
 };
 
 Player.prototype.onAdComplete = function () {
