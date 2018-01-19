@@ -137,9 +137,9 @@ function initData() {
     media: media,
     advertising: {
       //tag: 'http://10.2.64.68/tmp/1123.aa',
-      tag: Single_Inline_Linear,
+      //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
-      //tag: VMAP_Pre_Mid_Post,
+      tag: VMAP_Pre_Mid_Post,
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
       //enablePreloading: true,
       //forceNonLinearFullSlot: false,
