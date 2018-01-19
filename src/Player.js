@@ -17,428 +17,481 @@ import XHRLoader from './utils/xhr_loader';
 import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
-let Player = function (cfg) {
-    this.cfg_ = cfg;
-    this.context_ = {};
+function Player(cfg) {
+    let cfg_ = cfg;
+    let context_ = {};
 
-    this.initUI();
-    this.initData();
-    this.addEventListeners();
-};
+    let uiEngine_;
+    let playerContainer_;
 
-Player.prototype.open = function (info) {
-    this.streamInfo_ = info;
-    this.debug_.log('Player, +open');
-    if (0) {
-        if (info.audioCodec) {
-            this.debug_.log('Player, +open: ' + info.audioCodec);
+    let audioIndex_ = 0;
+    let videoIndex_ = 0;
+    let streamInfo_ = null;
+
+    let eventBus_;
+    let debug_;
+    let xhrLoader_;
+    let mediaEngine_;
+    let textEngine_;
+    let mseEngine_;
+    let drmEngine_;
+
+    // ads part
+    let contentInitialized_ = false;
+    let adsLoaded_ = false;
+    let adContainer_;
+    let adsEngine_;
+
+    function setup() {
+        initUI();
+        initData();
+        addEventListeners();
+    }
+
+    function open(info) {
+        streamInfo_ = info;
+        debug_.log('Player, +open');
+        if (0) {
+            if (info.audioCodec) {
+                debug_.log('Player, +open: ' + info.audioCodec);
+            }
+            if (info.videoCodec) {
+                debug_.log('Player, +open: ' + info.videoCodec);
+            }
+
+            if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
+                debug_.log('Don\'t support: ' + info.audioCodec);
+                return;
+            }
+
+            if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
+                debug_.log('Don\'t support: ' + info.videoCodec);
+                return;
+            }
+
+            mseEngine_.open(streamInfo_);
+
+            let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
+            mediaEngine_.setSrc(objURL);
+            drmEngine_.setDrmInfo(streamInfo_);
         }
-        if (info.videoCodec) {
-            this.debug_.log('Player, +open: ' + info.videoCodec);
+
+        addPD();
+
+        debug_.log('Player, -open');
+    };
+
+    function dellAll() {
+        mseEngine_.removeBuffer();
+    };
+
+    function close() {
+        if (mediaEngine_) {
+            mediaEngine_.reset();
         }
 
-        if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
-            this.debug_.log('Don\'t support: ' + info.audioCodec);
+        audioIndex_ = 0;
+        videoIndex_ = 0;
+        streamInfo_ = null;
+    };
+
+    //////////////////////////////////////////////////////////////
+    function addA() {
+        if (audioIndex_ >= streamInfo_.aContents.length) {
+            debug_.log('There don\'t have more content to add.');
             return;
         }
 
-        if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
-            this.debug_.log('Don\'t support: ' + info.videoCodec);
-            return;
-        }
+        let url = streamInfo_.aContents[audioIndex_];
 
-        this.mseEngine_.open(this.streamInfo_);
-
-        let objURL = window.URL.createObjectURL(this.mseEngine_.getMediaSource());
-        this.mediaEngine_.setSrc(objURL);
-        this.drmEngine_.setDrmInfo(this.streamInfo_);
-    }
-
-    this.addPD();
-
-    this.debug_.log('Player, -open');
-};
-
-Player.prototype.dellAll = function () {
-    this.mseEngine_.removeBuffer();
-};
-
-Player.prototype.close = function () {
-    if (this.mediaEngine_) {
-        this.mediaEngine_.reset();
-    }
-
-    this.audioIndex_ = 0;
-    this.videoIndex_ = 0;
-    this.streamInfo_ = null;
-};
-
-//////////////////////////////////////////////////////////////
-Player.prototype.addA = function () {
-    if (this.audioIndex_ >= this.streamInfo_.aContents.length) {
-        this.debug_.log('There don\'t have more content to add.');
-        return;
-    }
-
-    let url = this.streamInfo_.aContents[this.audioIndex_];
-
-    let self = this;
-    function cbSuccess(bytes) {
-        //this.debug_.log('before my appendBuffer');
-        this.mseEngine_.appendBuffer('audio', bytes);
-
-        this.audioIndex_ ++;
-        //this.debug_.log('after my appendBuffer');
-    }
-
-    let request = {url: url, cbSuccess: cbSuccess.bind(self)};
-    this.xhrLoader_.load(request);
-};
-
-Player.prototype.addV = function () {
-    if (this.videoIndex_ >= this.streamInfo_.vContents.length) {
-        this.debug_.log('There don\'t have more content to add.');
-        return;
-    }
-
-    let url = this.streamInfo_.vContents[this.videoIndex_];
-
-    let self = this;
-    function cbSuccess(bytes) {
-        //this.debug_.log('before my appendBuffer');
-        this.mseEngine_.appendBuffer('video', bytes);
-        this.videoIndex_ ++;
-        //this.debug_.log('after my appendBuffer');
-    }
-
-    let request = { url: url, cbSuccess: cbSuccess.bind(self) };
-    this.xhrLoader_.load(request);
-};
-
-Player.prototype.addPD = function () {
-    this.debug_.log('+addPD, pdContent: ' + this.streamInfo_.pdContent);
-    let url = this.streamInfo_.pdContent;
-
-    if (this.adsEngine_) {
-        this.adsEngine_.initialUserAction();
-    }
-
-    let method = 1;
-    if (method === 1) {
-        this.cfg_.media.src = this.streamInfo_.pdContent;
-        this.cfg_.media.load();
-    } else {
         let self = this;
         function cbSuccess(bytes) {
-            this.mseEngine_.appendBuffer('video', bytes);
+            //debug_.log('before my appendBuffer');
+            mseEngine_.appendBuffer('audio', bytes);
+
+            audioIndex_++;
+            //debug_.log('after my appendBuffer');
         }
 
-        let request = { url: url, cbSuccess: cbSuccess.bind(self) };
-        this.xhrLoader_.load(request);
-    }
+        let request = {
+            url: url,
+            cbSuccess: cbSuccess.bind(self)
+        };
+        xhrLoader_.load(request);
+    };
 
-    this.debug_.log('-addPD');
-};
-
-//////////////////////////////////////////////////////////////////////////////////
-// 操作API
-Player.prototype.currentTime = function () {
-    if (!this.mediaEngine_) { return; }
-    return this.mediaEngine_.currentTime();
-};
-
-Player.prototype.duration = function () {
-    if (!this.mediaEngine_) { return; }
-    return this.mediaEngine_.duration();
-};
-
-Player.prototype.isMuted = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
-        return this.adsEngine_.isMuted();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        return this.mediaEngine_.isMuted();
-    }
-};
-
-Player.prototype.isPaused = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
-        return this.adsEngine_.isPaused();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        return this.mediaEngine_.isPaused();
-    }
-};
-
-Player.prototype.isEnded = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
-
-    } else {
-        if (!this.mediaEngine_) { return; }
-        this.mediaEngine_.isEnded();
-    }
-};
-
-Player.prototype.mute = function() {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
-        this.adsEngine_.mute();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        this.mediaEngine_.mute();
-    }
-};
-
-Player.prototype.pause = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
-        this.adsEngine_.pause();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        this.mediaEngine_.pause();
-    }
-};
-
-Player.prototype.play = function () {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd() && this.adsEngine_.isLinearAd()) {
-        this.adsEngine_.play();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        this.mediaEngine_.play();
-    }
-};
-
-Player.prototype.unmute = function() {
-    if (this.adsEngine_ && this.adsEngine_.isPlayingAd()) {
-        this.adsEngine_.unmute();
-    } else {
-        if (!this.mediaEngine_) { return; }
-        this.mediaEngine_.unmute();
-    }
-};
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-Player.prototype.on = function (type, listener, scope) {
-    this.eventBus_.on(type, listener, scope);
-};
-
-Player.prototype.off = function (type, listener, scope) {
-    this.eventBus_.off(type, listener, scope);
-};
-
-Player.prototype.cast = function () {
-    
-};
-
-Player.prototype.signalEndOfStream = function () {
-    if (this.mseEngine_) {
-        this.mseEngine_.signalEndOfStream();
-    }
-};
-
-Player.prototype.seek = function (secs) {
-    this.cfg_.media.currentTime = secs;
-};
-
-// Begin - TextEngine
-Player.prototype.addTextTrack = function () {
-    this.textEngine_.addTextTrack();
-};
-
-Player.prototype.removeTextTrack = function () {
-    
-};
-
-Player.prototype.setTextTrackHidden = function () {
-    this.textEngine_.setTextTrackHidden();
-};
-
-Player.prototype.setCueAlign = function (align) {
-    this.textEngine_.setCueAlign(align);
-};
-
-Player.prototype.setCueLine = function (line) {
-    this.textEngine_.setCueLine(line);
-};
-
-Player.prototype.setCueLineAlign = function (lineAlign) {
-    this.textEngine_.setCueLineAlign(lineAlign);
-};
-// End - TextEngine
-
-///////////////////////////////////////////////////////////////////////////
-//Player.prototype.onTestMsg = function () {
-function onTestMsg() {
-    console.log('+onTestMsg');
-};
-
-Player.prototype.test = function () {
-    this.on(oldmtn.Events.TEST_MSG, onTestMsg, this.context_);
-    this.eventBus_.trigger(oldmtn.Events.TEST_MSG);
-};
-
-Player.prototype.test2 = function () {
-    this.off(oldmtn.Events.TEST_MSG, onTestMsg, this.context_);
-    this.eventBus_.trigger(oldmtn.Events.TEST_MSG);
-};
-
-Player.prototype.attribute = function () {
-    let media = this.cfg_.media;
-    this.debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
-    this.debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
-
-    this.mseEngine_.setDuration(200);
-
-    let a = 2;
-    let b = a;
-};
-
-/////////////////////////////////////////////////////////////////////////////////
-// private functions
-Player.prototype.initUI = function () {
-    this.uiEngine_ = new UIEngine(this.cfg_);
-    if (this.cfg_.advertising) {
-        let elements = this.uiEngine_.getUIElements();
-
-        this.playerContainer_ = elements.playerContainer;
-        this.adContainer_ = elements.adContainer;
-    }
-};
-
-Player.prototype.initData = function () {
-    this.audioIndex_ = 0;
-    this.videoIndex_ = 0;
-    this.streamInfo_ = null;
-    this.adsEngine_ = null;
-    this.contentInitialized_ = false;
-    this.adsLoaded_ = false;
-
-    this.eventBus_ = EventBus(oldmtn).getInstance();
-    this.debug_ = Debug(oldmtn).getInstance();
-    this.xhrLoader_ = new XHRLoader();
-    this.mediaEngine_ = new MediaEngine(this.cfg_.media);
-    this.textEngine_ = new TextEngine(this.cfg_.media);
-    this.mseEngine_ = new MediaSourceEngine();
-    this.drmEngine_ = new DRMEngine(this.cfg_.media);
-    if (this.cfg_.advertising) {
-        this.adsEngine_ = new AdsEngine(this.adContainer_, this.cfg_.media, this.cfg_.advertising);
-    }
-};
-
-Player.prototype.addEventListeners = function () {
-    function onFullscreenChange(e) {
-        this.debug_.log('onFullscreenChange');
-        if (this.adsEngine_) {
-            this.adsEngine_.resize();
+    function addV() {
+        if (videoIndex_ >= streamInfo_.vContents.length) {
+            debug_.log('There don\'t have more content to add.');
+            return;
         }
-    }
-    document.addEventListener("fullscreenchange", onFullscreenChange.bind(this));
-    document.addEventListener("mozfullscreenchange", onFullscreenChange.bind(this));
-    document.addEventListener("webkitfullscreenchange", onFullscreenChange.bind(this));
-    document.addEventListener("msfullscreenchange", onFullscreenChange.bind(this));
 
-    this.on(oldmtn.Events.MSE_OPENED, this.onMSEOpened.bind(this), {});
+        let url = streamInfo_.vContents[videoIndex_];
 
-    this.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
-    this.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
-    this.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetadata.bind(this), {});
-
-    this.on(oldmtn.Events.SB_UPDATE_ENDED, this.onSbUpdateEnded.bind(this), {})
-
-    this.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete.bind(this), {});
-    this.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, this.onAdContentPauseRequested.bind(this), {});
-    this.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, this.onAdContentResumeRequested.bind(this), {});
-    this.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
-    this.on(oldmtn.Events.AD_ADS_MANAGER_LOADED, this.onAdAdsManagerLoaded.bind(this), {});
-    
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// Begin -- internal events listener functions
-Player.prototype.onMSEOpened = function () {
-    this.mediaEngine_.revokeSrc();
-};
-
-Player.prototype.onMediaDurationChanged = function () {
-    
-};
-
-Player.prototype.onMediaEnded = function () {
-    if (this.adsEngine_) {
-        this.adsEngine_.onMediaEnded();
-    }
-};
-
-Player.prototype.onMediaLoadedMetadata = function () {
-    this.debug_.log('+onMediaLoadedMetadata');
-    this.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetadata.bind(this), {});
-    this.adsEngine_.requestAds();
-
-    // this.contentInitialized_ = true;
-    // if (this.adsLoaded_) {
-    //     if (this.adsEngine_) {
-    //         this.adsEngine_.requestAds();
-    //     }
-    // }
-};
-
-Player.prototype.onSbUpdateEnded = function () {
-    // Need to signal end of stream when add pd to mse
-    if (this.adsEngine_) {
-        this.mseEngine_.signalEndOfStream();
-    }
-};
-
-Player.prototype.onAdContentPauseRequested = function () {
-    this.mediaEngine_.pause();
-};
-
-Player.prototype.onAdContentResumeRequested = function () {
-    if (!this.mediaEngine_.isEnded()) {
-        this.mediaEngine_.play();
-    }
-};
-
-Player.prototype.onAdStarted = function (e) {
-    let ad = e.ad;
-
-    let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
-    selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
-    selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
-    selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
-
-    for (let i = 0; i < this.cfg_.advertising.companions.length; i ++) {
-        let companion = this.cfg_.advertising.companions[i];
-        // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
-        let companionAds = ad.getCompanionAds(companion.width, companion.height, selectionCriteria);
-        if (companionAds && companionAds.length > 0) {
-            let companionAd = companionAds[0];
-            // Get HTML content from the companion ad.
-            let content = companionAd.getContent();
-            // Write the content to the companion ad slot.
-            let div = document.getElementById(companion.id);
-            div.innerHTML = content;
+        let self = this;
+        function cbSuccess(bytes) {
+            //debug_.log('before my appendBuffer');
+            mseEngine_.appendBuffer('video', bytes);
+            videoIndex_++;
+            //debug_.log('after my appendBuffer');
         }
-    }
+
+        let request = {
+            url: url,
+            cbSuccess: cbSuccess.bind(self)
+        };
+        xhrLoader_.load(request);
+    };
+
+    function addPD() {
+        debug_.log('+addPD, pdContent: ' + streamInfo_.pdContent);
+        let url = streamInfo_.pdContent;
+
+        if (adsEngine_) {
+            adsEngine_.initialUserAction();
+        }
+
+        let method = 1;
+        if (method === 1) {
+            cfg_.media.src = streamInfo_.pdContent;
+            cfg_.media.load();
+        } else {
+            let self = this;
+            function cbSuccess(bytes) {
+                mseEngine_.appendBuffer('video', bytes);
+            }
+
+            let request = {
+                url: url,
+                cbSuccess: cbSuccess.bind(self)
+            };
+            xhrLoader_.load(request);
+        }
+
+        debug_.log('-addPD');
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////
+    // 操作API
+    function currentTime() {
+        if (!mediaEngine_) {
+            return;
+        }
+        return mediaEngine_.currentTime();
+    };
+
+    function duration() {
+        if (!mediaEngine_) {
+            return;
+        }
+        return mediaEngine_.duration();
+    };
+
+    function isMuted() {
+        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+            return adsEngine_.isMuted();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.isMuted();
+        }
+    };
+
+    function isPaused() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            return adsEngine_.isPaused();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.isPaused();
+        }
+    };
+
+    function isEnded() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
+        else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.isEnded();
+        }
+    };
+
+    function mute() {
+        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+            adsEngine_.mute();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.mute();
+        }
+    };
+
+    function pause() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            adsEngine_.pause();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.pause();
+        }
+    };
+
+    function play() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            adsEngine_.play();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.play();
+        }
+    };
+
+    function unmute() {
+        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+            adsEngine_.unmute();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.unmute();
+        }
+    };
+
+    /////////////////////////////////////////////////////////////////////////////////
+    //
+    function on(type, listener, scope) {
+        eventBus_.on(type, listener, scope);
+    };
+
+    function off(type, listener, scope) {
+        eventBus_.off(type, listener, scope);
+    };
+
+    function cast() {};
+
+    function signalEndOfStream() {
+        if (mseEngine_) {
+            mseEngine_.signalEndOfStream();
+        }
+    };
+
+    function seek(secs) {
+        cfg_.media.currentTime = secs;
+    };
+
+    // Begin - TextEngine
+    function addTextTrack() {
+        textEngine_.addTextTrack();
+    };
+
+    function removeTextTrack() {};
+
+    function setTextTrackHidden() {
+        textEngine_.setTextTrackHidden();
+    };
+
+    function setCueAlign(align) {
+        textEngine_.setCueAlign(align);
+    };
+
+    function setCueLine(line) {
+        textEngine_.setCueLine(line);
+    };
+
+    function setCueLineAlign(lineAlign) {
+        textEngine_.setCueLineAlign(lineAlign);
+    };
+    // End - TextEngine
+
+    ///////////////////////////////////////////////////////////////////////////
+    //function onTestMsg() {
+    function onTestMsg() {
+        console.log('+onTestMsg');
+    };
+
+    function test() {
+        on(oldmtn.Events.TEST_MSG, onTestMsg, context_);
+        eventBus_.trigger(oldmtn.Events.TEST_MSG);
+    };
+
+    function test2() {
+        off(oldmtn.Events.TEST_MSG, onTestMsg, context_);
+        eventBus_.trigger(oldmtn.Events.TEST_MSG);
+    };
+
+    function attribute() {
+        let media = cfg_.media;
+        debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
+        debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
+
+        mseEngine_.setDuration(200);
+
+        let a = 2;
+        let b = a;
+    };
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // private functions
+    function initUI() {
+        uiEngine_ = new UIEngine(cfg_);
+        if (cfg_.advertising) {
+            let elements = uiEngine_.getUIElements();
+
+            playerContainer_ = elements.playerContainer;
+            adContainer_ = elements.adContainer;
+        }
+    };
+
+    function initData() {
+        audioIndex_ = 0;
+        videoIndex_ = 0;
+        streamInfo_ = null;
+        adsEngine_ = null;
+        contentInitialized_ = false;
+        adsLoaded_ = false;
+
+        eventBus_ = EventBus(oldmtn).getInstance();
+        debug_ = Debug(oldmtn).getInstance();
+        xhrLoader_ = new XHRLoader();
+        mediaEngine_ = new MediaEngine(cfg_.media);
+        textEngine_ = new TextEngine(cfg_.media);
+        mseEngine_ = new MediaSourceEngine();
+        drmEngine_ = new DRMEngine(cfg_.media);
+        if (cfg_.advertising) {
+            adsEngine_ = new AdsEngine(adContainer_, cfg_.media, cfg_.advertising);
+        }
+    };
+
+    function addEventListeners() {
+        function onFullscreenChange(e) {
+            debug_.log('onFullscreenChange');
+            if (adsEngine_) {
+                adsEngine_.resize();
+            }
+        }
+        document.addEventListener("fullscreenchange", onFullscreenChange);
+        document.addEventListener("mozfullscreenchange", onFullscreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+        document.addEventListener("msfullscreenchange", onFullscreenChange);
+
+        on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+
+        on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
+        on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
+        on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, {});
+
+        on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {})
+
+        on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
+        on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
+        on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
+        on(oldmtn.Events.AD_STARTED, onAdStarted, {});
+        on(oldmtn.Events.AD_ADS_MANAGER_LOADED, onAdAdsManagerLoaded, {});
+
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Begin -- internal events listener functions
+    function onMSEOpened() {
+        mediaEngine_.revokeSrc();
+    };
+
+    function onMediaDurationChanged() {};
+
+    function onMediaEnded() {
+        if (adsEngine_) {
+            adsEngine_.onMediaEnded();
+        }
+    };
+
+    function onMediaLoadedMetadata() {
+        debug_.log('+onMediaLoadedMetadata');
+        off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, {});
+        adsEngine_.requestAds();
+
+        // contentInitialized_ = true;
+        // if (adsLoaded_) {
+        //     if (adsEngine_) {
+        //         adsEngine_.requestAds();
+        //     }
+        // }
+    };
+
+    function onSbUpdateEnded() {
+        // Need to signal end of stream when add pd to mse
+        if (adsEngine_) {
+            mseEngine_.signalEndOfStream();
+        }
+    };
+
+    function onAdContentPauseRequested() {
+        mediaEngine_.pause();
+    };
+
+    function onAdContentResumeRequested() {
+        if (!mediaEngine_.isEnded()) {
+            mediaEngine_.play();
+        }
+    };
+
+    function onAdStarted(e) {
+        let ad = e.ad;
+
+        let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
+        selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
+        selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
+        selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
+
+        for (let i = 0; i < cfg_.advertising.companions.length; i++) {
+            let companion = cfg_.advertising.companions[i];
+            // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
+            let companionAds = ad.getCompanionAds(companion.width, companion.height, selectionCriteria);
+            if (companionAds && companionAds.length > 0) {
+                let companionAd = companionAds[0];
+                // Get HTML content from the companion ad.
+                let content = companionAd.getContent();
+                // Write the content to the companion ad slot.
+                let div = document.getElementById(companion.id);
+                div.innerHTML = content;
+            }
+        }
+    };
+
+    function onAdAdsManagerLoaded() {
+        adsEngine_.startAds();
+
+        // adsLoaded_ = true;
+        // if (contentInitialized_) {
+        //     if (adsEngine_) {
+
+        //     }
+        // }
+    };
+
+    function onAdComplete() {};
+
+    // End -- internal events listener functions
+
+    let instance = {
+        open: open,
+        addA: addA,
+        addV: addV,
+        addPD: addPD,
+        on: on,
+        off: off,
+        test: test,
+        test2: test2
+    };
+    
+    setup();
+    
+    return instance;
 };
-
-Player.prototype.onAdAdsManagerLoaded = function () {
-    this.adsEngine_.startAds();
-
-    // this.adsLoaded_ = true;
-    // if (this.contentInitialized_) {
-    //     if (this.adsEngine_) {
-            
-    //     }
-    // }
-};
-
-Player.prototype.onAdComplete = function () {
-};
-
-// End -- internal events listener functions
 
 export default Player;
-
-
-
-
