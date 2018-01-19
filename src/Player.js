@@ -37,8 +37,6 @@ function Player(cfg) {
     let drmEngine_;
 
     // ads part
-    let contentInitialized_ = false;
-    let adsLoaded_ = false;
     let adContainer_;
     let adsEngine_;
 
@@ -79,11 +77,11 @@ function Player(cfg) {
         addPD();
 
         debug_.log('Player, -open');
-    };
+    }
 
     function dellAll() {
         mseEngine_.removeBuffer();
-    };
+    }
 
     function close() {
         if (mediaEngine_) {
@@ -147,10 +145,6 @@ function Player(cfg) {
         debug_.log('+addPD, pdContent: ' + streamInfo_.pdContent);
         let url = streamInfo_.pdContent;
 
-        if (adsEngine_) {
-            adsEngine_.initialUserAction();
-        }
-
         let method = 1;
         if (method === 1) {
             cfg_.media.src = streamInfo_.pdContent;
@@ -168,78 +162,22 @@ function Player(cfg) {
             xhrLoader_.load(request);
         }
 
+        if (adsEngine_) {
+            adsEngine_.init();
+        }
+
         debug_.log('-addPD');
     };
 
     //////////////////////////////////////////////////////////////////////////////////
     // 操作API
-    function currentTime() {
-        if (!mediaEngine_) {
-            return;
-        }
-        return mediaEngine_.currentTime();
-    };
+    function on(type, listener, scope) {
+        eventBus_.on(type, listener, scope);
+    }
 
-    function duration() {
-        if (!mediaEngine_) {
-            return;
-        }
-        return mediaEngine_.duration();
-    };
-
-    function isMuted() {
-        if (adsEngine_ && adsEngine_.isPlayingAd()) {
-            return adsEngine_.isMuted();
-        } else {
-            if (!mediaEngine_) {
-                return;
-            }
-            return mediaEngine_.isMuted();
-        }
-    };
-
-    function isPaused() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            return adsEngine_.isPaused();
-        } else {
-            if (!mediaEngine_) {
-                return;
-            }
-            return mediaEngine_.isPaused();
-        }
-    };
-
-    function isEnded() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
-        else {
-            if (!mediaEngine_) {
-                return;
-            }
-            mediaEngine_.isEnded();
-        }
-    };
-
-    function mute() {
-        if (adsEngine_ && adsEngine_.isPlayingAd()) {
-            adsEngine_.mute();
-        } else {
-            if (!mediaEngine_) {
-                return;
-            }
-            mediaEngine_.mute();
-        }
-    };
-
-    function pause() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            adsEngine_.pause();
-        } else {
-            if (!mediaEngine_) {
-                return;
-            }
-            mediaEngine_.pause();
-        }
-    };
+    function off(type, listener, scope) {
+        eventBus_.off(type, listener, scope);
+    }
 
     function play() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
@@ -250,7 +188,62 @@ function Player(cfg) {
             }
             mediaEngine_.play();
         }
-    };
+    }
+
+    function pause() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            adsEngine_.pause();
+        } else {
+            if (!mediaEngine_) { return; }
+            mediaEngine_.pause();
+        }
+    }
+
+    function isPaused() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            return adsEngine_.isPaused();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.isPaused();
+        }
+    }
+
+    function currentTime() {
+        if (!mediaEngine_) {
+            return;
+        }
+        return mediaEngine_.currentTime();
+    }
+
+    function duration() {
+        if (!mediaEngine_) {
+            return;
+        }
+        return mediaEngine_.duration();
+    }
+    
+    function isEnded() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
+        else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.isEnded();
+        }
+    }
+
+    function mute() {
+        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+            adsEngine_.mute();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.mute();
+        }
+    }
 
     function unmute() {
         if (adsEngine_ && adsEngine_.isPlayingAd()) {
@@ -261,18 +254,21 @@ function Player(cfg) {
             }
             mediaEngine_.unmute();
         }
-    };
+    }
+
+    function isMuted() {
+        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+            return adsEngine_.isMuted();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.isMuted();
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
-    //
-    function on(type, listener, scope) {
-        eventBus_.on(type, listener, scope);
-    };
-
-    function off(type, listener, scope) {
-        eventBus_.off(type, listener, scope);
-    };
-
+    // Events API
     function cast() {};
 
     function signalEndOfStream() {
@@ -309,33 +305,6 @@ function Player(cfg) {
     };
     // End - TextEngine
 
-    ///////////////////////////////////////////////////////////////////////////
-    //function onTestMsg() {
-    function onTestMsg() {
-        console.log('+onTestMsg');
-    };
-
-    function test() {
-        on(oldmtn.Events.TEST_MSG, onTestMsg, context_);
-        eventBus_.trigger(oldmtn.Events.TEST_MSG);
-    };
-
-    function test2() {
-        off(oldmtn.Events.TEST_MSG, onTestMsg, context_);
-        eventBus_.trigger(oldmtn.Events.TEST_MSG);
-    };
-
-    function attribute() {
-        let media = cfg_.media;
-        debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
-        debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
-
-        mseEngine_.setDuration(200);
-
-        let a = 2;
-        let b = a;
-    };
-
     /////////////////////////////////////////////////////////////////////////////////
     // private functions
     function initUI() {
@@ -353,8 +322,6 @@ function Player(cfg) {
         videoIndex_ = 0;
         streamInfo_ = null;
         adsEngine_ = null;
-        contentInitialized_ = false;
-        adsLoaded_ = false;
 
         eventBus_ = EventBus(oldmtn).getInstance();
         debug_ = Debug(oldmtn).getInstance();
@@ -380,65 +347,57 @@ function Player(cfg) {
         document.addEventListener("webkitfullscreenchange", onFullscreenChange);
         document.addEventListener("msfullscreenchange", onFullscreenChange);
 
-        on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+        eventBus_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
 
-        on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-        on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
-        on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, {});
+        eventBus_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
+        eventBus_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
+        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
 
-        on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {})
+        eventBus_.on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {})
 
-        on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
-        on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
-        on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
-        on(oldmtn.Events.AD_STARTED, onAdStarted, {});
-        on(oldmtn.Events.AD_ADS_MANAGER_LOADED, onAdAdsManagerLoaded, {});
-
+        eventBus_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
+        eventBus_.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
+        eventBus_.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
+        eventBus_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Begin -- internal events listener functions
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
-    };
+    }
 
-    function onMediaDurationChanged() {};
+    function onMediaDurationChanged() {}
 
     function onMediaEnded() {
         if (adsEngine_) {
             adsEngine_.onMediaEnded();
         }
-    };
+    }
 
     function onMediaLoadedMetadata() {
+        eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
         debug_.log('+onMediaLoadedMetadata');
-        off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, {});
         adsEngine_.requestAds();
-
-        // contentInitialized_ = true;
-        // if (adsLoaded_) {
-        //     if (adsEngine_) {
-        //         adsEngine_.requestAds();
-        //     }
-        // }
-    };
+        debug_.log('-onMediaLoadedMetadata');
+    }
 
     function onSbUpdateEnded() {
         // Need to signal end of stream when add pd to mse
         if (adsEngine_) {
             mseEngine_.signalEndOfStream();
         }
-    };
+    }
 
     function onAdContentPauseRequested() {
         mediaEngine_.pause();
-    };
+    }
 
     function onAdContentResumeRequested() {
         if (!mediaEngine_.isEnded()) {
             mediaEngine_.play();
         }
-    };
+    }
 
     function onAdStarted(e) {
         let ad = e.ad;
@@ -463,20 +422,33 @@ function Player(cfg) {
         }
     };
 
-    function onAdAdsManagerLoaded() {
-        adsEngine_.startAds();
-
-        // adsLoaded_ = true;
-        // if (contentInitialized_) {
-        //     if (adsEngine_) {
-
-        //     }
-        // }
-    };
-
-    function onAdComplete() {};
+    function onAdComplete() {}
 
     // End -- internal events listener functions
+
+    ///////////////////////////////////////////////////////////////////////////
+    //function onTestMsg() {
+    function onTestMsg() {
+        console.log('+onTestMsg');
+    }
+
+    function test() {
+        adsEngine_.initialUserAction();
+    }
+
+    function test2() {
+    }
+
+    function attribute() {
+        let media = cfg_.media;
+        debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
+        debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
+
+        mseEngine_.setDuration(200);
+
+        let a = 2;
+        let b = a;
+    }
 
     let instance = {
         open: open,
@@ -485,6 +457,15 @@ function Player(cfg) {
         addPD: addPD,
         on: on,
         off: off,
+        play: play,
+        pause: pause,
+        isPaused: isPaused,
+        currentTime: currentTime,
+        duration: duration,
+        isEnded: isEnded,
+        mute: mute,
+        unmute: unmute,
+        isMuted: isMuted,
         test: test,
         test2: test2
     };

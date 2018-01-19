@@ -94,20 +94,6 @@ function EventBus() {
         if (!handlers[type]) return idx;
 
         handlers[type].some( (item, index) => {
-            console.log('item.callback: ', item.callback);
-            console.log('listener: ', listener);
-            console.log('item.callback === listener: ' + (item.callback === listener));
-            console.log('(!scope || scope === item.scope): ' + (!scope || scope === item.scope));
-            console.log('(item.callback === listener && (!scope || scope === item.scope)): ' + (item.callback === listener && (!scope || scope === item.scope)));
-
-            console.log('scope: ', scope);
-            console.log('item.scope: ', item.scope);
-            console.log('!scope: ' + !scope);
-            console.log('scope === item.scope: ' + (scope === item.scope));
-            var oldScope = scope;
-            var newScope = item.scope;
-            console.log('oldScope === newScope : ' + (oldScope === newScope));
-
             if (item.callback === listener && (!scope || scope === item.scope)) {
                 idx = index;
                 return true;

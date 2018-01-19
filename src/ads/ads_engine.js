@@ -50,8 +50,6 @@ var AdsEngine = function(adContainer, videoPlayer, advertising) {
   if (this.advertising_.locale) {
     google.ima.settings.setLocale(this.advertising_.locale);
   }
-
-  this.init();
 };
 
 AdsEngine.prototype.init = function() {
@@ -75,6 +73,8 @@ AdsEngine.prototype.init = function() {
       this.onAdError,
       false,
       this);
+
+  this.initialUserAction();
 };
 
 AdsEngine.prototype.initialUserAction = function () {
@@ -216,7 +216,7 @@ AdsEngine.prototype.onAdsManagerLoaded = function(adsManagerLoadedEvent) {
         this);
   }
 
-  this.eventBus_.trigger(Events.AD_ADS_MANAGER_LOADED);
+  this.startAds();
 
   this.debug_.log('-onAdsManagerLoaded');
 };
