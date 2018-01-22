@@ -118,7 +118,14 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
         }
 
-        //adsLoader_.getSettings().setAutoPlayAdBreaks(false);
+        /*
+         In some circumstances you may want to prevent the SDK from playing ad breaks until you're ready for them.
+         In this scenario, you can disable automatic playback of ad breaks in favor of letting the SDK know when you're ready for an ad break to play.
+         With this configuration, once the SDK has loaded an ad break, it will fire an AD_BREAK_READY event.
+         When your player is ready for the ad break to start, you can call adsManager.start():
+        */
+        adsLoader_.getSettings().setAutoPlayAdBreaks(false);
+
         adsLoader_.requestAds(adsRequest);
     };
 
@@ -207,7 +214,9 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             onAdError,
             false,
             this);
-        var events = [google.ima.AdEvent.Type.AD_BREAK_READY,
+        var events = [
+            // For non-auto ad breaks, listen for ad break ready
+            google.ima.AdEvent.Type.AD_BREAK_READY,
             google.ima.AdEvent.Type.AD_METADATA,
             google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
             google.ima.AdEvent.Type.CLICK,
@@ -258,8 +267,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         let ad = adEvent.getAd();
 
         switch (adEvent.type) {
-        case google.ima.AdEvent.Type.AD_BREAK_READY: {}
-            break;
+        case google.ima.AdEvent.Type.AD_BREAK_READY: {
+            // Once we're ready to play ads. To skip this ad break, simply return
+            // from this handler without calling adsManager.start().
+            adsManager_.start();
+        } break;
         case google.ima.AdEvent.Type.AD_METADATA: {
                 var cuePts = adEvent.getAdCuePoints();
                 console.log('cue points: ' + cuePts.h.join(","));
@@ -299,13 +311,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.SKIPPED: {
-                debug_.log('--google.ima.AdEvent.Type.SKIPPED--');
                 // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
                 isPlayingAd_ = false;
             }
             break;
         case google.ima.AdEvent.Type.STARTED: {
-                debug_.log('--google.ima.AdEvent.Type.STARTED--');
                 isPlayingAd_ = true;
                 isLinearAd_ = ad.isLinear();
 

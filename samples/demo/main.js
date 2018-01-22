@@ -130,6 +130,9 @@ function initData() {
 
   // VMAP Pre-, Mid-, and Post-rolls, Single Ads
   var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
+  
+
+  var VMAP_Pre_3Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=';
   // End ads test links
 
   var cfg = {
@@ -139,7 +142,8 @@ function initData() {
       //tag: 'http://10.2.64.68/tmp/1123.aa',
       //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
-      tag: VMAP_Pre_Mid_Post,
+      //tag: VMAP_Pre_Mid_Post,
+      tag: VMAP_Pre_3Mid_Post,
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
       //enablePreloading: true,
       //forceNonLinearFullSlot: false,
