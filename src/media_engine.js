@@ -31,6 +31,10 @@ MediaEngine.prototype.duration = function () {
   return this.media_.duration;
 };
 
+MediaEngine.prototype.seeking = function () {
+  return this.media_.seeking;
+};
+
 MediaEngine.prototype.isEnded = function () {
   return this.media_.ended;
 };

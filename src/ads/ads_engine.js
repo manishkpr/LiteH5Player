@@ -35,6 +35,9 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     let adsManager_ = null;
 
     //
+    let cuePoints_ = null;
+
+    //
     let width_;
     let height_;
 
@@ -42,6 +45,10 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     let isPlayingAd_ = false;
     let isLinearAd_ = false;
     let isPaused_ = false;
+
+    let countdownTimer_ = null;
+    let duration_;
+    let position_;
 
     function setup() {
         if (advertising_.vpaidmode) {
@@ -263,18 +270,26 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
 
     function onAdEvent(adEvent) {
         debug_.log('--onAdEvent--: ' + adEvent.type);
-
         let ad = adEvent.getAd();
 
         switch (adEvent.type) {
         case google.ima.AdEvent.Type.AD_BREAK_READY: {
+            console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
+
+            let skip = IsSkipAdBreak(adEvent.o.adBreakTime);
             // Once we're ready to play ads. To skip this ad break, simply return
             // from this handler without calling adsManager.start().
-            adsManager_.start();
+            if (!skip) {
+                adsManager_.start();
+            }
+            //adsManager_.start();
         } break;
         case google.ima.AdEvent.Type.AD_METADATA: {
-                var cuePts = adEvent.getAdCuePoints();
-                console.log('cue points: ' + cuePts.h.join(","));
+                for (let i in adEvent) {
+                    console.log('AD_METADATA: ' + i);
+                }
+                cuePoints_ = adEvent.getAdCuePoints();
+                console.log('cue points: ' + cuePoints_.h.join(","));
             }
             break;
         case google.ima.AdEvent.Type.CLICK: {
@@ -283,6 +298,12 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             break;
         case google.ima.AdEvent.Type.COMPLETE: {
                 isPlayingAd_ = false;
+                if (countdownTimer_) {
+                    clearInterval(countdownTimer_);
+                    countdownTimer_ = null;
+                }
+                position_ = duration_;
+                eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
                 eventBus_.trigger(Events.AD_COMPLETE);
             }
             break;
@@ -319,9 +340,16 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
                 isPlayingAd_ = true;
                 isLinearAd_ = ad.isLinear();
 
-                eventBus_.trigger(Events.AD_STARTED, {
-                    ad: ad
-                });
+                position_ = 0;
+                duration_ = ad.getDuration();
+                countdownTimer_ = setInterval(function() {
+                    var timeRemaining = adsManager_.getRemainingTime();
+                    position_ = duration_ - timeRemaining;
+                    // Update UI with timeRemaining
+                    eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                }, 1000);
+                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
+                eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
             }
             break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
@@ -342,6 +370,16 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         adsLoader_.contentComplete();
     }
 
+    function IsSkipAdBreak(adBreakTime) {
+        let skip = false;
+
+        if (media_.seeking) {
+            skip = true;
+        }
+
+        return skip;
+    }
+
     let instance = {
         init: init,
         isPlayingAd: isPlayingAd,
@@ -355,7 +393,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         resize: resize,
         onMediaEnded: onMediaEnded,
         requestAds: requestAds
-    }
+    };
+
     setup();
     return instance;
 }

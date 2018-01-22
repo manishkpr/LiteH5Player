@@ -1,4 +1,4 @@
-﻿var media = null;
+var media = null;
 // UI Controls
 var h5pShade = null;
 var uiConsole = null;
@@ -131,9 +131,16 @@ function initData() {
   // VMAP Pre-, Mid-, and Post-rolls, Single Ads
   var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
   
-
   var VMAP_Pre_3Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=';
+
+  // VMAP - Pre-roll Single Ad, Mid-roll Standard Pods with 5 Ads Every 10 Seconds for 1:40, Post-roll Single Ad
+  // cue points: 0,10,20,30,40,50,60,70,80,90,100,-1
+  var VMAP_5Ads_Every_10_Secs = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostlongpod&cmsid=496&vid=short_tencue&correlator=';
   // End ads test links
+
+  // My own ads test links
+  var VMAP_Pre_10_20_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20_Post.xml';
+  var VMAP_Pre_10_20Skip_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20Skip_Post.xml';
 
   var cfg = {
     playerContainer: 'player-container',
@@ -143,7 +150,10 @@ function initData() {
       //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
       //tag: VMAP_Pre_Mid_Post,
-      tag: VMAP_Pre_3Mid_Post,
+      //tag: VMAP_Pre_3Mid_Post,
+      //tag: VMAP_5Ads_Every_10_Secs,
+      //tag: VMAP_Pre_10_20_Post,
+      tag: VMAP_Pre_10_20Skip_Post,
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
       //enablePreloading: true,
       //forceNonLinearFullSlot: false,
@@ -167,6 +177,9 @@ function initData() {
   player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
 
   player.on(oldmtn.Events.LOG, onLog, {});
+
+  player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
+  
   }
 }
 
@@ -459,11 +472,11 @@ function onMediaPlaying() {
 }
 
 function onMediaSeeking() {
-  printLog('--onMediaSeeking--');
+  printLog('--onMediaSeeking--, currentTime: ' + player.currentTime());
 }
 
 function onMediaSeeked() {
-  printLog('--onMediaSeeked--');
+  printLog('--onMediaSeeked--, currentTime: ' + player.currentTime());
 }
 
 function onMediaTimeupdated() {
@@ -477,6 +490,10 @@ function onMediaWaiting() {
 
 function onLog(e) {
   uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);
+}
+
+function onAdTimeUpdate(e) {
+  printLog('ad position: ' + e.position + ', duration: ' + e.duration);
 }
 
 /////////////////////////////////////////////////////////////////////////

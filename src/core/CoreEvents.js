@@ -32,6 +32,7 @@ class CoreEvents {
         this.AD_CONTENT_PAUSE_REQUESTED = 'adContentPauseRequested';
         this.AD_CONTENT_RESUME_REQUESTED = 'adContentResumeRequested';
         this.AD_ADS_MANAGER_LOADED = 'adAdsManagerLoaded';
+        this.AD_TIMEUPDATE = 'adTimeUpdate';
 
         // log event
         this.LOG = 'log';
