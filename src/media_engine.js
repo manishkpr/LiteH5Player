@@ -166,9 +166,9 @@ MediaEngine.prototype.revokeSrc = function() {
   URL.revokeObjectURL(this.media_.src);
 };
 
-MediaEngine.prototype.reset = function () {
+MediaEngine.prototype.close = function () {
   // Detach properly the MediaSource from the HTMLMediaElement as
-  // suggested in https://github.com/w3c/media-source/issues/53.
+  // suggested in https://github.com/w3c/media-source/issues/53
   if (this.media_) {
     this.media_.removeAttribute('src');
     this.media_.load();

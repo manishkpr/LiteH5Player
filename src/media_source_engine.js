@@ -94,8 +94,26 @@ MediaSourceEngine.prototype.removeBuffer = function () {
   if (this.sourceBuffers_['video']) {
     this.sourceBuffers_['video'].removeBuffer();
   }
+
+  this.sourceBuffers_['audio'] = null;
+  this.sourceBuffers_['video'] = null;
+};
+
+MediaSourceEngine.prototype.close = function () {
+  if (this.sourceBuffers_['audio']) {
+    this.sourceBuffers_['audio'].removeBuffer();
+  }
+  if (this.sourceBuffers_['video']) {
+    this.sourceBuffers_['video'].removeBuffer();
+  }
+
+  this.sourceBuffers_ = {};
+  this.mediaSrc_ = null;
+  this.streamInfo_ = null;
 };
 
 export default MediaSourceEngine;
+
+
 
 

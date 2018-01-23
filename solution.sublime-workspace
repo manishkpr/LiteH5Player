@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"pos",
+				"position_"
+			],
+			[
 				"isP",
 				"isPaused"
 			],
@@ -319,20 +323,35 @@
 			"file": "src/ads/ads_engine.js",
 			"settings":
 			{
-				"buffer_size": 11510,
+				"buffer_size": 13542,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "var media = null;\n// UI Controls\nvar h5pShade = null;\nvar uiConsole = null;\n\n// UI Data\nvar timerControlBar;\n\nvar player = null;\n\n\n///////////////////////////////////////////////////////////////////////////\n// Title: UI reference functions\nfunction beginBuffering() {\n  var idBufferingContainer = document.getElementById('idBufferingContainer');\n  idBufferingContainer.style.display = 'block';\n}\n\nfunction endBuffering() {\n  var idBufferingContainer = document.getElementById('idBufferingContainer');\n  idBufferingContainer.style.display = 'none';\n}\n\nfunction updateProgress() {\n  var c = oldmtn.CommonUtils.timeToString(player.currentTime());\n  var d = oldmtn.CommonUtils.timeToString(player.duration());\n  var fmtTime = c + '/' + d;\n\n  //printLog('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);\n  var tDisplay = document.querySelector('.h5p-time-text');\n  tDisplay.innerText = fmtTime;\n}\n\n///////////////////////////////////////////////////////////////////////////\n// Title: Tool function\nfunction isFullScreen() {\n  printLog('--isFullScreen--');\n  return document.fullscreenElement ||\n    document.msFullscreenElement ||\n    document.mozFullScreen ||\n    document.webkitIsFullScreen;\n}\n\nfunction enterFullScreen() {\n  printLog('--enterFullScreen--');\n  //var v = document.querySelector('.player');\n  //var v = document.querySelector('.h5p-video-container');\n  var v = document.querySelector('.h5p-video');\n  //var v = document.querySelector('.html5-video-player');\n\n  // Try to enter fullscreen mode in the browser\n  var requestFullscreen = v.requestFullscreen ||\n      v.webkitRequestFullscreen ||\n      v.mozRequestFullscreen ||\n      v.requestFullScreen ||\n      v.webkitRequestFullScreen ||\n      v.mozRequestFullScreen;\n  requestFullscreen.call(v);\n\n  // var requestFullscreen = document.documentElement.requestFullscreen ||\n  //   document.documentElement.webkitRequestFullscreen ||\n  //   document.documentElement.mozRequestFullscreen ||\n  //   document.documentElement.requestFullScreen ||\n  //   document.documentElement.webkitRequestFullScreen ||\n  //   document.documentElement.mozRequestFullScreen;\n  // if (!requestFullscreen) {\n  //   printLog('requestFullscreen is not NULL2');\n  //   requestFullscreen.call(document.documentElement);\n  //   //v.webkitSupportsFullscreen();\n  // } else {\n  //   printLog('requestFullscreen is NULL');\n  //   v.webkitSupportsFullscreen();\n  // }\n}\n\nfunction leaveFullScreen() {\n  printLog('--leaveFullScreen--');\n\n  var cancelFullscreen = document.exitFullscreen ||\n        document.exitFullScreen ||\n        document.webkitCancelFullScreen ||\n        document.mozCancelFullScreen ||\n        document.msExitFullscreen;\n  if (cancelFullscreen) {\n      cancelFullscreen.call(document);\n  }\n}\n\nfunction initUI() {\n  media = document.querySelector('.h5p-video');\n\n  h5pShade = document.querySelector('.h5p-shade');\n\n  uiConsole = document.getElementById('idConsole');\n\n  // BD\n  media.autoplay = false;\n  // ED\n\n  endBuffering();\n}\n\nfunction initData() {\n  if (!player) {\n\n  // Begin ads test links\n  // Single Inline Linear\n  var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';\n\n  // Single Skippable Inline\n  var Single_Skippable_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';\n\n  // Single Redirect Linear\n  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dredirectlinear&correlator=';\n\n  // Single VPAID 1.0 Linear Flash (VAST Inline)\n  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinearvpaid&correlator=';\n\n  // Single VPAID 2.0 Linear\n  var Single_VPAID_20_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinearvpaid2js&correlator=';\n\n  // Single Non-linear Inline\n  var Single_Non_linear_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=';\n\n  // VMAP Pre-roll\n  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';\n\n  // VMAP Post-roll\n  //var VMAP_Post_roll = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';\n\n  // VMAP Pre-, Mid-, and Post-rolls, Single Ads\n  var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';\n  \n  var VMAP_Pre_3Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=';\n  // End ads test links\n\n  var cfg = {\n    playerContainer: 'player-container',\n    media: media,\n    advertising: {\n      //tag: 'http://10.2.64.68/tmp/1123.aa',\n      //tag: Single_Inline_Linear,\n      //tag: Single_Skippable_Inline,\n      //tag: VMAP_Pre_Mid_Post,\n      tag: VMAP_Pre_3Mid_Post,\n      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',\n      //enablePreloading: true,\n      //forceNonLinearFullSlot: false,\n      locale: 'fr',\n      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]\n    }\n  };\n\n  player = new oldmtn.Player(cfg);\n\n  player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});\n  player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});\n\n  player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});\n  player.on(oldmtn.Events.MEDIA_ENDED, onMediaEnd, {});\n  player.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});\n  player.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});\n  player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});\n  player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});\n  player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});\n  player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});\n\n  player.on(oldmtn.Events.LOG, onLog, {});\n  }\n}\n\nfunction addH5PListeners() {\n  h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);\n  h5pShade.addEventListener('mousemove', onH5PShadeMousemove);\n  h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);\n\n  h5pShade.addEventListener('click', onH5PShadeClick);\n}\n\n///////////////////////////////////////////////////////////////////\nfunction printLog(msg)\n{\n  onLog({message: msg});\n  console.log(msg);\n}\n\n///////////////////////////////////////////////////////////////////\nfunction onH5PShadeMouseenter() {\n  $('.html5-video-player').removeClass('h5p-autohide');\n}\n\nfunction onH5PShadeMousemove() {\n  $('.html5-video-player').removeClass('h5p-autohide');\n\n  if (timerControlBar) {\n    clearTimeout(timerControlBar);\n  }\n  timerControlBar = setTimeout(function() {\n    onH5PShadeMouseleave();\n  }, 2000);\n}\n\nfunction onH5PShadeMouseleave() {\n  $('.html5-video-player').addClass('h5p-autohide');\n}\n\n// browser & UI callback functions\nfunction onBtnOpen() {\n  //initAudioContent();\n  //initVideoContent();\n  //initAudioVideoContent();\n  initPDContent();\n\n  /* drm content part */\n  //initDRM_PR();\n  //initWV_MP4();\n  //initPDContent_ClearKey();\n  //initCK_WebM();\n  //initCK_MP4();\n\n  //var info = initTask62293();\n  //initMseCase01();\n  //initTestTmp();\n  //init1080i();\n\n  //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';\n  var info = {\n    audioCodec: audioCodec,\n    aContents: aContents,\n    videoCodec: videoCodec,\n    vContents: vContents,\n\n    pdContent: pdContent,\n    pdDuration: pdDuration,\n\n    drm: {\n      type: drmType,\n      laUrl: laUrl,\n      headers: headers,\n      key: key, // only for clearkey\n      drmInitDataType: drmInitDataType,\n      drmInitData: drmInitData\n    }\n  };\n\n  player.open(info);\n}\n\nfunction onPlayInternal() {\n  player.play();\n\n  var v = document.querySelector('.h5p-play-button');\n  var v1 = v.querySelector('.h5p-svg-fill');\n  v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');\n}\n\nfunction onPauseInternal() {\n  player.pause();\n\n  var v = document.querySelector('.h5p-play-button');\n  var v1 = v.querySelector('.h5p-svg-fill');\n  v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');\n}\n\nfunction onBtnPlay() {\n  if (player.isPaused()) {\n    onPlayInternal();\n  } else {\n    onPauseInternal();\n  }\n}\n\nfunction onBtnMute() {\n  if (player.isMuted()) {\n    player.unmute();\n  } else {\n    player.mute();\n  }\n}\n\nfunction onBtnAddA() {\n  player.addA();\n}\n\nfunction onBtnAddV() {\n  player.addV();\n}\n\nfunction onBtnAddPD() {\n  player.addPD();\n}\n\nfunction onBtnDelAll() {\n  player.dellAll();\n}\n\nfunction onBtnClose() {\n  player.close();\n}\n\nfunction onBtnStop() {\n  player.close();\n  player = null;\n}\n\nfunction onBtnCast() {\n  if (player) {\n    player.cast();\n  }\n}\n\nfunction onBtnSetting() {\n  printLog('--onBtnSetting--');\n}\n\nfunction onBtnFullscreen() {\n  printLog('--onBtnFullscreen--');\n  if (isFullScreen()) {\n    leaveFullScreen();\n  } else {\n    enterFullScreen();\n  }\n}\n\nfunction onBtnSeek() {\n  var time = document.getElementById('seekedTime').value;\n  player.seek(time);\n}\n\nfunction onBtnAddTextTrack() {\n  if (player) {\n    player.addTextTrack();\n  }\n}\n\nfunction onBtnRemoveTextTrack() {\n  player.removeTextTrack();\n}\n\nfunction setTextTrackHidden() {\n  player.setTextTrackHidden();\n}\n\nfunction setCueAlign(align) {\n  player.setCueAlign(align);\n}\n\nfunction onFruitClick() {\n  alert('aaaa');\n}\n\nfunction onBtnTest() {\n  // if (player) {\n  //   //player.signalEndOfStream();\n  // }\n  // if (player) {\n  //   player.test();\n  // }\n\n  //beginBuffering();\n  // var v = document.querySelector('.h5p-chrome-bottom');\n  // v.setAttribute('aria-hidden', false);\n\n  // var v = document.querySelector('.ytp-play-button');\n  // var v1 = v.querySelector('.ytp-svg-fill');\n  // v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');\n\n\n  // if (player) {\n  //   player.mute();\n  // }\n\n  player.test();\n}\n\nfunction onBtnTest2() {\n  printLog('--onBtnTest2--');\n  player.test2();\n  //endBuffering();\n\n  // var v = document.querySelector('.ytp-play-button');\n  // var v1 = v.querySelector('.ytp-svg-fill');\n  // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');\n\n\n\n  // var v = document.querySelector('.h5p-video');\n  // v.addEventListener(\"webkitfullscreenchange\", function() {\n  //   printLog('--webkitfullscreenchange--');\n  //     //console.log(document.webkitIsFullScreen);\n  // }, false);\n\n  // v.webkitEnterFullScreen();\n\n  //v.setAttribute('aria-hidden', true);\n}\n\nfunction onBtnAttribute() {\n  //player.attribute();\n}\n\nfunction onVideoShadeClick(e) {\n  printLog('--onVideoShadeClick--');\n}\n\nfunction onVideoControlBarClick() {\n  printLog('--onVideoControlBarClick--');\n}\n\nfunction onH5PRootClick() {\n  printLog('--onH5PRootClick--');\n}\n\nfunction onH5PShadeClick(e) {\n  printLog('--onH5PShadeClick--');\n}\n\nfunction onVideoContainerClick() {\n  printLog('--onVideoContainerClick--');\n}\n\nfunction onVideoClick() {\n  printLog('--onVideoClick--');\n}\n\nfunction onBufferIconClick() {\n  printLog('--onBufferIconClick--');\n}\n\n////////////////////////////////////////////////////////////////////////////////////\n// player event callback\nfunction onMSEOpened(ev) {\n  printLog('--onMSEOpened--');\n  //player.addV();\n}\n\nfunction onSBUpdateEnded(ev) {\n  printLog('--onSBUpdateEnded--');\n  //player.addV();\n}\n\nfunction onMediaDurationChanged() {\n  updateProgress();\n}\n\nfunction onMediaEnd() {\n  var v = media;\n  printLog('--onMediaEnd--');\n}\n\nfunction onMediaPaused() {\n  printLog('--onMediaPaused--');\n}\n\nfunction onMediaPlaying() {\n  printLog('--onMediaPlaying--');\n  endBuffering();\n}\n\nfunction onMediaSeeking() {\n  printLog('--onMediaSeeking--');\n}\n\nfunction onMediaSeeked() {\n  printLog('--onMediaSeeked--');\n}\n\nfunction onMediaTimeupdated() {\n  //printLog('--onMediaTimeupdated--');\n  updateProgress();\n}\n\nfunction onMediaWaiting() {\n  beginBuffering();\n}\n\nfunction onLog(e) {\n  uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);\n}\n\n/////////////////////////////////////////////////////////////////////////\n// dynamic load main.css file\nwindow.onload = function () {\n  initUI();\n  initData();\n  addH5PListeners();\n\n  // BD\n  //onBtnOpen();\n  // ED\n};\n\nwindow.onunload = function () {\n  //onBtnStop();\n};\n\n\n\n\n\n\n",
-			"file": "samples/demo/main.js",
-			"file_size": 14358,
-			"file_write_time": 131608281803829951,
+			"file": "src/core/CoreEvents.js",
 			"settings":
 			{
-				"buffer_size": 13852,
+				"buffer_size": 1345,
 				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/media_engine.js",
+			"settings":
+			{
+				"buffer_size": 5819,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "samples/demo/main.js",
+			"settings":
+			{
+				"buffer_size": 14891,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
@@ -342,14 +361,6 @@
 			{
 				"buffer_size": 5128,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "samples/demo/index.html",
-			"settings":
-			{
-				"buffer_size": 4426,
 				"line_ending": "Windows"
 			}
 		},
@@ -399,7 +410,8 @@
 		"/D/xampp/htdocs/1/LiteH5Player/samples",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo",
 		"/D/xampp/htdocs/1/LiteH5Player/src",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ads"
+		"/D/xampp/htdocs/1/LiteH5Player/src/ads",
+		"/D/xampp/htdocs/1/LiteH5Player/src/core"
 	],
 	"file_history":
 	[
@@ -534,7 +546,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
@@ -588,6 +600,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onLog",
+			"IsSkipAdBreak",
+			"AD_BREAK_READY",
+			"updateCurrentTime_",
+			"media_",
+			"IsSkipAdBreak",
+			"AD_BREAK_READY",
+			"onMediaSeeking",
+			"restoreCustomPlaybackStateOnAdBreakComplete ",
+			"currentTime_",
+			"updateCurrentTime_",
+			"IsSkipAdBreak",
+			"ad_br",
+			"AD_BREAK_READY",
+			"\\",
+			"--google.ima.AdEvent.Type.STARTED--",
+			"AD_BREAK_READY",
+			"requestAds",
 			"seek",
 			"adbreak",
 			"seek",
@@ -697,25 +727,7 @@
 			"onBtnTest2",
 			"this.adContainer_",
 			"onBtnOpen",
-			"player.open",
-			"addEventListeners",
-			"init",
-			"init(",
-			"enterFullScreen",
-			"isFullScreen",
-			"enterFullScreen",
-			"h5p-video",
-			"enterFullScreen",
-			"addPD",
-			"initPDContent",
-			"STARTED",
-			"h5p-play-button",
-			"adsEngine_.isPlaying",
-			"isPlaying",
-			".play",
-			"onAdEvent",
-			"onMediaPlaying",
-			"MEDIA_PLAYING"
+			"player.open"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -861,7 +873,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -870,62 +882,122 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11510,
+						"buffer_size": 13542,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4576,
-								4576
+								10696,
+								10696
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1946.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "samples/demo/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13852,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6342,
-								6342
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2263.0,
+						"translation.y": 5379.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
+					"buffer": 1,
+					"file": "src/core/CoreEvents.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1345,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1171,
+								1158
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 114.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
 					"buffer": 2,
+					"file": "src/media_engine.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5819,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								775,
+								786
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 342.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "samples/demo/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14891,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14612,
+								14612
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8970.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "samples/demo/main.css",
 					"semi_transient": false,
 					"settings":
@@ -951,41 +1023,11 @@
 						"translation.y": 57.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "samples/demo/index.html",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 4426,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "src/Player.js",
 					"semi_transient": false,
 					"settings":
@@ -1011,7 +1053,7 @@
 						"translation.y": 4790.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]

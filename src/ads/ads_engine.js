@@ -70,7 +70,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         }
     }
 
-    function init() {
+    function open() {
         eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
 
         //
@@ -96,6 +96,17 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             this);
 
         initialUserAction();
+    }
+
+    function close() {
+        if (countdownTimer_) {
+            clearInterval(countdownTimer_);
+            countdownTimer_ = null;
+        }
+        if (adsManager_) {
+            adsManager_.destroy();
+            adsManager_ = null;
+        }
     }
 
     function initialUserAction() {
@@ -340,15 +351,15 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
                 isPlayingAd_ = true;
                 isLinearAd_ = ad.isLinear();
 
+                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
                 position_ = 0;
                 duration_ = ad.getDuration();
                 countdownTimer_ = setInterval(function() {
-                    var timeRemaining = adsManager_.getRemainingTime();
+                    let timeRemaining = adsManager_.getRemainingTime();
                     position_ = duration_ - timeRemaining;
                     // Update UI with timeRemaining
                     eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
                 }, 1000);
-                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
                 eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
             }
             break;
@@ -381,7 +392,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     }
 
     let instance = {
-        init: init,
+        open: open,
+        close: close,
         isPlayingAd: isPlayingAd,
         isLinearAd: isLinearAd,
         play: play,

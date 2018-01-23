@@ -86,6 +86,7 @@ function leaveFullScreen() {
   }
 }
 
+
 function initUI() {
   media = document.querySelector('.h5p-video');
 
@@ -260,6 +261,12 @@ function onBtnOpen() {
   player.open(info);
 }
 
+function onBtnClose() {
+  printLog('+onBtnClose');
+  player.close();
+  printLog('-onBtnClose');
+}
+
 function onPlayInternal() {
   player.play();
 
@@ -306,10 +313,6 @@ function onBtnAddPD() {
 
 function onBtnDelAll() {
   player.dellAll();
-}
-
-function onBtnClose() {
-  player.close();
 }
 
 function onBtnStop() {
@@ -480,7 +483,8 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-  //printLog('--onMediaTimeupdated--');
+  printLog('--onMediaTimeupdated--, position: ' + player.currentTime() + ', duration: ' + player.duration());
+  
   updateProgress();
 }
 

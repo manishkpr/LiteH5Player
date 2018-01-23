@@ -41,7 +41,7 @@ function Player(cfg) {
     let adsEngine_;
 
     function setup() {
-        initUI();
+        initComponent();
         initData();
         addEventListeners();
     }
@@ -79,20 +79,27 @@ function Player(cfg) {
         debug_.log('Player, -open');
     }
 
-    function dellAll() {
-        mseEngine_.removeBuffer();
-    }
-
     function close() {
+        if (adsEngine_) {
+            adsEngine_.close();
+        }
         if (mediaEngine_) {
-            mediaEngine_.reset();
+            mediaEngine_.close();
+        }
+        if (mseEngine_) {
+            mseEngine_.close();
         }
 
         audioIndex_ = 0;
         videoIndex_ = 0;
         streamInfo_ = null;
-    };
+    }
 
+    function dellAll() {
+        mseEngine_.removeBuffer();
+    }
+
+    
     //////////////////////////////////////////////////////////////
     function addA() {
         if (audioIndex_ >= streamInfo_.aContents.length) {
@@ -163,7 +170,7 @@ function Player(cfg) {
         }
 
         if (adsEngine_) {
-            adsEngine_.init();
+            adsEngine_.open();
         }
 
         debug_.log('-addPD');
@@ -307,7 +314,8 @@ function Player(cfg) {
 
     /////////////////////////////////////////////////////////////////////////////////
     // private functions
-    function initUI() {
+    function initComponent() {
+        // ui component
         uiEngine_ = new UIEngine(cfg_);
         if (cfg_.advertising) {
             let elements = uiEngine_.getUIElements();
@@ -315,14 +323,8 @@ function Player(cfg) {
             playerContainer_ = elements.playerContainer;
             adContainer_ = elements.adContainer;
         }
-    };
 
-    function initData() {
-        audioIndex_ = 0;
-        videoIndex_ = 0;
-        streamInfo_ = null;
-        adsEngine_ = null;
-
+        // enging component
         eventBus_ = EventBus(oldmtn).getInstance();
         debug_ = Debug(oldmtn).getInstance();
         xhrLoader_ = new XHRLoader();
@@ -333,7 +335,13 @@ function Player(cfg) {
         if (cfg_.advertising) {
             adsEngine_ = new AdsEngine(adContainer_, cfg_.media, cfg_.advertising);
         }
-    };
+    }
+
+    function initData() {
+        audioIndex_ = 0;
+        videoIndex_ = 0;
+        streamInfo_ = null;
+    }
 
     function addEventListeners() {
         function onFullscreenChange(e) {
@@ -425,7 +433,8 @@ function Player(cfg) {
     }
 
     function test() {
-        adsEngine_.initialUserAction();
+        //adsEngine_.initialUserAction();
+        adsEngine_.close();
     }
 
     function test2() {
@@ -444,6 +453,7 @@ function Player(cfg) {
 
     let instance = {
         open: open,
+        close: close,
         addA: addA,
         addV: addV,
         addPD: addPD,
