@@ -95,7 +95,7 @@ function initUI() {
   uiConsole = document.getElementById('idConsole');
 
   // BD
-  media.autoplay = false;
+  media.autoplay = true;
   // ED
 
   endBuffering();

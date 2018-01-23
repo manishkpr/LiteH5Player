@@ -46,6 +46,9 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     let isLinearAd_ = false;
     let isPaused_ = false;
 
+    let adsLoaded_ = false;
+    let contentInitialized_ = false;
+
     let countdownTimer_ = null;
     let duration_;
     let position_;
@@ -68,12 +71,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         if (advertising_.locale) {
             google.ima.settings.setLocale(advertising_.locale);
         }
-    }
 
-    function open() {
-        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
-
-        //
         adDisplayContainer_ =
             new google.ima.AdDisplayContainer(
                 adContainer_,
@@ -94,8 +92,16 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             onAdError,
             false,
             this);
+    }
+
+    function open() {
+        adsLoaded_ = false;
+        contentInitialized_ = false;
+
+        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
 
         initialUserAction();
+        requestAds();
     }
 
     function close() {
@@ -259,7 +265,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
                 this);
         }
 
-        startAds();
+        adsLoaded_ = true;
+        if (contentInitialized_) {
+            debug_.log('startAds when contentInitialized_');
+            startAds();
+        }
 
         debug_.log('-onAdsManagerLoaded');
     }
@@ -373,7 +383,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     function onMediaLoadedMetadata() {
         eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
         debug_.log('+onMediaLoadedMetadata');
-        requestAds();
+        contentInitialized_ = true;
+        if (adsLoaded_) {
+            debug_.log('startAds when adsLoaded_');
+            startAds();
+        }
         debug_.log('-onMediaLoadedMetadata');
     }
 
