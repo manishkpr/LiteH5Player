@@ -68,10 +68,13 @@ MediaEngine.prototype.unmute = function () {
 // Begin - private function 
 MediaEngine.prototype.onMediaCanplay = function () {
   //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
-  this.debug_.log('--onMediaCanplay--');
+  this.debug_.log('+onMediaCanplay');
 };
 
 MediaEngine.prototype.onMediaDurationChanged = function () {
+  this.debug_.log('+onMediaDurationChanged' +
+    ', currentTime: ' + this.media_.currentTime +
+    ', duration: ' + this.media_.duration);
   this.eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
 };
 
@@ -79,29 +82,34 @@ MediaEngine.prototype.onMediaEnded = function () {
   this.eventBus_.trigger(Events.MEDIA_ENDED);
 };
 
+MediaEngine.prototype.onMediaLoadedData = function () {
+  this.debug_.log('+onMediaLoadedData');
+};
+
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
-  this.debug_.log('--onMediaMetadata--, width: ' + this.media_.width +
-   ', height: ' + this.media_.height +
-   ', duration: ' + this.media_.duration);
+  this.debug_.log('+onMediaMetadata' +
+    ', width: ' + this.media_.width +
+    ', height: ' + this.media_.height +
+    ', duration: ' + this.media_.duration);
   this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
 };
 
 MediaEngine.prototype.onMediaPaused = function () {
-  console.log('Test--onMediaPaused--');
+  this.debug_.log('+onMediaPaused');
   this.eventBus_.trigger(Events.MEDIA_PAUSED);
 };
 
 MediaEngine.prototype.onMediaPlay = function () {
-  console.log('Test--onMediaPlay--');
+  this.debug_.log('+onMediaPlay');
 };
 
 MediaEngine.prototype.onMediaPlaying = function () {
-  console.log('Test--onMediaPlaying--');
+  this.debug_.log('+onMediaPlaying');
   this.eventBus_.trigger(Events.MEDIA_PLAYING);
 };
 
 MediaEngine.prototype.onMediaReadyState = function (e) {
-  this.debug_.log('--onMediaReadyState--', e);
+  this.debug_.log('+onMediaReadyState');
 };
 
 MediaEngine.prototype.onMediaSeeking = function () {
@@ -118,7 +126,7 @@ MediaEngine.prototype.onMediaTimeUpdated = function (e) {
 };
 
 MediaEngine.prototype.onMediaWaiting = function () {
-  console.log('Test--onMediaWaiting--');
+  this.debug_.log('+onMediaWaiting');
   this.eventBus_.trigger(Events.MEDIA_WAITING);
 };
 // End
@@ -128,6 +136,7 @@ MediaEngine.prototype.addEventListeners = function () {
   this.media_.addEventListener('canplay', this.onMediaCanplay.bind(this));
   this.media_.addEventListener('durationchange', this.onMediaDurationChanged.bind(this));
   this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
+  this.media_.addEventListener('loadeddata', this.onMediaLoadedData.bind(this));
   this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
   this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
   this.media_.addEventListener('play', this.onMediaPlay.bind(this));
@@ -143,6 +152,7 @@ MediaEngine.prototype.removeEventsListeners = function () {
   this.media_.removeEventListener('canplay', this.onMediaCanplay.bind(this));
   this.media_.removeEventListener('durationchange', this.onMediaDurationChanged.bind(this));
   this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
+  this.media_.removeEventListener('loadeddata', this.onMediaLoadedData.bind(this));
   this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
   this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));
   this.media_.removeEventListener('play', this.onMediaPlay.bind(this));

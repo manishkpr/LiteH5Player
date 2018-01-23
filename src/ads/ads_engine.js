@@ -21,8 +21,6 @@ function getVMAPItem(breakId, offset, tag) {
 }
 
 function AdsEngine(adContainer, videoPlayer, advertising) {
-    console.log('--new AdsEngine object--');
-
     let eventBus_ = EventBus(oldmtn).getInstance();
     let debug_ = Debug(oldmtn).getInstance();
     let adContainer_ = adContainer;

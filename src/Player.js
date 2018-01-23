@@ -155,7 +155,6 @@ function Player(cfg) {
         let method = 1;
         if (method === 1) {
             cfg_.media.src = streamInfo_.pdContent;
-            cfg_.media.load();
         } else {
             let self = this;
             function cbSuccess(bytes) {
