@@ -16,8 +16,7 @@ body {
 }
 .h5p-autohide { cursor:none }
 
-.h5p-video-container,
-.h5p-video-ads {
+.h5p-video-container {
   position: absolute;
   width: 100%;
   height: 100%;

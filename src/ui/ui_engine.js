@@ -5,7 +5,9 @@
 var UIEngine = function (cfg) {
     this.cfg_ = cfg;
     this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
-    this.uiElements_ = {};
+    this.video_ = null;
+    this.videoContainer_ = null;
+    this.adContainer_ = null;
 
     this.initUIElement();
 };
@@ -19,9 +21,16 @@ UIEngine.prototype.initUIStyle = function () {
 };
 
 UIEngine.prototype.initUIElement = function () {
-    // need to create video element here, currently just add a 'playsinline' attribute
-    let video = document.querySelector('.h5p-video');
-    video.setAttribute('playsinline', 'false');
+    // create video element here
+    this.video_ = document.createElement('video');
+    this.video_.setAttribute('class', 'h5p-video');
+    this.video_.setAttribute('playsinline', 'false');
+
+    this.videoContainer_ = document.createElement('div');
+    this.videoContainer_.setAttribute('class', 'h5p-video-container');
+    this.videoContainer_.appendChild(this.video_);
+
+    this.playerContainer_.appendChild(this.videoContainer_);
 
     // create ads container
     if (this.cfg_.advertising) {
@@ -30,16 +39,18 @@ UIEngine.prototype.initUIElement = function () {
 
         this.playerContainer_.appendChild(this.adContainer_);
     }
-
-    // construct return values
-    this.uiElements_.playerContainer = this.playerContainer_;
-    if (this.cfg_.advertising) {
-        this.uiElements_.adContainer = this.adContainer_;
-    }
 };
 
-UIEngine.prototype.getUIElements = function () {
-    return this.uiElements_;
+UIEngine.prototype.getVideo = function () {
+    return this.video_;
+};
+
+UIEngine.prototype.getVideoContainer = function () {
+    return this.videoContainer_;
+};
+
+UIEngine.prototype.getAdContainer = function () {
+    return this.adContainer_;
 };
 
 export default UIEngine;

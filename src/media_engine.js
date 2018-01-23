@@ -71,6 +71,10 @@ MediaEngine.prototype.onMediaCanplay = function () {
   this.debug_.log('+onMediaCanplay');
 };
 
+MediaEngine.prototype.onMediaCanplayThrough = function () {
+  this.debug_.log('+onMediaCanplayThrough');
+};
+
 MediaEngine.prototype.onMediaDurationChanged = function () {
   this.debug_.log('+onMediaDurationChanged' +
     ', currentTime: ' + this.media_.currentTime +
@@ -94,6 +98,10 @@ MediaEngine.prototype.onMediaLoadedMetadata = function () {
   this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
 };
 
+MediaEngine.prototype.onMediaLoadStart = function () {
+  this.debug_.log('+onMediaLoadStart');
+};
+
 MediaEngine.prototype.onMediaPaused = function () {
   this.debug_.log('+onMediaPaused');
   this.eventBus_.trigger(Events.MEDIA_PAUSED);
@@ -106,6 +114,10 @@ MediaEngine.prototype.onMediaPlay = function () {
 MediaEngine.prototype.onMediaPlaying = function () {
   this.debug_.log('+onMediaPlaying');
   this.eventBus_.trigger(Events.MEDIA_PLAYING);
+};
+
+MediaEngine.prototype.onMediaProgress = function () {
+  this.debug_.log('+onMediaProgress');
 };
 
 MediaEngine.prototype.onMediaReadyState = function (e) {
@@ -134,13 +146,16 @@ MediaEngine.prototype.onMediaWaiting = function () {
 // public function
 MediaEngine.prototype.addEventListeners = function () {
   this.media_.addEventListener('canplay', this.onMediaCanplay.bind(this));
+  this.media_.addEventListener('canplaythrough', this.onMediaCanplayThrough.bind(this));
   this.media_.addEventListener('durationchange', this.onMediaDurationChanged.bind(this));
   this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.addEventListener('loadeddata', this.onMediaLoadedData.bind(this));
   this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
+  this.media_.addEventListener('loadstart', this.onMediaLoadStart.bind(this));
   this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
   this.media_.addEventListener('play', this.onMediaPlay.bind(this));
   this.media_.addEventListener('playing', this.onMediaPlaying.bind(this));
+  this.media_.addEventListener('progress', this.onMediaProgress.bind(this));
   this.media_.addEventListener('readyState', this.onMediaReadyState.bind(this));
   this.media_.addEventListener('seeking', this.onMediaSeeking.bind(this));
   this.media_.addEventListener('seeked', this.onMediaSeeked.bind(this));
@@ -154,9 +169,11 @@ MediaEngine.prototype.removeEventsListeners = function () {
   this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
   this.media_.removeEventListener('loadeddata', this.onMediaLoadedData.bind(this));
   this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
+  this.media_.removeEventListener('loadstart', this.onMediaLoadStart.bind(this));
   this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));
   this.media_.removeEventListener('play', this.onMediaPlay.bind(this));
   this.media_.removeEventListener('playing', this.onMediaPlaying.bind(this));
+  this.media_.removeEventListener('progress', this.onMediaProgress.bind(this));
   this.media_.removeEventListener('readyState', this.onMediaReadyState.bind(this));
   this.media_.removeEventListener('seeking', this.onMediaSeeking.bind(this));
   this.media_.removeEventListener('seeked', this.onMediaSeeked.bind(this));

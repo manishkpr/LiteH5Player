@@ -22,7 +22,7 @@ function Player(cfg) {
     let context_ = {};
 
     let uiEngine_;
-    let playerContainer_;
+    let media_;
 
     let audioIndex_ = 0;
     let videoIndex_ = 0;
@@ -154,7 +154,7 @@ function Player(cfg) {
 
         let method = 1;
         if (method === 1) {
-            cfg_.media.src = streamInfo_.pdContent;
+            media_.src = streamInfo_.pdContent;
         } else {
             let self = this;
             function cbSuccess(bytes) {
@@ -274,7 +274,7 @@ function Player(cfg) {
     }
 
     function seek(secs) {
-        cfg_.media.currentTime = secs;
+        media_.currentTime = secs;
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -316,23 +316,21 @@ function Player(cfg) {
     function initComponent() {
         // ui component
         uiEngine_ = new UIEngine(cfg_);
+        media_ = uiEngine_.getVideo();
         if (cfg_.advertising) {
-            let elements = uiEngine_.getUIElements();
-
-            playerContainer_ = elements.playerContainer;
-            adContainer_ = elements.adContainer;
+            adContainer_ = uiEngine_.getAdContainer();
         }
 
         // enging component
         eventBus_ = EventBus(oldmtn).getInstance();
         debug_ = Debug(oldmtn).getInstance();
         xhrLoader_ = new XHRLoader();
-        mediaEngine_ = new MediaEngine(cfg_.media);
-        textEngine_ = new TextEngine(cfg_.media);
+        mediaEngine_ = new MediaEngine(media_);
+        textEngine_ = new TextEngine(media_);
         mseEngine_ = new MediaSourceEngine();
-        drmEngine_ = new DRMEngine(cfg_.media);
+        drmEngine_ = new DRMEngine(media_);
         if (cfg_.advertising) {
-            adsEngine_ = new AdsEngine(adContainer_, cfg_.media, cfg_.advertising);
+            adsEngine_ = new AdsEngine(adContainer_, media_, cfg_.advertising);
         }
     }
 
@@ -440,7 +438,7 @@ function Player(cfg) {
     }
 
     function attribute() {
-        let media = cfg_.media;
+        let media = media_;
         debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
         debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
 

@@ -1,4 +1,3 @@
-var media = null;
 // UI Controls
 var h5pShade = null;
 var uiConsole = null;
@@ -88,15 +87,9 @@ function leaveFullScreen() {
 
 
 function initUI() {
-  media = document.querySelector('.h5p-video');
-
   h5pShade = document.querySelector('.h5p-shade');
 
   uiConsole = document.getElementById('idConsole');
-
-  // BD
-  media.autoplay = true;
-  // ED
 
   endBuffering();
 }
@@ -145,7 +138,6 @@ function initData() {
 
   var cfg = {
     playerContainer: 'player-container',
-    media: media,
     // advertising: {
     //   //tag: 'http://10.2.64.68/tmp/1123.aa',
     //   //tag: Single_Inline_Linear,
@@ -432,14 +424,6 @@ function onH5PShadeClick(e) {
   printLog('--onH5PShadeClick--');
 }
 
-function onVideoContainerClick() {
-  printLog('--onVideoContainerClick--');
-}
-
-function onVideoClick() {
-  printLog('--onVideoClick--');
-}
-
 function onBufferIconClick() {
   printLog('--onBufferIconClick--');
 }
@@ -461,7 +445,6 @@ function onMediaDurationChanged() {
 }
 
 function onMediaEnd() {
-  var v = media;
   printLog('--onMediaEnd--');
 }
 
