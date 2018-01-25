@@ -322,3 +322,112 @@ function init1080i() {
   vContents.push('http://10.2.72.133/7/8082/dash-if/ba/ondemand/testcard/1/avc3-events/1920x1080i25/000005.m4s');
 }
 
+function getInitConfig()
+{
+  // Begin ads test links
+  // Single Inline Linear
+  var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+
+  // Single Skippable Inline
+  var Single_Skippable_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';
+
+  // Single Redirect Linear
+  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dredirectlinear&correlator=';
+
+  // Single VPAID 1.0 Linear Flash (VAST Inline)
+  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinearvpaid&correlator=';
+
+  // Single VPAID 2.0 Linear
+  var Single_VPAID_20_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinearvpaid2js&correlator=';
+
+  // Single Non-linear Inline
+  var Single_Non_linear_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=';
+
+  // VMAP Pre-roll
+  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';
+
+  // VMAP Post-roll
+  //var VMAP_Post_roll = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
+
+  // VMAP Pre-, Mid-, and Post-rolls, Single Ads
+  var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
+  
+  var VMAP_Pre_3Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=';
+
+  // VMAP - Pre-roll Single Ad, Mid-roll Standard Pods with 5 Ads Every 10 Seconds for 1:40, Post-roll Single Ad
+  // cue points: 0,10,20,30,40,50,60,70,80,90,100,-1
+  var VMAP_5Ads_Every_10_Secs = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostlongpod&cmsid=496&vid=short_tencue&correlator=';
+  // End ads test links
+
+  // My own ads test links
+  var VMAP_Pre_10_20_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20_Post.xml';
+  var VMAP_Pre_10_20Skip_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20Skip_Post.xml';
+
+  var cfg = {
+    playerContainer: 'player-container',
+    // Media
+    //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
+
+    //
+    // advertising: {
+    //   //tag: 'http://10.2.64.68/tmp/1123.aa',
+    //   tag: Single_Inline_Linear,
+    //   //tag: Single_Skippable_Inline,
+    //   //tag: Single_Non_linear_Inline,
+    //   //tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_3Mid_Post,
+    //   //tag: VMAP_5Ads_Every_10_Secs,
+    //   //tag: VMAP_Pre_10_20_Post,
+    //   //tag: VMAP_Pre_10_20Skip_Post,
+    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+    //   //enablePreloading: true,
+    //   //forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
+  };
+
+  return cfg;
+}
+
+function getMediaInfo()
+{
+  //initAudioContent();
+  //initVideoContent();
+  //initAudioVideoContent();
+  initPDContent();
+
+  /* drm content part */
+  //initDRM_PR();
+  //initWV_MP4();
+  //initPDContent_ClearKey();
+  //initCK_WebM();
+  //initCK_MP4();
+
+  //var info = initTask62293();
+  //initMseCase01();
+  //initTestTmp();
+  //init1080i();
+
+  //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
+  var info = {
+    audioCodec: audioCodec,
+    aContents: aContents,
+    videoCodec: videoCodec,
+    vContents: vContents,
+
+    pdContent: pdContent,
+    pdDuration: pdDuration,
+
+    drm: {
+      type: drmType,
+      laUrl: laUrl,
+      headers: headers,
+      key: key, // only for clearkey
+      drmInitDataType: drmInitDataType,
+      drmInitData: drmInitData
+    }
+  };
+
+  return info;
+}

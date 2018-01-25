@@ -37,7 +37,6 @@ function Player(cfg) {
     let drmEngine_;
 
     // ads part
-    let adContainer_;
     let adsEngine_;
 
     function setup() {
@@ -99,7 +98,6 @@ function Player(cfg) {
         mseEngine_.removeBuffer();
     }
 
-    
     //////////////////////////////////////////////////////////////
     function addA() {
         if (audioIndex_ >= streamInfo_.aContents.length) {
@@ -123,7 +121,7 @@ function Player(cfg) {
             cbSuccess: cbSuccess.bind(self)
         };
         xhrLoader_.load(request);
-    };
+    }
 
     function addV() {
         if (videoIndex_ >= streamInfo_.vContents.length) {
@@ -146,7 +144,7 @@ function Player(cfg) {
             cbSuccess: cbSuccess.bind(self)
         };
         xhrLoader_.load(request);
-    };
+    }
 
     function addPD() {
         debug_.log('+addPD, pdContent: ' + streamInfo_.pdContent);
@@ -173,7 +171,7 @@ function Player(cfg) {
         }
 
         debug_.log('-addPD');
-    };
+    }
 
     //////////////////////////////////////////////////////////////////////////////////
     // 操作API
@@ -241,7 +239,7 @@ function Player(cfg) {
     }
 
     function mute() {
-        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.mute();
         } else {
             if (!mediaEngine_) {
@@ -252,7 +250,7 @@ function Player(cfg) {
     }
 
     function unmute() {
-        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.unmute();
         } else {
             if (!mediaEngine_) {
@@ -263,7 +261,7 @@ function Player(cfg) {
     }
 
     function isMuted() {
-        if (adsEngine_ && adsEngine_.isPlayingAd()) {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.isMuted();
         } else {
             if (!mediaEngine_) {
@@ -275,6 +273,14 @@ function Player(cfg) {
 
     function seek(secs) {
         media_.currentTime = secs;
+    }
+
+    function getWidth() {
+        return mediaEngine_.videoWidth();
+    }
+
+    function getHeight() {
+        return mediaEngine_.videoHeight();
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -317,8 +323,8 @@ function Player(cfg) {
         // ui component
         uiEngine_ = new UIEngine(cfg_);
         media_ = uiEngine_.getVideo();
-        if (cfg_.advertising) {
-            adContainer_ = uiEngine_.getAdContainer();
+        if (cfg_.poster) {
+            media_.poster = cfg_.poster;
         }
 
         // enging component
@@ -330,7 +336,8 @@ function Player(cfg) {
         mseEngine_ = new MediaSourceEngine();
         drmEngine_ = new DRMEngine(media_);
         if (cfg_.advertising) {
-            adsEngine_ = new AdsEngine(adContainer_, media_, cfg_.advertising);
+            let adContainer = uiEngine_.getAdContainer();
+            adsEngine_ = new AdsEngine(adContainer, media_, cfg_.advertising);
         }
     }
 
@@ -417,7 +424,7 @@ function Player(cfg) {
                 div.innerHTML = content;
             }
         }
-    };
+    }
 
     function onAdComplete() {}
 
@@ -466,6 +473,8 @@ function Player(cfg) {
         unmute: unmute,
         isMuted: isMuted,
         seek: seek,
+        getWidth: getWidth,
+        getHeight: getHeight,
         test: test,
         test2: test2
     };

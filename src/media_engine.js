@@ -63,9 +63,17 @@ MediaEngine.prototype.unmute = function () {
   this.media_.muted = false;
 };
 
+MediaEngine.prototype.videoWidth = function () {
+  return this.media_.videoWidth;
+};
+
+MediaEngine.prototype.videoHeight = function () {
+  return this.media_.videoHeight;
+};
+
 // End -- public functions
 
-// Begin - private function 
+// Begin - private function
 MediaEngine.prototype.onMediaCanplay = function () {
   //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
   this.debug_.log('+onMediaCanplay');
@@ -87,13 +95,16 @@ MediaEngine.prototype.onMediaEnded = function () {
 };
 
 MediaEngine.prototype.onMediaLoadedData = function () {
-  this.debug_.log('+onMediaLoadedData');
+  this.debug_.log('+onMediaLoadedData' +
+    ', width: ' + this.media_.videoWidth +
+    ', height: ' + this.media_.videoHeight +
+    ', duration: ' + this.media_.duration);
 };
 
 MediaEngine.prototype.onMediaLoadedMetadata = function () {
   this.debug_.log('+onMediaMetadata' +
-    ', width: ' + this.media_.width +
-    ', height: ' + this.media_.height +
+    ', width: ' + this.media_.videoWidth +
+    ', height: ' + this.media_.videoHeight +
     ', duration: ' + this.media_.duration);
   this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
 };
@@ -137,6 +148,10 @@ MediaEngine.prototype.onMediaTimeUpdated = function (e) {
   //this.debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
 };
 
+MediaEngine.prototype.onMediaVolumeChanged = function () {
+  this.debug_.log('+onMediaVolumeChanged');
+};
+
 MediaEngine.prototype.onMediaWaiting = function () {
   this.debug_.log('+onMediaWaiting');
   this.eventBus_.trigger(Events.MEDIA_WAITING);
@@ -160,6 +175,7 @@ MediaEngine.prototype.addEventListeners = function () {
   this.media_.addEventListener('seeking', this.onMediaSeeking.bind(this));
   this.media_.addEventListener('seeked', this.onMediaSeeked.bind(this));
   this.media_.addEventListener('timeupdate', this.onMediaTimeUpdated.bind(this));
+  this.media_.addEventListener('volumechange', this.onMediaVolumeChanged.bind(this));
   this.media_.addEventListener('waiting', this.onMediaWaiting.bind(this));
 };
 
@@ -178,6 +194,7 @@ MediaEngine.prototype.removeEventsListeners = function () {
   this.media_.removeEventListener('seeking', this.onMediaSeeking.bind(this));
   this.media_.removeEventListener('seeked', this.onMediaSeeked.bind(this));
   this.media_.removeEventListener('timeupdate', this.onMediaTimeUpdated.bind(this));
+  this.media_.removeEventListener('volumechange', this.onMediaVolumeChanged.bind(this));
   this.media_.removeEventListener('waiting', this.onMediaWaiting.bind(this));
 };
 

@@ -247,6 +247,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             google.ima.AdEvent.Type.COMPLETE,
             google.ima.AdEvent.Type.DURATION_CHANGE,
             google.ima.AdEvent.Type.FIRST_QUARTILE,
+            google.ima.AdEvent.Type.IMPRESSION,
+            google.ima.AdEvent.Type.LINEAR_CHANGED,
             google.ima.AdEvent.Type.LOADED,
             google.ima.AdEvent.Type.MIDPOINT,
             google.ima.AdEvent.Type.PAUSED,
@@ -254,7 +256,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             google.ima.AdEvent.Type.SKIPPED,
             google.ima.AdEvent.Type.STARTED,
             google.ima.AdEvent.Type.THIRD_QUARTILE,
-            google.ima.AdEvent.Type.VOLUME_CHANGED];
+            google.ima.AdEvent.Type.VOLUME_CHANGED,
+            google.ima.AdEvent.Type.VOLUME_MUTED];
         for (var index in events) {
             adsManager_.addEventListener(
                 events[index],
@@ -265,6 +268,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
 
         adsLoaded_ = true;
         if (contentInitialized_) {
+        //if (1) {
             debug_.log('startAds when contentInitialized_');
             startAds();
         }
@@ -288,14 +292,14 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     }
 
     function onAdEvent(adEvent) {
-        debug_.log('--onAdEvent--: ' + adEvent.type);
+        debug_.log('+onAdEvent: ' + adEvent.type);
         let ad = adEvent.getAd();
 
         switch (adEvent.type) {
         case google.ima.AdEvent.Type.AD_BREAK_READY: {
             console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
 
-            let skip = IsSkipAdBreak(adEvent.o.adBreakTime);
+            let skip = isSkipAdBreak(adEvent.o.adBreakTime);
             // Once we're ready to play ads. To skip this ad break, simply return
             // from this handler without calling adsManager.start().
             if (!skip) {
@@ -334,8 +338,14 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
                 eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
             }
             break;
-        case google.ima.AdEvent.Type.DURATION_CHANGE: {}
-            break;
+        case google.ima.AdEvent.Type.DURATION_CHANGE: {
+        } break;
+        case google.ima.AdEvent.Type.IMPRESSION: {
+
+        } break;
+        case google.ima.AdEvent.Type.LINEAR_CHANGED: {
+
+        } break;
         case google.ima.AdEvent.Type.LOADED: {
                 if (!ad.isLinear()) {
                     eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
@@ -372,15 +382,22 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
-                console.log('ad volume: ' + adsManager_.getVolume());
-            }
+            console.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
+        }
+        break;
+        case google.ima.AdEvent.Type.VOLUME_MUTED: {
+            console.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
+        } break;
+        default:
             break;
         }
     }
 
     function onMediaLoadedMetadata() {
         eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
-        debug_.log('+onMediaLoadedMetadata');
+        debug_.log('+onMediaLoadedMetadata' +
+            ', contentInitialized_: ' + contentInitialized_ +
+            ', adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
         if (adsLoaded_) {
             debug_.log('startAds when adsLoaded_');
@@ -393,7 +410,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         adsLoader_.contentComplete();
     }
 
-    function IsSkipAdBreak(adBreakTime) {
+    function isSkipAdBreak(adBreakTime) {
         let skip = false;
 
         if (media_.seeking) {
