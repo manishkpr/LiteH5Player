@@ -43,6 +43,7 @@ function Player(cfg) {
         initComponent();
         initData();
         addEventListeners();
+        addResizeListener();
     }
 
     function open(info) {
@@ -283,6 +284,12 @@ function Player(cfg) {
         return mediaEngine_.videoHeight();
     }
 
+    function resize(width, height) {
+        let v = document.getElementById(cfg_.playerContainer);
+        v.style.width = width.toString() + 'px';
+        v.style.height = height.toString() + 'px';
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Events API
     function cast() {};
@@ -348,17 +355,6 @@ function Player(cfg) {
     }
 
     function addEventListeners() {
-        function onFullscreenChange(e) {
-            debug_.log('onFullscreenChange');
-            if (adsEngine_) {
-                adsEngine_.resize();
-            }
-        }
-        document.addEventListener("fullscreenchange", onFullscreenChange);
-        document.addEventListener("mozfullscreenchange", onFullscreenChange);
-        document.addEventListener("webkitfullscreenchange", onFullscreenChange);
-        document.addEventListener("msfullscreenchange", onFullscreenChange);
-
         eventBus_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
 
         eventBus_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
@@ -370,7 +366,47 @@ function Player(cfg) {
         eventBus_.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
         eventBus_.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
         eventBus_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
-    };
+    }
+
+    function addResizeListener() {
+        // resize listener
+        var ro = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const cr = entry.contentRect;
+
+                onContainerSizeChange();
+                eventBus_.trigger(oldmtn.Events.RESIZE, { width: cr.width, height: cr.height });
+
+                console.log('resize event, width: ' + cr.width + ', height: ' + cr.height);
+                console.log('video, width: ' + getWidth() + ', height: ' + getHeight());
+                // console.log('Element:', entry.target);
+                // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
+                // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+            }
+        });
+
+        // Observe one or multiple elements
+        var v = document.getElementById(cfg_.playerContainer);
+        ro.observe(v);
+
+        // fullscreen listener
+        document.addEventListener("fullscreenchange", onFullScreenChange);
+        document.addEventListener("mozfullscreenchange", onFullScreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullScreenChange);
+        document.addEventListener("msfullscreenchange", onFullScreenChange);
+    }
+
+    function onContainerSizeChange(e) {
+        if (adsEngine_) {
+            adsEngine_.resize();
+        }
+    }
+
+    function onFullScreenChange(e) {
+        if (adsEngine_) {
+            adsEngine_.resize();
+        }
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Begin -- internal events listener functions
@@ -475,6 +511,7 @@ function Player(cfg) {
         seek: seek,
         getWidth: getWidth,
         getHeight: getHeight,
+        resize: resize,
         test: test,
         test2: test2
     };

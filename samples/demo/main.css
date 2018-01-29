@@ -5,14 +5,17 @@ body {
 
 .player {
   position: relative;
-  width: 480px;
-  height: 240px;
-  margin: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+  width: auto;
+  height: 320px;
 }
 
 .html5-video-player {
+  position: relative;
   width: 100%;
   height: 100%;
+  display:block;
 }
 .h5p-autohide { cursor:none }
 
@@ -20,6 +23,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
+  top:0;left:0;bottom:0;right:0;
   background-color: black;
 }
 

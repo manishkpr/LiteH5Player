@@ -106,7 +106,9 @@ MediaEngine.prototype.onMediaLoadedMetadata = function () {
     ', width: ' + this.media_.videoWidth +
     ', height: ' + this.media_.videoHeight +
     ', duration: ' + this.media_.duration);
-  this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA);
+  let width = this.media_.videoWidth;
+  let height = this.media_.videoHeight;
+  this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA, { width: width, height: height });
 };
 
 MediaEngine.prototype.onMediaLoadStart = function () {

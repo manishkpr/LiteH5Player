@@ -7,6 +7,9 @@ var timerControlBar;
 
 var player = null;
 
+var metaWidth;
+var metaHeight;
+
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
@@ -117,6 +120,7 @@ function initData() {
 
   player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
   
+  player.on(oldmtn.Events.RESIZE, onResize, {});
   }
 }
 
@@ -287,12 +291,18 @@ function onBtnTest() {
   //   player.mute();
   // }
 
-  player.test();
+  //player.test();
+
+
+
+
 }
 
 function onBtnTest2() {
   printLog('--onBtnTest2--');
-  player.test2();
+  //player.test2();
+
+  player.resize(320, 100);
   //endBuffering();
 
   // var v = document.querySelector('.ytp-play-button');
@@ -356,18 +366,17 @@ function onMediaEnd() {
   printLog('--onMediaEnd--');
 }
 
-function onMediaLoadedMetaData() {
-  var width = player.getWidth();
-  var height = player.getHeight();
+function onMediaLoadedMetaData(e) {
+  // update external div's dimensions
+  metaWidth = e.width;
+  metaHeight = e.height;
 
-  var v = document.querySelector('.player');
-  var dstWidth = v.clientWidth;
+  var vp = document.querySelector('.player');
+  var v = document.querySelector('.html5-video-player');
 
-  var dstHeight = (height/width) * dstWidth;
-  v.clientHeight = dstHeight;
-
-  v.style.width = dstWidth.toString() + 'px';
-  v.style.height = dstHeight.toString() + 'px';
+  var dstWidth = vp.clientWidth;
+  var dstHeight = (metaHeight/metaWidth) * dstWidth;
+  vp.style.height = dstHeight.toString() + 'px';
 }
 
 function onMediaPaused() {
@@ -403,6 +412,15 @@ function onLog(e) {
 
 function onAdTimeUpdate(e) {
   printLog('ad position: ' + e.position + ', duration: ' + e.duration);
+}
+
+function onResize(e) {
+  var vp = document.querySelector('.player');
+  var v = document.querySelector('.html5-video-player');
+
+  var dstWidth = vp.clientWidth;
+  var dstHeight = (metaHeight/metaWidth) * dstWidth;
+  vp.style.height = dstHeight.toString() + 'px';
 }
 
 /////////////////////////////////////////////////////////////////////////
