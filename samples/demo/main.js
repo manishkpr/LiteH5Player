@@ -119,8 +119,6 @@ function initData() {
   player.on(oldmtn.Events.LOG, onLog, {});
 
   player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
-  
-  player.on(oldmtn.Events.RESIZE, onResize, {});
   }
 }
 
@@ -130,6 +128,27 @@ function addH5PListeners() {
   h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
 
   h5pShade.addEventListener('click', onH5PShadeClick);
+
+  // resize listener
+  var ro = new ResizeObserver(entries => {
+    for (let entry of entries) {
+      const cr = entry.contentRect;
+      const cWidth = entry.target.clientWidth;
+      const cHeight = entry.target.clientHeight;
+
+      player.resize(cWidth, cHeight);
+      // BD
+      console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
+      // console.log('Element:', entry.target);
+      // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
+      // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+      // ED
+      }
+  });
+
+  // Observer one or multiple elements
+  var v = document.querySelector('.player');
+  ro.observe(v);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -374,9 +393,11 @@ function onMediaLoadedMetaData(e) {
   var vp = document.querySelector('.player');
   var v = document.querySelector('.html5-video-player');
 
-  var dstWidth = vp.clientWidth;
-  var dstHeight = (metaHeight/metaWidth) * dstWidth;
-  vp.style.height = dstHeight.toString() + 'px';
+  vp.style.paddingBottom = ((metaHeight/metaWidth)*100).toString() + '%';
+
+  console.log('vp.clientWidth: ' + vp.clientWidth);
+  console.log('vp.clientHeight: ' + vp.clientHeight);
+  player.resize(vp.clientWidth, vp.clientHeight);
 }
 
 function onMediaPaused() {
@@ -412,15 +433,6 @@ function onLog(e) {
 
 function onAdTimeUpdate(e) {
   printLog('ad position: ' + e.position + ', duration: ' + e.duration);
-}
-
-function onResize(e) {
-  var vp = document.querySelector('.player');
-  var v = document.querySelector('.html5-video-player');
-
-  var dstWidth = vp.clientWidth;
-  var dstHeight = (metaHeight/metaWidth) * dstWidth;
-  vp.style.height = dstHeight.toString() + 'px';
 }
 
 /////////////////////////////////////////////////////////////////////////

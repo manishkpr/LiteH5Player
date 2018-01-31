@@ -36,10 +36,6 @@ class CoreEvents {
 
         // log event
         this.LOG = 'log';
-
-        //
-        this.RESIZE = 'resize';
-
         //
         this.TEST_MSG = 'testMsg';
     }

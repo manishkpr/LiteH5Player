@@ -1,3 +1,5 @@
+--test-test-1: #FFF
+
 body {
   margin: 0px;
   background-color: lightgray;
@@ -5,17 +7,15 @@ body {
 
 .player {
   position: relative;
-  margin-left: 16px;
-  margin-right: 16px;
-  width: auto;
-  height: 320px;
+  width: 100%;
+  height: 0px;
+  padding-bottom: 56.25%;
 }
 
 .html5-video-player {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
-  display:block;
 }
 .h5p-autohide { cursor:none }
 
@@ -23,7 +23,6 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  top:0;left:0;bottom:0;right:0;
   background-color: black;
 }
 
@@ -36,7 +35,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  /*z-index: 100;*/
+  z-index: 10;
 }
 
 .h5p-shade:not(.h5p-shade-test1) {

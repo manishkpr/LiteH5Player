@@ -285,9 +285,9 @@ function Player(cfg) {
     }
 
     function resize(width, height) {
-        let v = document.getElementById(cfg_.playerContainer);
-        v.style.width = width.toString() + 'px';
-        v.style.height = height.toString() + 'px';
+        if (adsEngine_) {
+            adsEngine_.resize(width, height);
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -369,37 +369,11 @@ function Player(cfg) {
     }
 
     function addResizeListener() {
-        // resize listener
-        var ro = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const cr = entry.contentRect;
-
-                onContainerSizeChange();
-                eventBus_.trigger(oldmtn.Events.RESIZE, { width: cr.width, height: cr.height });
-
-                console.log('resize event, width: ' + cr.width + ', height: ' + cr.height);
-                console.log('video, width: ' + getWidth() + ', height: ' + getHeight());
-                // console.log('Element:', entry.target);
-                // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
-                // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-            }
-        });
-
-        // Observe one or multiple elements
-        var v = document.getElementById(cfg_.playerContainer);
-        ro.observe(v);
-
         // fullscreen listener
         document.addEventListener("fullscreenchange", onFullScreenChange);
         document.addEventListener("mozfullscreenchange", onFullScreenChange);
         document.addEventListener("webkitfullscreenchange", onFullScreenChange);
         document.addEventListener("msfullscreenchange", onFullScreenChange);
-    }
-
-    function onContainerSizeChange(e) {
-        if (adsEngine_) {
-            adsEngine_.resize();
-        }
     }
 
     function onFullScreenChange(e) {
