@@ -292,8 +292,6 @@ function Player(cfg) {
 
     /////////////////////////////////////////////////////////////////////////////////
     // Events API
-    function cast() {};
-
     function signalEndOfStream() {
         if (mseEngine_) {
             mseEngine_.signalEndOfStream();
