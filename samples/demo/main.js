@@ -138,7 +138,7 @@ function addH5PListeners() {
 
       player.resize(cWidth, cHeight);
       // BD
-      console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
+      // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
       // console.log('Element:', entry.target);
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
@@ -220,6 +220,11 @@ function onBtnMute() {
   } else {
     player.mute();
   }
+}
+
+function onCmdVolumeChange() {
+  var value = document.querySelector('.h5p-volume-slider').value;
+  player.setVolume(value/100);
 }
 
 function onBtnAddA() {

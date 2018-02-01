@@ -35,7 +35,6 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 10;
 }
 
 .h5p-shade:not(.h5p-shade-test1) {
@@ -140,10 +139,11 @@ body {
   vertical-align: middle;
 }
 
+/*mute button metric should be 36px, changed it to icon later;*/
 .h5p-mute-button {
   float: left;
-  padding-left: 6px;
   color: white;
+  background-color: green;
 }
 
 /*End play button*/
@@ -155,6 +155,21 @@ body {
   width: 100%;
   height: 100%;
 }
+
+/************ Begin volume bar ************/
+.h5p-volume-bar {
+  float: left;
+  width: auto;
+  height: 100%;
+}
+
+.h5p-volume-slider {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+/************ End volume bar ************/
 
 #idBtnController {
   position: relative;

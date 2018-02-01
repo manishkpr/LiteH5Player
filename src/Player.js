@@ -272,6 +272,22 @@ function Player(cfg) {
         }
     }
 
+    function setVolume(volume) {
+        if (!mediaEngine_) {
+            return;
+        }
+
+        mediaEngine_.setVolume(volume);
+    }
+
+    function getVolume() {
+        if (!mediaEngine_) {
+            return;
+        }
+
+        return mediaEngine_.getVolume();
+    }
+
     function seek(secs) {
         media_.currentTime = secs;
     }
@@ -480,6 +496,8 @@ function Player(cfg) {
         mute: mute,
         unmute: unmute,
         isMuted: isMuted,
+        setVolume: setVolume,
+        getVolume: getVolume,
         seek: seek,
         getWidth: getWidth,
         getHeight: getHeight,

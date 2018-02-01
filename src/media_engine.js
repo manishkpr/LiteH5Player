@@ -63,6 +63,14 @@ MediaEngine.prototype.unmute = function () {
   this.media_.muted = false;
 };
 
+MediaEngine.prototype.setVolume = function (volume) {
+  this.media_.volume = volume;
+};
+
+MediaEngine.prototype.getVolume = function () {
+  return this.media_.volume;
+};
+
 MediaEngine.prototype.videoWidth = function () {
   return this.media_.videoWidth;
 };

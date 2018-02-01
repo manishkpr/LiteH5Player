@@ -371,8 +371,8 @@ function getInitConfig()
     
     advertising: {
       //tag: 'http://10.2.64.68/tmp/1123.aa',
-      tag: Single_Inline_Linear,
-      //tag: Single_Skippable_Inline,
+      //tag: Single_Inline_Linear,
+      tag: Single_Skippable_Inline,
       //tag: Single_Non_linear_Inline,
       //tag: VMAP_Pre_Mid_Post,
       //tag: VMAP_Pre_3Mid_Post,
