@@ -326,7 +326,7 @@ function onBtnTest2() {
   printLog('--onBtnTest2--');
   //player.test2();
 
-  player.resize(320, 100);
+  player.resize(1024, 768);
   //endBuffering();
 
   // var v = document.querySelector('.ytp-play-button');

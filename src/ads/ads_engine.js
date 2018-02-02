@@ -193,6 +193,14 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         adsManager_.setVolume(1);
     }
 
+    function getVolume() {
+        return adsManager_.getVolume();
+    }
+
+    function setVolume(volume) {
+        adsManager_.setVolume(volume);
+    }
+
     function play() {
         if (adsManager_) {
             adsManager_.resume();
@@ -429,6 +437,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         mute: mute,
         unmute: unmute,
         isMuted: isMuted,
+        getVolume: getVolume,
+        setVolume: setVolume,
         resize: resize,
         onMediaEnded: onMediaEnded,
         requestAds: requestAds

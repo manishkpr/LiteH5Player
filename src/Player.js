@@ -273,11 +273,14 @@ function Player(cfg) {
     }
 
     function setVolume(volume) {
-        if (!mediaEngine_) {
-            return;
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            adsEngine_.setVolume(volume);
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            mediaEngine_.setVolume(volume);
         }
-
-        mediaEngine_.setVolume(volume);
     }
 
     function getVolume() {
