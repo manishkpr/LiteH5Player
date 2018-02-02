@@ -202,11 +202,13 @@ function onH5PShadeMousemove() {
   }
   timerControlBar = setTimeout(function() {
     onH5PShadeMouseleave();
-  }, 2000);
+  }, 3000);
 }
 
 function onH5PShadeMouseleave() {
-  $('.html5-video-player').addClass('h5p-autohide');
+  if (!player.isPaused()) {
+    $('.html5-video-player').addClass('h5p-autohide');
+  }
 }
 
 // browser & UI callback functions
@@ -221,27 +223,19 @@ function onBtnClose() {
   printLog('-onBtnClose');
 }
 
-function onPlayInternal() {
-  player.play();
-
-  var v = document.querySelector('.h5p-play-button');
-  var v1 = v.querySelector('.h5p-svg-fill');
-  v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
-}
-
-function onPauseInternal() {
-  player.pause();
-
-  var v = document.querySelector('.h5p-play-button');
-  var v1 = v.querySelector('.h5p-svg-fill');
-  v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
-}
-
 function onBtnPlay() {
   if (player.isPaused()) {
-    onPlayInternal();
+    player.play();
+
+    var v = document.querySelector('.h5p-play-button');
+    var v1 = v.querySelector('.h5p-svg-fill');
+    v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
   } else {
-    onPauseInternal();
+    player.pause();
+
+    var v = document.querySelector('.h5p-play-button');
+    var v1 = v.querySelector('.h5p-svg-fill');
+    v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
   }
 }
 
@@ -383,23 +377,23 @@ function onBtnAttribute() {
 }
 
 function onVideoShadeClick(e) {
-  printLog('--onVideoShadeClick--');
+  //printLog('--onVideoShadeClick--');
 }
 
 function onVideoControlBarClick() {
-  printLog('--onVideoControlBarClick--');
+  //printLog('--onVideoControlBarClick--');
 }
 
 function onH5PRootClick() {
-  printLog('--onH5PRootClick--');
+  //printLog('--onH5PRootClick--');
 }
 
 function onH5PShadeClick(e) {
-  printLog('--onH5PShadeClick--');
+  //printLog('--onH5PShadeClick--');
 }
 
 function onBufferIconClick() {
-  printLog('--onBufferIconClick--');
+  //printLog('--onBufferIconClick--');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -455,7 +449,7 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-  printLog('--onMediaTimeupdated--, position: ' + player.currentTime() + ', duration: ' + player.duration());
+  //printLog('--onMediaTimeupdated--, position: ' + player.currentTime() + ', duration: ' + player.duration());
   
   updateProgress();
 }

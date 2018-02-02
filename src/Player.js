@@ -49,7 +49,7 @@ function Player(cfg) {
     function open(info) {
         streamInfo_ = info;
         debug_.log('Player, +open');
-        if (0) {
+        if (1) {
             if (info.audioCodec) {
                 debug_.log('Player, +open: ' + info.audioCodec);
             }
@@ -74,7 +74,7 @@ function Player(cfg) {
             drmEngine_.setDrmInfo(streamInfo_);
         }
 
-        addPD();
+        //addPD();
 
         debug_.log('Player, -open');
     }
