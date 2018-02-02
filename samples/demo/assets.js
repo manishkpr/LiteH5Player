@@ -60,22 +60,22 @@ function getInitConfig()
     // Media
     poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
-    advertising: {
-      //tag: 'http://10.2.64.68/tmp/1123.aa',
-      tag: Single_Inline_Linear,
-      //tag: Single_Skippable_Inline,
-      //tag: Single_Non_linear_Inline,
-      //tag: VMAP_Pre_Mid_Post,
-      //tag: VMAP_Pre_3Mid_Post,
-      //tag: VMAP_5Ads_Every_10_Secs,
-      //tag: VMAP_Pre_10_20_Post,
-      //tag: VMAP_Pre_10_20Skip_Post,
-      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      //enablePreloading: true,
-      //forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   //tag: 'http://10.2.64.68/tmp/1123.aa',
+    //   tag: Single_Inline_Linear,
+    //   //tag: Single_Skippable_Inline,
+    //   //tag: Single_Non_linear_Inline,
+    //   //tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_3Mid_Post,
+    //   //tag: VMAP_5Ads_Every_10_Secs,
+    //   //tag: VMAP_Pre_10_20_Post,
+    //   //tag: VMAP_Pre_10_20Skip_Post,
+    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+    //   //enablePreloading: true,
+    //   //forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
   };
 
   return cfg;
@@ -236,8 +236,8 @@ function initPDContent() {
 
   // 
   videoCodec = 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"';
-  pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4';
-  //pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo2.mp4';
+  //pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4';
+  pdContent = 'http://localhost/2/pd/mp4/trailer.mp4';
   pdDuration = 30;
 }
 

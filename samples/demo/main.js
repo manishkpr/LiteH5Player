@@ -11,6 +11,8 @@ var metaWidth;
 var metaHeight;
 
 
+var progressColorList = ['red', 'rgba(192,192,192,0.3)'];
+
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
 function beginBuffering() {
@@ -23,9 +25,38 @@ function endBuffering() {
   idBufferingContainer.style.display = 'none';
 }
 
+// begin progress bar
+function genGradientColor(posList, totalRange, colorList) {
+    var gradient = ['to right'];
+    for (var i = 0; i < posList.length; ++i) {
+      var range = posList[i] * 100 / totalRange;
+
+      if (i === 0) {
+          gradient.push(colorList[0] + ' 0%');
+          gradient.push(colorList[0] + ' ' + range +'%');
+      } else {
+          var lastRange = posList[i-1] * 100 / totalRange;
+          gradient.push(colorList[i] + ' ' + lastRange +'%');
+          gradient.push(colorList[i] + ' ' + range +'%');
+      }
+    }
+
+    return 'linear-gradient(' + gradient.join(',') + ')';
+}
+
 function updateProgress() {
-  var c = oldmtn.CommonUtils.timeToString(player.currentTime());
-  var d = oldmtn.CommonUtils.timeToString(player.duration());
+  // 
+  var currentTime = player.currentTime();
+  var duration = player.duration();
+
+  // update time progress bar
+  var v = document.querySelector('.h5p-progress-bar');
+  var progressList = [currentTime, duration];
+  v.style.background = genGradientColor(progressList, duration, progressColorList);
+
+  // update time display label
+  var c = oldmtn.CommonUtils.timeToString(currentTime);
+  var d = oldmtn.CommonUtils.timeToString(duration);
   var fmtTime = c + '/' + d;
 
   //printLog('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
@@ -317,8 +348,9 @@ function onBtnTest() {
 
   //player.test();
 
-
-
+  var v = document.querySelector('.h5p-progress-bar');
+  var progressList = [0.5, 1];
+  v.style.background = genGradientColor(progressList, 1, progressColorList);
 
 }
 
