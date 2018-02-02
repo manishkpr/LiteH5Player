@@ -131,6 +131,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         debug_.log('advertising_.tag: ' + advertising_.tag);
         var adsRequest = new google.ima.AdsRequest();
         adsRequest.adTagUrl = advertising_.tag;
+        // Specify the linear and nonlinear slot sizes. This helps the SDK to
+        // select the correct creative if multiple are returned.
         adsRequest.linearAdSlotWidth = width_;
         adsRequest.linearAdSlotHeight = height_;
         adsRequest.nonLinearAdSlotWidth = width_;
@@ -139,11 +141,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
-         In some circumstances you may want to prevent the SDK from playing ad breaks until you're ready for them.
-         In this scenario, you can disable automatic playback of ad breaks in favor of letting the SDK know when you're ready for an ad break to play.
-         With this configuration, once the SDK has loaded an ad break, it will fire an AD_BREAK_READY event.
-         When your player is ready for the ad break to start, you can call adsManager.start():
-        */
+         * In some circumstances you may want to prevent the SDK from playing ad breaks until you're ready for them.
+         * In this scenario, you can disable automatic playback of ad breaks in favor of letting the SDK know when you're ready for an ad break to play.
+         * With this configuration, once the SDK has loaded an ad break, it will fire an AD_BREAK_READY event.
+         * When your player is ready for the ad break to start, you can call adsManager.start():
+         */
         adsLoader_.getSettings().setAutoPlayAdBreaks(false);
 
         adsLoader_.requestAds(adsRequest);
