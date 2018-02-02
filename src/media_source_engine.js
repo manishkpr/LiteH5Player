@@ -49,11 +49,11 @@ MediaSourceEngine.prototype.onMediaSourceOpen = function () {
   this.mediaSrc_.removeEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this));
 
   if (this.sourceBuffers_['audio']) {
-    this.sourceBuffers_['audio'].init(this.mediaSrc_);
+    this.sourceBuffers_['audio'].open(this.mediaSrc_);
   }
 
   if (this.sourceBuffers_['video']) {
-    this.sourceBuffers_['video'].init(this.mediaSrc_);
+    this.sourceBuffers_['video'].open(this.mediaSrc_);
   }
 
   this.eventBus_.trigger(Events.MSE_OPENED, {});

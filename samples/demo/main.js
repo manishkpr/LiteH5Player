@@ -468,7 +468,7 @@ function onAdTimeUpdate(e) {
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
-window.onload = function () {
+window.onload = function() {
   initUI();
   initData();
   addH5PListeners();
@@ -478,7 +478,7 @@ window.onload = function () {
   // ED
 };
 
-window.onunload = function () {
+window.onunload = function() {
   //onBtnStop();
 };
 

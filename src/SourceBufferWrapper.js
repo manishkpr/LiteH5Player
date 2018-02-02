@@ -12,7 +12,7 @@ var SourceBufferWrapper = function (mimeType) {
   this.eventBus_ = EventBus(oldmtn).getInstance();
 };
 
-SourceBufferWrapper.prototype.init = function (mediaSource) {
+SourceBufferWrapper.prototype.open = function (mediaSource) {
   this.mediaSrc_ = mediaSource;
 
   this.buffer_ = mediaSource.addSourceBuffer(this.mimeType_);

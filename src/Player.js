@@ -291,8 +291,8 @@ function Player(cfg) {
         return mediaEngine_.getVolume();
     }
 
-    function seek(secs) {
-        media_.currentTime = secs;
+    function seek(time) {
+        mediaEngine_.seek(time);
     }
 
     function getWidth() {

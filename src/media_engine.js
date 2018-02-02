@@ -15,219 +15,252 @@ canplay
 canplaythrough
 */
 
-var MediaEngine = function (media) {
-  this.media_ = media;
-  this.eventBus_ = EventBus(oldmtn).getInstance();
-  this.debug_ = Debug(oldmtn).getInstance();
-  this.addEventListeners();
-};
+function MediaEngine(media)
+{
+  let media_ = media;
+  let eventBus_;
+  let debug_;
 
-// Begin -- public functions
-MediaEngine.prototype.currentTime = function () {
-  return this.media_.currentTime;
-};
-
-MediaEngine.prototype.duration = function () {
-  return this.media_.duration;
-};
-
-MediaEngine.prototype.seeking = function () {
-  return this.media_.seeking;
-};
-
-MediaEngine.prototype.isEnded = function () {
-  return this.media_.ended;
-};
-
-MediaEngine.prototype.isMuted = function () {
-  return this.media_.muted;
-};
-
-MediaEngine.prototype.isPaused = function () {
-  return this.media_.paused;
-};
-
-MediaEngine.prototype.mute = function () {
-  this.media_.muted = true;
-};
-
-MediaEngine.prototype.play = function () {
-  this.media_.play();
-};
-
-MediaEngine.prototype.pause = function () {
-  this.media_.pause();
-};
-
-MediaEngine.prototype.unmute = function () {
-  this.media_.muted = false;
-};
-
-MediaEngine.prototype.setVolume = function (volume) {
-  this.media_.volume = volume;
-};
-
-MediaEngine.prototype.getVolume = function () {
-  return this.media_.volume;
-};
-
-MediaEngine.prototype.videoWidth = function () {
-  return this.media_.videoWidth;
-};
-
-MediaEngine.prototype.videoHeight = function () {
-  return this.media_.videoHeight;
-};
-
-// End -- public functions
-
-// Begin - private function
-MediaEngine.prototype.onMediaCanplay = function () {
-  //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
-  this.debug_.log('+onMediaCanplay');
-};
-
-MediaEngine.prototype.onMediaCanplayThrough = function () {
-  this.debug_.log('+onMediaCanplayThrough');
-};
-
-MediaEngine.prototype.onMediaDurationChanged = function () {
-  this.debug_.log('+onMediaDurationChanged' +
-    ', currentTime: ' + this.media_.currentTime +
-    ', duration: ' + this.media_.duration);
-  this.eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
-};
-
-MediaEngine.prototype.onMediaEnded = function () {
-  this.eventBus_.trigger(Events.MEDIA_ENDED);
-};
-
-MediaEngine.prototype.onMediaLoadedData = function () {
-  this.debug_.log('+onMediaLoadedData' +
-    ', width: ' + this.media_.videoWidth +
-    ', height: ' + this.media_.videoHeight +
-    ', duration: ' + this.media_.duration);
-};
-
-MediaEngine.prototype.onMediaLoadedMetadata = function () {
-  this.debug_.log('+onMediaMetadata' +
-    ', width: ' + this.media_.videoWidth +
-    ', height: ' + this.media_.videoHeight +
-    ', duration: ' + this.media_.duration);
-  let width = this.media_.videoWidth;
-  let height = this.media_.videoHeight;
-  this.eventBus_.trigger(Events.MEDIA_LOADEDMETADATA, { width: width, height: height });
-};
-
-MediaEngine.prototype.onMediaLoadStart = function () {
-  this.debug_.log('+onMediaLoadStart');
-};
-
-MediaEngine.prototype.onMediaPaused = function () {
-  this.debug_.log('+onMediaPaused');
-  this.eventBus_.trigger(Events.MEDIA_PAUSED);
-};
-
-MediaEngine.prototype.onMediaPlay = function () {
-  this.debug_.log('+onMediaPlay');
-};
-
-MediaEngine.prototype.onMediaPlaying = function () {
-  this.debug_.log('+onMediaPlaying');
-  this.eventBus_.trigger(Events.MEDIA_PLAYING);
-};
-
-MediaEngine.prototype.onMediaProgress = function () {
-  this.debug_.log('+onMediaProgress');
-};
-
-MediaEngine.prototype.onMediaReadyState = function (e) {
-  this.debug_.log('+onMediaReadyState');
-};
-
-MediaEngine.prototype.onMediaSeeking = function () {
-  this.eventBus_.trigger(Events.MEDIA_SEEKING);
-};
-
-MediaEngine.prototype.onMediaSeeked = function () {
-  this.eventBus_.trigger(Events.MEDIA_SEEKED);
-};
-
-MediaEngine.prototype.onMediaTimeUpdated = function (e) {
-  this.eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
-  //this.debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
-};
-
-MediaEngine.prototype.onMediaVolumeChanged = function () {
-  this.debug_.log('+onMediaVolumeChanged');
-};
-
-MediaEngine.prototype.onMediaWaiting = function () {
-  this.debug_.log('+onMediaWaiting');
-  this.eventBus_.trigger(Events.MEDIA_WAITING);
-};
-// End
-
-// public function
-MediaEngine.prototype.addEventListeners = function () {
-  this.media_.addEventListener('canplay', this.onMediaCanplay.bind(this));
-  this.media_.addEventListener('canplaythrough', this.onMediaCanplayThrough.bind(this));
-  this.media_.addEventListener('durationchange', this.onMediaDurationChanged.bind(this));
-  this.media_.addEventListener('ended', this.onMediaEnded.bind(this));
-  this.media_.addEventListener('loadeddata', this.onMediaLoadedData.bind(this));
-  this.media_.addEventListener('loadedmetadata', this.onMediaLoadedMetadata.bind(this));
-  this.media_.addEventListener('loadstart', this.onMediaLoadStart.bind(this));
-  this.media_.addEventListener('pause', this.onMediaPaused.bind(this));
-  this.media_.addEventListener('play', this.onMediaPlay.bind(this));
-  this.media_.addEventListener('playing', this.onMediaPlaying.bind(this));
-  this.media_.addEventListener('progress', this.onMediaProgress.bind(this));
-  this.media_.addEventListener('readyState', this.onMediaReadyState.bind(this));
-  this.media_.addEventListener('seeking', this.onMediaSeeking.bind(this));
-  this.media_.addEventListener('seeked', this.onMediaSeeked.bind(this));
-  this.media_.addEventListener('timeupdate', this.onMediaTimeUpdated.bind(this));
-  this.media_.addEventListener('volumechange', this.onMediaVolumeChanged.bind(this));
-  this.media_.addEventListener('waiting', this.onMediaWaiting.bind(this));
-};
-
-MediaEngine.prototype.removeEventsListeners = function () {
-  this.media_.removeEventListener('canplay', this.onMediaCanplay.bind(this));
-  this.media_.removeEventListener('durationchange', this.onMediaDurationChanged.bind(this));
-  this.media_.removeEventListener('ended', this.onMediaEnded.bind(this));
-  this.media_.removeEventListener('loadeddata', this.onMediaLoadedData.bind(this));
-  this.media_.removeEventListener('loadedmetadata', this.onMediaMetadata.bind(this));
-  this.media_.removeEventListener('loadstart', this.onMediaLoadStart.bind(this));
-  this.media_.removeEventListener('pause', this.onMediaPaused.bind(this));
-  this.media_.removeEventListener('play', this.onMediaPlay.bind(this));
-  this.media_.removeEventListener('playing', this.onMediaPlaying.bind(this));
-  this.media_.removeEventListener('progress', this.onMediaProgress.bind(this));
-  this.media_.removeEventListener('readyState', this.onMediaReadyState.bind(this));
-  this.media_.removeEventListener('seeking', this.onMediaSeeking.bind(this));
-  this.media_.removeEventListener('seeked', this.onMediaSeeked.bind(this));
-  this.media_.removeEventListener('timeupdate', this.onMediaTimeUpdated.bind(this));
-  this.media_.removeEventListener('volumechange', this.onMediaVolumeChanged.bind(this));
-  this.media_.removeEventListener('waiting', this.onMediaWaiting.bind(this));
-};
-
-MediaEngine.prototype.setSrc = function (objURL) {
-  this.media_.src = objURL;
-};
-
-MediaEngine.prototype.getSrc = function () {
-  return this.media_.src;
-};
-
-MediaEngine.prototype.revokeSrc = function() {
-  URL.revokeObjectURL(this.media_.src);
-};
-
-MediaEngine.prototype.close = function () {
-  // Detach properly the MediaSource from the HTMLMediaElement as
-  // suggested in https://github.com/w3c/media-source/issues/53
-  if (this.media_) {
-    this.media_.removeAttribute('src');
-    this.media_.load();
+  function setup() {
+    eventBus_ = EventBus(oldmtn).getInstance();
+    debug_ = Debug(oldmtn).getInstance();
+    addEventListeners();
   }
-};
+
+  // Begin -- public functions
+  function play() {
+    media_.play();
+  }
+
+  function pause() {
+    media_.pause();
+  }
+
+  function isPaused() {
+    return media_.paused;
+  }
+
+  function currentTime() {
+    return media_.currentTime;
+  }
+
+  function duration() {
+    return media_.duration;
+  }
+
+  function seek(time) {
+    media_.currentTime = time;
+  }
+
+  function isSeeking() {
+    return media_.seeking;
+  }
+
+  function isEnded() {
+    return media_.ended;
+  }
+
+  function mute() {
+    media_.muted = true;
+  }
+
+  function unmute() {
+    media_.muted = false;
+  }
+
+  function isMuted() {
+    return media_.muted;
+  }
+
+  function setVolume(volume) {
+    media_.volume = volume;
+  }
+
+  function getVolume() {
+    return media_.volume;
+  }
+
+  function videoWidth() {
+    return media_.videoWidth;
+  }
+
+  function videoHeight() {
+    return media_.videoHeight;
+  }
+  // End -- public functions
+
+  // Begin - private function
+  function onMediaCanplay() {
+    //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
+    debug_.log('+onMediaCanplay');
+  }
+
+  function onMediaCanplayThrough() {
+    debug_.log('+onMediaCanplayThrough');
+  }
+
+  function onMediaDurationChanged() {
+    debug_.log('+onMediaDurationChanged' +
+      ', currentTime: ' + media_.currentTime +
+      ', duration: ' + media_.duration);
+    eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
+  }
+
+  function onMediaEnded() {
+    eventBus_.trigger(Events.MEDIA_ENDED);
+  }
+
+  function onMediaLoadedData() {
+    debug_.log('+onMediaLoadedData' +
+      ', width: ' + media_.videoWidth +
+      ', height: ' + media_.videoHeight +
+      ', duration: ' + media_.duration);
+  }
+
+  function onMediaLoadedMetadata() {
+    debug_.log('+onMediaMetadata' +
+      ', width: ' + media_.videoWidth +
+      ', height: ' + media_.videoHeight +
+      ', duration: ' + media_.duration);
+    let width = media_.videoWidth;
+    let height = media_.videoHeight;
+    eventBus_.trigger(Events.MEDIA_LOADEDMETADATA, { width: width, height: height });
+  }
+
+  function onMediaLoadStart() {
+    debug_.log('+onMediaLoadStart');
+  }
+
+  function onMediaPaused() {
+    debug_.log('+onMediaPaused');
+    eventBus_.trigger(Events.MEDIA_PAUSED);
+  }
+
+  function onMediaPlay() {
+    debug_.log('+onMediaPlay');
+  }
+
+  function onMediaPlaying() {
+    debug_.log('+onMediaPlaying');
+    eventBus_.trigger(Events.MEDIA_PLAYING);
+  }
+
+  function onMediaProgress() {
+    debug_.log('+onMediaProgress');
+  }
+
+  function onMediaReadyState(e) {
+    debug_.log('+onMediaReadyState');
+  }
+
+  function onMediaSeeking() {
+    eventBus_.trigger(Events.MEDIA_SEEKING);
+  }
+
+  function onMediaSeeked() {
+    eventBus_.trigger(Events.MEDIA_SEEKED);
+  }
+
+  function onMediaTimeUpdated(e) {
+    eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
+    //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
+  }
+
+  function onMediaVolumeChanged() {
+    debug_.log('+onMediaVolumeChanged');
+  }
+
+  function onMediaWaiting() {
+    debug_.log('+onMediaWaiting');
+    eventBus_.trigger(Events.MEDIA_WAITING);
+  }
+  // End
+
+  // public function
+  function addEventListeners() {
+    media_.addEventListener('canplay', onMediaCanplay);
+    media_.addEventListener('canplaythrough', onMediaCanplayThrough);
+    media_.addEventListener('durationchange', onMediaDurationChanged);
+    media_.addEventListener('ended', onMediaEnded);
+    media_.addEventListener('loadeddata', onMediaLoadedData);
+    media_.addEventListener('loadedmetadata', onMediaLoadedMetadata);
+    media_.addEventListener('loadstart', onMediaLoadStart);
+    media_.addEventListener('pause', onMediaPaused);
+    media_.addEventListener('play', onMediaPlay);
+    media_.addEventListener('playing', onMediaPlaying);
+    media_.addEventListener('progress', onMediaProgress);
+    media_.addEventListener('readyState', onMediaReadyState);
+    media_.addEventListener('seeking', onMediaSeeking);
+    media_.addEventListener('seeked', onMediaSeeked);
+    media_.addEventListener('timeupdate', onMediaTimeUpdated);
+    media_.addEventListener('volumechange', onMediaVolumeChanged);
+    media_.addEventListener('waiting', onMediaWaiting);
+  }
+
+  function removeEventsListeners() {
+    media_.removeEventListener('canplay', onMediaCanplay);
+    media_.removeEventListener('durationchange', onMediaDurationChanged);
+    media_.removeEventListener('ended', onMediaEnded);
+    media_.removeEventListener('loadeddata', onMediaLoadedData);
+    media_.removeEventListener('loadedmetadata', onMediaMetadata);
+    media_.removeEventListener('loadstart', onMediaLoadStart);
+    media_.removeEventListener('pause', onMediaPaused);
+    media_.removeEventListener('play', onMediaPlay);
+    media_.removeEventListener('playing', onMediaPlaying);
+    media_.removeEventListener('progress', onMediaProgress);
+    media_.removeEventListener('readyState', onMediaReadyState);
+    media_.removeEventListener('seeking', onMediaSeeking);
+    media_.removeEventListener('seeked', onMediaSeeked);
+    media_.removeEventListener('timeupdate', onMediaTimeUpdated);
+    media_.removeEventListener('volumechange', onMediaVolumeChanged);
+    media_.removeEventListener('waiting', onMediaWaiting);
+  };
+
+  function setSrc(objURL) {
+    media_.src = objURL;
+  }
+
+  function getSrc() {
+    return media_.src;
+  }
+
+  function revokeSrc() {
+    URL.revokeObjectURL(media_.src);
+  }
+
+  function close() {
+    // Detach properly the MediaSource from the HTMLMediaElement as
+    // suggested in https://github.com/w3c/media-source/issues/53
+    if (media_) {
+      media_.removeAttribute('src');
+      media_.load();
+    }
+  }
+
+  let instance = {
+    play: play,
+    pause: pause,
+    isPaused: isPaused,
+    currentTime: currentTime,
+    duration: duration,
+    seek: seek,
+    isSeeking: isSeeking,
+    isEnded: isEnded,
+    mute: mute,
+    unmute: unmute,
+    isMuted: isMuted,
+    setVolume: setVolume,
+    getVolume: getVolume,
+    videoWidth: videoWidth,
+    videoHeight: videoHeight,
+    
+    close: close,
+    setSrc: setSrc,
+    revokeSrc: revokeSrc
+  };
+
+  setup();
+  return instance;
+}
 
 export default MediaEngine;
-
