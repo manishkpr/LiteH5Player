@@ -30,14 +30,17 @@ UIEngine.prototype.initUIElement = function () {
     this.videoContainer_.setAttribute('class', 'h5p-video-container');
     this.videoContainer_.appendChild(this.video_);
 
-    this.playerContainer_.appendChild(this.videoContainer_);
+    // 
+    let vH5pShade = document.querySelector('.h5p-shade');
+    this.playerContainer_.insertBefore(this.videoContainer_, vH5pShade);
 
     // create ads container
     if (this.cfg_.advertising) {
         this.adContainer_ = document.createElement('div');
         this.adContainer_.setAttribute('class', 'h5p-ads-container');
 
-        this.playerContainer_.appendChild(this.adContainer_);
+        var vFirst = vH5pShade.firstChild;
+        vH5pShade.insertBefore(this.adContainer_, vFirst);
     }
 };
 

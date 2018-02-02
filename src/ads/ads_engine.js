@@ -136,9 +136,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         adsRequest.nonLinearAdSlotWidth = width_;
         adsRequest.nonLinearAdSlotHeight = height_;
 
-        if (advertising_.forceNonLinearFullSlot) {
-            adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
-        }
+        adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
          In some circumstances you may want to prevent the SDK from playing ad breaks until you're ready for them.
