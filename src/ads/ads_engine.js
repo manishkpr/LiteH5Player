@@ -146,7 +146,7 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
          * With this configuration, once the SDK has loaded an ad break, it will fire an AD_BREAK_READY event.
          * When your player is ready for the ad break to start, you can call adsManager.start():
          */
-        adsLoader_.getSettings().setAutoPlayAdBreaks(false);
+        //adsLoader_.getSettings().setAutoPlayAdBreaks(false);
 
         adsLoader_.requestAds(adsRequest);
     };
@@ -306,14 +306,6 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         switch (adEvent.type) {
         case google.ima.AdEvent.Type.AD_BREAK_READY: {
             console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
-
-            let skip = isSkipAdBreak(adEvent.o.adBreakTime);
-            // Once we're ready to play ads. To skip this ad break, simply return
-            // from this handler without calling adsManager.start().
-            if (!skip) {
-                adsManager_.start();
-            }
-            //adsManager_.start();
         } break;
         case google.ima.AdEvent.Type.AD_METADATA: {
                 for (let i in adEvent) {
@@ -352,12 +344,8 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
 
         } break;
         case google.ima.AdEvent.Type.LINEAR_CHANGED: {
-
         } break;
         case google.ima.AdEvent.Type.LOADED: {
-                if (!ad.isLinear()) {
-                    eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
-                }
             }
             break;
         case google.ima.AdEvent.Type.PAUSED: {
@@ -387,6 +375,10 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
                     eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
                 }, 1000);
                 eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+
+                if (!ad.isLinear()) {
+                    eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
+                }
             }
             break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
@@ -416,16 +408,6 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
 
     function onMediaEnded() {
         adsLoader_.contentComplete();
-    }
-
-    function isSkipAdBreak(adBreakTime) {
-        let skip = false;
-
-        if (media_.seeking) {
-            skip = true;
-        }
-
-        return skip;
     }
 
     let instance = {
