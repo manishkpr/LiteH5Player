@@ -28,6 +28,13 @@ module.exports = function (grunt) {
                     transform: ['babelify']
                 }
             }
+        },
+        uglify: {
+            dist: {
+                files: {
+                    'dist/liteH5Player.min.js': ['dist/liteH5Player.debug.js']
+                }
+            }
         }
     });
 
@@ -35,7 +42,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['clean:dist', 'browserify:dist']);
     grunt.registerTask('omClean', ['clean:dist']);
-    grunt.registerTask('omBuild', ['browserify:dist']);
+    grunt.registerTask('omBuild', ['clean:dist', 'browserify:dist', 'uglify:dist']);
 };
 
 
