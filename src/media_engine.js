@@ -115,6 +115,7 @@ function MediaEngine(media)
       ', width: ' + media_.videoWidth +
       ', height: ' + media_.videoHeight +
       ', duration: ' + media_.duration);
+    eventBus_.trigger(Events.MEDIA_LOADEDDATA);
   }
 
   function onMediaLoadedMetadata() {

@@ -341,13 +341,11 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
         case google.ima.AdEvent.Type.DURATION_CHANGE: {
         } break;
         case google.ima.AdEvent.Type.IMPRESSION: {
-
         } break;
         case google.ima.AdEvent.Type.LINEAR_CHANGED: {
         } break;
         case google.ima.AdEvent.Type.LOADED: {
-            }
-            break;
+        } break;
         case google.ima.AdEvent.Type.PAUSED: {
                 isPaused_ = true;
             }

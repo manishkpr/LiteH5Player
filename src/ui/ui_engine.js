@@ -1,7 +1,7 @@
 
 
 
-
+const cls_vop_video_container = '.vop-video-container {position:absolute; width:100%; height: 100%;}';
 var UIEngine = function (cfg) {
     this.cfg_ = cfg;
     this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
@@ -21,6 +21,10 @@ UIEngine.prototype.initUIStyle = function () {
 };
 
 UIEngine.prototype.initUIElement = function () {
+    // BD
+    console.log('cls_vop_video_container: ' + cls_vop_video_container);
+    // ED
+
     // create video element here
     this.video_ = document.createElement('video');
     this.video_.setAttribute('class', 'h5p-video');

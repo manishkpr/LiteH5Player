@@ -236,9 +236,10 @@ function initPDContent() {
 
   // 
   videoCodec = 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"';
-  //pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo/fmp4.mp4';
-  pdContent = 'http://localhost/2/pd/mp4/trailer.mp4';
+  pdContent = 'http://localhost/2/pd/mp4/jwplayer_demo/fmp4.mp4';
   pdDuration = 30;
+
+  //pdContent = 'http://localhost/2/pd/mp4/trailer.mp4';
 }
 
 function initPDContent_ClearKey() {
