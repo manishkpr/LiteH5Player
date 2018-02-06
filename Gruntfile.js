@@ -30,21 +30,6 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            options: {
-                // compress: {
-                //     sequences: true,
-                //     dead_code: true,
-                //     conditionals: true,
-                //     booleans: true,
-                //     unused: true,
-                //     if_return: true,
-                //     join_vars: true,
-                //     drop_console: false
-                //},
-                output: {
-                    quote_keys: true
-                }
-            },
             dist: {
                 files: {
                     'dist/liteH5Player.min.js': ['dist/liteH5Player.debug.js']

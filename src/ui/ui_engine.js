@@ -1,7 +1,4 @@
 
-
-
-const cls_vop_video_container = '.vop-video-container {position:absolute; width:100%; height: 100%;}';
 var UIEngine = function (cfg) {
     this.cfg_ = cfg;
     this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
@@ -21,10 +18,6 @@ UIEngine.prototype.initUIStyle = function () {
 };
 
 UIEngine.prototype.initUIElement = function () {
-    // BD
-    console.log('cls_vop_video_container: ' + cls_vop_video_container);
-    // ED
-
     // create video element here
     this.video_ = document.createElement('video');
     this.video_.setAttribute('class', 'h5p-video');
@@ -35,16 +28,19 @@ UIEngine.prototype.initUIElement = function () {
     this.videoContainer_.appendChild(this.video_);
 
     // 
-    let vH5pShade = document.querySelector('.h5p-shade');
-    this.playerContainer_.insertBefore(this.videoContainer_, vH5pShade);
-
+    let firstChild = this.playerContainer_.firstChild;
+    if (firstChild) {
+        this.playerContainer_.insertBefore(this.videoContainer_, firstChild);
+    } else {
+        this.playerContainer_.appendChild(this.videoContainer_);
+    }
+    
     // create ads container
     if (this.cfg_.advertising) {
         this.adContainer_ = document.createElement('div');
         this.adContainer_.setAttribute('class', 'h5p-ads-container');
 
-        var vFirst = vH5pShade.firstChild;
-        vH5pShade.insertBefore(this.adContainer_, vFirst);
+        this.playerContainer_.insertBefore(this.adContainer_, firstChild);
     }
 };
 

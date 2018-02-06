@@ -48,7 +48,7 @@ function initUI() {
 }
 
 function initData() {
-    var receiver = new micromtn.CastReceiver(playerDiv);
+    var receiver = new oldmtn.CastReceiver(playerDiv);
 
     receiver.addEventListener('timeupdate', cbTimeupdate);
     receiver.start();
