@@ -21,6 +21,7 @@
     "grunt-babel": "^5.0.3",
     "grunt-browserify": "^4.0.0",
     "grunt-cli": "^0.1.13",
+    "grunt-contrib-copy": "~0.8.2",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-uglify": "~0.9.1",
     "jasmine": "^2.8.0",

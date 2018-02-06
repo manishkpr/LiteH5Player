@@ -35,12 +35,19 @@ module.exports = function (grunt) {
                     'dist/liteH5Player.min.js': ['dist/liteH5Player.debug.js']
                 }
             }
+        },
+        copy: {
+            dist: {
+                files: {
+                    './samples/cast/receiver/liteH5Player.debug.js': ['dist/liteH5Player.debug.js']
+                }
+            }
         }
     });
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['clean:dist', 'browserify:dist']);
+    grunt.registerTask('default', ['clean:dist', 'browserify:dist', 'copy:dist']);
     grunt.registerTask('omClean', ['clean:dist']);
     grunt.registerTask('omBuild', ['clean:dist', 'browserify:dist', 'uglify:dist']);
 };
