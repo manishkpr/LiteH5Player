@@ -9,7 +9,7 @@ function CastReceiver(element) {
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-    let element_ = null;
+    let element_ = element;
     let mediaElement_ = null;
     let receiverManager_ = null;
     let genericBus_ = null;
@@ -25,63 +25,60 @@ function CastReceiver(element) {
     let player_ = null;
     let isConnected_ = null;
 
-    //
-    element_ = element;
     function setup() {
+        // Init Video Element
+        mediaElement_ = (element_.querySelector('video'));
+        // mediaElement_.addEventListener('error', onError_, false);
+        // mediaElement_.addEventListener('playing', onPlaying_,
+        //     false);
+        // mediaElement_.addEventListener('pause', onPause_, false);
+        // mediaElement_.addEventListener('ended', onEnded_, false);
+        // mediaElement_.addEventListener('abort', onAbort_, false);
+        mediaElement_.addEventListener('timeupdate', onTimeupdate,
+            false);
+        // mediaElement_.addEventListener('seeking', onSeekStart_,
+        //     false);
+        // mediaElement_.addEventListener('seeked', onSeekEnd_,
+        //     false);
 
-    // Init Video Element
-    mediaElement_ = (element_.querySelector('video'));
-    // mediaElement_.addEventListener('error', onError_, false);
-    // mediaElement_.addEventListener('playing', onPlaying_,
-    //     false);
-    // mediaElement_.addEventListener('pause', onPause_, false);
-    // mediaElement_.addEventListener('ended', onEnded_, false);
-    // mediaElement_.addEventListener('abort', onAbort_, false);
-    mediaElement_.addEventListener('timeupdate', onTimeupdate,
-        false);
-    // mediaElement_.addEventListener('seeking', onSeekStart_,
-    //     false);
-    // mediaElement_.addEventListener('seeked', onSeekEnd_,
-    //     false);
+        // Init CastReceiverManager
+        receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
+        receiverManager_.onReady = onReady_;
+        receiverManager_.onSenderDisconnected = onSenderDisconnected_;
+        receiverManager_.onVisibilityChanged = onVisibilityChanged_;
 
-    // Init CastReceiverManager
-    receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
-    receiverManager_.onReady = onReady_;
-    receiverManager_.onSenderDisconnected = onSenderDisconnected_;
-    receiverManager_.onVisibilityChanged = onVisibilityChanged_;
+        // genericBus_ = receiverManager_.getCastMessageBus(
+        //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
+        // genericBus_.onMessage = onGenericMessage_;
 
-    // genericBus_ = receiverManager_.getCastMessageBus(
-    //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
-    // genericBus_.onMessage = onGenericMessage_;
+        // oldmtnBus_ = receiverManager_.getCastMessageBus(
+        //         CastUtils.OLDMTN_MESSAGE_NAMESPACE);
+        // oldmtnBus_.onMessage = onOldmtnMessage_;
 
-    // oldmtnBus_ = receiverManager_.getCastMessageBus(
-    //         CastUtils.OLDMTN_MESSAGE_NAMESPACE);
-    // oldmtnBus_.onMessage = onOldmtnMessage_;
+        // Init Mediamanager
+        mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
+        onLoadOrig_ =
+            mediaManager_.onLoad.bind(mediaManager_);
+        mediaManager_.onLoad = onLoad_;
 
-    // Init Mediamanager
-    mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
-    onLoadOrig_ =
-        mediaManager_.onLoad.bind(mediaManager_);
-    mediaManager_.onLoad = onLoad_;
+        onGetStatusOrig_ =
+            mediaManager_.onGetStatus.bind(mediaManager_);
+        mediaManager_.onGetStatus = onGetStatus_;
 
-    onGetStatusOrig_ =
-        mediaManager_.onGetStatus.bind(mediaManager_);
-    mediaManager_.onGetStatus = onGetStatus_;
+        onMetadataLoadedOrig_ =
+            mediaManager_.onMetadataLoaded.bind(mediaManager_);
+        mediaManager_.onMetadataLoaded = onMetadataLoaded_;
 
-    onMetadataLoadedOrig_ =
-        mediaManager_.onMetadataLoaded.bind(mediaManager_);
-    mediaManager_.onMetadataLoaded = onMetadataLoaded_;
+        onStopOrig_ =
+            mediaManager_.onStop.bind(mediaManager_);
+        mediaManager_.onStop = onStop_;
 
-    onStopOrig_ =
-        mediaManager_.onStop.bind(mediaManager_);
-    mediaManager_.onStop = onStop_;
+        onLoadMetadataErrorOrig_ =
+            mediaManager_.onLoadMetadataError.bind(mediaManager_);
+        mediaManager_.onLoadMetadataError = onLoadMetadataError_;
 
-    onLoadMetadataErrorOrig_ =
-        mediaManager_.onLoadMetadataError.bind(mediaManager_);
-    mediaManager_.onLoadMetadataError = onLoadMetadataError_;
-
-    onErrorOrig_ = mediaManager_.onError.bind(mediaManager_);
-    mediaManager_.onError = onError_;
+        onErrorOrig_ = mediaManager_.onError.bind(mediaManager_);
+        mediaManager_.onError = onError_;
     }
     //
     function getMediaElement() {

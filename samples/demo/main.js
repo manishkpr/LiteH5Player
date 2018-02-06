@@ -481,7 +481,6 @@ function onMediaPaused() {
 }
 
 function onMediaPlaying() {
-  printLog('--onMediaPlaying--');
   endBuffering();
 }
 
