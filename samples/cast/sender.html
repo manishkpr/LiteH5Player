@@ -19,7 +19,6 @@
 <head>
   <title>Cast Videos: Google Cast Chrome Sender SDK Demo App</title>
   <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
-  <!-- <script src="./111.js"></script> -->
   <script src="./base.js"></script>
   <script src="../../dist/liteH5Player.debug.js"></script>
 </head>
@@ -47,16 +46,20 @@
   <br />
 
   <script>
-    var castSender = new micromtn.CastSender();
+    var castSender = new oldmtn.CastSender();
     function init() {
       //options.receiverApplicationId = '4F8B3483';
       //options.receiverApplicationId = 'E19ACDB8'; // joseph test app1
       //options.receiverApplicationId = 'FAC6871E';   // joseph test app2
       //options.receiverApplicationId = '91580C19'; // shaka receiver app id
 
+      var receiverAppId = 'E19ACDB8'; // joseph test app1
       //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
-      var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
+      //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
       castSender.init(receiverAppId);
+    }
+    function requestSession() {
+      castSender.requestSession();
     }
     function endSession() {
       castSender.endSession();
@@ -68,7 +71,7 @@
       var url, type;
 
       // dash
-      url = 'http://10.2.68.51/6/dash/envivio/test1_main_timeline/test.mpd';
+      url = 'http://10.2.68.64/6/dash/envivio/test1_main_timeline/test.mpd';
       //url = 'http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-events.mpd';
       type = 'application/dash+xml';
 
