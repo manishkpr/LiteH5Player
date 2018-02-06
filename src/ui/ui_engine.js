@@ -27,6 +27,10 @@ UIEngine.prototype.initUIElement = function () {
     this.videoContainer_.setAttribute('class', 'h5p-video-container');
     this.videoContainer_.appendChild(this.video_);
 
+    // create ads container
+    this.adContainer_ = document.createElement('div');
+    this.adContainer_.setAttribute('class', 'h5p-ads-container');
+
     // 
     let firstChild = this.playerContainer_.firstChild;
     if (firstChild) {
@@ -34,13 +38,11 @@ UIEngine.prototype.initUIElement = function () {
     } else {
         this.playerContainer_.appendChild(this.videoContainer_);
     }
-    
-    // create ads container
-    if (this.cfg_.advertising) {
-        this.adContainer_ = document.createElement('div');
-        this.adContainer_.setAttribute('class', 'h5p-ads-container');
 
+    if (firstChild) {
         this.playerContainer_.insertBefore(this.adContainer_, firstChild);
+    } else {
+        this.playerContainer_.appendChild(this.adContainer_);
     }
 };
 
