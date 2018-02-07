@@ -6,9 +6,6 @@ import CastUtils from './cast_utils';
 function CastReceiver(element) {
     console.log('receiver, constructor');
 
-    cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-
     let element_ = element;
     let mediaElement_ = null;
     let receiverManager_ = null;
@@ -26,7 +23,8 @@ function CastReceiver(element) {
     let isConnected_ = null;
 
     function setup() {
-
+        cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+        cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
         // Init Video Element
         mediaElement_ = (element_.querySelector('video'));
@@ -50,9 +48,13 @@ function CastReceiver(element) {
         receiverManager_.onVisibilityChanged = onVisibilityChanged_;
 
         // custom message bus
-        genericBus_ = receiverManager_.getCastMessageBus(
-                CastUtils.GENERIC_MESSAGE_NAMESPACE);
-        genericBus_.onMessage = onGenericMessage_;
+        console.log('CastUtils.GENERIC_MESSAGE_NAMESPACE: ' + CastUtils.GENERIC_MESSAGE_NAMESPACE);
+        console.log('CastUtils.OLDMTN_MESSAGE_NAMESPACE: ' + CastUtils.OLDMTN_MESSAGE_NAMESPACE);
+
+        // The default GENERIC_MESSAGE_NAMESPACE should called after creating MediaManager. 
+        // genericBus_ = receiverManager_.getCastMessageBus(
+        //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
+        // genericBus_.onMessage = onGenericMessage_;
 
         oldmtnBus_ = receiverManager_.getCastMessageBus(
                 CastUtils.OLDMTN_MESSAGE_NAMESPACE);
@@ -224,8 +226,8 @@ function CastReceiver(element) {
     }
 
     function onOldmtnMessage_(event) {
-        var message = CastUtils.deserialize(event.data);
-        console.log('+onOldmtnMessage_, type: ' + message['type'] + ', targetName: ' + message[targetName] + ', methodName: ' + message[methodName]);
+        //var message = CastUtils.deserialize(event.data);
+        console.log('onOldmtnMessage_, event.data: ' + event.data);
 
         //oldmtnBus_.broadcast("abcd1234");
     }

@@ -57,17 +57,31 @@ function RemotePlayerHandler() {
         remotePlayerController.stop();
     }
 
+    let instance = {
+        init: init,
+        play: play,
+        pause: pause,
+        setVolume: setVolume,
+        getVolume: getVolume,
+        seek: seek,
+        stop: stop
+    };
+    return instance;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////
 // CastSender
 function CastSender() {
-    remotePlayer = null;
-    remotePlayerController = null;
-    castContext_ = null;
-    session_ = null;
+    let remotePlayer = null;
+    let remotePlayerController = null;
+    let castContext_ = null;
+    let session_ = null;
 
-    remotePlayerHandler = new RemotePlayerHandler();
+    let remotePlayerHandler = new RemotePlayerHandler();
+
+    function setup() {
+
+    }
 
     function onConnectedChanged() {
         console.log('cast, +onConnectedChanged, remotePlayer.isConnected: ' + remotePlayer.isConnected);
@@ -245,14 +259,15 @@ function CastSender() {
         }
     }
 
+    var tmp = 1;
     function test() {
         //console.log('--test--');
 
-        castContext_.requestSession();
-
-        // console.log('before remoteCall_');
-        // remoteCall_("abc", "1234");
-        // console.log('after remoteCall_');
+        session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+            tmp.toString(),
+            function () {}, // success callback
+            function () {}); // error callback
+        tmp ++;
     }
 
     function remoteCall_(targetName, methodName) {
@@ -269,7 +284,8 @@ function CastSender() {
         var serialized = CastUtils.serialize(message);
         // TODO: have never seen this fail.  When would it and how should we react?
         session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-            serialized, function () {}, // success callback
+            serialized,
+            function () {}, // success callback
             function () {}); // error callback
     }
 
