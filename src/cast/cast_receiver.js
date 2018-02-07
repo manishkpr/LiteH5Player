@@ -26,6 +26,8 @@ function CastReceiver(element) {
     let isConnected_ = null;
 
     function setup() {
+
+
         // Init Video Element
         mediaElement_ = (element_.querySelector('video'));
         // mediaElement_.addEventListener('error', onError_, false);
@@ -47,13 +49,14 @@ function CastReceiver(element) {
         receiverManager_.onSenderDisconnected = onSenderDisconnected_;
         receiverManager_.onVisibilityChanged = onVisibilityChanged_;
 
-        // genericBus_ = receiverManager_.getCastMessageBus(
-        //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
-        // genericBus_.onMessage = onGenericMessage_;
+        // custom message bus
+        genericBus_ = receiverManager_.getCastMessageBus(
+                CastUtils.GENERIC_MESSAGE_NAMESPACE);
+        genericBus_.onMessage = onGenericMessage_;
 
-        // oldmtnBus_ = receiverManager_.getCastMessageBus(
-        //         CastUtils.OLDMTN_MESSAGE_NAMESPACE);
-        // oldmtnBus_.onMessage = onOldmtnMessage_;
+        oldmtnBus_ = receiverManager_.getCastMessageBus(
+                CastUtils.OLDMTN_MESSAGE_NAMESPACE);
+        oldmtnBus_.onMessage = onOldmtnMessage_;
 
         // Init Mediamanager
         mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
@@ -170,7 +173,9 @@ function CastReceiver(element) {
     }
 
     function onGenericMessage_(event) {
-        // console.log('+onGenericMessage_, type: ' + event.type + ', senderId: ' + event.senderId);
+        console.log('+onGenericMessage_, type: ' + event.type + ', senderId: ' + event.senderId);
+        return;
+
         // console.log('type: ' + event.data.type);
         // console.log('requestId: ' + event.data.requestId);
         // console.log('namespace: ' + event.namespace);
@@ -220,9 +225,9 @@ function CastReceiver(element) {
 
     function onOldmtnMessage_(event) {
         var message = CastUtils.deserialize(event.data);
-        //console.log('+onOldmtnMessage_, type: ' + message['type'] + ', targetName: ' + message[targetName] + ', methodName: ' + message[methodName]);
+        console.log('+onOldmtnMessage_, type: ' + message['type'] + ', targetName: ' + message[targetName] + ', methodName: ' + message[methodName]);
 
-        oldmtnBus_.broadcast("abcd1234");
+        //oldmtnBus_.broadcast("abcd1234");
     }
 
     function sendMessage_(message, bus, opt_senderId) {

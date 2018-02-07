@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"play",
+				"playerContainer_"
+			],
+			[
+				"rece",
+				"receiverAppId"
+			],
+			[
 				"margin",
 				"margin-top"
 			],
@@ -78,10 +86,6 @@
 			[
 				"media",
 				"mediaEngine_"
-			],
-			[
-				"play",
-				"playerContainer"
 			],
 			[
 				"medi",
@@ -332,12 +336,21 @@
 	"buffers":
 	[
 		{
-			"file": "src/Player.js",
+			"file": "samples/cast/receiver.html",
 			"settings":
 			{
-				"buffer_size": 13971,
-				"encoding": "UTF-8 with BOM",
+				"buffer_size": 2470,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Gruntfile.js",
+			"settings":
+			{
+				"buffer_size": 1483,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -375,24 +388,44 @@
 	[
 		"/D/xampp/htdocs/1/LiteH5Player",
 		"/D/xampp/htdocs/1/LiteH5Player/samples",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo",
 		"/D/xampp/htdocs/1/LiteH5Player/src"
 	],
 	"file_history":
 	[
-		"/D/xampp/htdocs/1/tmp/receiver.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/sender.html",
+		"/D/xampp/htdocs/1/LiteH5Player/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/assets.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver - 副本.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/CastReferencePlayer/player.css",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/CastReferencePlayer/receiver.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/CastReferencePlayer/player.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_sender.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver/player.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver/receiver.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver_v2/player.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver_v2/receiver.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver_v2.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/old_bk/player_joseph_demo.js",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/CastReferencePlayer/player.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver_v3.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
+		"/D/xampp/htdocs/1/tmp/receiver.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/media_engine.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/core/CoreEvents.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/assets.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
-		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/package.json",
 		"/D/xampp/htdocs/1/LiteH5Player/src/player.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
 		"/D/pj_company/main/App/SamplePlayer/html5/samples/player/sampleplayer/app/assets_joseph.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/test_mse.html",
 		"/D/xampp/htdocs/1/LiteH5Player/dist/liteH5Player.debug.js",
@@ -409,12 +442,8 @@
 		"/D/xampp/htdocs/1/frontDemo/samples/css/css_display.html",
 		"/D/xampp/htdocs/opensource/dash.js/src/core/Debug.js",
 		"/D/xampp/htdocs/2/pd/mp4/jwplayer_demo/jwplayer_demo_dash.mpd",
-		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
 		"/D/xampp/htdocs/1/LiteH5Player/solution.sublime-project",
 		"/D/xampp/htdocs/1/LiteH5Player/src/protection/controller/ProtectionKeyController.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver - 副本.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_sender.js",
 		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_utils.js",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/test.html",
 		"/D/xampp/htdocs/1/LiteH5Player/tests/html/index",
@@ -493,21 +522,7 @@
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/2.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/test.html",
 		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/4.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/common_utils.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/html/1124.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/index.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_subtitles.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_recursion_sum.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/main.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tests/test_mse.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/index.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/tmp/tmp.html",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/app/main.css",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/demo/main.css",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/samples/app/main.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/Player.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/media_engine.js",
-		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/core/CoreEvents.js"
+		"/D/xampp/htdocs/1/ark64_frontend/LiteH5Player/src/utils/common_utils.js"
 	],
 	"find":
 	{
@@ -518,6 +533,7 @@
 		"height": 128.0,
 		"where_history":
 		[
+			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
 			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
@@ -564,9 +580,49 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"onOldmtnMessage_",
+			"onGenericMessage_",
+			"--onMediaPlaying--",
+			"media",
+			"sendMessage_",
+			"isConnected_",
+			"CastReceiver.",
+			"getProtocolFunction_",
+			"start",
+			"onLoadMetadataErrorOrig_",
+			"getCastMessageBus",
+			"onOldmtnMessage_",
+			".bind(this)",
+			"onoldmtnMessage_",
+			"evHandlers",
+			"this.",
+			" = function",
+			"CastReceiver.prototype.",
+			"CastReceiver.prototype.start",
+			"onload",
+			"this.player_",
+			"onEditTracksInfoOrig_",
+			"onEditTracksInfo_",
+			"micromtn",
+			"onEditTracksInfo_",
+			"onLoad_",
+			"onVisibilityChanged_",
+			"onSenderDisconnected_",
+			"onReady_",
+			"onEditTracksInfoOrig_",
+			"onEditTracksInfo_",
+			"onEditTracksInfoOrig_",
+			"z-index",
+			"player",
+			"demo",
+			"Demo",
+			"nextItems",
+			"requestSession",
+			"cast, init",
+			"micromtn",
 			"onBtnPlay",
 			"h5p-play-button",
 			"initUI",
@@ -654,47 +710,7 @@
 			"IsSkipAdBreak",
 			"startAds",
 			"requestAds",
-			"startAds",
-			"addPD",
-			"onMediaLoadedMetadata",
-			"initPlayerConfig",
-			"oldmtn.Player",
-			"adContainer_",
-			"UIEngine",
-			"cfg_.media",
-			"playerContainer_",
-			"getUIElements",
-			"media",
-			"h5p-ads-container",
-			"h5p-video-ads",
-			"onVideoClick",
-			"onMediaPlaying",
-			"progress",
-			"onMediaCanplay",
-			"onMediaLoadedMetadata",
-			"loadstart",
-			"onMediaPlaying",
-			"MEDIA_PLAYING",
-			"--onMediaPlaying--",
-			"console.log",
-			"durationchange",
-			"addPD",
-			"onMediaMetadata--",
-			"Test",
-			"Test+",
-			"--');",
-			"--onMedia",
-			"onMediaEnded",
-			"loadeddata",
-			"metadata",
-			"startAds",
-			"onMediaLoadedMetadata",
-			"requestAds",
-			"onMediaLoadedMetadata",
-			"addPD",
-			"initCom",
-			"function close",
-			"updateProgress"
+			"startAds"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -702,6 +718,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"",
+			"onOldmtnMessage_",
+			"",
+			"function ",
+			"playerManager",
+			"oldmtn",
 			"isSkipAdBreak",
 			"getMediaInfo",
 			"media_",
@@ -823,41 +845,65 @@
 			"initCast",
 			"addVolume2",
 			"addVolume",
-			"loadMedia",
-			"onMediaLoadedChanged",
-			"onConnectedChanged",
-			"my_onMediaLoadedChanged",
-			"console.log",
-			"10.2.72.133",
-			"10.2.68.51"
+			"loadMedia"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/Player.js",
-					"semi_transient": true,
+					"file": "samples/cast/receiver.html",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13971,
+						"buffer_size": 2470,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								571,
-								571
+								2190,
+								2190
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Gruntfile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1214,
+								1214
 							]
 						],
 						"settings":
@@ -867,7 +913,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 272.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
