@@ -74,6 +74,26 @@ function updateProgress() {
     tDisplay.innerText = fmtTime;
 }
 
+function updatePlayBtnUI(paused, ended) {
+    if (paused && !ended) {
+        h5pPlaySvg.setAttribute('d', icon_pause);
+    } else {
+        h5pPlaySvg.setAttribute('d', icon_play);
+    }
+}
+
+function updateMuteBtnUI(muted, volume) {
+    if (muted) {
+        h5pMuteSvg.setAttribute('d', icon_muted);
+    } else {
+        if (volume >= 0.5) {
+            h5pMuteSvg.setAttribute('d', icon_high);
+        } else {
+            h5pMuteSvg.setAttribute('d', icon_low);
+        }
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
 function isFullScreen() {
@@ -252,49 +272,37 @@ function onBtnClose() {
 }
 
 function onBtnPlay() {
-    var vCurrPaused;
+    var paused;
     // execute ui cmd
     if (player.isPaused()) {
         player.play();
 
-        vCurrPaused = false;
+        paused = false;
     } else {
         player.pause();
 
-        vCurrPaused = true;
+        paused = true;
     }
 
-    // update ui
-    if (vCurrPaused) {
-        h5pPlaySvg.setAttribute('d', icon_pause);
-    } else {
-        h5pPlaySvg.setAttribute('d', icon_play);
-    }
+    var ended = player.isEnded();
+    updatePlayBtnUI(paused, ended);
 }
 
 function onBtnMute() {
-    var vCurrMuted;
+    var muted;
     // execute ui cmd
     if (player.isMuted()) {
         player.unmute();
 
-        vCurrMuted = false;
+        muted = false;
     } else {
         player.mute();
 
-        vCurrMuted = true;
+        muted = true;
     }
 
-    // update ui
-    if (vCurrMuted) {
-        h5pMuteSvg.setAttribute('d', icon_muted);
-    } else {
-        if (player.getVolume() >= 0.5) {
-            h5pMuteSvg.setAttribute('d', icon_high);
-        } else {
-            h5pMuteSvg.setAttribute('d', icon_low);
-        }
-    }
+    var volume = player.getVolume();
+    updateMuteBtnUI(muted, volume);
 }
 
 function onCmdVolumeChange() {
@@ -491,7 +499,10 @@ function onMediaDurationChanged() {
 }
 
 function onMediaEnd() {
-    printLog('--onMediaEnd--');
+    printLog('+onMediaEnd');
+    var paused = player.isPaused();
+    var ended = player.isEnded();
+    updatePlayBtnUI(paused, ended);
 }
 
 function onMediaLoadedData() {
@@ -514,7 +525,6 @@ function onMediaLoadedMetaData(e) {
 }
 
 function onMediaPaused() {
-    printLog('--onMediaPaused--');
 }
 
 function onMediaPlaying() {
@@ -522,11 +532,11 @@ function onMediaPlaying() {
 }
 
 function onMediaSeeking() {
-    printLog('--onMediaSeeking--, currentTime: ' + player.currentTime());
+    printLog('+onMediaSeeking, currentTime: ' + player.currentTime());
 }
 
 function onMediaSeeked() {
-    printLog('--onMediaSeeked--, currentTime: ' + player.currentTime());
+    printLog('+onMediaSeeked, currentTime: ' + player.currentTime());
 }
 
 function onMediaTimeupdated() {
