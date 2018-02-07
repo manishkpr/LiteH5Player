@@ -58,7 +58,7 @@ function CastReceiver(element) {
                 CastUtils.OLDMTN_MESSAGE_NAMESPACE);
         oldmtnBus_.onMessage = onOldmtnMessage_;
 
-        // Init Mediamanager
+        // Init MediaManager
         mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
         onLoadOrig_ =
             mediaManager_.onLoad.bind(mediaManager_);

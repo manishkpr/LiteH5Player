@@ -150,7 +150,8 @@ function initData() {
   if (!player) {
 
   var cfg = getInitConfig();
-  player = new oldmtn.Player(cfg);
+  player = new oldmtn.Player('player-container');
+  player.init(cfg);
 
   player.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
   player.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});

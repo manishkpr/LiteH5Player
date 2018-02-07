@@ -1,7 +1,6 @@
 
-var UIEngine = function (cfg) {
-    this.cfg_ = cfg;
-    this.playerContainer_ = document.getElementById(this.cfg_.playerContainer);
+var UIEngine = function (playerContainer) {
+    this.playerContainer_ = document.getElementById(playerContainer);
     this.video_ = null;
     this.videoContainer_ = null;
     this.adContainer_ = null;

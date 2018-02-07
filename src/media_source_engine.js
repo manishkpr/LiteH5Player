@@ -3,117 +3,121 @@ import Events from './core/CoreEvents';
 import Debug from './core/Debug';
 import SourceBufferWrapper from './SourceBufferWrapper';
 
-var MediaSourceEngine = function () {
-  this.eventBus_ = EventBus(oldmtn).getInstance();
-  this.debug_ = Debug(oldmtn).getInstance();
-  this.mediaSrc_ = null;
-  this.streamInfo_ = null;
-  this.sourceBuffers_ = {};
+function MediaSourceEngine() {
+    let eventBus_ = EventBus(oldmtn).getInstance();
+    let debug_ = Debug(oldmtn).getInstance();
+    let mediaSrc_ = null;
+    let streamInfo_ = null;
+    let sourceBuffers_ = {};
 
-  this.debug_.log('MediaSourceEngine, constructor');
-};
+    debug_.log('MediaSourceEngine, constructor');
 
-MediaSourceEngine.prototype.open = function (streamInfo) {
-    this.debug_.log('MediaSourceEngine, +open');
+    function open(streamInfo) {
+        debug_.log('MediaSourceEngine, +open');
 
-    this.streamInfo_ = streamInfo;
+        streamInfo_ = streamInfo;
 
-    if (this.streamInfo_.audioCodec) {
-      this.sourceBuffers_['audio'] = new SourceBufferWrapper(this.streamInfo_.audioCodec);
+        if (streamInfo_.audioCodec) {
+            sourceBuffers_['audio'] = new SourceBufferWrapper(streamInfo_.audioCodec);
+        }
+        if (streamInfo_.videoCodec) {
+            sourceBuffers_['video'] = new SourceBufferWrapper(streamInfo_.videoCodec);
+        }
+
+        //
+        var hasWebKit = ('WebKitMediaSource' in window);
+        var hasMediaSource = ('MediaSource' in window);
+
+        if (hasMediaSource) {
+            mediaSrc_ = new MediaSource();
+            mediaSrc_.addEventListener('sourceopen', onMediaSourceOpen, false);
+            mediaSrc_.addEventListener('sourceended', onMediaSourceEnded, false);
+            mediaSrc_.addEventListener('sourceclose', onMediaSourceClose, false);
+        } else if (hasWebKit) {
+            mediaSrc_ = new WebKitMediaSource();
+            mediaSrc_.addEventListener('webkitsourceopen', onMediaSourceOpen, false);
+        }
+
+        debug_.log('MediaSourceEngine, -open');
     }
-    if (this.streamInfo_.videoCodec) {
-      this.sourceBuffers_['video'] = new SourceBufferWrapper(this.streamInfo_.videoCodec);
+
+    function close() {
+        if (sourceBuffers_['audio']) {
+            sourceBuffers_['audio'].removeBuffer();
+        }
+        if (sourceBuffers_['video']) {
+            sourceBuffers_['video'].removeBuffer();
+        }
+
+        sourceBuffers_ = {};
+        mediaSrc_ = null;
+        streamInfo_ = null;
     }
 
-    //
-    var hasWebKit = ('WebKitMediaSource' in window);
-    var hasMediaSource = ('MediaSource' in window);
+    function setDuration(value) {
+        if (mediaSrc_.duration != value) {
+            mediaSrc_.duration = value;
+        }
 
-    if (hasMediaSource) {
-      this.mediaSrc_ = new MediaSource();
-      this.mediaSrc_.addEventListener('sourceopen', this.onMediaSourceOpen.bind(this), false);
-      this.mediaSrc_.addEventListener('sourceended', this.onMediaSourceEnded.bind(this), false);
-      this.mediaSrc_.addEventListener('sourceclose', this.onMediaSourceClose.bind(this), false);
-    } else if (hasWebKit) {
-      this.mediaSrc_ = new WebKitMediaSource();
-      this.mediaSrc_.addEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this), false);
+        return mediaSrc_.duration;
     }
 
-    this.debug_.log('MediaSourceEngine, -open');
-};
+    function signalEndOfStream() {
+        mediaSrc_.endOfStream();
+    }
 
-MediaSourceEngine.prototype.onMediaSourceOpen = function () {
-  this.debug_.log('+MediaSourceOpen');
+    function getMediaSource() {
+        return mediaSrc_;
+    }
 
-  this.mediaSrc_.removeEventListener('sourceopen', this.onMediaSourceOpen.bind(this));
-  this.mediaSrc_.removeEventListener('webkitsourceopen', this.onMediaSourceOpen.bind(this));
+    function appendBuffer(contentType, buffer) {
+        sourceBuffers_[contentType].appendBuffer(buffer);
+    }
 
-  if (this.sourceBuffers_['audio']) {
-    this.sourceBuffers_['audio'].open(this.mediaSrc_);
-  }
+    function removeBuffer() {
+        if (sourceBuffers_['audio']) {
+            sourceBuffers_['audio'].removeBuffer();
+        }
+        if (sourceBuffers_['video']) {
+            sourceBuffers_['video'].removeBuffer();
+        }
 
-  if (this.sourceBuffers_['video']) {
-    this.sourceBuffers_['video'].open(this.mediaSrc_);
-  }
+        sourceBuffers_['audio'] = null;
+        sourceBuffers_['video'] = null;
+    }
 
-  this.eventBus_.trigger(Events.MSE_OPENED, {});
-};
+    function onMediaSourceOpen() {
+        debug_.log('+MediaSourceOpen');
 
-MediaSourceEngine.prototype.onMediaSourceEnded = function () {
+        mediaSrc_.removeEventListener('sourceopen', onMediaSourceOpen);
+        mediaSrc_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
-};
+        if (sourceBuffers_['audio']) {
+            sourceBuffers_['audio'].open(mediaSrc_);
+        }
 
-MediaSourceEngine.prototype.onMediaSourceClose = function () {
+        if (sourceBuffers_['video']) {
+            sourceBuffers_['video'].open(mediaSrc_);
+        }
 
-};
+        eventBus_.trigger(Events.MSE_OPENED, {});
+    }
 
-MediaSourceEngine.prototype.setDuration = function (value) {
-  if (this.mediaSrc_.duration != value) {
-    this.mediaSrc_.duration = value;
-  }
+    function onMediaSourceEnded() {}
 
-  return this.mediaSrc_.duration;
-};
+    function onMediaSourceClose() {}
 
-MediaSourceEngine.prototype.signalEndOfStream = function () {
-  this.mediaSrc_.endOfStream();
-};
+    let instance = {
+        open: open,
+        close: close,
+        setDuration: setDuration,
+        signalEndOfStream: signalEndOfStream,
+        getMediaSource: getMediaSource,
+        appendBuffer: appendBuffer,
+        removeBuffer: removeBuffer
+    };
 
-MediaSourceEngine.prototype.getMediaSource = function () {
-  return this.mediaSrc_;
-};
-
-MediaSourceEngine.prototype.appendBuffer = function (contentType, buffer) {
-  this.sourceBuffers_[contentType].appendBuffer(buffer);
-};
-
-MediaSourceEngine.prototype.removeBuffer = function () {
-  if (this.sourceBuffers_['audio']) {
-    this.sourceBuffers_['audio'].removeBuffer();
-  }
-  if (this.sourceBuffers_['video']) {
-    this.sourceBuffers_['video'].removeBuffer();
-  }
-
-  this.sourceBuffers_['audio'] = null;
-  this.sourceBuffers_['video'] = null;
-};
-
-MediaSourceEngine.prototype.close = function () {
-  if (this.sourceBuffers_['audio']) {
-    this.sourceBuffers_['audio'].removeBuffer();
-  }
-  if (this.sourceBuffers_['video']) {
-    this.sourceBuffers_['video'].removeBuffer();
-  }
-
-  this.sourceBuffers_ = {};
-  this.mediaSrc_ = null;
-  this.streamInfo_ = null;
+    return instance;
 };
 
 export default MediaSourceEngine;
-
-
-
-

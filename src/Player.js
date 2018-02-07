@@ -17,8 +17,9 @@ import XHRLoader from './utils/xhr_loader';
 import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
-function Player(cfg) {
-    let cfg_ = cfg;
+function Player(playerContainer) {
+    let playerContainer_ = playerContainer;
+    let cfg_;
     let context_ = {};
 
     let uiEngine_;
@@ -40,6 +41,13 @@ function Player(cfg) {
     let adsEngine_;
 
     function setup() {
+        uiEngine_ = new UIEngine(playerContainer_);
+        media_ = uiEngine_.getVideo();
+    }
+
+    function init(cfg) {
+        cfg_ = cfg;
+
         initComponent();
         initData();
         addEventListeners();
@@ -344,13 +352,6 @@ function Player(cfg) {
     /////////////////////////////////////////////////////////////////////////////////
     // private functions
     function initComponent() {
-        // ui component
-        uiEngine_ = new UIEngine(cfg_);
-        media_ = uiEngine_.getVideo();
-        if (cfg_.poster) {
-            media_.poster = cfg_.poster;
-        }
-
         // enging component
         eventBus_ = EventBus(oldmtn).getInstance();
         debug_ = Debug(oldmtn).getInstance();
@@ -359,6 +360,9 @@ function Player(cfg) {
         textEngine_ = new TextEngine(media_);
         mseEngine_ = new MediaSourceEngine();
         drmEngine_ = new DRMEngine(media_);
+       if (cfg_.poster) {
+            media_.poster = cfg_.poster;
+        }
         if (cfg_.advertising) {
             let adContainer = uiEngine_.getAdContainer();
             adsEngine_ = new AdsEngine(adContainer, media_, cfg_.advertising);
@@ -483,6 +487,7 @@ function Player(cfg) {
     }
 
     let instance = {
+        init: init,
         open: open,
         close: close,
         addA: addA,
