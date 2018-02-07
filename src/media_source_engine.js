@@ -63,6 +63,7 @@ function MediaSourceEngine() {
     }
 
     function signalEndOfStream() {
+        debug_.log('+signalEndOfStream');
         mediaSrc_.endOfStream();
     }
 

@@ -424,10 +424,8 @@ function Player(playerContainer) {
     }
 
     function onSbUpdateEnded() {
-        // Need to signal end of stream when add pd to mse
-        if (adsEngine_) {
-            mseEngine_.signalEndOfStream();
-        }
+        // Need to signal end of stream everytime when add buffer completed
+        mseEngine_.signalEndOfStream();
     }
 
     function onAdContentPauseRequested() {
