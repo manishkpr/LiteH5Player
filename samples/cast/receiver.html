@@ -38,7 +38,11 @@ The overlay layer holds:
   <!-- Change the title tag to your app's name to display as the details text on the Cast device picker -->
   <title>Casting app name</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+  <!-- google ads sdk -->
+  <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  <!-- google cast receiver sdk -->
+  <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+
   <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"></script>
   <script type="text/javascript" src="./receiver/liteH5Player.debug.js"></script>
 
@@ -48,9 +52,6 @@ The overlay layer holds:
 
 <body style="margin: 0">
     <div id="player" class="player">
-        <div>
-          <video autoplay="true"></video>
-        </div>
         <div style="position:absolute; z-index:5;">
           <h2>Chromecast receiver by Joseph</h2>
           <button onclick="onBtnTest1()">Test1</button>

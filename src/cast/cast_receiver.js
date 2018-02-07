@@ -108,22 +108,22 @@ function CastReceiver(element) {
     }
 
     function onTimeupdate() {
-        var curTime = mediaElement_.currentTime;
-        var totalTime = mediaElement_.duration;
+        // var curTime = mediaElement_.currentTime;
+        // var totalTime = mediaElement_.duration;
 
-        //console.log('onTimeupdate, ' + curTime + '/' + totalTime);
+        // //console.log('onTimeupdate, ' + curTime + '/' + totalTime);
 
-        // update local
-        evHandlers['timeupdate'](curTime, totalTime);
+        // // update local
+        // evHandlers['timeupdate'](curTime, totalTime);
 
-        // send message to sender
-        sendMessage_({
-            type: 'timeupdate',
-            data: {
-                curTime: curTime,
-                totalTime: totalTime
-            }
-        }, oldmtnBus_);
+        // // send message to sender
+        // sendMessage_({
+        //     type: 'timeupdate',
+        //     data: {
+        //         curTime: curTime,
+        //         totalTime: totalTime
+        //     }
+        // }, oldmtnBus_);
     }
 
     function onSeekStart_() {
@@ -136,10 +136,10 @@ function CastReceiver(element) {
 
     function onVisibilityChanged_(event) {
         console.log('onVisibilityChanged');
-        if (!event.isVisible) {
-            mediaElement_.pause();
-            mediaManager_.broadcastStatus(false);
-        }
+        // if (!event.isVisible) {
+        //     mediaElement_.pause();
+        //     mediaManager_.broadcastStatus(false);
+        // }
     }
 
     function onGenericMessage_(event) {
@@ -205,6 +205,8 @@ function CastReceiver(element) {
             omPlayer_.open(message);
         } else if (message.cmdType === 'addV') {
             omPlayer_.addV();
+        } else if (message.cmdType === 'addPD') {
+            omPlayer_.addPD();
         } else if (message.cmdType === 'play') {
             omPlayer_.play();
         } else if (message.cmdType === 'pause') {

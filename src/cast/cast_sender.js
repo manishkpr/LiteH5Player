@@ -170,6 +170,11 @@ function CastSender(receiverAppId) {
         sendMessage_(msg);
     }
 
+    function new_addPD() {
+        let msg = {'cmdType': 'addPD'};
+        sendMessage_(msg);
+    }
+
     function new_play() {
         let msg = {'cmdType': 'play'};
         sendMessage_(msg);
@@ -320,6 +325,7 @@ function CastSender(receiverAppId) {
         new_init: new_init,
         new_open: new_open,
         new_addV: new_addV,
+        new_addPD: new_addPD,
         new_play: new_play,
         new_pause: new_pause,
 

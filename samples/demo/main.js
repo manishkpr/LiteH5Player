@@ -440,6 +440,10 @@ function onUICmdCastAddV() {
   castSender.new_addV();
 }
 
+function onUICmdCastAddPD() {
+  castSender.new_addPD();
+}
+
 function onUICmdCastPlay() {
   castSender.new_play();
 }
