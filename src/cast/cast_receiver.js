@@ -22,23 +22,15 @@ function CastReceiver(element) {
     let player_ = null;
     let isConnected_ = null;
 
+    let omPlayer_;
+
     function setup() {
         cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
         cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-        // Init Video Element
-        mediaElement_ = (element_.querySelector('video'));
-        // mediaElement_.addEventListener('error', onError_, false);
-        // mediaElement_.addEventListener('playing', onPlaying_,
-        //     false);
-        // mediaElement_.addEventListener('pause', onPause_, false);
-        // mediaElement_.addEventListener('ended', onEnded_, false);
-        // mediaElement_.addEventListener('abort', onAbort_, false);
-        mediaElement_.addEventListener('timeupdate', onTimeupdate,
-            false);
-        // mediaElement_.addEventListener('seeking', onSeekStart_,
-        //     false);
-        // mediaElement_.addEventListener('seeked', onSeekEnd_,
+        // // Init Video Element
+        // mediaElement_ = (element_.querySelector('video'));
+        // mediaElement_.addEventListener('timeupdate', onTimeupdate,
         //     false);
 
         // Init CastReceiverManager
@@ -60,30 +52,32 @@ function CastReceiver(element) {
                 CastUtils.OLDMTN_MESSAGE_NAMESPACE);
         oldmtnBus_.onMessage = onOldmtnMessage_;
 
-        // Init MediaManager
-        mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
-        onLoadOrig_ =
-            mediaManager_.onLoad.bind(mediaManager_);
-        mediaManager_.onLoad = onLoad_;
+        omPlayer_ = oldmtn.Player(element_);
 
-        onGetStatusOrig_ =
-            mediaManager_.onGetStatus.bind(mediaManager_);
-        mediaManager_.onGetStatus = onGetStatus_;
+        // // Init MediaManager
+        // mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
+        // onLoadOrig_ =
+        //     mediaManager_.onLoad.bind(mediaManager_);
+        // mediaManager_.onLoad = onLoad_;
 
-        onMetadataLoadedOrig_ =
-            mediaManager_.onMetadataLoaded.bind(mediaManager_);
-        mediaManager_.onMetadataLoaded = onMetadataLoaded_;
+        // onGetStatusOrig_ =
+        //     mediaManager_.onGetStatus.bind(mediaManager_);
+        // mediaManager_.onGetStatus = onGetStatus_;
 
-        onStopOrig_ =
-            mediaManager_.onStop.bind(mediaManager_);
-        mediaManager_.onStop = onStop_;
+        // onMetadataLoadedOrig_ =
+        //     mediaManager_.onMetadataLoaded.bind(mediaManager_);
+        // mediaManager_.onMetadataLoaded = onMetadataLoaded_;
 
-        onLoadMetadataErrorOrig_ =
-            mediaManager_.onLoadMetadataError.bind(mediaManager_);
-        mediaManager_.onLoadMetadataError = onLoadMetadataError_;
+        // onStopOrig_ =
+        //     mediaManager_.onStop.bind(mediaManager_);
+        // mediaManager_.onStop = onStop_;
 
-        onErrorOrig_ = mediaManager_.onError.bind(mediaManager_);
-        mediaManager_.onError = onError_;
+        // onLoadMetadataErrorOrig_ =
+        //     mediaManager_.onLoadMetadataError.bind(mediaManager_);
+        // mediaManager_.onLoadMetadataError = onLoadMetadataError_;
+
+        // onErrorOrig_ = mediaManager_.onError.bind(mediaManager_);
+        // mediaManager_.onError = onError_;
     }
     //
     function getMediaElement() {
@@ -111,32 +105,6 @@ function CastReceiver(element) {
             cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
             receiverManager_.stop();
         }
-    }
-
-    function onError_(error) {
-        console.log('onError');
-        onErrorOrig_(error);
-    }
-
-    function onPlaying_() {
-        console.log('onPlaying');
-    }
-
-    function onPause_() {
-        console.log('onPause');
-    }
-
-    function onStop_(event) {
-        console.log('onStop');
-        onStopOrig_(event);
-    }
-
-    function onEnded_() {
-        console.log('onEnded');
-    }
-
-    function onAbort_() {
-        console.log('onAbort');
     }
 
     function onTimeupdate() {
@@ -226,9 +194,22 @@ function CastReceiver(element) {
     }
 
     function onOldmtnMessage_(event) {
-        //var message = CastUtils.deserialize(event.data);
+        let message = CastUtils.deserialize(event.data);
         console.log('onOldmtnMessage_, event.data: ' + event.data);
+        console.log('onOldmtnMessage_, message: ' + message);
 
+        if (message.cmdType === 'init') {
+            console.log('poster: ' + message.poster);
+            omPlayer_.init(message);
+        } else if (message.cmdType === 'open') {
+            omPlayer_.open(message);
+        } else if (message.cmdType === 'addV') {
+            omPlayer_.addV();
+        } else if (message.cmdType === 'play') {
+            omPlayer_.play();
+        } else if (message.cmdType === 'pause') {
+            omPlayer_.pause();
+        }
         //oldmtnBus_.broadcast("abcd1234");
     }
 

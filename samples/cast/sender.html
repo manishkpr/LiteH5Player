@@ -43,6 +43,10 @@
     <button type="button" onclick="onBtnSeek()">OK</button>
   </div>
   <br />
+  <div>
+    <button onClick="onUICmdInit()">init</button>
+    <button onClick="onUICmdOpen()">open</button>
+  </div>
 
   <script>
     var castSender = new oldmtn.CastSender();
@@ -113,6 +117,14 @@
     }
     function onTest() {
       castSender.test();
+    }
+
+    // new
+    function onUICmdInit() {
+      castSender.onUICmdInit();
+    }
+    function onUICmdOpen() {
+      castSender.onUICmdOpen();
     }
 
     window.onload = function () {

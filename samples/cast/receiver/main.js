@@ -48,7 +48,7 @@ function initUI() {
 }
 
 function initData() {
-    var receiver = new oldmtn.CastReceiver(playerDiv);
+    var receiver = new oldmtn.CastReceiver('player');
 
     receiver.addEventListener('timeupdate', cbTimeupdate);
     receiver.start();

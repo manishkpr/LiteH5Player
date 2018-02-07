@@ -2,9 +2,9 @@
 <html>
 <head>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <!-- google chromecast needs -->
-  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
-  <!-- google ads needs -->
+  <!-- google cast sdk -->
+  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <!-- google ads sdk -->
   <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
 
   <link rel="stylesheet" href="./main.css"/>
@@ -97,6 +97,16 @@
     <button type="button" onclick="onBtnAttribute()">attribute</button>
     <button type="button" onclick="onBtnTest()">test</button>
     <button type="button" onclick="onBtnTest2()">test2</button>
+  </div>
+
+  <div>
+    <h3>Chromecast Sender Demo</h3>
+    <button is="google-cast-button" id="castbutton" style="width: 48px;height: 48px;"></button>
+    <button type="button" onclick="onUICmdCastInit()">init</button>
+    <button type="button" onclick="onUICmdCastOpen()">open</button>
+    <button type="button" onclick="onUICmdCastAddV()">addV</button>
+    <button type="button" onclick="onUICmdCastPlay()">play</button>
+    <button type="button" onclick="onUICmdCastPause()">pause</button>
   </div>
 
   <div id="idConsole">

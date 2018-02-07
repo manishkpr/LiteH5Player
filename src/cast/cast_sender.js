@@ -71,7 +71,8 @@ function RemotePlayerHandler() {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // CastSender
-function CastSender() {
+function CastSender(receiverAppId) {
+    let receiverAppId_ = receiverAppId;
     let remotePlayer = null;
     let remotePlayerController = null;
     let castContext_ = null;
@@ -80,34 +81,6 @@ function CastSender() {
     let remotePlayerHandler = new RemotePlayerHandler();
 
     function setup() {
-
-    }
-
-    function onConnectedChanged() {
-        console.log('cast, +onConnectedChanged, remotePlayer.isConnected: ' + remotePlayer.isConnected);
-
-        session_ = cast.framework.CastContext.getInstance().getCurrentSession();
-        if (session_) {
-            session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-                onMessageReceived_);
-        } else {
-            console.log('cast, session_ is null');
-        }
-    }
-
-    function onMediaLoadedChanged() {
-        console.log('--onMediaLoadedChanged--');
-    }
-
-    function loadMedia_SuccessCb() {
-        console.log('--loadMedia_SuccessCb--');
-    }
-
-    function loadMedia_ErrorCb() {
-        console.log('--loadMedia_ErrorCb--');
-    }
-
-    function init(receiverAppId) {
         console.log('cast, init');
 
         var options = {};
@@ -158,6 +131,55 @@ function CastSender() {
         remotePlayerHandler.init(remotePlayer, remotePlayerController);
     }
 
+    function onConnectedChanged() {
+        console.log('cast, +onConnectedChanged, remotePlayer.isConnected: ' + remotePlayer.isConnected);
+
+        session_ = cast.framework.CastContext.getInstance().getCurrentSession();
+        if (session_) {
+            session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+                onMessageReceived_);
+        } else {
+            console.log('cast, session_ is null');
+        }
+    }
+
+    function onMediaLoadedChanged() {
+        console.log('--onMediaLoadedChanged--');
+    }
+
+    function loadMedia_SuccessCb() {
+        console.log('--loadMedia_SuccessCb--');
+    }
+
+    function loadMedia_ErrorCb() {
+        console.log('--loadMedia_ErrorCb--');
+    }
+
+    function new_init(message) {
+        message.cmdType = 'init';
+        sendMessage_(message);
+    }
+
+    function new_open(message) {
+        message.cmdType = 'open';
+        sendMessage_(message);
+    }
+
+    function new_addV() {
+        let msg = {'cmdType': 'addV'};
+        sendMessage_(msg);
+    }
+
+    function new_play() {
+        let msg = {'cmdType': 'play'};
+        sendMessage_(msg);
+    }
+
+    function new_pause() {
+        let msg = {'cmdType': 'pause'};
+        sendMessage_(msg);
+    }
+
     // Opens the cast selection UI, to allow user to start or stop session.
     function requestSession() {
         if (!castContext_) {
@@ -178,6 +200,8 @@ function CastSender() {
         // that receiver application should be stopped.
         castSession.endSession(true);
     }
+
+    function stopCast() {}
 
     function loadMedia(url, type) {
         console.log('+loadMedia');
@@ -282,15 +306,24 @@ function CastSender() {
 
     function sendMessage_(message) {
         var serialized = CastUtils.serialize(message);
+        console.log('send msg: ' + serialized);
         // TODO: have never seen this fail.  When would it and how should we react?
-        session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+        session_.sendMessage(
+            CastUtils.OLDMTN_MESSAGE_NAMESPACE,
             serialized,
             function () {}, // success callback
             function () {}); // error callback
     }
 
     let instance = {
-        init: init,
+        // 
+        new_init: new_init,
+        new_open: new_open,
+        new_addV: new_addV,
+        new_play: new_play,
+        new_pause: new_pause,
+
+        // old left
         requestSession: requestSession,
         endSession: endSession,
         stopCast: stopCast,
