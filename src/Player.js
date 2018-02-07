@@ -317,6 +317,12 @@ function Player(playerContainer) {
         }
     }
 
+    function playAd() {
+        if (adsEngine_) {
+            adsEngine_.open();
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Events API
     function signalEndOfStream() {
@@ -381,7 +387,7 @@ function Player(playerContainer) {
         eventBus_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
         eventBus_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
 
-        eventBus_.on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {})
+        eventBus_.on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {});
 
         eventBus_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
         eventBus_.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
@@ -452,7 +458,9 @@ function Player(playerContainer) {
                 let content = companionAd.getContent();
                 // Write the content to the companion ad slot.
                 let div = document.getElementById(companion.id);
-                div.innerHTML = content;
+                if (div) {
+                    div.innerHTML = content;
+                }
             }
         }
     }
@@ -510,6 +518,7 @@ function Player(playerContainer) {
         getWidth: getWidth,
         getHeight: getHeight,
         resize: resize,
+        playAd: playAd,
         test: test,
         test2: test2
     };
@@ -520,3 +529,5 @@ function Player(playerContainer) {
 };
 
 export default Player;
+
+

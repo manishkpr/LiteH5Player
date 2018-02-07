@@ -185,6 +185,11 @@ function CastSender(receiverAppId) {
         sendMessage_(msg);
     }
 
+    function new_playAd() {
+        let msg = {'cmdType': 'playAd'};
+        sendMessage_(msg);
+    }
+
     // Opens the cast selection UI, to allow user to start or stop session.
     function requestSession() {
         if (!castContext_) {
@@ -328,7 +333,7 @@ function CastSender(receiverAppId) {
         new_addPD: new_addPD,
         new_play: new_play,
         new_pause: new_pause,
-
+        new_playAd: new_playAd,
         // old left
         requestSession: requestSession,
         endSession: endSession,

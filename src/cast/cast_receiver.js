@@ -211,6 +211,8 @@ function CastReceiver(element) {
             omPlayer_.play();
         } else if (message.cmdType === 'pause') {
             omPlayer_.pause();
+        } else if (message.cmdType === 'playAd') {
+            omPlayer_.playAd();
         }
         //oldmtnBus_.broadcast("abcd1234");
     }

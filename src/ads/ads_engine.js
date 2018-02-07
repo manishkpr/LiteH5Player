@@ -20,11 +20,11 @@ function getVMAPItem(breakId, offset, tag) {
     return item;
 }
 
-function AdsEngine(adContainer, videoPlayer, advertising) {
+function AdsEngine(adContainer, media, advertising) {
     let eventBus_ = EventBus(oldmtn).getInstance();
     let debug_ = Debug(oldmtn).getInstance();
     let adContainer_ = adContainer;
-    let media_ = videoPlayer;
+    let media_ = media;
     let advertising_ = advertising;
 
     // IMA SDK Needs
@@ -90,14 +90,14 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
             onAdError,
             false,
             this);
+
+        //
+        adsLoaded_ = false;
+        contentInitialized_ = false;
+        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
     }
 
     function open() {
-        adsLoaded_ = false;
-        contentInitialized_ = false;
-
-        eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
-
         initialUserAction();
         requestAds();
     }
@@ -392,10 +392,12 @@ function AdsEngine(adContainer, videoPlayer, advertising) {
     }
 
     function onMediaLoadedMetadata() {
+        // In some platform, content player & ad player could use a single video tag,
+        // and we just process content player 'metadata' event only, so cancel the listener.
         eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
-        debug_.log('+onMediaLoadedMetadata' +
-            ', contentInitialized_: ' + contentInitialized_ +
-            ', adsLoaded_: ' + adsLoaded_);
+        debug_.log('+onMediaLoadedMetadata' + ', ' +
+         'contentInitialized_: ' + contentInitialized_ + ', ' +
+         'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
         if (adsLoaded_) {
             debug_.log('startAds when adsLoaded_');

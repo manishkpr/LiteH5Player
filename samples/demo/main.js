@@ -339,9 +339,9 @@ function onBtnStop() {
     player = null;
 }
 
-function onBtnCast() {
+function onBtnPlayAd() {
     if (player) {
-        player.cast();
+        player.playAd();
     }
 }
 
@@ -466,6 +466,10 @@ function onUICmdCastPlay() {
 
 function onUICmdCastPause() {
   castSender.new_pause();
+}
+
+function onUICmdCastPlayAd() {
+  castSender.new_playAd();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

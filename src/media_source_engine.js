@@ -87,8 +87,9 @@ function MediaSourceEngine() {
     }
 
     function onMediaSourceOpen() {
-        debug_.log('+MediaSourceOpen');
+        debug_.log('+onMediaSourceOpen');
 
+        // once received, don't listen anymore to sourceopen event
         mediaSrc_.removeEventListener('sourceopen', onMediaSourceOpen);
         mediaSrc_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
@@ -103,9 +104,13 @@ function MediaSourceEngine() {
         eventBus_.trigger(Events.MSE_OPENED, {});
     }
 
-    function onMediaSourceEnded() {}
+    function onMediaSourceEnded() {
+        debug_.log('+onMediaSourceEnded');
+    }
 
-    function onMediaSourceClose() {}
+    function onMediaSourceClose() {
+        debug_.log('+onMediaSourceClose');
+    }
 
     let instance = {
         open: open,
