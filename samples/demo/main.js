@@ -1,5 +1,6 @@
 // UI Controls
 var h5pShade = null;
+var h5pProgressBar = null;
 var uiConsole = null;
 
 var h5pPlaySvg;
@@ -151,6 +152,7 @@ function leaveFullScreen() {
 
 function initUI() {
     h5pShade = document.querySelector('.h5p-shade');
+    h5pProgressBar = document.querySelector('.h5p-progress-bar');
     uiConsole = document.getElementById('idConsole');
 
     var v = document.querySelector('.h5p-play-button');
@@ -207,6 +209,8 @@ function addH5PListeners() {
 
     h5pShade.addEventListener('click', onH5PShadeClick);
 
+    h5pProgressBar.addEventListener('click', onH5PProgressBarClick);
+
     // resize listener
     var ro = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -257,6 +261,10 @@ function onH5PShadeMouseleave() {
     if (!player.isPaused()) {
         $('.html5-video-player').addClass('h5p-autohide');
     }
+}
+
+function onH5PShadeClick() {
+
 }
 
 // browser & UI callback functions
@@ -474,8 +482,16 @@ function onH5PRootClick() {
     //printLog('--onH5PRootClick--');
 }
 
-function onH5PShadeClick(e) {
-    //printLog('--onH5PShadeClick--');
+function onH5PProgressBarClick(e) {
+    console.log('e.offsetX: ' + e.offsetX);
+    console.log('e.offsetY: ' + e.offsetY);
+
+    var percentage = e.offsetX / e.target.clientWidth;
+
+    var duration = player.duration();
+    var position = percentage * duration;
+
+    player.seek(position);
 }
 
 function onBufferIconClick() {
@@ -499,7 +515,6 @@ function onMediaDurationChanged() {
 }
 
 function onMediaEnd() {
-    printLog('+onMediaEnd');
     var paused = player.isPaused();
     var ended = player.isEnded();
     updatePlayBtnUI(paused, ended);
