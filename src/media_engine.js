@@ -111,10 +111,7 @@ function MediaEngine(media)
   }
 
   function onMediaLoadedData() {
-    debug_.log('+onMediaLoadedData' +
-      ', width: ' + media_.videoWidth +
-      ', height: ' + media_.videoHeight +
-      ', duration: ' + media_.duration);
+    debug_.log('+onMediaLoadedData');
     eventBus_.trigger(Events.MEDIA_LOADEDDATA);
   }
 

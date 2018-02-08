@@ -57,7 +57,7 @@ function Player(containerId) {
     function open(info) {
         streamInfo_ = info;
         debug_.log('Player, +open');
-        if (1) {
+        if (0) {
             if (info.audioCodec) {
                 debug_.log('Player, +open: ' + info.audioCodec);
             }
@@ -477,7 +477,8 @@ function Player(containerId) {
 
     function test() {
         //adsEngine_.initialUserAction();
-        adsEngine_.close();
+        //adsEngine_.open();
+        adsEngine_.startAds();
     }
 
     function test2() {

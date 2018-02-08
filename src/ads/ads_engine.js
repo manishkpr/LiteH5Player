@@ -1,6 +1,7 @@
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
 import Debug from '../core/Debug';
+import CommonUtils from '../utils/common_utils';
 
 function formatAdsTimeOffset(offset) {
     var hour = parseInt(offset / 3600);
@@ -91,7 +92,7 @@ function AdsEngine(adContainer, media, advertising) {
             false,
             this);
 
-        //
+                //
         adsLoaded_ = false;
         contentInitialized_ = false;
         eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
@@ -153,7 +154,13 @@ function AdsEngine(adContainer, media, advertising) {
 
     // AdsEngine public functions
     function startAds() {
-        debug_.log('+AdsEngine.startAds');
+        if (contentInitialized_ && adsLoaded_) {
+            startAdsInternal();
+        }
+    }
+
+    function startAdsInternal() {
+        debug_.log('+AdsEngine.startAdsInternal');
 
         // sometimes, requestAds may be caught an error, so we return here directly.
         if (!adsManager_) {
@@ -164,7 +171,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
         adsManager_.start();
 
-        debug_.log('-AdsEngine.startAds');
+        debug_.log('-AdsEngine.startAdsInternal');
     }
 
     function isPaused() {
@@ -275,10 +282,9 @@ function AdsEngine(adContainer, media, advertising) {
         }
 
         adsLoaded_ = true;
-        if (contentInitialized_) {
-        //if (1) {
-            debug_.log('startAds when contentInitialized_');
-            startAds();
+        if (contentInitialized_ && !CommonUtils.isMobilePlatform()) {
+            debug_.log('startAdsInternal when contentInitialized_');
+            startAdsInternal();
         }
 
         debug_.log('-onAdsManagerLoaded');
@@ -399,9 +405,9 @@ function AdsEngine(adContainer, media, advertising) {
          'contentInitialized_: ' + contentInitialized_ + ', ' +
          'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
-        if (adsLoaded_) {
-            debug_.log('startAds when adsLoaded_');
-            startAds();
+        if (adsLoaded_ && !CommonUtils.isMobilePlatform()) {
+            debug_.log('startAdsInternal when adsLoaded_');
+            startAdsInternal();
         }
         debug_.log('-onMediaLoadedMetadata');
     }
@@ -425,7 +431,8 @@ function AdsEngine(adContainer, media, advertising) {
         setVolume: setVolume,
         resize: resize,
         onMediaEnded: onMediaEnded,
-        requestAds: requestAds
+        requestAds: requestAds,
+        startAds: startAds
     };
 
     setup();

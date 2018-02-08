@@ -190,16 +190,13 @@ function initData() {
 
     player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
 
-
     // chrome cast part
     var receiverAppId = 'E19ACDB8'; // joseph test app1
     //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
     //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
 
     // init chromecast sender
-    castSender = new oldmtn.CastSender(receiverAppId);
-
-
+    //castSender = new oldmtn.CastSender(receiverAppId);
 }
 
 function addH5PListeners() {
@@ -212,25 +209,28 @@ function addH5PListeners() {
     h5pProgressBar.addEventListener('click', onH5PProgressBarClick);
 
     // resize listener
-    var ro = new ResizeObserver(entries => {
-        for (let entry of entries) {
-            const cr = entry.contentRect;
-            const cWidth = entry.target.clientWidth;
-            const cHeight = entry.target.clientHeight;
+    if (window.ResizeObserver) {
+        var ro = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const cr = entry.contentRect;
+                const cWidth = entry.target.clientWidth;
+                const cHeight = entry.target.clientHeight;
 
-            player.resize(cWidth, cHeight);
+                player.resize(cWidth, cHeight);
                 // BD
                 // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
                 // console.log('Element:', entry.target);
                 // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
                 // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
                 // ED
+                }
             }
-        });
+        );
 
-    // Observer one or multiple elements
-    var v = document.querySelector('.player');
-    ro.observe(v);
+        // Observer one or multiple elements
+        var v = document.querySelector('.player');
+        ro.observe(v);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -269,6 +269,7 @@ function onH5PShadeClick() {
 
 // browser & UI callback functions
 function onBtnOpen() {
+    printLog('+onBtnOpen');
     var playerCfg = getMediaInfo();
     player.open(playerCfg);
 }
@@ -390,7 +391,7 @@ function onBtnTest() {
     //   //player.signalEndOfStream();
     // }
     // if (player) {
-    //   player.test();
+    player.test();
     // }
 
     //beginBuffering();
@@ -588,7 +589,7 @@ window.onload = function () {
     addH5PListeners();
 
     // BD
-    //onBtnOpen();
+    onBtnOpen();
     // ED
 };
 
