@@ -240,4 +240,4 @@ CommonUtils.test1 = function (aa) {
     console.log('b3: ' + b3);
 };
 
-export defaultCommonUtils;
+export default CommonUtils;
