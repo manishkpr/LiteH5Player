@@ -376,7 +376,9 @@ function AdsEngine(adContainer, media, advertising) {
                     let timeRemaining = adsManager_.getRemainingTime();
                     position_ = duration_ - timeRemaining;
                     // Update UI with timeRemaining
-                    eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                    if (!isPaused_) {
+                        eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                    }
                 }, 1000);
                 eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
 
