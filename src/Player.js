@@ -57,7 +57,8 @@ function Player(containerId) {
     function open(info) {
         streamInfo_ = info;
         debug_.log('Player, +open');
-        if (0) {
+
+        if (window.MediaSource) {
             if (info.audioCodec) {
                 debug_.log('Player, +open: ' + info.audioCodec);
             }
@@ -65,12 +66,12 @@ function Player(containerId) {
                 debug_.log('Player, +open: ' + info.videoCodec);
             }
 
-            if (info.audioCodec && MediaSource && !MediaSource.isTypeSupported(info.audioCodec)) {
+            if (info.audioCodec && window.MediaSource && !window.MediaSource.isTypeSupported(info.audioCodec)) {
                 debug_.log('Don\'t support: ' + info.audioCodec);
                 return;
             }
 
-            if (info.videoCodec && MediaSource && !MediaSource.isTypeSupported(info.videoCodec)) {
+            if (info.videoCodec && window.MediaSource && !window.MediaSource.isTypeSupported(info.videoCodec)) {
                 debug_.log('Don\'t support: ' + info.videoCodec);
                 return;
             }
@@ -80,8 +81,11 @@ function Player(containerId) {
             let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
             mediaEngine_.setSrc(objURL);
             drmEngine_.setDrmInfo(streamInfo_);
+        } else {
+            debug_.log('Don\'t support MediaSource in this platform');
         }
 
+        // If you want to play a link as long as you open a page, just uncomment this statement.
         //addPD();
 
         debug_.log('Player, -open');
