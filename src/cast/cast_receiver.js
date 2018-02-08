@@ -3,10 +3,10 @@
 import CastUtils from './cast_utils';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function CastReceiver(element) {
+function CastReceiver(elementId) {
     console.log('receiver, constructor');
 
-    let element_ = element;
+    let elementId_ = elementId;
     let mediaElement_ = null;
     let receiverManager_ = null;
     let genericBus_ = null;
@@ -28,11 +28,6 @@ function CastReceiver(element) {
         cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
         cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
-        // // Init Video Element
-        // mediaElement_ = (element_.querySelector('video'));
-        // mediaElement_.addEventListener('timeupdate', onTimeupdate,
-        //     false);
-
         // Init CastReceiverManager
         receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
         receiverManager_.onReady = onReady_;
@@ -43,19 +38,26 @@ function CastReceiver(element) {
         console.log('CastUtils.GENERIC_MESSAGE_NAMESPACE: ' + CastUtils.GENERIC_MESSAGE_NAMESPACE);
         console.log('CastUtils.OLDMTN_MESSAGE_NAMESPACE: ' + CastUtils.OLDMTN_MESSAGE_NAMESPACE);
 
-        // The default GENERIC_MESSAGE_NAMESPACE should called after creating MediaManager. 
-        // genericBus_ = receiverManager_.getCastMessageBus(
-        //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
-        // genericBus_.onMessage = onGenericMessage_;
-
         oldmtnBus_ = receiverManager_.getCastMessageBus(
                 CastUtils.OLDMTN_MESSAGE_NAMESPACE);
         oldmtnBus_.onMessage = onOldmtnMessage_;
 
-        omPlayer_ = oldmtn.Player(element_);
+        omPlayer_ = oldmtn.Player(elementId_);
+
+        // // Init Video Element
+        // let v = document.getElementById(elementId_);
+        // mediaElement_ = v.querySelector('.h5p-video');
+        // // mediaElement_.addEventListener('timeupdate', onTimeupdate,
+        // //     false);
 
         // // Init MediaManager
         // mediaManager_ = new cast.receiver.MediaManager(mediaElement_);
+
+        // // The default GENERIC_MESSAGE_NAMESPACE should called after creating MediaManager. 
+        // genericBus_ = receiverManager_.getCastMessageBus(
+        //         CastUtils.GENERIC_MESSAGE_NAMESPACE);
+        // genericBus_.onMessage = onGenericMessage_;
+
         // onLoadOrig_ =
         //     mediaManager_.onLoad.bind(mediaManager_);
         // mediaManager_.onLoad = onLoad_;

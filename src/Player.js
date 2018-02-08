@@ -17,8 +17,8 @@ import XHRLoader from './utils/xhr_loader';
 import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
-function Player(playerContainer) {
-    let playerContainer_ = playerContainer;
+function Player(containerId) {
+    let containerId_ = containerId;
     let cfg_;
     let context_ = {};
 
@@ -41,7 +41,7 @@ function Player(playerContainer) {
     let adsEngine_;
 
     function setup() {
-        uiEngine_ = new UIEngine(playerContainer_);
+        uiEngine_ = new UIEngine(containerId_);
         media_ = uiEngine_.getVideo();
     }
 
