@@ -415,7 +415,9 @@ function Player(playerContainer) {
         mediaEngine_.revokeSrc();
     }
 
-    function onMediaDurationChanged() {}
+    function onMediaDurationChanged() {
+        
+    }
 
     function onMediaEnded() {
         if (adsEngine_) {

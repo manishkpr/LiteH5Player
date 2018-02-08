@@ -128,7 +128,7 @@ function AdsEngine(adContainer, media, advertising) {
         // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
         // console.log('ads: ' + ads);
 
-        debug_.log('advertising_.tag: ' + advertising_.tag);
+        debug_.log('+request ads, advertising_.tag: ' + advertising_.tag);
         var adsRequest = new google.ima.AdsRequest();
         adsRequest.adTagUrl = advertising_.tag;
         // Specify the linear and nonlinear slot sizes. This helps the SDK to

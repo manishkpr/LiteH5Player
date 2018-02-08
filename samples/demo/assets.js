@@ -57,7 +57,7 @@ function getInitConfig()
 
   var cfg = {
     // Media
-    //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
+    poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
     advertising: {
       //tag: 'http://10.2.64.68/tmp/1123.aa',
@@ -82,10 +82,12 @@ function getInitConfig()
 
 function getMediaInfo()
 {
+  // content - streaming
   //initAudioContent();
-  initVideoContent();
+  //initVideoContent();
   //initAudioVideoContent();
-  //initPDContent();
+  // content - pd
+  initPDContent();
 
   /* drm content part */
   //initDRM_PR();

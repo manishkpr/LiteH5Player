@@ -114,11 +114,11 @@ function enterFullScreen() {
 
     // Try to enter fullscreen mode in the browser
     var requestFullscreen = v.requestFullscreen ||
-        v.webkitRequestFullscreen ||
-        v.mozRequestFullscreen ||
-        v.requestFullScreen ||
-        v.webkitRequestFullScreen ||
-        v.mozRequestFullScreen;
+    v.webkitRequestFullscreen ||
+    v.mozRequestFullscreen ||
+    v.requestFullScreen ||
+    v.webkitRequestFullScreen ||
+    v.mozRequestFullScreen;
     requestFullscreen.call(v);
 
     // var requestFullscreen = document.documentElement.requestFullscreen ||
@@ -141,10 +141,10 @@ function leaveFullScreen() {
     printLog('--leaveFullScreen--');
 
     var cancelFullscreen = document.exitFullscreen ||
-        document.exitFullScreen ||
-        document.webkitCancelFullScreen ||
-        document.mozCancelFullScreen ||
-        document.msExitFullscreen;
+    document.exitFullScreen ||
+    document.webkitCancelFullScreen ||
+    document.mozCancelFullScreen ||
+    document.msExitFullscreen;
     if (cancelFullscreen) {
         cancelFullscreen.call(document);
     }
@@ -213,12 +213,12 @@ function addH5PListeners() {
 
     // resize listener
     var ro = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const cr = entry.contentRect;
-                const cWidth = entry.target.clientWidth;
-                const cHeight = entry.target.clientHeight;
+        for (let entry of entries) {
+            const cr = entry.contentRect;
+            const cWidth = entry.target.clientWidth;
+            const cHeight = entry.target.clientHeight;
 
-                player.resize(cWidth, cHeight);
+            player.resize(cWidth, cHeight);
                 // BD
                 // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
                 // console.log('Element:', entry.target);
@@ -253,8 +253,8 @@ function onH5PShadeMousemove() {
         clearTimeout(timerControlBar);
     }
     timerControlBar = setTimeout(function () {
-            onH5PShadeMouseleave();
-        }, 3000);
+        onH5PShadeMouseleave();
+    }, 3000);
 }
 
 function onH5PShadeMouseleave() {
@@ -470,6 +470,10 @@ function onUICmdCastPause() {
 
 function onUICmdCastPlayAd() {
   castSender.new_playAd();
+}
+
+function onUICmdCastTest() {
+  castSender.new_test();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

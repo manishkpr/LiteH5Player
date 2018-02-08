@@ -2,28 +2,28 @@
 
 var CommonUtils = {};
 
-/** 
- * return IE,IE6,IE7,IE8,IE9,Chrome,Firefox,Opera,WebKit,Safari,Others 
+/**
+ * return IE,IE6,IE7,IE8,IE9,Chrome,Firefox,Opera,WebKit,Safari,Others
  */
-CommonUtils.getBrowserName = function() {
+CommonUtils.getBrowserName = function () {
     var sys = {};
     var ua = navigator.userAgent.toLowerCase();
     var s;
     var s;
     if (s = ua.match(/edge\/([\d.]+)/)) {
-      sys.edge = s[1];
+        sys.edge = s[1];
     } else if (s = ua.match(/rv:([\d.]+)\) like gecko/)) {
-      sys.ie = s[1];
+        sys.ie = s[1];
     } else if (s = ua.match(/msie ([\d.]+)/)) {
-      sys.ie = s[1];
+        sys.ie = s[1];
     } else if (s = ua.match(/firefox\/([\d.]+)/)) {
-      sys.firefox = s[1];
+        sys.firefox = s[1];
     } else if (s = ua.match(/chrome\/([\d.]+)/)) {
-      sys.chrome = s[1];
+        sys.chrome = s[1];
     } else if (s = ua.match(/opera.([\d.]+)/)) {
-      sys.opera = s[1];
+        sys.opera = s[1];
     } else if (s = ua.match(/version\/([\d.]+).*safari/)) {
-      sys.safari = s[1];
+        sys.safari = s[1];
     }
 
     if (sys.edge) return { browser : "Edge", version : sys.edge };
@@ -32,58 +32,59 @@ CommonUtils.getBrowserName = function() {
     if (sys.chrome) return { browser : "Chrome", version : sys.chrome };
     if (sys.opera) return { browser : "Opera", version : sys.opera };
     if (sys.safari) return { browser : "Safari", version : sys.safari };
-    
+
     return { browser : "", version : "0" };
 };
 
 CommonUtils.isSafari = function () {
-  if (CommonUtils.getBrowserName().browser === 'Safari') {
-    return true;
-  } else {
-    return false;
-  }
+    if (CommonUtils.getBrowserName().browser === 'Safari') {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 CommonUtils.isFirefox = function () {
-  if (CommonUtils.getBrowserName().browser === 'Firefox') {
-    return true;
-  } else {
-    return false;
-  }
+    if (CommonUtils.getBrowserName().browser === 'Firefox') {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 CommonUtils.isChrome = function () {
-  if (CommonUtils.getBrowserName().browser === 'Chrome') {
-    return true;
-  } else {
-    return false;
-  }
+    if (CommonUtils.getBrowserName().browser === 'Chrome') {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 CommonUtils.isChromecast = function () {
-  if (window.cast && window.cast.__platform__) {
-    return true;
-  } else {
-    return false;
-  }
+    if (window.cast && window.cast.__platform__) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
-CommonUtils.isEdge = function() {
-  var userAgent = navigator.userAgent;
-  var isEdge = userAgent.indexOf("Edge") > -1;
-  return isEdge;
+CommonUtils.isEdge = function () {
+    var userAgent = navigator.userAgent;
+    var isEdge = userAgent.indexOf("Edge") > -1;
+    return isEdge;
 };
 
-CommonUtils.isIE = function() {
-  if (!!window.ActiveXObject || "ActiveXObject" in window) {
-    return true;
-  } else {
-    return false;
-  }
+CommonUtils.isIE = function () {
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 CommonUtils.getOSVersion = function () {
-    var os, osVersion;
+    var os,
+    osVersion;
 
     // system
     var nAgt = navigator.userAgent;
@@ -120,31 +121,31 @@ CommonUtils.getOSVersion = function () {
     {s: 'Search Bot', r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
     ];
     for (var id in clientStrings) {
-      var cs = clientStrings[id];
-      if (cs.r.test(nAgt)) {
-        os = cs.s;
-        break;
-      }
+        var cs = clientStrings[id];
+        if (cs.r.test(nAgt)) {
+            os = cs.s;
+            break;
+        }
     }
 
     if (/Windows/.test(os)) {
-      osVersion = /Windows (.*)/.exec(os)[1];
-      os = 'Windows';
+        osVersion = /Windows (.*)/.exec(os)[1];
+        os = 'Windows';
     }
 
     switch (os) {
-      case 'Mac OS X':
-      osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
-      break;
+    case 'Mac OS X':
+        osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
+        break;
 
-      case 'Android':
-      osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
-      break;
+    case 'Android':
+        osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
+        break;
 
-      case 'iOS':
-      osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-      osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
-      break;
+    case 'iOS':
+        osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
+        osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
+        break;
     }
 
     console.log('nAgt: ' + nAgt);
@@ -167,63 +168,62 @@ CommonUtils.getOSVersion = function () {
     let b = a;
 };
 
-CommonUtils.isMobilePlatform = function() {
-  return (navigator.userAgent.match(/(iPod|iPhone|iPad)/) ||
-       navigator.userAgent.toLowerCase().indexOf('android') > -1);
+CommonUtils.isMobilePlatform = function () {
+    return (navigator.userAgent.match(/(iPod|iPhone|iPad)/) ||
+        navigator.userAgent.toLowerCase().indexOf('android') > -1);
 };
-
 
 /////////////////////////////////////////////////////////////
 CommonUtils.init = function () {
-  // Add startsWith prototype method to String object
-  if (!String.prototype.startsWith) {
-    // Add prototype methods for Number object
-    if (!Number.isInteger) {
-      Number.isInteger = function (num) {
-        return (num ^ 0) === num;
-      };
-    }
+    // Add startsWith prototype method to String object
+    if (!String.prototype.startsWith) {
+        // Add prototype methods for Number object
+        if (!Number.isInteger) {
+            Number.isInteger = function (num) {
+                return (num ^ 0) === num;
+            };
+        }
 
-      // Add prototype methods for String object
-      if (!String.prototype.startsWith) {
-        String.prototype.startsWith = function (searchString, position) {
-          position = position || 0;
-          return this.indexOf(searchString, position) === position;
-        };
-      }
+        // Add prototype methods for String object
+        if (!String.prototype.startsWith) {
+            String.prototype.startsWith = function (searchString, position) {
+                position = position || 0;
+                return this.indexOf(searchString, position) === position;
+            };
+        }
     }
 };
 
 //////////////////////////////////////////////
 CommonUtils.getFormatTime = function () {
-  let message = '';
-  let d = null;
-  
-  d = new Date();
-  message += '[' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
+    let message = '';
+    let d = null;
+
+    d = new Date();
+    message += '[' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
     ('0' + d.getDate()).slice(-2) + ' ' +
     ('0' + d.getHours()).slice(-2) + ':' +
     ('0' + d.getMinutes()).slice(-2) + ':' +
     ('0' + d.getSeconds()).slice(-2) + '.' +
     ('0' + d.getMilliseconds()).slice(-3) + ']';
-  
-  return message;
+
+    return message;
 };
 
 CommonUtils.timeToString = function (value) {
-  function formatTimeUnit(time) {
-    return time < 10 ? '0' + time.toString() : time.toString();
-  }
+    function formatTimeUnit(time) {
+        return time < 10 ? '0' + time.toString() : time.toString();
+    }
 
-  value = Math.max(value, 0);
-  var h = Math.floor(value / 3600);
-  var m = Math.floor((value % 3600) / 60);
-  var s = Math.floor((value % 3600) % 60);
-  return (h === 0 ? '' : formatTimeUnit(h) + ':') + formatTimeUnit(m) + ':' + formatTimeUnit(s);
+    value = Math.max(value, 0);
+    var h = Math.floor(value / 3600);
+    var m = Math.floor((value % 3600) / 60);
+    var s = Math.floor((value % 3600) % 60);
+    return (h === 0 ? '' : formatTimeUnit(h) + ':') + formatTimeUnit(m) + ':' + formatTimeUnit(s);
 };
 
 //
-CommonUtils.test1 = function(aa) {
+CommonUtils.test1 = function (aa) {
     CommonUtils.init();
 
     var s1 = "aaabbcder";
@@ -240,6 +240,4 @@ CommonUtils.test1 = function(aa) {
     console.log('b3: ' + b3);
 };
 
-export default CommonUtils;
-
-
+export defaultCommonUtils;
