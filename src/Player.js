@@ -422,9 +422,6 @@ function Player(containerId) {
     }
 
     function onMediaEnded() {
-        if (adsEngine_) {
-            adsEngine_.onMediaEnded();
-        }
     }
 
     function onSbUpdateEnded() {

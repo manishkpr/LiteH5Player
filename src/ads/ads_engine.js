@@ -96,6 +96,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsLoaded_ = false;
         contentInitialized_ = false;
         eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
+        eventBus_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, this);
     }
 
     function open() {
@@ -319,9 +320,9 @@ function AdsEngine(adContainer, media, advertising) {
             console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
         } break;
         case google.ima.AdEvent.Type.AD_METADATA: {
-                for (let i in adEvent) {
-                    console.log('AD_METADATA: ' + i);
-                }
+                // for (let i in adEvent) {
+                //     console.log('AD_METADATA: ' + i);
+                // }
                 cuePoints_ = adEvent.getAdCuePoints();
                 console.log('cue points: ' + cuePoints_.h.join(","));
             }
@@ -446,7 +447,9 @@ function AdsEngine(adContainer, media, advertising) {
     function test() {
         let skippableState = adsManager_.getAdSkippableState();
         console.log('skippableState: ' + skippableState);
-        adsManager_.skip();
+        //adsManager_.skip();
+
+        onMediaEnded();
     }
 
     let instance = {
@@ -465,7 +468,6 @@ function AdsEngine(adContainer, media, advertising) {
         currentTime: currentTime,
         duration: duration,
         resize: resize,
-        onMediaEnded: onMediaEnded,
         requestAds: requestAds,
         startAds: startAds,
 

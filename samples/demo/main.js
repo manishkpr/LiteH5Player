@@ -76,9 +76,13 @@ function updateProgress() {
     var duration = player.duration();
 
     // update time progress bar
-    var v = document.querySelector('.h5p-progress-bar');
+    var vProgressBar = document.querySelector('.h5p-progress-bar');
     var progressList = [currentTime, duration];
-    v.style.background = genGradientColor(progressList, duration, contentProgressColorList);
+    vProgressBar.style.background = genGradientColor(progressList, duration, contentProgressColorList);
+
+    // update time progress scrubber button
+    var vScrubber = document.querySelector('.h5p-scrubber-container');
+    vScrubber.style.transform = 'translateX(' + ((currentTime / duration) * vProgressBar.clientWidth).toString() + 'px)';
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(currentTime);

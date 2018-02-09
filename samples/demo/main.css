@@ -75,6 +75,17 @@ body {
   cursor: pointer;
 }
 
+.h5p-scrubber-container {
+  position:absolute;
+  height:13px;
+  width:13px;
+  border-radius:6.5px;
+  top:-4px;
+  left:-6.5px;
+  background-color: red;
+  transform: translateX(0px);
+}
+
 .h5p-controls {
   width: 100%;
   height: 36px;
