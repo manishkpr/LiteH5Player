@@ -4,8 +4,8 @@
 
 const TimeRanges = {
   toString : function(r) {
-    var log = '', len = r.length;
-    for (var i=0; i<len; i++) {
+    let log = '', len = r.length;
+    for (let i=0; i < len; i ++) {
       let beg = r.start(i);
       let end = r.end(i);
 

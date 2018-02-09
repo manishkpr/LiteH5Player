@@ -210,6 +210,14 @@ function AdsEngine(adContainer, media, advertising) {
         adsManager_.setVolume(volume);
     }
 
+    function currentTime() {
+        return position_;
+    }
+
+    function duration() {
+        return duration_;
+    }
+
     function play() {
         if (adsManager_) {
             adsManager_.resume();
@@ -374,7 +382,7 @@ function AdsEngine(adContainer, media, advertising) {
                 duration_ = ad.getDuration();
                 countdownTimer_ = setInterval(function() {
                     let timeRemaining = adsManager_.getRemainingTime();
-                    position_ = duration_ - timeRemaining;
+                    position_ = duration_ - timeRemaining + 1;
                     // Update UI with timeRemaining
                     if (!isPaused_) {
                         eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
@@ -431,6 +439,8 @@ function AdsEngine(adContainer, media, advertising) {
         isMuted: isMuted,
         getVolume: getVolume,
         setVolume: setVolume,
+        currentTime: currentTime,
+        duration: duration,
         resize: resize,
         onMediaEnded: onMediaEnded,
         requestAds: requestAds,

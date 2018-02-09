@@ -16,7 +16,8 @@ var castSender = null;
 var metaWidth;
 var metaHeight;
 
-var progressColorList = ['red', 'rgba(192,192,192,0.3)'];
+var contentProgressColorList = ['red', 'rgba(192,192,192,0.3)'];
+var adProgressColorList = ['orange', 'rgba(192,192,192,0.3)'];
 
 // UI Matrial Icon
 var icon_play = 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z';
@@ -64,7 +65,27 @@ function updateProgress() {
     // update time progress bar
     var v = document.querySelector('.h5p-progress-bar');
     var progressList = [currentTime, duration];
-    v.style.background = genGradientColor(progressList, duration, progressColorList);
+    v.style.background = genGradientColor(progressList, duration, contentProgressColorList);
+
+    // update time display label
+    var c = oldmtn.CommonUtils.timeToString(currentTime);
+    var d = oldmtn.CommonUtils.timeToString(duration);
+    var fmtTime = c + '/' + d;
+
+    //printLog('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
+    var tDisplay = document.querySelector('.h5p-time-text');
+    tDisplay.innerText = fmtTime;
+}
+
+function updateAdProgress() {
+    //
+    var currentTime = player.currentTime();
+    var duration = player.duration();
+
+    // update time progress bar
+    var v = document.querySelector('.h5p-progress-bar');
+    var progressList = [currentTime, duration];
+    v.style.background = genGradientColor(progressList, duration, adProgressColorList);
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(currentTime);
@@ -193,6 +214,7 @@ function initData() {
 
     player.on(oldmtn.Events.LOG, onLog, {});
 
+    //
     player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
 
     // chrome cast part
@@ -415,7 +437,7 @@ function onBtnTest() {
 
     var v = document.querySelector('.h5p-progress-bar');
     var progressList = [0.5, 1];
-    v.style.background = genGradientColor(progressList, 1, progressColorList);
+    v.style.background = genGradientColor(progressList, 1, contentProgressColorList);
 
 }
 
@@ -583,6 +605,7 @@ function onLog(e) {
 
 function onAdTimeUpdate(e) {
     printLog('ad position: ' + e.position + ', duration: ' + e.duration);
+    updateAdProgress();
 }
 
 /////////////////////////////////////////////////////////////////////////

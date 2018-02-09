@@ -111,7 +111,6 @@ function Player(containerId) {
         mseEngine_.removeBuffer();
     }
 
-    //////////////////////////////////////////////////////////////
     function addA() {
         if (audioIndex_ >= streamInfo_.aContents.length) {
             debug_.log('There don\'t have more content to add.');
@@ -228,17 +227,25 @@ function Player(containerId) {
     }
 
     function currentTime() {
-        if (!mediaEngine_) {
-            return;
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            return adsEngine_.currentTime();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.currentTime();
         }
-        return mediaEngine_.currentTime();
     }
 
     function duration() {
-        if (!mediaEngine_) {
-            return;
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            return adsEngine_.duration();
+        } else {
+            if (!mediaEngine_) {
+                return;
+            }
+            return mediaEngine_.duration();
         }
-        return mediaEngine_.duration();
     }
     
     function isEnded() {
