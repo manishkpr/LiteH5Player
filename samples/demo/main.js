@@ -144,8 +144,10 @@ function enterFullScreen() {
     printLog('--enterFullScreen--');
     //var v = document.querySelector('.player');
     //var v = document.querySelector('.h5p-video-container');
-    var v = document.querySelector('.h5p-video');
-    //var v = document.querySelector('.html5-video-player');
+    //var v = document.querySelector('.h5p-video');
+    //var v = document.querySelector('video');
+    // Refer to youtube player
+    var v = document.querySelector('.html5-video-player');
 
     // Try to enter fullscreen mode in the browser
     var requestFullscreen = v.requestFullscreen ||
@@ -155,21 +157,6 @@ function enterFullScreen() {
     v.webkitRequestFullScreen ||
     v.mozRequestFullScreen;
     requestFullscreen.call(v);
-
-    // var requestFullscreen = document.documentElement.requestFullscreen ||
-    //   document.documentElement.webkitRequestFullscreen ||
-    //   document.documentElement.mozRequestFullscreen ||
-    //   document.documentElement.requestFullScreen ||
-    //   document.documentElement.webkitRequestFullScreen ||
-    //   document.documentElement.mozRequestFullScreen;
-    // if (!requestFullscreen) {
-    //   printLog('requestFullscreen is not NULL2');
-    //   requestFullscreen.call(document.documentElement);
-    //   //v.webkitSupportsFullscreen();
-    // } else {
-    //   printLog('requestFullscreen is NULL');
-    //   v.webkitSupportsFullscreen();
-    // }
 }
 
 function leaveFullScreen() {

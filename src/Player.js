@@ -219,9 +219,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.isPaused();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             return mediaEngine_.isPaused();
         }
     }
@@ -230,9 +228,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.currentTime();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             return mediaEngine_.currentTime();
         }
     }
@@ -241,9 +237,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.duration();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             return mediaEngine_.duration();
         }
     }
@@ -251,9 +245,7 @@ function Player(containerId) {
     function isEnded() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
         else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             mediaEngine_.isEnded();
         }
     }
@@ -262,9 +254,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.mute();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             mediaEngine_.mute();
         }
     }
@@ -273,9 +263,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.unmute();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             mediaEngine_.unmute();
         }
     }
@@ -284,9 +272,7 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.isMuted();
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             return mediaEngine_.isMuted();
         }
     }
@@ -295,17 +281,13 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.setVolume(volume);
         } else {
-            if (!mediaEngine_) {
-                return;
-            }
+            if (!mediaEngine_) { return; }
             mediaEngine_.setVolume(volume);
         }
     }
 
     function getVolume() {
-        if (!mediaEngine_) {
-            return;
-        }
+        if (!mediaEngine_) { return; }
 
         return mediaEngine_.getVolume();
     }
