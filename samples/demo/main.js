@@ -1,4 +1,5 @@
 // UI Controls
+var h5pPlayer = null;
 var h5pShade = null;
 var h5pProgressBar = null;
 var uiConsole = null;
@@ -177,6 +178,7 @@ function leaveFullScreen() {
 }
 
 function initUI() {
+    h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
     uiConsole = document.getElementById('idConsole');
@@ -610,7 +612,7 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-    printLog('+onMediaTimeupdated, position: ' + player.currentTime() + ', duration: ' + player.duration());
+    //printLog('+onMediaTimeupdated, position: ' + player.currentTime() + ', duration: ' + player.duration());
 
     updateProgress();
 }
@@ -626,7 +628,7 @@ function onLog(e) {
 function onAdTimeUpdate() {
     var position = player.currentTime();
     var duration = player.duration();
-    printLog('ad position: ' + position + ', duration: ' + duration);
+    //printLog('ad position: ' + position + ', duration: ' + duration);
     updateAdProgress();
 }
 
