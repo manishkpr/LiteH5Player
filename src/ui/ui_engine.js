@@ -38,10 +38,12 @@ UIEngine.prototype.initUIElement = function () {
         this.playerContainer_.appendChild(this.videoContainer_);
     }
 
+    let h5pShade = document.querySelector('.h5p-shade');
+    firstChild = h5pShade.firstChild;
     if (firstChild) {
-        this.playerContainer_.insertBefore(this.adContainer_, firstChild);
+        h5pShade.insertBefore(this.adContainer_, firstChild);
     } else {
-        this.playerContainer_.appendChild(this.adContainer_);
+        h5pShade.appendChild(this.adContainer_);
     }
 };
 

@@ -509,9 +509,11 @@ function Player(containerId) {
         setVolume: setVolume,
         getVolume: getVolume,
         seek: seek,
+        // Resize
         getWidth: getWidth,
         getHeight: getHeight,
         resize: resize,
+        // Ads
         playAd: playAd,
         test: test,
         test2: test2

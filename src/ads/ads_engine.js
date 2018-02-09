@@ -137,7 +137,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.linearAdSlotWidth = width_;
         adsRequest.linearAdSlotHeight = height_;
         adsRequest.nonLinearAdSlotWidth = width_;
-        adsRequest.nonLinearAdSlotHeight = height_;
+        adsRequest.nonLinearAdSlotHeight = height_/4;
 
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
@@ -380,17 +380,19 @@ function AdsEngine(adContainer, media, advertising) {
                 eventBus_.trigger(Events.AD_STARTED, { ad: ad });
                 position_ = 0;
                 duration_ = ad.getDuration();
-                countdownTimer_ = setInterval(function() {
+                if (isLinearAd_) {
+                    countdownTimer_ = setInterval(function() {
                     let timeRemaining = adsManager_.getRemainingTime();
-                    position_ = duration_ - timeRemaining;
-                    // Update UI with timeRemaining
-                    if (!isPaused_) {
-                        eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
-                    }
-                }, 300);
-                eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                        position_ = duration_ - timeRemaining;
+                        // Update UI with timeRemaining
+                        if (!isPaused_) {
+                            eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                        }
+                    }, 300);
+                    eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                }
 
-                if (!ad.isLinear()) {
+                if (!isLinearAd_) {
                     eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
                 }
             }
