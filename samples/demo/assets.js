@@ -55,15 +55,16 @@ function getInitConfig()
   var VMAP_Pre_10_20_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20_Post.xml';
   var VMAP_Pre_10_20Skip_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20Skip_Post.xml';
 
+  var testAd = 'https://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=is&c=23&pl=VAST&pli=14432293&PluID=0&pos=8834&ord=%5Btimestamp%5D&cim=1';
   var cfg = {
     // Media
     poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
     advertising: {
-      //tag: 'http://10.2.64.68/tmp/1123.aa',
+      tag: testAd,
       //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
-      tag: Single_Non_linear_Inline,
+      //tag: Single_Non_linear_Inline,
       //tag: VMAP_Pre_Mid_Post,
       //tag: VMAP_Pre_3Mid_Post,
       //tag: VMAP_5Ads_Every_10_Secs,

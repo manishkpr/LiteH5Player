@@ -231,6 +231,8 @@ function initData() {
     //
     player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
 
+    player.on(oldmtn.Events.FULLSCREEN_CHANGE, onFullscreenChanged, {});
+
     // chrome cast part
     var receiverAppId = 'E19ACDB8'; // joseph test app1
     //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
@@ -617,9 +619,26 @@ function onLog(e) {
     uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);
 }
 
-function onAdTimeUpdate(e) {
-    printLog('ad position: ' + e.position + ', duration: ' + e.duration);
+function onAdTimeUpdate() {
+    var position = player.currentTime();
+    var duration = player.duration();
+    printLog('ad position: ' + position + ', duration: ' + duration);
     updateAdProgress();
+}
+
+function onFullscreenChanged() {
+    var v = player.isFullscreen();
+    if (v) {
+        h5pFullScreenCorner0.setAttribute('d', fullscreen_yes_corner_0);
+        h5pFullScreenCorner1.setAttribute('d', fullscreen_yes_corner_1);
+        h5pFullScreenCorner2.setAttribute('d', fullscreen_yes_corner_2);
+        h5pFullScreenCorner3.setAttribute('d', fullscreen_yes_corner_3);
+    } else {
+        h5pFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
+        h5pFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
+        h5pFullScreenCorner2.setAttribute('d', fullscreen_no_corner_2);
+        h5pFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////

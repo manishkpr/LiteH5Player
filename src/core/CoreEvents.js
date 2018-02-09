@@ -37,6 +37,10 @@ class CoreEvents {
 
         // log event
         this.LOG = 'log';
+
+        // DOM Events
+        this.FULLSCREEN_CHANGE = 'fullscreenChange';
+
         //
         this.TEST_MSG = 'testMsg';
     }

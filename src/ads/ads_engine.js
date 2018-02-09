@@ -104,10 +104,7 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function close() {
-        if (countdownTimer_) {
-            clearInterval(countdownTimer_);
-            countdownTimer_ = null;
-        }
+        stopAdTimer();
         if (adsManager_) {
             adsManager_.destroy();
             adsManager_ = null;
@@ -335,12 +332,9 @@ function AdsEngine(adContainer, media, advertising) {
             break;
         case google.ima.AdEvent.Type.COMPLETE: {
                 isPlayingAd_ = false;
-                if (countdownTimer_) {
-                    clearInterval(countdownTimer_);
-                    countdownTimer_ = null;
-                }
+                stopAdTimer();
                 position_ = duration_;
-                eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
+                eventBus_.trigger(Events.AD_TIMEUPDATE);
                 eventBus_.trigger(Events.AD_COMPLETE);
             }
             break;
@@ -371,6 +365,10 @@ function AdsEngine(adContainer, media, advertising) {
         case google.ima.AdEvent.Type.SKIPPED: {
                 // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
                 isPlayingAd_ = false;
+                stopAdTimer();
+                position_ = duration_;
+                eventBus_.trigger(Events.AD_TIMEUPDATE);
+                eventBus_.trigger(Events.AD_COMPLETE);
             }
             break;
         case google.ima.AdEvent.Type.STARTED: {
@@ -381,18 +379,9 @@ function AdsEngine(adContainer, media, advertising) {
                 position_ = 0;
                 duration_ = ad.getDuration();
                 if (isLinearAd_) {
-                    countdownTimer_ = setInterval(function() {
-                    let timeRemaining = adsManager_.getRemainingTime();
-                        position_ = duration_ - timeRemaining;
-                        // Update UI with timeRemaining
-                        if (!isPaused_) {
-                            eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
-                        }
-                    }, 300);
-                    eventBus_.trigger(Events.AD_TIMEUPDATE, { duration: duration_, position: position_});
-                }
-
-                if (!isLinearAd_) {
+                    startAdTimer();
+                    eventBus_.trigger(Events.AD_TIMEUPDATE);
+                } else {
                     eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
                 }
             }
@@ -428,6 +417,38 @@ function AdsEngine(adContainer, media, advertising) {
         adsLoader_.contentComplete();
     }
 
+    //
+    function startAdTimer() {
+        countdownTimer_ = setInterval(function() {
+            let timeRemaining = adsManager_.getRemainingTime();
+            // If the ad is not loaded yet or has finished playing, getRemainingTime would return -1.
+            if (timeRemaining === -1) {
+                return;
+            }
+            
+            position_ = duration_ - timeRemaining;
+            // Update UI with timeRemaining
+            console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
+            if (!isPaused_) {
+                eventBus_.trigger(Events.AD_TIMEUPDATE);
+            }
+        }, 300);
+    }
+
+    function stopAdTimer() {
+        if (countdownTimer_) {
+            clearInterval(countdownTimer_);
+            countdownTimer_ = null;
+        }
+    }
+
+    //
+    function test() {
+        let skippableState = adsManager_.getAdSkippableState();
+        console.log('skippableState: ' + skippableState);
+        adsManager_.skip();
+    }
+
     let instance = {
         open: open,
         close: close,
@@ -446,7 +467,10 @@ function AdsEngine(adContainer, media, advertising) {
         resize: resize,
         onMediaEnded: onMediaEnded,
         requestAds: requestAds,
-        startAds: startAds
+        startAds: startAds,
+
+        //
+        test: test
     };
 
     setup();

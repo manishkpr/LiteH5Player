@@ -316,6 +316,13 @@ function Player(containerId) {
         }
     }
 
+    function isFullscreen() {
+        return document.fullscreenElement ||
+         document.msFullscreenElement ||
+         document.mozFullScreen ||
+         document.webkitIsFullScreen;
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Events API
     function signalEndOfStream() {
@@ -400,6 +407,8 @@ function Player(containerId) {
         if (adsEngine_) {
             adsEngine_.resize();
         }
+
+        eventBus_.trigger(oldmtn.Events.FULLSCREEN_CHANGE);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -471,7 +480,9 @@ function Player(containerId) {
     function test() {
         //adsEngine_.initialUserAction();
         //adsEngine_.open();
-        adsEngine_.startAds();
+        //adsEngine_.startAds();
+
+        adsEngine_.test();
     }
 
     function test2() {
@@ -515,6 +526,9 @@ function Player(containerId) {
         resize: resize,
         // Ads
         playAd: playAd,
+        // DOM API
+        isFullscreen: isFullscreen,
+        //
         test: test,
         test2: test2
     };
