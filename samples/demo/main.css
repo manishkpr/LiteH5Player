@@ -190,15 +190,15 @@ body {
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
-.h5p-autohide .h5p-shade {
+.h5p-autohide .h5p-shade,
+.h5p-autohide .h5p-play-button,
+.h5p-autohide .h5p-ads-container,
+.h5p-autohide .h5p-mute-button,
+.h5p-autohide .h5p-volume-bar,
+.h5p-autohide .h5p-volume-slider {
   cursor: none;
 }
-.h5p-autohide .h5p-play-button {
-  cursor: none;
-}
-.h5p-autohide .h5p-ads-container {
-  cursor: none;
-}
+
 
 
 /************ End volume bar ************/
