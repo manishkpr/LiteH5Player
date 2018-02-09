@@ -84,10 +84,10 @@ function getMediaInfo()
 {
   // content - streaming
   //initAudioContent();
-  //initVideoContent();
+  initVideoContent();
   //initAudioVideoContent();
   // content - pd
-  initPDContent();
+  //initPDContent();
 
   /* drm content part */
   //initDRM_PR();
