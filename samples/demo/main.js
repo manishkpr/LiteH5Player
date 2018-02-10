@@ -139,12 +139,17 @@ function updateProgressUI() {
     var duration = player.duration();
     var paused = player.isPaused();
     var ended = player.isEnded();
+    var isProgressBarMousedown = flagH5PProgressBarMousedown;
 
     // part - logic process
     var uiPosition;
     if (ended) {
-        // when the playback is ended, the currentTime should be equal to the duration.
-        uiPosition = currentTime;
+        if (isProgressBarMousedown) {
+            uiPosition = valueProgressMovePosition;
+        } else {
+            // when the playback is ended, the currentTime should be equal to the duration.
+            uiPosition = currentTime;
+        }
     } else {
         if (paused) {
             uiPosition = valueProgressMovePosition;
@@ -857,8 +862,14 @@ function onMediaSeeked() {
 function onMediaTimeupdated() {
     //printLog('+onMediaTimeupdated, position: ' + player.currentTime() + ', duration: ' + player.duration());
 
-    valueProgressMovePosition = player.currentTime();
-    updateProgressUI();
+    // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
+    // in this situation, we won't update progress bar ui.
+    if (flagH5PProgressBarMousedown) {
+
+    } else {
+        valueProgressMovePosition = player.currentTime();
+        updateProgressUI();
+    }
 }
 
 function onMediaWaiting() {
