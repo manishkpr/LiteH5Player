@@ -238,8 +238,8 @@ function updateContentVolumeBarUI(muted, volume) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-function isFullScreen() {
-    printLog('--isFullScreen--');
+function isFullscreen() {
+    printLog('+isFullscreen');
     return document.fullscreenElement ||
     document.msFullscreenElement ||
     document.mozFullScreen ||
@@ -247,7 +247,7 @@ function isFullScreen() {
 }
 
 function enterFullScreen() {
-    printLog('--enterFullScreen--');
+    printLog('+enterFullScreen');
     //var v = document.querySelector('.player');
     //var v = document.querySelector('.h5p-video-container');
     //var v = document.querySelector('.h5p-video');
@@ -499,8 +499,8 @@ function onH5PShadeMousemove(e) {
 
 function onH5PShadeMouseleave() {
     var paused = player.isPaused();
-
-    if (!paused && !flagH5PProgressBarMousedown && !flagH5PVolumeSliderMousedown) {
+    var fullscreen = isFullscreen();
+    if (!paused && !flagH5PProgressBarMousedown && !flagH5PVolumeSliderMousedown && !fullscreen) {
         $('.html5-video-player').addClass('h5p-autohide');
     }
 }
@@ -607,7 +607,7 @@ function onBtnSetting() {
 
 function onBtnFullscreen() {
     printLog('--onBtnFullscreen--');
-    if (isFullScreen()) {
+    if (isFullscreen()) {
         leaveFullScreen();
     } else {
         enterFullScreen();
