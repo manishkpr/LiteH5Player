@@ -24,6 +24,7 @@ class CoreEvents {
         this.MEDIA_SEEKING = 'mediaSeeking';
         this.MEDIA_SEEKED = 'mediaSeeked';
         this.MEDIA_TIMEUPDATE = 'mediaTimeupdate';
+        this.MEDIA_VOLUME_CHANGED = 'mediaVolumeChanged';
         this.MEDIA_WAITING = 'mediaWaiting';
 
         // ads internal events

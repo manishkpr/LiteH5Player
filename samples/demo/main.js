@@ -2,6 +2,7 @@
 var h5pPlayer = null;
 var h5pShade = null;
 var h5pProgressBar = null;
+var h5pMuteButton = null;
 var h5pVolumeSlider = null;
 var h5pVolumeSliderHandle = null;
 
@@ -104,15 +105,6 @@ function updateVolumeMovePosition(e) {
 
     // update time progress scrubber button
     valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
-}
-
-function updateVolumeUI() {
-    // part - input
-    var muted = player.isMuted();
-    var volume = player.getVolume();
-
-    // update ui
-    updateContentVolumeBarUI(muted, volume);
 }
 
 function updateProgressMovePosition(e) {
@@ -311,9 +303,22 @@ function docProgressBarMouseup(e) {
 
 function docVolumeSliderMousemove(e) {
     updateVolumeMovePosition(e);
-    updateVolumeUI();
+    
+    var muted = player.isMuted();
+    var volume = valueVolumeMovePosition;
+    if (volume === 0) {
+        
+    } else {
+        if (muted === true) {
+            player.unmute();
+        }
 
+        muted = false;
+    }
+    
     player.setVolume(valueVolumeMovePosition);
+
+    updateContentVolumeBarUI(muted, volume);
 }
 
 function docVolumeSliderMouseup(e) {
@@ -354,6 +359,7 @@ function initUI() {
     h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
+    h5pMuteButton = document.querySelector('.h5p-mute-button');
     h5pVolumeSlider = document.querySelector('.h5p-volume-slider');
     h5pVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
 
@@ -406,6 +412,7 @@ function initData() {
     player.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
     player.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
     player.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
+    player.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, onMediaVolumeChanged, {});
     player.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
 
     player.on(oldmtn.Events.LOG, onLog, {});
@@ -434,6 +441,7 @@ function addH5PListeners() {
     h5pProgressBar.addEventListener('mousedown', onH5PProgressBarMousedown);
     h5pProgressBar.addEventListener('mousemove', onH5PProgressBarMousemove);
 
+    h5pMuteButton.addEventListener('click', onH5PMuteButtonClick);
     h5pVolumeSlider.addEventListener('mousedown', onH5PVolumeSliderMousedown);
     h5pVolumeSlider.addEventListener('mousemove', onH5PVolumeSliderMousemove);
 
@@ -476,7 +484,7 @@ function onH5PShadeMouseenter() {
 }
 
 function onH5PShadeMousemove(e) {
-    console.log('+onH5PShadeMousemove');
+    //console.log('+onH5PShadeMousemove');
 
     $('.html5-video-player').removeClass('h5p-autohide');
 
@@ -536,20 +544,30 @@ function onBtnPlay() {
     }
 }
 
-function onBtnMute() {
-    var muted;
-    // execute ui cmd
-    if (player.isMuted()) {
-        player.unmute();
-
-        muted = false;
-    } else {
-        player.mute();
-
-        muted = true;
-    }
-
+function onH5PMuteButtonClick() {
+    var muted = player.isMuted();
     var volume = player.getVolume();
+
+    // 
+    if (volume === 0) {
+        if (muted) {
+            player.unmute();
+            muted = false;
+        }
+
+        // If the player is muted, and volume is 0,
+        // in this situation, we will restore volume to 0.2
+        volume = 0.2;
+        player.setVolume(volume);
+    } else {
+        if (muted) {
+            player.unmute();
+            muted = false;
+        } else {
+            player.mute();
+            muted = true;
+        }
+    }
     updateContentVolumeBarUI(muted, volume);
 }
 
@@ -762,6 +780,7 @@ function onH5PProgressBarMousemove(e) {
 }
 
 function onH5PVolumeSliderMousedown(e) {
+    console.log('+onH5PVolumeSliderMousedown');
     captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -870,6 +889,10 @@ function onMediaTimeupdated() {
         valueProgressMovePosition = player.currentTime();
         updateProgressUI();
     }
+}
+
+function onMediaVolumeChanged() {
+
 }
 
 function onMediaWaiting() {

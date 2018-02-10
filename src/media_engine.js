@@ -166,7 +166,8 @@ function MediaEngine(media)
   }
 
   function onMediaVolumeChanged() {
-    debug_.log('+onMediaVolumeChanged');
+    debug_.log('+onMediaVolumeChanged, muted: ' + media_.muted + ', volume: ' + media_.volume);
+    eventBus_.trigger(Events.MEDIA_VOLUME_CHANGED);
   }
 
   function onMediaWaiting() {
