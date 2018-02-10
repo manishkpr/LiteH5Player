@@ -73,6 +73,7 @@ body {
   left:-6.5px;
   background-color: red;
   transform: translateX(0px);
+  pointer-events: none;
 }
 
 .h5p-controls {
@@ -169,19 +170,24 @@ body {
 }
 
 /************ Begin volume bar ************/
-.h5p-volume-bar {
+.h5p-volume-panel {
   float: left;
-  width: auto;
+  width: 52px;
   height: 100%;
+  cursor: pointer;
 }
 
 .h5p-volume-slider {
-  margin-top: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  position:relative;
+  top:50%;
+  height:3px;
+  background-color: #fff;
 }
+
+.h5p-volume-slider-handle {
+  position:absolute;top:50%;width:12px;height:12px;border-radius:6px;margin-top:-6px;background:#fff;
+}
+/************ End volume bar ************/
 
 .h5p-autohide { cursor:none }
 .h5p-autohide .h5p-chrome-bottom {
@@ -201,7 +207,7 @@ body {
 
 
 
-/************ End volume bar ************/
+
 
 #idBtnController {
   position: relative;

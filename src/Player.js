@@ -243,10 +243,12 @@ function Player(containerId) {
     }
     
     function isEnded() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+            
+        }
         else {
             if (!mediaEngine_) { return; }
-            mediaEngine_.isEnded();
+            return mediaEngine_.isEnded();
         }
     }
 

@@ -36,10 +36,11 @@ function getInitConfig()
   var Single_Non_linear_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=';
 
   // VMAP Pre-roll
-  //var SAMPLE_AD_TAG_ = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&cmsid=496&vid=short_onecue&correlator=';
+  var VMAP_Pre_roll_Bumper = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonlybumper&cmsid=496&vid=short_onecue&correlator=';
 
   // VMAP Post-roll
-  //var VMAP_Post_roll = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
+  var VMAP_Post_roll = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&cmsid=496&vid=short_onecue&correlator=';
+  var VMAP_Post_roll_Bumper = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonlybumper&cmsid=496&vid=short_onecue&correlator=';
 
   // VMAP Pre-, Mid-, and Post-rolls, Single Ads
   var VMAP_Pre_Mid_Post = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=';
@@ -65,7 +66,9 @@ function getInitConfig()
     //   //tag: Single_Inline_Linear,
     //   //tag: Single_Skippable_Inline,
     //   //tag: Single_Non_linear_Inline,
-    //   tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_roll_Bumper,
+    //   tag: VMAP_Post_roll_Bumper,
+    //   //tag: VMAP_Pre_Mid_Post,
     //   //tag: VMAP_Pre_3Mid_Post,
     //   //tag: VMAP_5Ads_Every_10_Secs,
     //   //tag: VMAP_Pre_10_20_Post,
@@ -85,10 +88,11 @@ function getMediaInfo()
 {
   // content - streaming
   //initAudioContent();
-  initVideoContent();
+  //initVideoContent();
   //initAudioVideoContent();
+  
   // content - pd
-  //initPDContent();
+  initPDContent();
 
   /* drm content part */
   //initDRM_PR();
@@ -241,7 +245,11 @@ function initPDContent() {
   pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4';
   pdDuration = 30;
 
+  //
   //pdContent = 'http://10.2.68.64/2/pd/mp4/trailer.mp4';
+
+  // 
+  //pdContent = 'http://10.2.68.64/2/pd/mp4/mov_bbb.mp4';
 }
 
 function initPDContent_ClearKey() {

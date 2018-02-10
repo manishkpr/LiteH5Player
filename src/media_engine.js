@@ -107,6 +107,7 @@ function MediaEngine(media)
   }
 
   function onMediaEnded() {
+    debug_.log('+onMediaEnded');
     eventBus_.trigger(Events.MEDIA_ENDED);
   }
 
