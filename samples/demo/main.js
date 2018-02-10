@@ -1,6 +1,7 @@
 // UI Controls
 var h5pPlayer = null;
 var h5pShade = null;
+var h5pChromeBottom = null;
 var h5pProgressBar = null;
 var h5pMuteButton = null;
 var h5pVolumeSlider = null;
@@ -358,6 +359,7 @@ function releaseVolumeSliderMouseEvents() {
 function initUI() {
     h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
+    h5pChromeBottom = document.querySelector('.h5p-chrome-bottom');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
     h5pMuteButton = document.querySelector('.h5p-mute-button');
     h5pVolumeSlider = document.querySelector('.h5p-volume-slider');
@@ -441,6 +443,7 @@ function addH5PListeners() {
     h5pProgressBar.addEventListener('mousedown', onH5PProgressBarMousedown);
     h5pProgressBar.addEventListener('mousemove', onH5PProgressBarMousemove);
 
+    h5pChromeBottom.addEventListener('click', onH5PChromeBottomClick);
     h5pMuteButton.addEventListener('click', onH5PMuteButtonClick);
     h5pVolumeSlider.addEventListener('mousedown', onH5PVolumeSliderMousedown);
     h5pVolumeSlider.addEventListener('mousemove', onH5PVolumeSliderMousemove);
@@ -506,7 +509,7 @@ function onH5PShadeMouseleave() {
 }
 
 function onH5PShadeClick() {
-
+    onBtnPlay();
 }
 
 // browser & UI callback functions
@@ -545,6 +548,10 @@ function onBtnPlay() {
         var ended = player.isEnded();
         updatePlayBtnUI(newPaused, ended);
     }
+}
+
+function onH5PChromeBottomClick(e) {
+    e.stopPropagation();
 }
 
 function onH5PMuteButtonClick() {
