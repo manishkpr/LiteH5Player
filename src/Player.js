@@ -244,7 +244,7 @@ function Player(containerId) {
     
     function isEnded() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            
+
         }
         else {
             if (!mediaEngine_) { return; }
@@ -428,7 +428,7 @@ function Player(containerId) {
 
     function onSbUpdateEnded() {
         // Need to signal end of stream everytime when add buffer completed
-        mseEngine_.signalEndOfStream();
+        //mseEngine_.signalEndOfStream();
     }
 
     function onAdContentPauseRequested() {
