@@ -499,6 +499,7 @@ function onH5PShadeMousemove(e) {
 
 function onH5PShadeMouseleave() {
     var paused = player.isPaused();
+
     if (!paused && !flagH5PProgressBarMousedown && !flagH5PVolumeSliderMousedown) {
         $('.html5-video-player').addClass('h5p-autohide');
     }
@@ -524,7 +525,9 @@ function onBtnPlay() {
     var currPaused = player.isPaused();
     var currEnded = player.isEnded();
     if (currEnded) {
-
+        flagPausedBeforeMousedown = true;
+        flagEndedBeforeMousedown = true;
+        player.seek(0);
     } else {
         var newPaused;
         // execute ui cmd
@@ -557,7 +560,7 @@ function onH5PMuteButtonClick() {
 
         // If the player is muted, and volume is 0,
         // in this situation, we will restore volume to 0.2
-        volume = 0.2;
+        volume = 0.1;
         player.setVolume(volume);
     } else {
         if (muted) {
@@ -569,11 +572,6 @@ function onH5PMuteButtonClick() {
         }
     }
     updateContentVolumeBarUI(muted, volume);
-}
-
-function onCmdVolumeChange() {
-    // var value = document.querySelector('.h5p-volume-slider').value;
-    // player.setVolume(value / 100);
 }
 
 function onBtnAddA() {
@@ -820,12 +818,17 @@ function onMediaDurationChanged() {
 }
 
 function onMediaEnded() {
+    // 
     var paused = player.isPaused();
     var ended = player.isEnded();
     updatePlayBtnUI(paused, ended);
 
+    //
     valueProgressMovePosition = player.currentTime();
     updateProgressUI();
+
+    //
+    $('.html5-video-player').removeClass('h5p-autohide');
 }
 
 function onMediaLoadedData() {
