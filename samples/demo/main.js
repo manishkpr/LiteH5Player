@@ -2,6 +2,7 @@
 var h5pPlayer = null;
 var h5pShade = null;
 var h5pProgressBar = null;
+var h5pVolumeSlider = null;
 var h5pVolumeSliderHandle = null;
 
 var uiConsole = null;
@@ -30,6 +31,7 @@ var colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 // UI Matrial Icon
 var icon_play = 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z';
 var icon_pause = 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z';
+var icon_replay = 'M 18,11 V 7 l -5,5 5,5 v -4 c 3.3,0 6,2.7 6,6 0,3.3 -2.7,6 -6,6 -3.3,0 -6,-2.7 -6,-6 h -2 c 0,4.4 3.6,8 8,8 4.4,0 8,-3.6 8,-8 0,-4.4 -3.6,-8 -8,-8 z';
 var icon_volume_muted = 'm 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z';
 var icon_volume_low = 'M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 Z';
 var icon_volume_high = 'M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z';
@@ -46,11 +48,12 @@ var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 // flag & value of progress var
 var flagH5PProgressBarMousedown = false;
 var flagPausedBeforeMousedown = false;
+var flagEndedBeforeMousedown = false;
 var flagPositionBeforeMousedown = 0;
 var valueProgressMovePosition = 0;
 
 // flag & value of volume var
-var flagH5PVolumeSliderHandleMousedown = false;
+var flagH5PVolumeSliderMousedown = false;
 var valueVolumeMovePosition = 0;
 
 
@@ -89,16 +92,13 @@ function genGradientColor(posList, totalRange, colorList) {
 
 function updateVolumeMovePosition(e) {
     // part - input
-    var vSlider = document.querySelector('.h5p-volume-slider');
-    var vSliderHandle = document.querySelector('.h5p-volume-slider-handle');
-
-    var rect = vSlider.getBoundingClientRect();
+    var rect = h5pVolumeSlider.getBoundingClientRect();
 
     // part - logic process
     var offsetX = e.clientX - rect.left;
     if (offsetX < 0) {
         offsetX = 0;
-    } else if (offsetX + vSliderHandle.clientWidth > rect.width) {
+    } else if (offsetX + h5pVolumeSliderHandle.clientWidth > rect.width) {
         offsetX = rect.width;
     }
 
@@ -145,13 +145,11 @@ function updateProgressUI() {
     if (ended) {
         // when the playback is ended, the currentTime should be equal to the duration.
         uiPosition = currentTime;
-        valueProgressMovePosition = currentTime;
     } else {
         if (paused) {
             uiPosition = valueProgressMovePosition;
         } else {
             uiPosition = currentTime;
-            valueProgressMovePosition = currentTime;
         }
     }
 
@@ -194,7 +192,7 @@ function updateAdProgressUI() {
 
 function updatePlayBtnUI(paused, ended) {
     if (ended) {
-        h5pPlaySvg.setAttribute('d', icon_play);
+        h5pPlaySvg.setAttribute('d', icon_replay);
     } else {
         if (paused) {
             h5pPlaySvg.setAttribute('d', icon_play);
@@ -306,18 +304,25 @@ function docProgressBarMouseup(e) {
     flagH5PProgressBarMousedown = false;
 }
 
-function docVolumeBarMousemove(e) {
+function docVolumeSliderMousemove(e) {
     updateVolumeMovePosition(e);
     updateVolumeUI();
 
     player.setVolume(valueVolumeMovePosition);
 }
 
-function docVolumeBarMouseup(e) {
-    releaseVolumeBarMouseEvents();
+function docVolumeSliderMouseup(e) {
+    console.log('+docVolumeSliderMouseup');
+    releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
-    flagH5PVolumeBarMousedown = false;
+    flagH5PVolumeSliderMousedown = false;
+
+    // if mouse up out of 'h5p-shade', hide control bar directly
+    var pt = { x: e.clientX, y: e.clientY };
+    if (!isPtInElement(pt, h5pShade)) {
+        onH5PShadeMouseleave();
+    }
 }
 
 function captureProgressBarMouseEvents() {
@@ -330,20 +335,21 @@ function releaseProgressBarMouseEvents() {
     document.removeEventListener ('mouseup', docProgressBarMouseup, true);
 }
 
-function captureVolumeBarMouseEvents() {
-    document.addEventListener('mousemove', docVolumeBarMousemove, true);
-    document.addEventListener('mouseup', docVolumeBarMouseup, true);
+function captureVolumeSliderMouseEvents() {
+    document.addEventListener('mousemove', docVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', docVolumeSliderMouseup, true);
 }
 
-function releaseVolumeBarMouseEvents() {
-    document.removeEventListener ('mousemove', docVolumeBarMousemove, true);
-    document.removeEventListener ('mouseup', docVolumeBarMouseup, true);
+function releaseVolumeSliderMouseEvents() {
+    document.removeEventListener ('mousemove', docVolumeSliderMousemove, true);
+    document.removeEventListener ('mouseup', docVolumeSliderMouseup, true);
 }
 
 function initUI() {
     h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
+    h5pVolumeSlider = document.querySelector('.h5p-volume-slider');
     h5pVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
 
     uiConsole = document.getElementById('idConsole');
@@ -423,8 +429,8 @@ function addH5PListeners() {
     h5pProgressBar.addEventListener('mousedown', onH5PProgressBarMousedown);
     h5pProgressBar.addEventListener('mousemove', onH5PProgressBarMousemove);
 
-    h5pVolumeSliderHandle.addEventListener('mousedown', onH5PVolumeSliderHandleMousedown);
-    h5pVolumeSliderHandle.addEventListener('mousemove', onH5PVolumeSliderHandleMousemove);
+    h5pVolumeSlider.addEventListener('mousedown', onH5PVolumeSliderMousedown);
+    h5pVolumeSlider.addEventListener('mousemove', onH5PVolumeSliderMousemove);
 
     // resize listener
     if (window.ResizeObserver) {
@@ -464,11 +470,14 @@ function onH5PShadeMouseenter() {
     $('.html5-video-player').removeClass('h5p-autohide');
 }
 
-function onH5PShadeMousemove() {
+function onH5PShadeMousemove(e) {
+    console.log('+onH5PShadeMousemove');
+
     $('.html5-video-player').removeClass('h5p-autohide');
 
     if (timerControlBar) {
         clearTimeout(timerControlBar);
+        timerControlBar = null;
     }
     timerControlBar = setTimeout(function () {
         onH5PShadeMouseleave();
@@ -476,7 +485,8 @@ function onH5PShadeMousemove() {
 }
 
 function onH5PShadeMouseleave() {
-    if (!player.isPaused()) {
+    var paused = player.isPaused();
+    if (!paused && !flagH5PProgressBarMousedown && !flagH5PVolumeSliderMousedown) {
         $('.html5-video-player').addClass('h5p-autohide');
     }
 }
@@ -498,21 +508,27 @@ function onBtnClose() {
 }
 
 function onBtnPlay() {
-    var paused;
-    // execute ui cmd
-    if (player.isPaused()) {
-        player.play();
+    var currPaused = player.isPaused();
+    var currEnded = player.isEnded();
+    if (currEnded) {
 
-        paused = false;
     } else {
-        player.pause();
+        var newPaused;
+        // execute ui cmd
+        if (currPaused) {
+            player.play();
 
-        paused = true;
+            newPaused = false;
+        } else {
+            player.pause();
+
+            newPaused = true;
+        }
+
+        // update ui
+        var ended = player.isEnded();
+        updatePlayBtnUI(newPaused, ended);
     }
-
-    // update ui
-    var ended = player.isEnded();
-    updatePlayBtnUI(paused, ended);
 }
 
 function onBtnMute() {
@@ -714,11 +730,19 @@ function onH5PProgressBarMousedown(e) {
 
     flagH5PProgressBarMousedown = true;
     flagPausedBeforeMousedown = player.isPaused();
+    flagEndedBeforeMousedown = player.isEnded();
     flagPositionBeforeMousedown = player.currentTime();
 
+    // need to pause content first before starting a seek operation.
     if (!flagPausedBeforeMousedown) {
-        onBtnPlay();
+        player.pause();
+
+        var paused = true;
+        var ended = player.isEnded();
+        updatePlayBtnUI(paused, ended);
     }
+
+    // update progress bar ui
     updateProgressMovePosition(e);
     updateProgressUI();
 }
@@ -732,17 +756,19 @@ function onH5PProgressBarMousemove(e) {
     // process normal mouse move logic
 }
 
-function onH5PVolumeSliderHandleMousedown(e) {
-    captureVolumeBarMouseEvents();
+function onH5PVolumeSliderMousedown(e) {
+    captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
-    flagH5PVolumeSliderHandleMousedown = true;
+    flagH5PVolumeSliderMousedown = true;
+
+    docVolumeSliderMousemove(e);
 }
 
-function onH5PVolumeSliderHandleMousemove() {
+function onH5PVolumeSliderMousemove() {
     // if mouse down, just return
-    if (flagH5PVolumeSliderHandleMousedown) {
+    if (flagH5PVolumeSliderMousedown) {
         return;
     }
 
@@ -774,6 +800,7 @@ function onMediaEnded() {
     var ended = player.isEnded();
     updatePlayBtnUI(paused, ended);
 
+    valueProgressMovePosition = player.currentTime();
     updateProgressUI();
 }
 
@@ -818,14 +845,19 @@ function onMediaSeeking() {
 function onMediaSeeked() {
     printLog('+onMediaSeeked, currentTime: ' + player.currentTime());
 
-    if (!flagPausedBeforeMousedown) {
-        onBtnPlay();
+    if (!flagPausedBeforeMousedown || flagEndedBeforeMousedown) {
+        player.play();
+        // update ui
+        var paused = false;
+        var ended = player.isEnded();
+        updatePlayBtnUI(paused, ended);
     }
 }
 
 function onMediaTimeupdated() {
     //printLog('+onMediaTimeupdated, position: ' + player.currentTime() + ', duration: ' + player.duration());
 
+    valueProgressMovePosition = player.currentTime();
     updateProgressUI();
 }
 

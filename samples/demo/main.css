@@ -201,7 +201,10 @@ body {
 .h5p-autohide .h5p-ads-container,
 .h5p-autohide .h5p-mute-button,
 .h5p-autohide .h5p-volume-bar,
-.h5p-autohide .h5p-volume-slider {
+.h5p-autohide .h5p-volume-slider,
+.h5p-autohide .h5p-volume-panel,
+.h5p-autohide .h5p-volume-slider,
+.h5p-autohide .h5p-volume-slider-handle {
   cursor: none;
 }
 
