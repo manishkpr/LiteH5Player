@@ -2,6 +2,8 @@
 var h5pPlayer = null;
 var h5pShade = null;
 var h5pProgressBar = null;
+var h5pVolumeSliderHandle = null;
+
 var uiConsole = null;
 
 var h5pPlaySvg;
@@ -41,13 +43,18 @@ var fullscreen_yes_corner_1 = 'm 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z';
 var fullscreen_yes_corner_2 = 'm 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z';
 var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 
-// flag
+// flag & value of progress var
 var flagH5PProgressBarMousedown = false;
 var flagPausedBeforeMousedown = false;
 var flagPositionBeforeMousedown = 0;
+var valueProgressMovePosition = 0;
 
-// value
-var valueMovePosition = 0;
+// flag & value of volume var
+var flagH5PVolumeSliderHandleMousedown = false;
+var valueVolumeMovePosition = 0;
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
@@ -80,7 +87,35 @@ function genGradientColor(posList, totalRange, colorList) {
     return 'linear-gradient(' + gradient.join(',') + ')';
 }
 
-function updateProgressMousePosition(e) {
+function updateVolumeMovePosition(e) {
+    // part - input
+    var vSlider = document.querySelector('.h5p-volume-slider');
+    var vSliderHandle = document.querySelector('.h5p-volume-slider-handle');
+
+    var rect = vSlider.getBoundingClientRect();
+
+    // part - logic process
+    var offsetX = e.clientX - rect.left;
+    if (offsetX < 0) {
+        offsetX = 0;
+    } else if (offsetX + vSliderHandle.clientWidth > rect.width) {
+        offsetX = rect.width;
+    }
+
+    // update time progress scrubber button
+    valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
+}
+
+function updateVolumeUI() {
+    // part - input
+    var muted = player.isMuted();
+    var volume = player.getVolume();
+
+    // update ui
+    updateContentVolumeBarUI(muted, volume);
+}
+
+function updateProgressMovePosition(e) {
     // part - input
     var v = document.querySelector('.h5p-progress-bar');
     var rect = v.getBoundingClientRect();
@@ -95,7 +130,7 @@ function updateProgressMousePosition(e) {
 
     // update time progress scrubber button
     var duration = player.duration();
-    valueMovePosition = (offsetX / rect.width) * duration;
+    valueProgressMovePosition = (offsetX / rect.width) * duration;
 }
 
 function updateProgressUI() {
@@ -110,13 +145,13 @@ function updateProgressUI() {
     if (ended) {
         // when the playback is ended, the currentTime should be equal to the duration.
         uiPosition = currentTime;
-        valueMovePosition = currentTime;
+        valueProgressMovePosition = currentTime;
     } else {
         if (paused) {
-            uiPosition = valueMovePosition;
+            uiPosition = valueProgressMovePosition;
         } else {
             uiPosition = currentTime;
-            valueMovePosition = currentTime;
+            valueProgressMovePosition = currentTime;
         }
     }
 
@@ -169,29 +204,40 @@ function updatePlayBtnUI(paused, ended) {
     }
 }
 
-function updateMuteBtnUI(muted, volume) {
-    if (muted) {
-        h5pMuteSvg.setAttribute('d', icon_volume_muted);
+function updateContentVolumeBarUI(muted, volume) {
+    var vVolumeSlider = document.querySelector('.h5p-volume-slider');
+    var vVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
+
+    var uiMutedIcon;
+    var uiVolumeList;
+    var uiVolumeHandleLeft;
+    if (volume === 0 || muted) {
+        uiMutedIcon = icon_volume_muted;
+        uiVolumeList = [0, 1];
+        uiVolumeHandleLeft = '0px';
     } else {
         if (volume >= 0.5) {
-            h5pMuteSvg.setAttribute('d', icon_volume_high);
+            uiMutedIcon = icon_volume_high;
         } else {
-            h5pMuteSvg.setAttribute('d', icon_volume_low);
+            uiMutedIcon = icon_volume_low;
         }
+
+        uiVolumeList = [volume, 1];
+
+        var vLeft = (volume / 1) * vVolumeSlider.clientWidth;
+        if (vLeft + vVolumeSliderHandle.clientWidth > vVolumeSlider.clientWidth) {
+            vLeft = vVolumeSlider.clientWidth - vVolumeSliderHandle.clientWidth;
+        }
+
+        uiVolumeHandleLeft = vLeft.toString() + 'px';
     }
-}
 
-function updateContentVolumeBarUI(muted, volume) {
-    var volumeList = [volume, 1];
-
+    // update muted button
+    h5pMuteSvg.setAttribute('d', uiMutedIcon);
     // update volume slider background
-    var vVolumeSlider = document.querySelector('.h5p-volume-slider');
-    vVolumeSlider.style.background = genGradientColor(volumeList, 1, colorList_volume);
-
-    // update volum slider handle
-    var vVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
-    var vLeft = (volume / 1) * vVolumeSlider.clientWidth;
-    vVolumeSliderHandle.style.left = vLeft.toString() + 'px';
+    vVolumeSlider.style.background = genGradientColor(uiVolumeList, 1, colorList_volume);
+    // update volume slider handle
+    vVolumeSliderHandle.style.left = uiVolumeHandleLeft;
 }
 
 
@@ -240,46 +286,66 @@ function leaveFullScreen() {
 function docProgressBarMousemove(e) {
     console.log('+docProgressBarMousemove');
 
-    updateProgressMousePosition(e);
+    updateProgressMovePosition(e);
     updateProgressUI();
 }
 
 function docProgressBarMouseup(e) {
     console.log('+docProgressBarMouseup');
-    releaseMouseEvents();
+    releaseProgressBarMouseEvents();
     e.preventDefault();
 
     // update ui first
-    updateProgressMousePosition(e);
+    updateProgressMovePosition(e);
     updateProgressUI();
 
-    flagH5PProgressBarMousedown = false;
-
-    if (flagPausedBeforeMousedown) {
-        if (flagPositionBeforeMousedown != valueMovePosition) {
-            player.seek(valueMovePosition);
-        }
-    } else {
-        if (flagPositionBeforeMousedown != valueMovePosition) {
-            player.seek(valueMovePosition);
-        }
+    if (flagPositionBeforeMousedown != valueProgressMovePosition) {
+        player.seek(valueProgressMovePosition);
     }
+
+    flagH5PProgressBarMousedown = false;
 }
 
-function captureMouseEvents() {
+function docVolumeBarMousemove(e) {
+    updateVolumeMovePosition(e);
+    updateVolumeUI();
+
+    player.setVolume(valueVolumeMovePosition);
+}
+
+function docVolumeBarMouseup(e) {
+    releaseVolumeBarMouseEvents();
+    e.preventDefault();
+
+    flagH5PVolumeBarMousedown = false;
+}
+
+function captureProgressBarMouseEvents() {
     document.addEventListener('mousemove', docProgressBarMousemove, true);
     document.addEventListener('mouseup', docProgressBarMouseup, true);
 }
 
-function releaseMouseEvents() {
+function releaseProgressBarMouseEvents() {
     document.removeEventListener ('mousemove', docProgressBarMousemove, true);
     document.removeEventListener ('mouseup', docProgressBarMouseup, true);
+}
+
+function captureVolumeBarMouseEvents() {
+    document.addEventListener('mousemove', docVolumeBarMousemove, true);
+    document.addEventListener('mouseup', docVolumeBarMouseup, true);
+}
+
+function releaseVolumeBarMouseEvents() {
+    document.removeEventListener ('mousemove', docVolumeBarMousemove, true);
+    document.removeEventListener ('mouseup', docVolumeBarMouseup, true);
 }
 
 function initUI() {
     h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
+    h5pVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
+
     uiConsole = document.getElementById('idConsole');
 
     var v = document.querySelector('.h5p-play-button');
@@ -354,11 +420,11 @@ function addH5PListeners() {
 
     h5pShade.addEventListener('click', onH5PShadeClick);
 
-    //h5pProgressBar.addEventListener('click', onH5PProgressBarClick);
-
     h5pProgressBar.addEventListener('mousedown', onH5PProgressBarMousedown);
     h5pProgressBar.addEventListener('mousemove', onH5PProgressBarMousemove);
-    // h5pProgressBar.addEventListener('mouseup', onH5PProgressBarMouseup);
+
+    h5pVolumeSliderHandle.addEventListener('mousedown', onH5PVolumeSliderHandleMousedown);
+    h5pVolumeSliderHandle.addEventListener('mousemove', onH5PVolumeSliderHandleMousemove);
 
     // resize listener
     if (window.ResizeObserver) {
@@ -463,7 +529,7 @@ function onBtnMute() {
     }
 
     var volume = player.getVolume();
-    updateMuteBtnUI(muted, volume);
+    updateContentVolumeBarUI(muted, volume);
 }
 
 function onCmdVolumeChange() {
@@ -640,23 +706,9 @@ function onH5PRootClick() {
     //printLog('--onH5PRootClick--');
 }
 
-function onH5PProgressBarClick(e) {
-    console.log('+onH5PProgressBarClick');
-
-    console.log('e.offsetX: ' + e.offsetX);
-    console.log('e.offsetY: ' + e.offsetY);
-
-    var percentage = e.offsetX / e.target.clientWidth;
-
-    var duration = player.duration();
-    var position = percentage * duration;
-
-    //player.seek(position);
-}
-
 function onH5PProgressBarMousedown(e) {
     console.log('+onH5PProgressBarMousedown');
-    captureMouseEvents();
+    captureProgressBarMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
@@ -667,7 +719,7 @@ function onH5PProgressBarMousedown(e) {
     if (!flagPausedBeforeMousedown) {
         onBtnPlay();
     }
-    updateProgressMousePosition(e);
+    updateProgressMovePosition(e);
     updateProgressUI();
 }
 
@@ -677,12 +729,24 @@ function onH5PProgressBarMousemove(e) {
         return;
     }
 
-    // process mouse logic
-    console.log('+onH5PProgressBarMousemove');
+    // process normal mouse move logic
 }
 
-function onH5PProgressBarMouseup(e) {
-    console.log('+onH5PProgressBarMouseup');
+function onH5PVolumeSliderHandleMousedown(e) {
+    captureVolumeBarMouseEvents();
+    e.preventDefault();
+    e.stopPropagation();
+
+    flagH5PVolumeSliderHandleMousedown = true;
+}
+
+function onH5PVolumeSliderHandleMousemove() {
+    // if mouse down, just return
+    if (flagH5PVolumeSliderHandleMousedown) {
+        return;
+    }
+
+    // process normal mouse move logic
 }
 
 function onBufferIconClick() {
