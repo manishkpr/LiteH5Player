@@ -558,7 +558,6 @@ function onH5PMuteButtonClick() {
     var muted = player.isMuted();
     var volume = player.getVolume();
 
-    // 
     if (volume === 0) {
         if (muted) {
             player.unmute();
@@ -782,6 +781,7 @@ function onH5PProgressBarMousemove(e) {
     }
 
     // process normal mouse move logic
+    
 }
 
 function onH5PVolumeSliderMousedown(e) {

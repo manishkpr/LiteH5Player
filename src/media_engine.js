@@ -144,8 +144,10 @@ function MediaEngine(media)
     eventBus_.trigger(Events.MEDIA_PLAYING);
   }
 
-  function onMediaProgress() {
-    debug_.log('+onMediaProgress');
+  function onMediaProgress(e) {
+    var progress = TimeRanges.toString(media_.buffered);
+
+    debug_.log('+onMediaProgress, ' + progress);
   }
 
   function onMediaReadyState(e) {
