@@ -1,6 +1,8 @@
 // UI Controls
 var h5pPlayer = null;
 var h5pShade = null;
+var h5pTooltip = null;
+var h5pTooltipText = null;
 var h5pChromeBottom = null;
 var h5pProgressBar = null;
 var h5pMuteButton = null;
@@ -108,10 +110,9 @@ function updateVolumeMovePosition(e) {
     valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
 }
 
-function updateProgressMovePosition(e) {
+function getProgressMovePosition(e) {
     // part - input
-    var v = document.querySelector('.h5p-progress-bar');
-    var rect = v.getBoundingClientRect();
+    var rect = h5pProgressBar.getBoundingClientRect();
 
     // part - logic process
     var offsetX = e.clientX - rect.left;
@@ -123,8 +124,30 @@ function updateProgressMovePosition(e) {
 
     // update time progress scrubber button
     var duration = player.duration();
-    valueProgressMovePosition = (offsetX / rect.width) * duration;
+    return (offsetX / rect.width) * duration;
 }
+
+function getTooltipOffsetX(e) {
+    // part - input
+    var rect = h5pProgressBar.getBoundingClientRect();
+    var tooltipTextWidth = 44;
+
+    // part - logic process
+    var offsetToProgressBar = (e.clientX - rect.left);
+    var offsetToVideo = offsetToProgressBar + 12;
+
+    var tooltipLeft = offsetToVideo - tooltipTextWidth/2;
+    var tooltipRight = offsetToVideo + tooltipTextWidth/2;
+
+    if (tooltipLeft < 12) {
+        tooltipLeft = 12;
+    } else if (tooltipRight > rect.right) {
+        tooltipLeft = rect.right - tooltipTextWidth;
+    }
+
+    return tooltipLeft;
+}
+
 
 function updateProgressUI() {
     // part - input
@@ -240,7 +263,7 @@ function updateContentVolumeBarUI(muted, volume) {
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
 function isFullscreen() {
-    printLog('+isFullscreen');
+    //printLog('+isFullscreen');
     return document.fullscreenElement ||
     document.msFullscreenElement ||
     document.mozFullScreen ||
@@ -267,7 +290,7 @@ function enterFullScreen() {
 }
 
 function leaveFullScreen() {
-    printLog('--leaveFullScreen--');
+    printLog('+leaveFullScreen');
 
     var cancelFullscreen = document.exitFullscreen ||
     document.exitFullScreen ||
@@ -282,7 +305,7 @@ function leaveFullScreen() {
 function docProgressBarMousemove(e) {
     console.log('+docProgressBarMousemove');
 
-    updateProgressMovePosition(e);
+    valueProgressMovePosition = getProgressMovePosition(e);
     updateProgressUI();
 }
 
@@ -292,7 +315,7 @@ function docProgressBarMouseup(e) {
     e.preventDefault();
 
     // update ui first
-    updateProgressMovePosition(e);
+    valueProgressMovePosition = getProgressMovePosition(e);
     updateProgressUI();
 
     if (flagPositionBeforeMousedown != valueProgressMovePosition) {
@@ -359,6 +382,10 @@ function releaseVolumeSliderMouseEvents() {
 function initUI() {
     h5pPlayer = document.querySelector('.html5-video-player');
     h5pShade = document.querySelector('.h5p-shade');
+
+    h5pTooltip = document.querySelector('.h5p-tooltip');
+    h5pTooltipText = document.querySelector('.h5p-tooltip-text');
+
     h5pChromeBottom = document.querySelector('.h5p-chrome-bottom');
     h5pProgressBar = document.querySelector('.h5p-progress-bar');
     h5pMuteButton = document.querySelector('.h5p-mute-button');
@@ -442,6 +469,7 @@ function addH5PListeners() {
 
     h5pProgressBar.addEventListener('mousedown', onH5PProgressBarMousedown);
     h5pProgressBar.addEventListener('mousemove', onH5PProgressBarMousemove);
+    h5pProgressBar.addEventListener('mouseleave', onH5PProgressBarMouseleave);
 
     h5pChromeBottom.addEventListener('click', onH5PChromeBottomClick);
     h5pMuteButton.addEventListener('click', onH5PMuteButtonClick);
@@ -770,7 +798,7 @@ function onH5PProgressBarMousedown(e) {
     }
 
     // update progress bar ui
-    updateProgressMovePosition(e);
+    valueProgressMovePosition = getProgressMovePosition(e);
     updateProgressUI();
 }
 
@@ -781,7 +809,20 @@ function onH5PProgressBarMousemove(e) {
     }
 
     // process normal mouse move logic
-    
+    valueProgressMovePosition = getProgressMovePosition(e);
+    var offsetX = getTooltipOffsetX(e);
+
+    // part - output
+    var strTime = timeToString(valueProgressMovePosition);
+    h5pTooltip.style.left = offsetX.toString() + 'px';
+    h5pTooltip.style.display = 'block';
+
+    h5pTooltipText.innerText = strTime;
+    //console.log('h5pTooltip.style.left: ' + h5pTooltip.style.left);
+}
+
+function onH5PProgressBarMouseleave() {
+    h5pTooltip.style.display = 'none';
 }
 
 function onH5PVolumeSliderMousedown(e) {
