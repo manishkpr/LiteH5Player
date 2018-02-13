@@ -5,7 +5,7 @@ var CommonUtils = {};
 /**
  * return IE,IE6,IE7,IE8,IE9,Chrome,Firefox,Opera,WebKit,Safari,Others
  */
-CommonUtils.getBrowserName = function () {
+CommonUtils.getBrowserInfo = function () {
     var sys = {};
     var ua = navigator.userAgent.toLowerCase();
     var s;
@@ -37,7 +37,7 @@ CommonUtils.getBrowserName = function () {
 };
 
 CommonUtils.isSafari = function () {
-    if (CommonUtils.getBrowserName().browser === 'Safari') {
+    if (CommonUtils.getBrowserInfo().browser === 'Safari') {
         return true;
     } else {
         return false;
@@ -45,7 +45,7 @@ CommonUtils.isSafari = function () {
 };
 
 CommonUtils.isFirefox = function () {
-    if (CommonUtils.getBrowserName().browser === 'Firefox') {
+    if (CommonUtils.getBrowserInfo().browser === 'Firefox') {
         return true;
     } else {
         return false;
@@ -53,7 +53,7 @@ CommonUtils.isFirefox = function () {
 };
 
 CommonUtils.isChrome = function () {
-    if (CommonUtils.getBrowserName().browser === 'Chrome') {
+    if (CommonUtils.getBrowserInfo().browser === 'Chrome') {
         return true;
     } else {
         return false;

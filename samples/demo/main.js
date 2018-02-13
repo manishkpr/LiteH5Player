@@ -1,3 +1,6 @@
+//
+var browserInfo;
+
 // UI Controls
 var h5pPlayer = null;
 var h5pShade = null;
@@ -129,6 +132,7 @@ function getProgressMovePosition(e) {
 
 function getTooltipOffsetX(e) {
     // part - input
+    // bounding client rect can return the progress bar's rect relative to current page.
     var rect = h5pProgressBar.getBoundingClientRect();
     var tooltipTextWidth = 44;
 
@@ -147,7 +151,6 @@ function getTooltipOffsetX(e) {
 
     return tooltipLeft;
 }
-
 
 function updateProgressUI() {
     // part - input
@@ -224,9 +227,6 @@ function updatePlayBtnUI(paused, ended) {
 }
 
 function updateContentVolumeBarUI(muted, volume) {
-    var vVolumeSlider = document.querySelector('.h5p-volume-slider');
-    var vVolumeSliderHandle = document.querySelector('.h5p-volume-slider-handle');
-
     var uiMutedIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
@@ -243,9 +243,9 @@ function updateContentVolumeBarUI(muted, volume) {
 
         uiVolumeList = [volume, 1];
 
-        var vLeft = (volume / 1) * vVolumeSlider.clientWidth;
-        if (vLeft + vVolumeSliderHandle.clientWidth > vVolumeSlider.clientWidth) {
-            vLeft = vVolumeSlider.clientWidth - vVolumeSliderHandle.clientWidth;
+        var vLeft = (volume / 1) * h5pVolumeSlider.clientWidth;
+        if (vLeft + h5pVolumeSliderHandle.clientWidth > h5pVolumeSlider.clientWidth) {
+            vLeft = h5pVolumeSlider.clientWidth - h5pVolumeSliderHandle.clientWidth;
         }
 
         uiVolumeHandleLeft = vLeft.toString() + 'px';
@@ -254,22 +254,14 @@ function updateContentVolumeBarUI(muted, volume) {
     // update muted button
     h5pMuteSvg.setAttribute('d', uiMutedIcon);
     // update volume slider background
-    vVolumeSlider.style.background = genGradientColor(uiVolumeList, 1, colorList_volume);
+    h5pVolumeSlider.style.background = genGradientColor(uiVolumeList, 1, colorList_volume);
     // update volume slider handle
-    vVolumeSliderHandle.style.left = uiVolumeHandleLeft;
+    h5pVolumeSliderHandle.style.left = uiVolumeHandleLeft;
 }
 
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-function isFullscreen() {
-    //printLog('+isFullscreen');
-    return document.fullscreenElement ||
-    document.msFullscreenElement ||
-    document.mozFullScreen ||
-    document.webkitIsFullScreen;
-}
-
 function enterFullScreen() {
     printLog('+enterFullScreen');
     //var v = document.querySelector('.player');
@@ -397,8 +389,7 @@ function initUI() {
     var v = document.querySelector('.h5p-play-button');
     h5pPlaySvg = v.querySelector('.h5p-svg-fill');
 
-    var v = document.querySelector('.h5p-mute-button');
-    h5pMuteSvg = v.querySelector('.h5p-svg-fill');
+    h5pMuteSvg = h5pMuteButton.querySelector('.h5p-svg-fill');
 
     var v = document.querySelector('.h5p-setting-button');
     h5pSettingSvg = v.querySelector('.h5p-svg-fill');
@@ -478,8 +469,8 @@ function addH5PListeners() {
 
     // resize listener
     if (window.ResizeObserver) {
-        var ro = new ResizeObserver(entries => {
-            for (let entry of entries) {
+        function onPlayerSize(entries) {
+            for (var entry in entries) {
                 const cr = entry.contentRect;
                 const cWidth = entry.target.clientWidth;
                 const cHeight = entry.target.clientHeight;
@@ -491,9 +482,9 @@ function addH5PListeners() {
                 // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
                 // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
                 // ED
-                }
             }
-        );
+        }
+        var ro = new ResizeObserver(onPlayerSize);
 
         // Observer one or multiple elements
         var v = document.querySelector('.player');
@@ -979,6 +970,10 @@ function onFullscreenChanged() {
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
 window.onload = function () {
+    // print browser version info
+    browserInfo = oldmtn.CommonUtils.getBrowserName();
+    console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
+
     initUI();
     initData();
     addH5PListeners();

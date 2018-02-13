@@ -1,3 +1,11 @@
+function isFullscreen() {
+    //printLog('+isFullscreen');
+    return document.fullscreenElement ||
+    document.msFullscreenElement ||
+    document.mozFullScreen ||
+    document.webkitIsFullScreen;
+}
+
 function isPtInElement(pt, element) {
     var rect = element.getBoundingClientRect();
     if ((rect.left <= pt.x && pt.x <= rect.right) &&
