@@ -66,21 +66,23 @@ function Player(containerId) {
 
         // fetch dash content
         if (streamInfo_.url) {
-            streamInfo_.rep = dashParser_.loadManifest(streamInfo_.url);
+            streamInfo_.activeStream = dashParser_.loadManifest(streamInfo_.url);
         }
 
         //
         if (window.MediaSource) {
-            if (streamInfo_.rep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.rep.codecs);
+            if (streamInfo_.activeStream.aRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.aRep.codecs);
             }
 
-            if (streamInfo_.rep.codecs && window.MediaSource && !window.MediaSource.isTypeSupported(streamInfo_.rep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.rep.codecs);
+            if (streamInfo_.activeStream.aRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.aRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
                 return;
             }
 
-            mseEngine_.open(streamInfo_.rep);
+            mseEngine_.open(streamInfo_.activeStream);
 
             let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
             mediaEngine_.setSrc(objURL);
@@ -116,21 +118,21 @@ function Player(containerId) {
     }
 
     function addA() {
-        if (audioIndex_ >= streamInfo_.rep.media.length) {
+        if (audioIndex_ >= streamInfo_.activeStream.aRep.media.length) {
             debug_.log('There don\'t have more content to add.');
             return;
         }
 
         let url = null;
         if (audioHeaderAdded_ === false) {
-            url = streamInfo_.rep.initialization;
+            url = streamInfo_.activeStream.aRep.initialization;
         } else {
-            url = streamInfo_.rep.media[audioIndex_];
+            url = streamInfo_.activeStream.aRep.media[audioIndex_];
         }
 
         let self = this;
         function cbSuccess(bytes) {
-            mseEngine_.appendBuffer(streamInfo_.rep.type, bytes);
+            mseEngine_.appendBuffer(streamInfo_.activeStream.aRep.type, bytes);
 
             if (audioHeaderAdded_) {
                 audioIndex_++;
@@ -147,21 +149,21 @@ function Player(containerId) {
     }
 
     function addV() {
-        if (videoIndex_ >= streamInfo_.rep.media.length) {
+        if (videoIndex_ >= streamInfo_.activeStream.vRep.media.length) {
             debug_.log('There don\'t have more content to add.');
             return;
         }
 
         let url = null;
         if (videoHeaderAdded_ === false) {
-            url = streamInfo_.rep.initialization;
+            url = streamInfo_.activeStream.vRep.initialization;
         } else {
-            url = streamInfo_.rep.media[videoIndex_];
+            url = streamInfo_.activeStream.vRep.media[videoIndex_];
         }
 
         let self = this;
         function cbSuccess(bytes) {
-            mseEngine_.appendBuffer(streamInfo_.rep.type, bytes);
+            mseEngine_.appendBuffer(streamInfo_.activeStream.vRep.type, bytes);
 
             if (videoHeaderAdded_) {
                 videoIndex_++;

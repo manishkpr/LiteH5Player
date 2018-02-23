@@ -7,21 +7,21 @@ function MediaSourceEngine() {
     let eventBus_ = EventBus(oldmtn).getInstance();
     let debug_ = Debug(oldmtn).getInstance();
     let mediaSrc_ = null;
-    let rep_ = null;
+    let activeStream_ = null;
     let aSourceBuffer = null;
     let vSourceBuffer = null;
 
     debug_.log('MediaSourceEngine, constructor');
 
-    function open(rep) {
+    function open(activeStream) {
         debug_.log('MediaSourceEngine, +open');
+        activeStream_ = activeStream;
 
-        rep_ = rep;
-
-        if (rep_.type === 'video') {
-            vSourceBuffer = new SourceBufferWrapper(rep_);
-        } else if (rep_.type === 'audio') {
-            aSourceBuffer = new SourceBufferWrapper(rep_);
+        if (activeStream_.vRep) {
+            vSourceBuffer = new SourceBufferWrapper(activeStream_.vRep);
+        }
+        if (activeStream_.aRep) {
+            aSourceBuffer = new SourceBufferWrapper(activeStream_.aRep);
         }
 
         //
@@ -49,7 +49,6 @@ function MediaSourceEngine() {
             aSourceBuffer.removeBuffer();
         }
         mediaSrc_ = null;
-        rep_ = null;
     }
 
     function setDuration(value) {
