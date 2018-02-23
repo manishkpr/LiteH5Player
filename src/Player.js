@@ -28,6 +28,7 @@ function Player(containerId) {
     let uiEngine_;
     let media_;
 
+    let audioHeaderAdded_ = false;
     let audioIndex_ = 0;
     let videoHeaderAdded_ = false;
     let videoIndex_ = 0;
@@ -115,20 +116,27 @@ function Player(containerId) {
     }
 
     function addA() {
-        if (audioIndex_ >= streamInfo_.aContents.length) {
+        if (audioIndex_ >= streamInfo_.rep.media.length) {
             debug_.log('There don\'t have more content to add.');
             return;
         }
 
-        let url = streamInfo_.aContents[audioIndex_];
+        let url = null;
+        if (audioHeaderAdded_ === false) {
+            url = streamInfo_.rep.initialization;
+        } else {
+            url = streamInfo_.rep.media[audioIndex_];
+        }
 
         let self = this;
         function cbSuccess(bytes) {
-            //debug_.log('before my appendBuffer');
-            mseEngine_.appendBuffer('audio', bytes);
+            mseEngine_.appendBuffer(streamInfo_.rep.type, bytes);
 
-            audioIndex_++;
-            //debug_.log('after my appendBuffer');
+            if (audioHeaderAdded_) {
+                audioIndex_++;
+            } else {
+                audioHeaderAdded_ = true;
+            }
         }
 
         let request = {
@@ -153,7 +161,6 @@ function Player(containerId) {
 
         let self = this;
         function cbSuccess(bytes) {
-            //debug_.log('before my appendBuffer');
             mseEngine_.appendBuffer(streamInfo_.rep.type, bytes);
 
             if (videoHeaderAdded_) {
@@ -161,7 +168,6 @@ function Player(containerId) {
             } else {
                 videoHeaderAdded_ = true;
             }
-            //debug_.log('after my appendBuffer');
         }
 
         let request = {

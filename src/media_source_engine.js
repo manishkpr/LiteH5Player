@@ -18,8 +18,10 @@ function MediaSourceEngine() {
 
         rep_ = rep;
 
-        if (rep_) {
+        if (rep_.type === 'video') {
             vSourceBuffer = new SourceBufferWrapper(rep_);
+        } else if (rep_.type === 'audio') {
+            aSourceBuffer = new SourceBufferWrapper(rep_);
         }
 
         //
@@ -42,6 +44,9 @@ function MediaSourceEngine() {
     function close() {
         if (vSourceBuffer) {
             vSourceBuffer.removeBuffer();
+        }
+        if (aSourceBuffer) {
+            aSourceBuffer.removeBuffer();
         }
         mediaSrc_ = null;
         rep_ = null;
@@ -76,8 +81,12 @@ function MediaSourceEngine() {
         if (vSourceBuffer) {
             vSourceBuffer.removeBuffer();
         }
+        if (aSourceBuffer) {
+            aSourceBuffer.removeBuffer();
+        }
 
         vSourceBuffer = null;
+        aSourceBuffer = null;
     }
 
     function onMediaSourceOpen() {
@@ -89,6 +98,9 @@ function MediaSourceEngine() {
 
         if (vSourceBuffer) {
             vSourceBuffer.open(mediaSrc_);
+        }
+        if (aSourceBuffer) {
+            aSourceBuffer.open(mediaSrc_);
         }
 
         eventBus_.trigger(Events.MSE_OPENED, {});
