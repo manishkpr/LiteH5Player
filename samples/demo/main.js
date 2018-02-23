@@ -52,18 +52,19 @@ var fullscreen_yes_corner_1 = 'm 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z';
 var fullscreen_yes_corner_2 = 'm 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z';
 var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 
-// flag & value of progress var
+// reference variable of progress bar
 var flagH5PProgressBarMousedown = false;
 var flagPausedBeforeMousedown = false;
 var flagEndedBeforeMousedown = false;
 var flagPositionBeforeMousedown = 0;
 var valueProgressMovePosition = 0;
 
-// flag & value of volume var
+// reference variable of volume bar
 var flagH5PVolumeSliderMousedown = false;
 var valueVolumeMovePosition = 0;
 
-
+// reference variable of ad
+var flagAdStarted = false;
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -262,8 +263,8 @@ function updateContentVolumeBarUI(muted, volume) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-function enterFullScreen() {
-    printLog('+enterFullScreen');
+function h5EnterFullscreen() {
+    printLog('+h5EnterFullscreen');
     //var v = document.querySelector('.player');
     //var v = document.querySelector('.h5p-video-container');
     //var v = document.querySelector('.h5p-video');
@@ -272,22 +273,28 @@ function enterFullScreen() {
     var v = document.querySelector('.html5-video-player');
 
     // Try to enter fullscreen mode in the browser
-    var requestFullscreen = v.requestFullscreen ||
-    v.webkitRequestFullscreen ||
-    v.mozRequestFullscreen ||
+    var requestFullscreen =
+    v.requestFullscreen ||
     v.requestFullScreen ||
+    v.webkitRequestFullscreen ||
     v.webkitRequestFullScreen ||
-    v.mozRequestFullScreen;
+    v.mozRequestFullscreen ||
+    v.mozRequestFullScreen ||
+    v.msRequestFullscreen ||
+    v.msRequestFullScreen;
+
     requestFullscreen.call(v);
 }
 
-function leaveFullScreen() {
-    printLog('+leaveFullScreen');
+function h5LeaveFullscreen() {
+    printLog('+h5LeaveFullscreen');
 
-    var cancelFullscreen = document.exitFullscreen ||
+    var cancelFullscreen =
+    document.exitFullscreen ||
     document.exitFullScreen ||
     document.webkitCancelFullScreen ||
     document.mozCancelFullScreen ||
+    document.msExitFullscreen ||
     document.msExitFullscreen;
     if (cancelFullscreen) {
         cancelFullscreen.call(document);
@@ -437,9 +444,12 @@ function initData() {
 
     player.on(oldmtn.Events.LOG, onLog, {});
 
-    //
+    // ad callback event
+    player.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
+    player.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
     player.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
 
+    //
     player.on(oldmtn.Events.FULLSCREEN_CHANGE, onFullscreenChanged, {});
 
     // chrome cast part
@@ -470,7 +480,8 @@ function addH5PListeners() {
     // resize listener
     if (window.ResizeObserver) {
         function onPlayerSize(entries) {
-            for (var entry in entries) {
+            for (var i = 0; i < entries.length; i ++) {
+                var entry = entries[i];
                 const cr = entry.contentRect;
                 const cWidth = entry.target.clientWidth;
                 const cHeight = entry.target.clientHeight;
@@ -487,7 +498,7 @@ function addH5PListeners() {
         var ro = new ResizeObserver(onPlayerSize);
 
         // Observer one or multiple elements
-        var v = document.querySelector('.player');
+        var v = document.querySelector('.html5-video-player');
         ro.observe(v);
     }
 }
@@ -528,6 +539,10 @@ function onH5PShadeMouseleave() {
 }
 
 function onH5PShadeClick() {
+    if (flagAdStarted) {
+        return;
+    }
+
     onBtnPlay();
 }
 
@@ -633,9 +648,9 @@ function onBtnSetting() {
 function onBtnFullscreen() {
     printLog('--onBtnFullscreen--');
     if (isFullscreen()) {
-        leaveFullScreen();
+        h5LeaveFullscreen();
     } else {
-        enterFullScreen();
+        h5EnterFullscreen();
     }
 }
 
@@ -843,12 +858,10 @@ function onBufferIconClick() {
 ////////////////////////////////////////////////////////////////////////////////////
 // player event callback
 function onMSEOpened(ev) {
-    printLog('--onMSEOpened--');
     //player.addV();
 }
 
 function onSBUpdateEnded(ev) {
-    printLog('--onSBUpdateEnded--');
     //player.addV();
 }
 
@@ -945,6 +958,14 @@ function onLog(e) {
     uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);
 }
 
+function onAdStarted() {
+    flagAdStarted = true;
+}
+
+function onAdComplete() {
+    flagAdStarted = false;
+}
+
 function onAdTimeUpdate() {
     var position = player.currentTime();
     var duration = player.duration();
@@ -954,6 +975,7 @@ function onAdTimeUpdate() {
 
 function onFullscreenChanged() {
     var v = player.isFullscreen();
+    printLog('fullscreen changed, ret: ' + v);
     if (v) {
         h5pFullScreenCorner0.setAttribute('d', fullscreen_yes_corner_0);
         h5pFullScreenCorner1.setAttribute('d', fullscreen_yes_corner_1);
@@ -971,7 +993,7 @@ function onFullscreenChanged() {
 // dynamic load main.css file
 window.onload = function () {
     // print browser version info
-    browserInfo = oldmtn.CommonUtils.getBrowserName();
+    browserInfo = oldmtn.CommonUtils.getBrowserInfo();
     console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
     initUI();
@@ -986,3 +1008,14 @@ window.onload = function () {
 window.onunload = function () {
     //onBtnStop();
 };
+
+
+
+
+
+
+
+
+
+
+

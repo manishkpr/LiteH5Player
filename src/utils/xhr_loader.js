@@ -1,118 +1,120 @@
 ﻿
-// Study Site:
-// 1. https://segmentfault.com/a/1190000004322487
+import FactoryMaker from '../core/FactoryMaker';
 
 
-var XHRLoader = function (config) {
-  this.config_ = config || {
+function XHRLoader(config)
+{
+  let config_ = config || {
     remainingAttempts: 1,
     retryInterval: 4000
   };
 
   // for debug
-  this.printlog = false;
-};
+  let printlog = false;
 
-XHRLoader.prototype.loadInternal = function () {
+  function loadInternal() {
 
-};
-
-XHRLoader.prototype.load = function (request) {
-  if (this.printlog) {
-    console.log('begin load time: ' + (new Date().getTime())/1000);
   }
 
-  this.request_ = request;
-  console.log(this.request_.url + ', remainingAttempts_: ' + this.config_.remainingAttempts);
-
-  this.needFailureReport_ = true;
-
-  this.xhr_ = new XMLHttpRequest;
-
-  if (this.printlog) {
-    console.log('--before open--, readyState: ' + this.xhr_.readyState);
-  }
-
-  this.xhr_.open('GET', this.request_.url);
-  this.xhr_.responseType = 'arraybuffer';
-  if (this.request_.rangeEnd) {
-    this.xhr_.setRequestHeader('Range','bytes=' + this.request_.rangeStart + '-' + (this.request_.rangeEnd-1));
-  }
-
-  this.xhr_.onloadstart = function () {
-    console.log('--onloadstart--');
-  };
-
-  const onload = function (ev) {
-    if (this.printlog) {
-      console.log('--onload--, status: ' + this.xhr_.status);
+  function load(request) {
+    if (printlog) {
+      console.log('begin load time: ' + (new Date().getTime())/1000);
     }
 
-    if (this.printlog) {
-      console.debug("response length: " + this.xhr_.response.byteLength);
+    request_ = request;
+    console.log(request_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
+
+    needFailureReport_ = true;
+
+    xhr_ = new XMLHttpRequest;
+
+    if (printlog) {
+      console.log('--before open--, readyState: ' + xhr_.readyState);
     }
 
-    if (this.xhr_.status >= 200 && this.xhr_.status <= 299) {
-      this.request_.cbSuccess(this.xhr_.response);
-      this.needFailureReport_ = false;
-    }
-  };
-
-  const onloadend = function () {
-    if (this.printlog) {
-      console.log('--onloadend--, remainingAttempts_: ' + this.config_.remainingAttempts);
-      console.log('--------------------------------------------------------------');
+    xhr_.open('GET', request_.url);
+    xhr_.responseType = 'arraybuffer';
+    if (request_.rangeEnd) {
+      xhr_.setRequestHeader('Range','bytes=' + request_.rangeStart + '-' + (request_.rangeEnd-1));
     }
 
-    if (this.needFailureReport_) {
-      if (this.config_.remainingAttempts > 0) {
-        this.config_.remainingAttempts --;
+    xhr_.onloadstart = function() {
+      console.log('--onloadstart--');
+    };
+
+    const onload = function(ev) {
+      if (printlog) {
+        console.log('--onload--, status: ' + xhr_.status);
+      }
+
+      if (printlog) {
+        console.debug("response length: " + xhr_.response.byteLength);
+      }
+
+      if (xhr_.status >= 200 && xhr_.status <= 299) {
+        request_.cbSuccess(xhr_.response);
+        needFailureReport_ = false;
+      };
+    }
+
+    const onloadend = function () {
+      if (printlog) {
+        console.log('--onloadend--, remainingAttempts_: ' + config_.remainingAttempts);
+        console.log('--------------------------------------------------------------');
+      }
+
+      if (needFailureReport_) {
+        if (config_.remainingAttempts > 0) {
+          config_.remainingAttempts --;
 
           // BD, test retry counts
-          // if (this.config_.remainingAttempts === 0) {
-          //   this.request_.url = 'http://localhost/1/tmp/test.txt';
+          // if (config_.remainingAttempts === 0) {
+          //   request_.url = 'http://localhost/1/tmp/test.txt';
           // }
           // // ED
 
-          if (this.printlog) {
+          if (printlog) {
             console.log('begin load timeout: ' + (new Date().getTime())/1000);
           }
 
-          //setTimeout(retryFunc, this.config_.retryInterval);
-          setTimeout(this.load.bind(this, this.request_), this.config_.retryInterval);
+          //setTimeout(retryFunc, config_.retryInterval);
+          setTimeout(load.bind(this, request_), config_.retryInterval);
         }
       }
     };
 
-    this.xhr_.onprogress = function (ev) {
-      if (this.printlog) {
+    xhr_.onprogress = function (ev) {
+      if (printlog) {
         console.log(`--onprogress--, loaded:${ev.loaded}, total:${ev.total}`);
       }
     };
 
-    this.xhr_.ontimeout = function () {
+    xhr_.ontimeout = function () {
       console.log('--ontimeout--');
     };
 
-    this.xhr_.onabort = function () {
+    xhr_.onabort = function () {
       console.log('--onabort--');
     };
 
-    this.xhr_.onerror = function () {
+    xhr_.onerror = function () {
       console.log('--onerror--');
     };
 
-    this.xhr_.onreadystatechange = function (ev) {
-      if (this.printlog) {
-        console.log('--onreadystatechange--, readystate: ' + this.readyState);
+    xhr_.onreadystatechange = function (ev) {
+      if (printlog) {
+        console.log('--onreadystatechange--, readystate: ' + readyState);
       }
     };
 
-    this.xhr_.onload = onload.bind(this);
-    this.xhr_.onloadend = onloadend.bind(this);
+    xhr_.onload = onload.bind(this);
+    xhr_.onloadend = onloadend.bind(this);
 
-    console.log('--before send--, readyState: ' + this.xhr_.readyState);
-    this.xhr_.send();
+    console.log('--before send--, readyState: ' + xhr_.readyState);
+    xhr_.send();
   };
+}
 
-export default XHRLoader;
+XHRLoader.__h5player_factory_name = 'XHRLoader';
+export default FactoryMaker.getSingletonFactory(XHRLoader);
+

@@ -135,7 +135,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.linearAdSlotWidth = width_;
         adsRequest.linearAdSlotHeight = height_;
         adsRequest.nonLinearAdSlotWidth = width_;
-        adsRequest.nonLinearAdSlotHeight = height_/4;
+        adsRequest.nonLinearAdSlotHeight = height_;
 
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
@@ -228,12 +228,9 @@ function AdsEngine(adContainer, media, advertising) {
         }
     }
 
-    function resize() {
+    function resize(width, height, fullscreen) {
         if (adsManager_) {
-            adsManager_.resize(
-                adContainer_.clientWidth,
-                adContainer_.clientHeight,
-                google.ima.ViewMode.FULLSCREEN);
+            adsManager_.resize(width, height, google.ima.ViewMode.FULLSCREEN);
         }
     }
 
@@ -376,9 +373,10 @@ function AdsEngine(adContainer, media, advertising) {
                 isPlayingAd_ = true;
                 isLinearAd_ = ad.isLinear();
 
-                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
                 position_ = 0;
                 duration_ = ad.getDuration();
+
+                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
                 if (isLinearAd_) {
                     startAdTimer();
                     eventBus_.trigger(Events.AD_TIMEUPDATE);
@@ -429,8 +427,8 @@ function AdsEngine(adContainer, media, advertising) {
             
             position_ = duration_ - timeRemaining;
             // Update UI with timeRemaining
-            console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
             if (!isPaused_) {
+                console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
                 eventBus_.trigger(Events.AD_TIMEUPDATE);
             }
         }, 300);

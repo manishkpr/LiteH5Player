@@ -178,9 +178,9 @@ function Player(containerId) {
             xhrLoader_.load(request);
         }
 
-        if (adsEngine_) {
-            adsEngine_.open();
-        }
+        // if (adsEngine_) {
+        //     adsEngine_.open();
+        // }
 
         debug_.log('-addPD');
     }
@@ -363,7 +363,7 @@ function Player(containerId) {
         // enging component
         eventBus_ = EventBus(oldmtn).getInstance();
         debug_ = Debug(oldmtn).getInstance();
-        xhrLoader_ = new XHRLoader();
+        xhrLoader_ = XHRLoader(oldmtn).getInstance();
         mediaEngine_ = new MediaEngine(media_);
         textEngine_ = new TextEngine(media_);
         mseEngine_ = new MediaSourceEngine();
@@ -403,13 +403,11 @@ function Player(containerId) {
         document.addEventListener("mozfullscreenchange", onFullScreenChange);
         document.addEventListener("webkitfullscreenchange", onFullScreenChange);
         document.addEventListener("msfullscreenchange", onFullScreenChange);
+        document.addEventListener("MSFullscreenChange", onFullScreenChange);
     }
 
-    function onFullScreenChange(e) {
-        if (adsEngine_) {
-            adsEngine_.resize();
-        }
-
+    function onFullScreenChange() {
+        // we should not rely on clientWidth or clientHeight to set ad metrics when fullscreen change event triggered.
         eventBus_.trigger(oldmtn.Events.FULLSCREEN_CHANGE);
     }
 
@@ -481,7 +479,11 @@ function Player(containerId) {
         //adsEngine_.open();
         //adsEngine_.startAds();
 
-        adsEngine_.test();
+        if (adsEngine_) {
+            adsEngine_.open();
+        }
+
+        //adsEngine_.test();
     }
 
     function test2() {
@@ -523,10 +525,9 @@ function Player(containerId) {
         getWidth: getWidth,
         getHeight: getHeight,
         resize: resize,
+        isFullscreen: isFullscreen,
         // Ads
         playAd: playAd,
-        // DOM API
-        isFullscreen: isFullscreen,
         //
         test: test,
         test2: test2

@@ -3,99 +3,109 @@ import EventBus from './core/EventBus';
 import TimeRanges from './utils/timeRanges';
 import Events from './core/CoreEvents';
 
-var SourceBufferWrapper = function (mimeType) {
-  this.mimeType_ = mimeType;
-  this.media_ = null;
-  this.mediaSrc_ = null;
-  this.buffer_ = null;
+function SourceBufferWrapper(mimeType) {
+  mimeType_ = mimeType;
+  media_ = null;
+  mediaSrc_ = null;
+  buffer_ = null;
+  eventBus_ = EventBus(oldmtn).getInstance();
 
-  this.eventBus_ = EventBus(oldmtn).getInstance();
-};
-
-SourceBufferWrapper.prototype.open = function (mediaSource) {
-  this.mediaSrc_ = mediaSource;
-
-  this.buffer_ = mediaSource.addSourceBuffer(this.mimeType_);
-
-  this.buffer_.addEventListener('updatestart', this.sourceBuffer_updatestart.bind(this));
-  this.buffer_.addEventListener('update', this.sourceBuffer_update.bind(this));
-  this.buffer_.addEventListener('updateend', this.sourceBuffer_updateend.bind(this));
-  this.buffer_.addEventListener('error', this.sourceBuffer_error.bind(this));
-  this.buffer_.addEventListener('abort', this.sourceBuffer_abort.bind(this));
-
-  return this.buffer_;
-};
-
-SourceBufferWrapper.prototype.close = function () {
-  try {
-    this.buffer_.removeEventListener('updatestart', this.sourceBuffer_updatestart.bind(this));
-    this.buffer_.removeEventListener('update', this.sourceBuffer_update.bind(this));
-    this.buffer_.removeEventListener('updateend', this.sourceBuffer_updateend.bind(this));
-    this.buffer_.removeEventListener('error', this.sourceBuffer_error.bind(this));
-    this.buffer_.removeEventListener('abort', this.sourceBuffer_abort.bind(this));
-
-    this.mediaSrc_.removeSourceBuffer(this.buffer_);
-  } catch (ex) {
-    console.log(`Caught exception when remove sb event listener`);
+  function setup() {
   }
-};
 
-SourceBufferWrapper.prototype.appendBuffer = function (bytes) {
-  if (this.buffer_) {
+  function open(mediaSource) {
+    mediaSrc_ = mediaSource;
+
+    buffer_ = mediaSource.addSourceBuffer(mimeType_);
+
+    buffer_.addEventListener('updatestart', sourceBuffer_updatestart);
+    buffer_.addEventListener('update', sourceBuffer_update);
+    buffer_.addEventListener('updateend', sourceBuffer_updateend);
+    buffer_.addEventListener('error', sourceBuffer_error);
+    buffer_.addEventListener('abort', sourceBuffer_abort);
+
+    return buffer_;
+  }
+
+  function close() {
     try {
-      this.buffer_.appendBuffer(bytes);
-    } catch (err) {
-      console.log(`error while trying to append buffer:${err.message}`);
+      buffer_.removeEventListener('updatestart', sourceBuffer_updatestart);
+      buffer_.removeEventListener('update', sourceBuffer_update);
+      buffer_.removeEventListener('updateend', sourceBuffer_updateend);
+      buffer_.removeEventListener('error', sourceBuffer_error);
+      buffer_.removeEventListener('abort', sourceBuffer_abort);
+
+      mediaSrc_.removeSourceBuffer(buffer_);
+    } catch (ex) {
+      console.log(`Caught exception when remove sb event listener`);
     }
   }
-};
 
-SourceBufferWrapper.prototype.removeBuffer = function () {
-  console.log('--sourceBuffer_remove--');
-
-  let bufStart;
-  let bufEnd;
-  for (let i = 0; i < this.buffer_.buffered.length; i++) {
-    bufStart = this.buffer_.buffered.start(i);
-    bufEnd = this.buffer_.buffered.end(i);
-
-    this.buffer_.remove(bufStart, bufEnd);
+  function appendBuffer(bytes) {
+    if (buffer_) {
+      try {
+        buffer_.appendBuffer(bytes);
+      } catch (err) {
+        console.log(`error while trying to append buffer:${err.message}`);
+      }
+    }
   }
-};
 
-SourceBufferWrapper.prototype.sourceBuffer_updatestart = function () {
-  let a = this;
-  console.log('--sourceBuffer_updatestart--');
-};
+  function removeBuffer() {
+    console.log('--sourceBuffer_remove--');
 
-SourceBufferWrapper.prototype.sourceBuffer_update = function () {
-  let a = this;
-  console.log('--sourceBuffer_update--');
-};
+    let bufStart;
+    let bufEnd;
+    for (let i = 0; i < buffer_.buffered.length; i++) {
+      bufStart = buffer_.buffered.start(i);
+      bufEnd = buffer_.buffered.end(i);
 
-SourceBufferWrapper.prototype.sourceBuffer_updateend = function () {
-  let a = this;
+      buffer_.remove(bufStart, bufEnd);
+    }
+  }
 
-  // console.log('--sourceBuffer_updateend--, clientWidth: ' + media_.clientWidth + ', clientHeight: ' + media_.clientHeight);
-  // console.log('--sourceBuffer_updateend--, width: ' + media_.width + ', height: ' + media_.height);
-  // console.log('--sourceBuffer_updateend--, videoWidth: ' + media_.videoWidth + ', videoHeight: ' + media_.videoHeight);
+  function sourceBuffer_updatestart() {
+    let a = this;
+    console.log('--sourceBuffer_updatestart--');
+  }
 
-  //
-  //console.log(`main buffered : ${TimeRanges.toString(media_.buffered)}` + ', currentTime: ' + media_.currentTime);
+  function sourceBuffer_update() {
+    let a = this;
+    console.log('--sourceBuffer_update--');
+  }
 
-  this.eventBus_.trigger(Events.SB_UPDATE_ENDED, {});
-};
+  function sourceBuffer_updateend() {
+    let a = this;
 
-SourceBufferWrapper.prototype.sourceBuffer_error = function (e) {
-  let a = this;
+    // console.log('--sourceBuffer_updateend--, clientWidth: ' + media_.clientWidth + ', clientHeight: ' + media_.clientHeight);
+    // console.log('--sourceBuffer_updateend--, width: ' + media_.width + ', height: ' + media_.height);
+    // console.log('--sourceBuffer_updateend--, videoWidth: ' + media_.videoWidth + ', videoHeight: ' + media_.videoHeight);
 
-  console.log('--sourceBuffer_error--', e);
-};
+    //
+    //console.log(`main buffered : ${TimeRanges.toString(media_.buffered)}` + ', currentTime: ' + media_.currentTime);
 
-SourceBufferWrapper.prototype.sourceBuffer_abort = function () {
-  let a = this;
+    eventBus_.trigger(Events.SB_UPDATE_ENDED, {});
+  }
 
-  console.log('--sourceBuffer_abort--');
+  function sourceBuffer_error(e) {
+    let a = this;
+
+    console.log('--sourceBuffer_error--', e);
+  }
+
+  function sourceBuffer_abort() {
+    let a = this;
+    console.log('--sourceBuffer_abort--');
+  }
+
+  let instance = {
+    open: open,
+    close: close,
+    appendBuffer: appendBuffer,
+    removeBuffer: removeBuffer
+  };
+  setup();
+  return instance;
 };
 
 export default SourceBufferWrapper;
