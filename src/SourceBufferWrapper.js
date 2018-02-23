@@ -3,12 +3,12 @@ import EventBus from './core/EventBus';
 import TimeRanges from './utils/timeRanges';
 import Events from './core/CoreEvents';
 
-function SourceBufferWrapper(mimeType) {
-  mimeType_ = mimeType;
-  media_ = null;
-  mediaSrc_ = null;
-  buffer_ = null;
-  eventBus_ = EventBus(oldmtn).getInstance();
+function SourceBufferWrapper(rep) {
+  let rep_ = rep;
+  let media_ = null;
+  let mediaSrc_ = null;
+  let buffer_ = null;
+  let eventBus_ = EventBus(oldmtn).getInstance();
 
   function setup() {
   }
@@ -16,7 +16,7 @@ function SourceBufferWrapper(mimeType) {
   function open(mediaSource) {
     mediaSrc_ = mediaSource;
 
-    buffer_ = mediaSource.addSourceBuffer(mimeType_);
+    buffer_ = mediaSource.addSourceBuffer(rep_.codecs);
 
     buffer_.addEventListener('updatestart', sourceBuffer_updatestart);
     buffer_.addEventListener('update', sourceBuffer_update);

@@ -9,6 +9,10 @@ function XHRLoader(config)
     retryInterval: 4000
   };
 
+  let request_ = null;
+  let xhr_ = null;
+  let needFailureReport_ = false;
+
   // for debug
   let printlog = false;
 
@@ -113,8 +117,15 @@ function XHRLoader(config)
     console.log('--before send--, readyState: ' + xhr_.readyState);
     xhr_.send();
   };
+
+  let instance = {
+    load: load
+  };
+
+  return instance;
 }
 
 XHRLoader.__h5player_factory_name = 'XHRLoader';
 export default FactoryMaker.getSingletonFactory(XHRLoader);
+
 

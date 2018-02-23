@@ -16,7 +16,6 @@ function isPtInElement(pt, element) {
     }
 }
 
-
 function timeToString(seconds) {
     function formatTime(time) {
         return time < 10 ? '0' + time.toString() : time.toString();
@@ -28,3 +27,4 @@ function timeToString(seconds) {
     var s = Math.floor((seconds % 3600) % 60);
     return (h === 0 ? '' : formatTime(h) + ':') + formatTime(m) + ':' + formatTime(s);
 }
+

@@ -500,6 +500,12 @@ function addH5PListeners() {
         // Observer one or multiple elements
         var v = document.querySelector('.html5-video-player');
         ro.observe(v);
+    } else {
+        var v = document.querySelector('.html5-video-player');
+        new ResizeSensor(v, function () {
+            printLog('ResizeSensor, html5-video-player, clientWidth: ' + v.clientWidth + ', clientHeight: ' + v.clientHeight);
+            player.resize(v.clientWidth, v.clientHeight);
+        });
     }
 }
 

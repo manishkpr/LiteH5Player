@@ -12,6 +12,9 @@ import MediaEngine from './media_engine';
 import DRMEngine from './drm_engine';
 import AdsEngine from './ads/ads_engine';
 
+// parser
+import DashParser from './dash/dash_parser';
+
 import TimeRanges from './utils/timeRanges';
 import XHRLoader from './utils/xhr_loader';
 import CommonUtils from './utils/common_utils';
@@ -26,6 +29,7 @@ function Player(containerId) {
     let media_;
 
     let audioIndex_ = 0;
+    let videoHeaderAdded_ = false;
     let videoIndex_ = 0;
     let streamInfo_ = null;
 
@@ -36,6 +40,7 @@ function Player(containerId) {
     let textEngine_;
     let mseEngine_;
     let drmEngine_;
+    let dashParser_;
 
     // ads part
     let adsEngine_;
@@ -58,25 +63,23 @@ function Player(containerId) {
         streamInfo_ = info;
         debug_.log('Player, +open');
 
+        // fetch dash content
+        if (streamInfo_.url) {
+            streamInfo_.rep = dashParser_.loadManifest(streamInfo_.url);
+        }
+
+        //
         if (window.MediaSource) {
-            if (info.audioCodec) {
-                debug_.log('Player, +open: ' + info.audioCodec);
-            }
-            if (info.videoCodec) {
-                debug_.log('Player, +open: ' + info.videoCodec);
+            if (streamInfo_.rep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.rep.codecs);
             }
 
-            if (info.audioCodec && window.MediaSource && !window.MediaSource.isTypeSupported(info.audioCodec)) {
-                debug_.log('Don\'t support: ' + info.audioCodec);
+            if (streamInfo_.rep.codecs && window.MediaSource && !window.MediaSource.isTypeSupported(streamInfo_.rep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.rep.codecs);
                 return;
             }
 
-            if (info.videoCodec && window.MediaSource && !window.MediaSource.isTypeSupported(info.videoCodec)) {
-                debug_.log('Don\'t support: ' + info.videoCodec);
-                return;
-            }
-
-            mseEngine_.open(streamInfo_);
+            mseEngine_.open(streamInfo_.rep);
 
             let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
             mediaEngine_.setSrc(objURL);
@@ -136,18 +139,28 @@ function Player(containerId) {
     }
 
     function addV() {
-        if (videoIndex_ >= streamInfo_.vContents.length) {
+        if (videoIndex_ >= streamInfo_.rep.media.length) {
             debug_.log('There don\'t have more content to add.');
             return;
         }
 
-        let url = streamInfo_.vContents[videoIndex_];
+        let url = null;
+        if (videoHeaderAdded_ === false) {
+            url = streamInfo_.rep.initialization;
+        } else {
+            url = streamInfo_.rep.media[videoIndex_];
+        }
 
         let self = this;
         function cbSuccess(bytes) {
             //debug_.log('before my appendBuffer');
-            mseEngine_.appendBuffer('video', bytes);
-            videoIndex_++;
+            mseEngine_.appendBuffer(streamInfo_.rep.type, bytes);
+
+            if (videoHeaderAdded_) {
+                videoIndex_++;
+            } else {
+                videoHeaderAdded_ = true;
+            }
             //debug_.log('after my appendBuffer');
         }
 
@@ -368,6 +381,7 @@ function Player(containerId) {
         textEngine_ = new TextEngine(media_);
         mseEngine_ = new MediaSourceEngine();
         drmEngine_ = new DRMEngine(media_);
+        dashParser_ = DashParser(oldmtn).getInstance();
        if (cfg_.poster) {
             media_.poster = cfg_.poster;
         }

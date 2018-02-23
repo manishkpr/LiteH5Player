@@ -7,21 +7,19 @@ function MediaSourceEngine() {
     let eventBus_ = EventBus(oldmtn).getInstance();
     let debug_ = Debug(oldmtn).getInstance();
     let mediaSrc_ = null;
-    let streamInfo_ = null;
-    let sourceBuffers_ = {};
+    let rep_ = null;
+    let aSourceBuffer = null;
+    let vSourceBuffer = null;
 
     debug_.log('MediaSourceEngine, constructor');
 
-    function open(streamInfo) {
+    function open(rep) {
         debug_.log('MediaSourceEngine, +open');
 
-        streamInfo_ = streamInfo;
+        rep_ = rep;
 
-        if (streamInfo_.audioCodec) {
-            sourceBuffers_['audio'] = new SourceBufferWrapper(streamInfo_.audioCodec);
-        }
-        if (streamInfo_.videoCodec) {
-            sourceBuffers_['video'] = new SourceBufferWrapper(streamInfo_.videoCodec);
+        if (rep_) {
+            vSourceBuffer = new SourceBufferWrapper(rep_);
         }
 
         //
@@ -42,16 +40,11 @@ function MediaSourceEngine() {
     }
 
     function close() {
-        if (sourceBuffers_['audio']) {
-            sourceBuffers_['audio'].removeBuffer();
+        if (vSourceBuffer) {
+            vSourceBuffer.removeBuffer();
         }
-        if (sourceBuffers_['video']) {
-            sourceBuffers_['video'].removeBuffer();
-        }
-
-        sourceBuffers_ = {};
         mediaSrc_ = null;
-        streamInfo_ = null;
+        rep_ = null;
     }
 
     function setDuration(value) {
@@ -72,19 +65,19 @@ function MediaSourceEngine() {
     }
 
     function appendBuffer(contentType, buffer) {
-        sourceBuffers_[contentType].appendBuffer(buffer);
+        if (contentType === 'video') {
+            vSourceBuffer.appendBuffer(buffer);
+        } else if (contentType === 'audio') {
+            aSourceBuffer.appendBuffer(buffer);
+        }
     }
 
     function removeBuffer() {
-        if (sourceBuffers_['audio']) {
-            sourceBuffers_['audio'].removeBuffer();
-        }
-        if (sourceBuffers_['video']) {
-            sourceBuffers_['video'].removeBuffer();
+        if (vSourceBuffer) {
+            vSourceBuffer.removeBuffer();
         }
 
-        sourceBuffers_['audio'] = null;
-        sourceBuffers_['video'] = null;
+        vSourceBuffer = null;
     }
 
     function onMediaSourceOpen() {
@@ -94,12 +87,8 @@ function MediaSourceEngine() {
         mediaSrc_.removeEventListener('sourceopen', onMediaSourceOpen);
         mediaSrc_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
-        if (sourceBuffers_['audio']) {
-            sourceBuffers_['audio'].open(mediaSrc_);
-        }
-
-        if (sourceBuffers_['video']) {
-            sourceBuffers_['video'].open(mediaSrc_);
+        if (vSourceBuffer) {
+            vSourceBuffer.open(mediaSrc_);
         }
 
         eventBus_.trigger(Events.MSE_OPENED, {});
