@@ -58,14 +58,18 @@ function getInitConfig()
   var VMAP_Pre_10_20Skip_Post = 'http://10.2.68.64/2/ads/VMAP_Pre_10_20Skip_Post.xml';
 
   var testAd = 'https://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=is&c=23&pl=VAST&pli=14432293&PluID=0&pos=8834&ord=%5Btimestamp%5D&cim=1';
+  var yun_test_ad01 = 'https://skychko.com/fullslot/vast.xml';
+  var ad67741 = 'https://googleads.g.doubleclick.net/pagead/ads?ad_type=skippablevideo_text_image_flash&client=ca-video-pub-3701526372767426&description_url=[description_url]&hl=en';
+
   var cfg = {
     // Media
     poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
     advertising: {
-      //tag: testAd,
+      tag: ad67741,
+      //tag: yun_test_ad01,
       //tag: Single_Inline_Linear,
-      tag: Single_Skippable_Inline,
+      //tag: Single_Skippable_Inline,
       //tag: Single_Non_linear_Inline2,
       //tag: VMAP_Pre_roll_Bumper,
       //tag: VMAP_Post_roll_Bumper,
@@ -78,12 +82,10 @@ function getInitConfig()
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
       //enablePreloading: true,
       vpaidmode: 'insecure',
-      forceNonLinearFullSlot: true,
+      forceNonLinearFullSlot: false,
       locale: 'fr',
       companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
     }
-
-
   };
 
   return cfg;
@@ -114,7 +116,8 @@ function getMediaInfo()
   //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     // standard url
-    url: 'http://localhost/2/mydash/features/av_nonmuxed/video.mpd',
+    //url: 'http://localhost/2/mydash/features/av_nonmuxed/video.mpd',
+    url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
 
     // internal test
     audioCodec: audioCodec,

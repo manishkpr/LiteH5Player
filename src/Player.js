@@ -12,8 +12,7 @@ import MediaEngine from './media_engine';
 import DRMEngine from './drm_engine';
 import AdsEngine from './ads/ads_engine';
 
-// parser
-import DashParser from './dash/dash_parser';
+import ManifestParser from './media/manifest_parser';
 
 import TimeRanges from './utils/timeRanges';
 import XHRLoader from './utils/xhr_loader';
@@ -41,7 +40,8 @@ function Player(containerId) {
     let textEngine_;
     let mseEngine_;
     let drmEngine_;
-    let dashParser_;
+    let manifestParser_;
+    let parser_;
 
     // ads part
     let adsEngine_;
@@ -66,11 +66,22 @@ function Player(containerId) {
 
         // fetch dash content
         if (streamInfo_.url) {
-            streamInfo_.activeStream = dashParser_.loadManifest(streamInfo_.url);
+            parser_ = manifestParser_.getParser(streamInfo_.url);
+            streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
         }
 
         //
-        if (window.MediaSource) {
+        if (!window.MediaSource) {
+            debug_.log('Don\'t support MediaSource in this platform');
+            return;
+        }
+
+        //
+        if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
+            return;
+        }
+
+        if (streamInfo_.activeStream.aRep) {
             if (streamInfo_.activeStream.aRep.codecs) {
                 debug_.log('Player, +open: ' + streamInfo_.activeStream.aRep.codecs);
             }
@@ -81,15 +92,26 @@ function Player(containerId) {
                 debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
                 return;
             }
-
-            mseEngine_.open(streamInfo_.activeStream);
-
-            let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
-            mediaEngine_.setSrc(objURL);
-            drmEngine_.setDrmInfo(streamInfo_);
-        } else {
-            debug_.log('Don\'t support MediaSource in this platform');
         }
+
+        if (streamInfo_.activeStream.vRep) {
+            if (streamInfo_.activeStream.vRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.vRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
+                return;
+            }
+        }
+
+        mseEngine_.open(streamInfo_.activeStream);
+
+        let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
+        mediaEngine_.setSrc(objURL);
+        drmEngine_.setDrmInfo(streamInfo_);
 
         // If you want to play a link as long as you open a page, just uncomment this statement.
         //addPD();
@@ -132,7 +154,7 @@ function Player(containerId) {
 
         let self = this;
         function cbSuccess(bytes) {
-            mseEngine_.appendBuffer(streamInfo_.activeStream.aRep.type, bytes);
+            mseEngine_.appendBuffer({type: streamInfo_.activeStream.aRep.type, buffer: bytes});
 
             if (audioHeaderAdded_) {
                 audioIndex_++;
@@ -163,7 +185,7 @@ function Player(containerId) {
 
         let self = this;
         function cbSuccess(bytes) {
-            mseEngine_.appendBuffer(streamInfo_.activeStream.vRep.type, bytes);
+            mseEngine_.appendBuffer({type: streamInfo_.activeStream.vRep.type, buffer: bytes});
 
             if (videoHeaderAdded_) {
                 videoIndex_++;
@@ -180,12 +202,12 @@ function Player(containerId) {
     }
 
     function addPD() {
-        debug_.log('+addPD, pdContent: ' + streamInfo_.pdContent);
-        let url = streamInfo_.pdContent;
+        debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.vRep);
+        let url = streamInfo_.activeStream.vRep.media;
 
         let method = 1;
         if (method === 1) {
-            media_.src = streamInfo_.pdContent;
+            media_.src = url;
         } else {
             let self = this;
             function cbSuccess(bytes) {
@@ -341,9 +363,9 @@ function Player(containerId) {
 
     function isFullscreen() {
         return document.fullscreenElement ||
-         document.msFullscreenElement ||
-         document.mozFullScreen ||
-         document.webkitIsFullScreen;
+        document.msFullscreenElement ||
+        document.mozFullScreen ||
+        document.webkitIsFullScreen;
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -389,8 +411,9 @@ function Player(containerId) {
         textEngine_ = new TextEngine(media_);
         mseEngine_ = new MediaSourceEngine();
         drmEngine_ = new DRMEngine(media_);
-        dashParser_ = DashParser(oldmtn).getInstance();
-       if (cfg_.poster) {
+        manifestParser_ = ManifestParser(oldmtn).getInstance();
+
+        if (cfg_.poster) {
             media_.poster = cfg_.poster;
         }
         if (cfg_.advertising) {
@@ -440,7 +463,7 @@ function Player(containerId) {
     }
 
     function onMediaDurationChanged() {
-        
+
     }
 
     function onMediaEnded() {
@@ -492,11 +515,11 @@ function Player(containerId) {
 
     ///////////////////////////////////////////////////////////////////////////
     //function onTestMsg() {
-    function onTestMsg() {
-        console.log('+onTestMsg');
-    }
+        function onTestMsg() {
+            console.log('+onTestMsg');
+        }
 
-    function test() {
+        function test() {
         //adsEngine_.initialUserAction();
         //adsEngine_.open();
         //adsEngine_.startAds();

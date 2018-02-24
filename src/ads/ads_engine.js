@@ -41,7 +41,7 @@ function AdsEngine(adContainer, media, advertising) {
     let height_;
 
     // flag
-    let isPlayingAd_ = false;
+    let isAdTime_ = false;
     let isLinearAd_ = false;
     let isPaused_ = false;
 
@@ -177,7 +177,7 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function isPlayingAd() {
-        return isPlayingAd_;
+        return isAdTime_;
     }
 
     function isLinearAd() {
@@ -274,6 +274,7 @@ function AdsEngine(adContainer, media, advertising) {
             google.ima.AdEvent.Type.SKIPPED,
             google.ima.AdEvent.Type.STARTED,
             google.ima.AdEvent.Type.THIRD_QUARTILE,
+            google.ima.AdEvent.Type.USER_CLOSE,
             google.ima.AdEvent.Type.VOLUME_CHANGED,
             google.ima.AdEvent.Type.VOLUME_MUTED];
         for (var index in events) {
@@ -329,11 +330,7 @@ function AdsEngine(adContainer, media, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.COMPLETE: {
-                isPlayingAd_ = false;
-                stopAdTimer();
-                position_ = duration_;
-                eventBus_.trigger(Events.AD_TIMEUPDATE);
-                eventBus_.trigger(Events.AD_COMPLETE);
+                processWhenAdComplete();
             }
             break;
         case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED: {
@@ -362,15 +359,11 @@ function AdsEngine(adContainer, media, advertising) {
             break;
         case google.ima.AdEvent.Type.SKIPPED: {
                 // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
-                isPlayingAd_ = false;
-                stopAdTimer();
-                position_ = duration_;
-                eventBus_.trigger(Events.AD_TIMEUPDATE);
-                eventBus_.trigger(Events.AD_COMPLETE);
+                processWhenAdComplete();
             }
             break;
         case google.ima.AdEvent.Type.STARTED: {
-                isPlayingAd_ = true;
+                isAdTime_ = true;
                 isLinearAd_ = ad.isLinear();
 
                 position_ = 0;
@@ -385,6 +378,12 @@ function AdsEngine(adContainer, media, advertising) {
                 }
             }
             break;
+        case google.ima.AdEvent.Type.THIRD_QUARTILE: {
+
+        } break;
+        case google.ima.AdEvent.Type.USER_CLOSE: {
+            processWhenAdComplete();
+        } break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
             console.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
         }
@@ -427,7 +426,7 @@ function AdsEngine(adContainer, media, advertising) {
             
             position_ = duration_ - timeRemaining;
             // Update UI with timeRemaining
-            if (!isPaused_) {
+            if (isAdTime_ && !isPaused_) {
                 console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
                 eventBus_.trigger(Events.AD_TIMEUPDATE);
             }
@@ -439,6 +438,14 @@ function AdsEngine(adContainer, media, advertising) {
             clearInterval(countdownTimer_);
             countdownTimer_ = null;
         }
+    }
+
+    function processWhenAdComplete() {
+        isAdTime_ = false;
+        stopAdTimer();
+        position_ = duration_;
+        eventBus_.trigger(Events.AD_TIMEUPDATE);
+        eventBus_.trigger(Events.AD_COMPLETE);
     }
 
     //

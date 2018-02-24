@@ -68,11 +68,11 @@ function MediaSourceEngine() {
         return mediaSrc_;
     }
 
-    function appendBuffer(contentType, buffer) {
-        if (contentType === 'video') {
-            vSourceBuffer.appendBuffer(buffer);
-        } else if (contentType === 'audio') {
-            aSourceBuffer.appendBuffer(buffer);
+    function appendBuffer(e) {
+        if (e.type === 'video') {
+            vSourceBuffer.appendBuffer(e.buffer);
+        } else if (e.type === 'audio') {
+            aSourceBuffer.appendBuffer(e.buffer);
         }
     }
 
