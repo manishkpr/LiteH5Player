@@ -42,6 +42,9 @@ class CoreEvents {
         // DOM Events
         this.FULLSCREEN_CHANGE = 'fullscreenChange';
 
+        // controller events
+        this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
+
         //
         this.TEST_MSG = 'testMsg';
     }

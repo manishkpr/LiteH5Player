@@ -13,6 +13,10 @@ function MediaSourceEngine() {
 
     debug_.log('MediaSourceEngine, constructor');
 
+    function setup() {
+        eventBus_.on(Events.FRAGMENT_DOWNLOADED, onFragmentDownloaded);
+    }
+
     function open(activeStream) {
         debug_.log('MediaSourceEngine, +open');
         activeStream_ = activeStream;
@@ -70,9 +74,9 @@ function MediaSourceEngine() {
 
     function appendBuffer(e) {
         if (e.type === 'video') {
-            vSourceBuffer.appendBuffer(e.buffer);
+            vSourceBuffer.appendBuffer(e.bytes);
         } else if (e.type === 'audio') {
-            aSourceBuffer.appendBuffer(e.buffer);
+            aSourceBuffer.appendBuffer(e.bytes);
         }
     }
 
@@ -113,6 +117,10 @@ function MediaSourceEngine() {
         debug_.log('+onMediaSourceClose');
     }
 
+    function onFragmentDownloaded(e) {
+        appendBuffer(e);
+    }
+
     let instance = {
         open: open,
         close: close,
@@ -122,7 +130,7 @@ function MediaSourceEngine() {
         appendBuffer: appendBuffer,
         removeBuffer: removeBuffer
     };
-
+    setup();
     return instance;
 };
 

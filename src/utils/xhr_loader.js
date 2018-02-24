@@ -5,7 +5,7 @@ import FactoryMaker from '../core/FactoryMaker';
 function XHRLoader(config)
 {
   let config_ = config || {
-    remainingAttempts: 1,
+    remainingAttempts: 0,
     retryInterval: 4000
   };
 
@@ -48,11 +48,7 @@ function XHRLoader(config)
 
     const onload = function(ev) {
       if (printlog) {
-        console.log('--onload--, status: ' + xhr_.status);
-      }
-
-      if (printlog) {
-        console.debug("response length: " + xhr_.response.byteLength);
+        console.log(`--onload--, status:${xhr_.status}, length: ${xhr_.response.byteLength}, readyState:${xhr_.readyState}`);
       }
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
@@ -63,7 +59,7 @@ function XHRLoader(config)
 
     const onloadend = function () {
       if (printlog) {
-        console.log('--onloadend--, remainingAttempts_: ' + config_.remainingAttempts);
+        console.log('--onloadend--, remainingAttempts_: ' + config_.remainingAttempts + ', readystate: ' + xhr_.readyState);
         console.log('--------------------------------------------------------------');
       }
 
@@ -89,25 +85,25 @@ function XHRLoader(config)
 
     xhr_.onprogress = function (ev) {
       if (printlog) {
-        console.log(`--onprogress--, loaded:${ev.loaded}, total:${ev.total}`);
+        console.log(`--onprogress--, loaded:${ev.loaded}, total:${ev.total}, readyState:${xhr_.readyState}`);
       }
     };
 
     xhr_.ontimeout = function () {
-      console.log('--ontimeout--');
+      console.log('--ontimeout--, readystate: ' + xhr_.readyState);
     };
 
     xhr_.onabort = function () {
-      console.log('--onabort--');
+      console.log('--onabort--, readystate: ' + xhr_.readyState);
     };
 
     xhr_.onerror = function () {
-      console.log('--onerror--');
+      console.log('--onerror--, readystate: ' + xhr_.readyState);
     };
 
     xhr_.onreadystatechange = function (ev) {
       if (printlog) {
-        console.log('--onreadystatechange--, readystate: ' + readyState);
+        console.log('--onreadystatechange--, readystate: ' + xhr_.readyState);
       }
     };
 

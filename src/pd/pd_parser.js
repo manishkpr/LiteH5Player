@@ -10,8 +10,13 @@ function PDParser() {
         return {aRep: null, vRep: vRep};
     }
 
+    function getNextFragment() {
+        
+    }
+
     let instance = {
-        loadManifest: loadManifest
+        loadManifest: loadManifest,
+        getNextFragment: getNextFragment
     };
     return instance;
 }

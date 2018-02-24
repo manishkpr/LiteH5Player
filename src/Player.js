@@ -13,6 +13,7 @@ import DRMEngine from './drm_engine';
 import AdsEngine from './ads/ads_engine';
 
 import ManifestParser from './media/manifest_parser';
+import ScheduleController from './media/schedule_controller';
 
 import TimeRanges from './utils/timeRanges';
 import XHRLoader from './utils/xhr_loader';
@@ -42,6 +43,8 @@ function Player(containerId) {
     let drmEngine_;
     let manifestParser_;
     let parser_;
+
+    let scheduleCtrl_;
 
     // ads part
     let adsEngine_;
@@ -76,7 +79,7 @@ function Player(containerId) {
             return;
         }
 
-        //
+        // if it is pd, so we don't need to create mediasource
         if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
             return;
         }
@@ -460,6 +463,10 @@ function Player(containerId) {
     // Begin -- internal events listener functions
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
+
+                //
+        scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
+        scheduleCtrl_.start(parser_);
     }
 
     function onMediaDurationChanged() {

@@ -7,7 +7,7 @@ function SourceBufferWrapper(rep) {
   let rep_ = rep;
   let media_ = null;
   let mediaSrc_ = null;
-  let buffer_ = null;
+  let srcBuffer_ = null;
   let eventBus_ = EventBus(oldmtn).getInstance();
 
   function setup() {
@@ -16,39 +16,41 @@ function SourceBufferWrapper(rep) {
   function open(mediaSource) {
     mediaSrc_ = mediaSource;
 
-    buffer_ = mediaSource.addSourceBuffer(rep_.codecs);
+    srcBuffer_ = mediaSource.addSourceBuffer(rep_.codecs);
 
-    buffer_.addEventListener('updatestart', sourceBuffer_updatestart);
-    buffer_.addEventListener('update', sourceBuffer_update);
-    buffer_.addEventListener('updateend', sourceBuffer_updateend);
-    buffer_.addEventListener('error', sourceBuffer_error);
-    buffer_.addEventListener('abort', sourceBuffer_abort);
+    srcBuffer_.addEventListener('updatestart', sourceBuffer_updatestart);
+    srcBuffer_.addEventListener('update', sourceBuffer_update);
+    srcBuffer_.addEventListener('updateend', sourceBuffer_updateend);
+    srcBuffer_.addEventListener('error', sourceBuffer_error);
+    srcBuffer_.addEventListener('abort', sourceBuffer_abort);
 
-    return buffer_;
+    return srcBuffer_;
   }
 
   function close() {
     try {
-      buffer_.removeEventListener('updatestart', sourceBuffer_updatestart);
-      buffer_.removeEventListener('update', sourceBuffer_update);
-      buffer_.removeEventListener('updateend', sourceBuffer_updateend);
-      buffer_.removeEventListener('error', sourceBuffer_error);
-      buffer_.removeEventListener('abort', sourceBuffer_abort);
+      srcBuffer_.removeEventListener('updatestart', sourceBuffer_updatestart);
+      srcBuffer_.removeEventListener('update', sourceBuffer_update);
+      srcBuffer_.removeEventListener('updateend', sourceBuffer_updateend);
+      srcBuffer_.removeEventListener('error', sourceBuffer_error);
+      srcBuffer_.removeEventListener('abort', sourceBuffer_abort);
 
-      mediaSrc_.removeSourceBuffer(buffer_);
+      mediaSrc_.removeSourceBuffer(srcBuffer_);
     } catch (ex) {
       console.log(`Caught exception when remove sb event listener`);
     }
   }
 
-  function appendBuffer(bytes) {
-    if (buffer_) {
-      try {
-        buffer_.appendBuffer(bytes);
-      } catch (err) {
-        console.log(`error while trying to append buffer:${err.message}`);
+  function appendBuffer(buffer) {
+    waitForUpdateEnd(buffer, function() {
+      if (srcBuffer_) {
+        try {
+          srcBuffer_.appendBuffer(buffer);
+        } catch (err) {
+          console.log(`error while trying to append buffer:${err.message}`);
+        }
       }
-    }
+    });
   }
 
   function removeBuffer() {
@@ -56,11 +58,11 @@ function SourceBufferWrapper(rep) {
 
     let bufStart;
     let bufEnd;
-    for (let i = 0; i < buffer_.buffered.length; i++) {
-      bufStart = buffer_.buffered.start(i);
-      bufEnd = buffer_.buffered.end(i);
+    for (let i = 0; i < srcBuffer_.buffered.length; i++) {
+      bufStart = srcBuffer_.buffered.start(i);
+      bufEnd = srcBuffer_.buffered.end(i);
 
-      buffer_.remove(bufStart, bufEnd);
+      srcBuffer_.remove(bufStart, bufEnd);
     }
   }
 
@@ -96,6 +98,19 @@ function SourceBufferWrapper(rep) {
   function sourceBuffer_abort() {
     let a = this;
     console.log('--sourceBuffer_abort--');
+  }
+
+  function waitForUpdateEnd(buffer, callback) {
+    if (!srcBuffer_.updating) {
+        callback();
+        return;
+    }
+
+    var updateEndHandler = function () {
+        srcBuffer_.removeEventListener('updateend', updateEndHandler, false);
+        callback();
+    };
+    srcBuffer_.addEventListener('updateend', updateEndHandler, false);
   }
 
   let instance = {

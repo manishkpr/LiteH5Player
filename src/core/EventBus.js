@@ -37,18 +37,18 @@ function EventBus() {
 
     let handlers = {};
 
-    function on(type, listener, scope, priority = EVENT_PRIORITY_LOW) {
+    function on(evType, listener, scope, priority = EVENT_PRIORITY_LOW) {
 
-        if (!type) {
-            throw new Error('event type cannot be null or undefined');
+        if (!evType) {
+            throw new Error('event evType cannot be null or undefined');
         }
         if (!listener || typeof (listener) !== 'function') {
             throw new Error('listener must be a function: ' + listener);
         }
 
-        if (getHandlerIdx(type, listener, scope) >= 0) return;
+        if (getHandlerIdx(evType, listener, scope) >= 0) return;
 
-        handlers[type] = handlers[type] || [];
+        handlers[evType] = handlers[evType] || [];
 
         const handler = {
             callback: listener,
@@ -56,44 +56,44 @@ function EventBus() {
             priority: priority
         };
 
-        const inserted = handlers[type].some((item , idx) => {
+        const inserted = handlers[evType].some((item , idx) => {
             if (priority > item.priority ) {
-                handlers[type].splice(idx, 0, handler);
+                handlers[evType].splice(idx, 0, handler);
                 return true;
             }
         });
 
         if (!inserted) {
-            handlers[type].push(handler);
+            handlers[evType].push(handler);
         }
     }
 
-    function off(type, listener, scope) {
-        if (!type || !listener || !handlers[type]) return;
-        const idx = getHandlerIdx(type, listener, scope);
+    function off(evType, listener, scope) {
+        if (!evType || !listener || !handlers[evType]) return;
+        const idx = getHandlerIdx(evType, listener, scope);
         if (idx < 0) return;
-        handlers[type].splice(idx, 1);
+        handlers[evType].splice(idx, 1);
     }
 
-    function trigger(type, payload) {
-        if (!type || !handlers[type]) return;
+    function trigger(evType, payload) {
+        if (!evType || !handlers[evType]) return;
 
         payload = payload || {};
 
-        if (payload.hasOwnProperty('type')) throw new Error('\'type\' is a reserved word for event dispatching');
+        if (payload.hasOwnProperty('evType')) throw new Error('\'evType\' is a reserved word for event dispatching');
 
-        payload.type = type;
+        payload.evType = evType;
 
-        handlers[type].forEach( handler => handler.callback.call(handler.scope, payload) );
+        handlers[evType].forEach( handler => handler.callback.call(handler.scope, payload) );
     }
 
-    function getHandlerIdx(type, listener, scope) {
+    function getHandlerIdx(evType, listener, scope) {
 
         let idx = -1;
 
-        if (!handlers[type]) return idx;
+        if (!handlers[evType]) return idx;
 
-        handlers[type].some( (item, index) => {
+        handlers[evType].some( (item, index) => {
             if (item.callback === listener && (!scope || scope === item.scope)) {
                 idx = index;
                 return true;
