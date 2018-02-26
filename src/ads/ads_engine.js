@@ -170,8 +170,13 @@ function AdsEngine(adContainer, media, advertising) {
         }
 
         debug_.log('width_: ' + width_ + ', height_: ' + height_);
-        adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
-        adsManager_.start();
+        try {
+            adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
+            adsManager_.start();
+        } catch (adError) {
+            // An error may be thrown if there was a problem with the VAST response.
+            
+        }
 
         debug_.log('-AdsEngine.startAdsInternal');
     }
