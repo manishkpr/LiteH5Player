@@ -39,7 +39,8 @@ module.exports = function (grunt) {
         copy: {
             dist: {
                 files: {
-                    './samples/cast/receiver/liteH5Player.debug.js': ['dist/liteH5Player.debug.js']
+                    './samples/cast/receiver/liteH5Player.debug.js': ['dist/liteH5Player.debug.js'],
+                    './samples/demo/liteH5Player.debug.js': ['dist/liteH5Player.debug.js']
                 }
             }
         }

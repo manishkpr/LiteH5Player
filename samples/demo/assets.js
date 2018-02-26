@@ -66,9 +66,9 @@ function getInitConfig()
     poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
     advertising: {
-      tag: ad67741,
+      //tag: ad67741,
       //tag: yun_test_ad01,
-      //tag: Single_Inline_Linear,
+      tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
       //tag: Single_Non_linear_Inline2,
       //tag: VMAP_Pre_roll_Bumper,
@@ -116,8 +116,8 @@ function getMediaInfo()
   //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     // standard url
-    url: 'http://localhost/2/mydash/features/av_nonmuxed/video.mpd',
-    //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
+    //url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
+    url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
 
     // internal test
     audioCodec: audioCodec,

@@ -73,14 +73,15 @@ function Player(containerId) {
             streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
         }
 
-        //
-        if (!window.MediaSource) {
-            debug_.log('Don\'t support MediaSource in this platform');
+        // if it is pd, so we don't need to create mediasource
+        if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
+            addPD();
             return;
         }
 
-        // if it is pd, so we don't need to create mediasource
-        if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
+        //
+        if (!window.MediaSource) {
+            debug_.log('Don\'t support MediaSource in this platform');
             return;
         }
 
@@ -224,9 +225,9 @@ function Player(containerId) {
             xhrLoader_.load(request);
         }
 
-        // if (adsEngine_) {
-        //     adsEngine_.open();
-        // }
+        if (adsEngine_) {
+            adsEngine_.open();
+        }
 
         debug_.log('-addPD');
     }
@@ -360,7 +361,7 @@ function Player(containerId) {
 
     function playAd() {
         if (adsEngine_) {
-            adsEngine_.open();
+            adsEngine_.startAds();
         }
     }
 
@@ -464,13 +465,12 @@ function Player(containerId) {
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
 
-                //
+        //
         scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
         scheduleCtrl_.start(parser_);
     }
 
     function onMediaDurationChanged() {
-
     }
 
     function onMediaEnded() {

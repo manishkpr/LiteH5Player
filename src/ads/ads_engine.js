@@ -52,6 +52,8 @@ function AdsEngine(adContainer, media, advertising) {
     let duration_;
     let position_;
 
+    let isMobilePlatform = false; //= CommonUtils.isMobilePlatform();
+
     function setup() {
         if (advertising_.vpaidmode) {
             let mode = -1;
@@ -92,7 +94,7 @@ function AdsEngine(adContainer, media, advertising) {
             false,
             this);
 
-                //
+        //
         adsLoaded_ = false;
         contentInitialized_ = false;
         eventBus_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
@@ -137,6 +139,8 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotWidth = width_;
         adsRequest.nonLinearAdSlotHeight = height_;
 
+        //adsRequest.setAdWillAutoPlay(false);
+        //adsRequest.setAdWillPlayMuted(true);
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
@@ -260,17 +264,20 @@ function AdsEngine(adContainer, media, advertising) {
             google.ima.AdEvent.Type.AD_METADATA,
             google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
             google.ima.AdEvent.Type.CLICK,
+            google.ima.AdEvent.Type.COMPLETE,
             google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
             google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
-            google.ima.AdEvent.Type.COMPLETE,
             google.ima.AdEvent.Type.DURATION_CHANGE,
             google.ima.AdEvent.Type.FIRST_QUARTILE,
             google.ima.AdEvent.Type.IMPRESSION,
+            google.ima.AdEvent.Type.INTERACTION,
             google.ima.AdEvent.Type.LINEAR_CHANGED,
             google.ima.AdEvent.Type.LOADED,
+            google.ima.AdEvent.Type.LOG,
             google.ima.AdEvent.Type.MIDPOINT,
             google.ima.AdEvent.Type.PAUSED,
             google.ima.AdEvent.Type.RESUMED,
+            google.ima.AdEvent.Type.SKIPPABLE_STATE_CHANGED,
             google.ima.AdEvent.Type.SKIPPED,
             google.ima.AdEvent.Type.STARTED,
             google.ima.AdEvent.Type.THIRD_QUARTILE,
@@ -286,9 +293,9 @@ function AdsEngine(adContainer, media, advertising) {
         }
 
         adsLoaded_ = true;
-        if (contentInitialized_ && !CommonUtils.isMobilePlatform()) {
+        if (contentInitialized_ && !isMobilePlatform) {
             debug_.log('startAdsInternal when contentInitialized_');
-            startAdsInternal();
+            //startAdsInternal();
         }
 
         debug_.log('-onAdsManagerLoaded');
@@ -315,8 +322,9 @@ function AdsEngine(adContainer, media, advertising) {
 
         switch (adEvent.type) {
         case google.ima.AdEvent.Type.AD_BREAK_READY: {
-            console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
-        } break;
+                console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
+            }
+            break;
         case google.ima.AdEvent.Type.AD_METADATA: {
                 // for (let i in adEvent) {
                 //     console.log('AD_METADATA: ' + i);
@@ -330,6 +338,9 @@ function AdsEngine(adContainer, media, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.COMPLETE: {
+                // This event indicates the ad has finished - the video player
+                // can perform appropriate UI actions, such as removing the timer for
+                // remaining time detection.
                 processWhenAdComplete();
             }
             break;
@@ -341,14 +352,22 @@ function AdsEngine(adContainer, media, advertising) {
                 eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
             }
             break;
-        case google.ima.AdEvent.Type.DURATION_CHANGE: {
-        } break;
-        case google.ima.AdEvent.Type.IMPRESSION: {
-        } break;
-        case google.ima.AdEvent.Type.LINEAR_CHANGED: {
-        } break;
+        case google.ima.AdEvent.Type.DURATION_CHANGE: {}
+            break;
+        case google.ima.AdEvent.Type.IMPRESSION: {}
+            break;
+        case google.ima.AdEvent.Type.LINEAR_CHANGED: {}
+            break;
         case google.ima.AdEvent.Type.LOADED: {
-        } break;
+                // This is the first event sent for an ad - it is possible to
+                // determine whether the ad is a video ad or an overlay.
+                if (!ad.isLinear()) {
+                    // Position AdDisplayContainer correctly for overlay.
+                    // Use ad.width and ad.height.
+
+                }
+            }
+            break;
         case google.ima.AdEvent.Type.PAUSED: {
                 isPaused_ = true;
             }
@@ -363,13 +382,18 @@ function AdsEngine(adContainer, media, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.STARTED: {
+                // This event indicates the ad has started - the video player
+                // can adjust the UI, for example display a pause button and
+                // remaining time.
                 isAdTime_ = true;
                 isLinearAd_ = ad.isLinear();
 
                 position_ = 0;
                 duration_ = ad.getDuration();
 
-                eventBus_.trigger(Events.AD_STARTED, { ad: ad });
+                eventBus_.trigger(Events.AD_STARTED, {
+                    ad: ad
+                });
                 if (isLinearAd_) {
                     startAdTimer();
                     eventBus_.trigger(Events.AD_TIMEUPDATE);
@@ -378,19 +402,20 @@ function AdsEngine(adContainer, media, advertising) {
                 }
             }
             break;
-        case google.ima.AdEvent.Type.THIRD_QUARTILE: {
-
-        } break;
+        case google.ima.AdEvent.Type.THIRD_QUARTILE: {}
+            break;
         case google.ima.AdEvent.Type.USER_CLOSE: {
-            processWhenAdComplete();
-        } break;
+                processWhenAdComplete();
+            }
+            break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
-            console.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
-        }
-        break;
+                console.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
+            }
+            break;
         case google.ima.AdEvent.Type.VOLUME_MUTED: {
-            console.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
-        } break;
+                console.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
+            }
+            break;
         default:
             break;
         }
@@ -401,12 +426,12 @@ function AdsEngine(adContainer, media, advertising) {
         // and we just process content player 'metadata' event only, so cancel the listener.
         eventBus_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetadata, this);
         debug_.log('+onMediaLoadedMetadata' + ', ' +
-         'contentInitialized_: ' + contentInitialized_ + ', ' +
-         'adsLoaded_: ' + adsLoaded_);
+            'contentInitialized_: ' + contentInitialized_ + ', ' +
+            'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
-        if (adsLoaded_ && !CommonUtils.isMobilePlatform()) {
+        if (adsLoaded_ && !isMobilePlatform) {
             debug_.log('startAdsInternal when adsLoaded_');
-            startAdsInternal();
+            //startAdsInternal();
         }
         debug_.log('-onMediaLoadedMetadata');
     }
@@ -417,20 +442,20 @@ function AdsEngine(adContainer, media, advertising) {
 
     //
     function startAdTimer() {
-        countdownTimer_ = setInterval(function() {
-            let timeRemaining = adsManager_.getRemainingTime();
-            // If the ad is not loaded yet or has finished playing, getRemainingTime would return -1.
-            if (timeRemaining === -1) {
-                return;
-            }
-            
-            position_ = duration_ - timeRemaining;
-            // Update UI with timeRemaining
-            if (isAdTime_ && !isPaused_) {
-                console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
-                eventBus_.trigger(Events.AD_TIMEUPDATE);
-            }
-        }, 300);
+        countdownTimer_ = setInterval(function () {
+                let timeRemaining = adsManager_.getRemainingTime();
+                // If the ad is not loaded yet or has finished playing, getRemainingTime would return -1.
+                if (timeRemaining === -1) {
+                    return;
+                }
+
+                position_ = duration_ - timeRemaining;
+                // Update UI with timeRemaining
+                if (isAdTime_ && !isPaused_) {
+                    console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
+                    eventBus_.trigger(Events.AD_TIMEUPDATE);
+                }
+            }, 300);
     }
 
     function stopAdTimer() {
@@ -450,11 +475,12 @@ function AdsEngine(adContainer, media, advertising) {
 
     //
     function test() {
-        let skippableState = adsManager_.getAdSkippableState();
-        console.log('skippableState: ' + skippableState);
-        //adsManager_.skip();
+        startAds();
+        // let skippableState = adsManager_.getAdSkippableState();
+        // console.log('skippableState: ' + skippableState);
+        // //adsManager_.skip();
 
-        onMediaEnded();
+        // onMediaEnded();
     }
 
     let instance = {

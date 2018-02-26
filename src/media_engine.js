@@ -117,7 +117,7 @@ function MediaEngine(media)
   }
 
   function onMediaLoadedMetadata() {
-    debug_.log('+onMediaMetadata' +
+    debug_.log('+onMediaLoadedMetadata' +
       ', width: ' + media_.videoWidth +
       ', height: ' + media_.videoHeight +
       ', duration: ' + media_.duration);
