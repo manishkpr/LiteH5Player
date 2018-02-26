@@ -29,7 +29,7 @@ function MediaEngine(media)
 
   // Begin -- public functions
   function play() {
-    media_.play();
+    return media_.play();
   }
 
   function pause() {

@@ -63,7 +63,7 @@ function getInitConfig()
 
   var cfg = {
     // Media
-    poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
+    //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
 
     advertising: {
       //tag: ad67741,
@@ -116,8 +116,9 @@ function getMediaInfo()
   //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     // standard url
-    //url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
-    url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
+    url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
+    //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
 
     // internal test
     audioCodec: audioCodec,
@@ -254,11 +255,11 @@ function initPDContent() {
 
   // 
   // videoCodec = 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"';
-  // pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4';
+  pdContent = 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4';
   // pdDuration = 30;
 
   //
-  pdContent = 'http://10.2.68.64/2/pd/mp4/trailer.mp4';
+  //pdContent = 'http://10.2.68.64/2/pd/mp4/trailer.mp4';
 
   // 
   //pdContent = 'http://10.2.68.64/2/pd/mp4/mov_bbb.mp4';

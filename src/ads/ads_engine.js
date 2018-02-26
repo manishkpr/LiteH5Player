@@ -52,7 +52,9 @@ function AdsEngine(adContainer, media, advertising) {
     let duration_;
     let position_;
 
-    let isMobilePlatform = false; //= CommonUtils.isMobilePlatform();
+    let isMobilePlatform_ = false; //= CommonUtils.isMobilePlatform();
+    let autoplayAllowed_;
+    let autoplayRequiresMuted_;
 
     function setup() {
         if (advertising_.vpaidmode) {
@@ -122,7 +124,10 @@ function AdsEngine(adContainer, media, advertising) {
         adDisplayContainer_.initialize();
     }
 
-    function requestAds() {
+    function requestAds(autoplayAllowed, autoplayRequiresMuted) {
+        autoplayAllowed_ = autoplayAllowed;
+        autoplayRequiresMuted_ = autoplayRequiresMuted;
+
         width_ = adContainer_.clientWidth;
         height_ = adContainer_.clientHeight;
         // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
@@ -140,7 +145,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotHeight = height_;
 
         //adsRequest.setAdWillAutoPlay(false);
-        adsRequest.setAdWillPlayMuted(true);
+        //adsRequest.setAdWillPlayMuted(true);
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
@@ -171,6 +176,8 @@ function AdsEngine(adContainer, media, advertising) {
 
         debug_.log('width_: ' + width_ + ', height_: ' + height_);
         try {
+            initialUserAction();
+
             adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
             adsManager_.start();
         } catch (adError) {
@@ -298,9 +305,9 @@ function AdsEngine(adContainer, media, advertising) {
         }
 
         adsLoaded_ = true;
-        if (contentInitialized_ && !isMobilePlatform) {
+        if (contentInitialized_ && !isMobilePlatform_) {
             debug_.log('startAdsInternal when contentInitialized_');
-            //startAdsInternal();
+            startAdsInternal();
         }
 
         debug_.log('-onAdsManagerLoaded');
@@ -434,9 +441,9 @@ function AdsEngine(adContainer, media, advertising) {
             'contentInitialized_: ' + contentInitialized_ + ', ' +
             'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
-        if (adsLoaded_ && !isMobilePlatform) {
+        if (adsLoaded_ && !isMobilePlatform_) {
             debug_.log('startAdsInternal when adsLoaded_');
-            //startAdsInternal();
+            startAdsInternal();
         }
         debug_.log('-onMediaLoadedMetadata');
     }

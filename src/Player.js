@@ -49,6 +49,10 @@ function Player(containerId) {
     // ads part
     let adsEngine_;
 
+    // autoplay reference
+    let autoplayAllowed_;
+    let autoplayRequiresMuted_;
+
     function setup() {
         uiEngine_ = UIEngine(oldmtn).getInstance();
         uiEngine_.initUI(containerId_);
@@ -118,9 +122,13 @@ function Player(containerId) {
         mediaEngine_.setSrc(objURL);
         drmEngine_.setDrmInfo(streamInfo_);
 
-        // If you want to play a link as long as you open a page, just uncomment this statement.
-        //addPD();
-
+        // BD
+        var playPromise = mediaEngine_.play(); // This is asynchronous!
+        if (playPromise !== undefined) {
+            playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
+        }
+        // ED
+        
         debug_.log('Player, -open');
     }
 
@@ -226,9 +234,12 @@ function Player(containerId) {
             xhrLoader_.load(request);
         }
 
-        if (adsEngine_) {
-            adsEngine_.open();
+        // BD
+        var playPromise = mediaEngine_.play(); // This is asynchronous!
+        if (playPromise !== undefined) {
+            playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
         }
+        // ED
 
         debug_.log('-addPD');
     }
@@ -518,8 +529,59 @@ function Player(containerId) {
     }
 
     function onAdComplete() {}
-
     // End -- internal events listener functions
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Begin autoplay policy
+    // see https://developers.google.com/interactive-media-ads/docs/sdks/html5/desktop-autoplay
+    function autoplayChecksResolved() {
+        if (adsEngine_) {
+            adsEngine_.requestAds(autoplayAllowed_, autoplayRequiresMuted_);
+        }
+    }
+
+    function onMutedAutoplaySuccess() {
+        debug_.log('onMutedAutoplaySuccess');
+        mediaEngine_.pause();
+        autoplayAllowed_ = true;
+        autoplayRequiresMuted_ = true;
+        autoplayChecksResolved();
+    }
+    
+    function onMutedAutoplayFail() {
+        debug_.log('onMutedAutoplayFail');
+        // Both muted and unmuted autoplay failed. Fall back to click to play.
+        mediaEngine_.setVolume(1);
+        mediaEngine_.unmute();
+        autoplayAllowed_ = false;
+        autoplayRequiresMuted_ = false;
+        autoplayChecksResolved();
+    }
+
+    function checkMutedAutoplaySupport() {
+        mediaEngine_.setVolume(0);
+        mediaEngine_.mute();
+        var playPromise = mediaEngine_.play();
+        if (playPromise !== undefined) {
+            playPromise.then(onMutedAutoplaySuccess).catch(onMutedAutoplayFail);
+        }
+    }
+
+    function onAutoplayWithSoundSuccess() {
+        // If we make it here, unmuted autoplay works.
+        debug_.log('+onAutoplayWithSoundSuccess');
+        mediaEngine_.pause();
+        autoplayAllowed_ = true;
+        autoplayRequiresMuted_ = false;
+        autoplayChecksResolved();
+    }
+
+    function onAutoplayWithSoundFail() {
+        // Unmuted autoplay failed. Now try muted autoplay.
+        debug_.log('+onAutoplayWithSoundFail');
+        checkMutedAutoplaySupport();
+    }
+    // End autoplay policy
 
     ///////////////////////////////////////////////////////////////////////////
     //function onTestMsg() {
