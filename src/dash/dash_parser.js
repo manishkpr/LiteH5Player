@@ -9,6 +9,10 @@ function DashParser() {
     let videoIndex_ = 0;
 
     function loadManifest(url) {
+        videoHeaderAdded_ = false;
+        videoIndex_ = 0;
+
+        //
         let aRep = null;
         let vRep = null;
 
@@ -28,7 +32,7 @@ function DashParser() {
 
         // construct dash video
         let vContents = [];
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 15; i++) {
             let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
             vContents.push(content);
         }

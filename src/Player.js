@@ -122,25 +122,27 @@ function Player(containerId) {
         mediaEngine_.setSrc(objURL);
         drmEngine_.setDrmInfo(streamInfo_);
 
-        // BD
-        var playPromise = mediaEngine_.play(); // This is asynchronous!
+        // detech autoplay policy
+        let playPromise = mediaEngine_.play(); // This is asynchronous!
         if (playPromise !== undefined) {
             playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
         }
-        // ED
-        
+
         debug_.log('Player, -open');
     }
 
     function close() {
+        if (scheduleCtrl_) {
+            scheduleCtrl_.stop();
+        }
         if (adsEngine_) {
             adsEngine_.close();
         }
-        if (mediaEngine_) {
-            mediaEngine_.close();
-        }
         if (mseEngine_) {
             mseEngine_.close();
+        }
+        if (mediaEngine_) {
+            mediaEngine_.close();
         }
 
         audioIndex_ = 0;
@@ -373,7 +375,7 @@ function Player(containerId) {
 
     function playAd() {
         if (adsEngine_) {
-            adsEngine_.startAds();
+            adsEngine_.playAd();
         }
     }
 
@@ -547,7 +549,7 @@ function Player(containerId) {
         autoplayRequiresMuted_ = true;
         autoplayChecksResolved();
     }
-    
+
     function onMutedAutoplayFail() {
         debug_.log('onMutedAutoplayFail');
         // Both muted and unmuted autoplay failed. Fall back to click to play.
@@ -561,7 +563,7 @@ function Player(containerId) {
     function checkMutedAutoplaySupport() {
         mediaEngine_.setVolume(0);
         mediaEngine_.mute();
-        var playPromise = mediaEngine_.play();
+        let playPromise = mediaEngine_.play();
         if (playPromise !== undefined) {
             playPromise.then(onMutedAutoplaySuccess).catch(onMutedAutoplayFail);
         }
@@ -585,20 +587,11 @@ function Player(containerId) {
 
     ///////////////////////////////////////////////////////////////////////////
     //function onTestMsg() {
-        function onTestMsg() {
-            console.log('+onTestMsg');
-        }
+    function onTestMsg() {
+       console.log('+onTestMsg');
+    }
 
-        function test() {
-        //adsEngine_.initialUserAction();
-        //adsEngine_.open();
-        //adsEngine_.startAds();
-
-        if (adsEngine_) {
-            adsEngine_.open();
-        }
-
-        //adsEngine_.test();
+    function test() {
     }
 
     function test2() {

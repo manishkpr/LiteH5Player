@@ -144,8 +144,8 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotWidth = width_;
         adsRequest.nonLinearAdSlotHeight = height_;
 
-        //adsRequest.setAdWillAutoPlay(false);
-        //adsRequest.setAdWillPlayMuted(true);
+        adsRequest.setAdWillAutoPlay(autoplayAllowed_);
+        adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
@@ -160,32 +160,39 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     // AdsEngine public functions
-    function startAds() {
+    function playAd() {
         if (contentInitialized_ && adsLoaded_) {
-            startAdsInternal();
+            try {
+                initialUserAction();
+                adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
+                adsManager_.start();
+            } catch (adError) {
+                // An error may be thrown if there was a problem with the VAST response.
+            }
         }
     }
 
     function startAdsInternal() {
-        debug_.log('+AdsEngine.startAdsInternal');
+        debug_.log('+AdsEngine.startAdsInternal, autoplayAllowed_: ' + autoplayAllowed_ +
+            ', autoplayRequiresMuted_: ' + autoplayRequiresMuted_ +
+            ', autoplayadsmuted: ' + advertising.autoplayadsmuted);
 
         // sometimes, requestAds may be caught an error, so we return here directly.
         if (!adsManager_) {
             return;
         }
 
-        debug_.log('width_: ' + width_ + ', height_: ' + height_);
-        try {
-            initialUserAction();
-
-            adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
-            adsManager_.start();
-        } catch (adError) {
-            // An error may be thrown if there was a problem with the VAST response.
-            
+        if (autoplayAllowed_) {
+            if (autoplayRequiresMuted_) {
+                if (advertising.autoplayadsmuted) {
+                    playAd();
+                } else {
+                    // do nothing here.
+                }
+            } else {
+                playAd();
+            }
         }
-
-        debug_.log('-AdsEngine.startAdsInternal');
     }
 
     function isPaused() {
@@ -487,7 +494,7 @@ function AdsEngine(adContainer, media, advertising) {
 
     //
     function test() {
-        startAds();
+        playAd();
         // let skippableState = adsManager_.getAdSkippableState();
         // console.log('skippableState: ' + skippableState);
         // //adsManager_.skip();
@@ -512,7 +519,7 @@ function AdsEngine(adContainer, media, advertising) {
         duration: duration,
         resize: resize,
         requestAds: requestAds,
-        startAds: startAds,
+        playAd: playAd,
 
         //
         test: test
