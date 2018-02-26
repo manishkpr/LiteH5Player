@@ -140,7 +140,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotHeight = height_;
 
         //adsRequest.setAdWillAutoPlay(false);
-        //adsRequest.setAdWillPlayMuted(true);
+        adsRequest.setAdWillPlayMuted(true);
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
@@ -152,7 +152,7 @@ function AdsEngine(adContainer, media, advertising) {
         //adsLoader_.getSettings().setAutoPlayAdBreaks(false);
 
         adsLoader_.requestAds(adsRequest);
-    };
+    }
 
     // AdsEngine public functions
     function startAds() {

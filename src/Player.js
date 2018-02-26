@@ -9,7 +9,7 @@ import UIEngine from './ui/ui_engine';
 import MediaSourceEngine from './media_source_engine';
 import TextEngine from './text_engine';
 import MediaEngine from './media_engine';
-import DRMEngine from './drm_engine';
+import DRMEngine from './drm/drm_engine';
 import AdsEngine from './ads/ads_engine';
 
 import ManifestParser from './media/manifest_parser';
