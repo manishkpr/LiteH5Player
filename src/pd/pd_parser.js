@@ -1,17 +1,31 @@
 import FactoryMaker from '../core/FactoryMaker';
 
 function PDParser() {
+    let activeStream_;
+    // flag
+    let pdDownloaded_;
     function loadManifest(url) {
-        let vRep = {
+        pdDownloaded_ = false;
+        let pdRep = {
             type: 'pd',
+            codecs: 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"',
             media: url
         };
 
-        return {aRep: null, vRep: vRep};
+        activeStream_ = {
+            pdRep: pdRep
+        };
+        return activeStream_;
     }
 
     function getNextFragment() {
-        
+        let ret = null;
+        if (!pdDownloaded_) {
+            ret = { type: activeStream_.pdRep.type, url: activeStream_.pdRep.media };
+            pdDownloaded_ = true;
+        }
+
+        return ret;
     }
 
     let instance = {

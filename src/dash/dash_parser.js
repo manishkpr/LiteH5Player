@@ -43,7 +43,6 @@ function DashParser() {
             media: vContents
         };
 
-
         activeStream_ = {
             aRep: null,//aRep,
             vRep: vRep

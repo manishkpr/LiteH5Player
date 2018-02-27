@@ -78,11 +78,11 @@ function Player(containerId) {
             streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
         }
 
-        // if it is pd, so we don't need to create mediasource
-        if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
-            addPD();
-            return;
-        }
+        // // if it is pd, so we don't need to create mediasource
+        // if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
+        //     addPD();
+        //     return;
+        // }
 
         //
         if (!window.MediaSource) {
@@ -116,17 +116,27 @@ function Player(containerId) {
             }
         }
 
+        if (streamInfo_.activeStream.pdRep) {
+            if (streamInfo_.activeStream.pdRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.pdRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
+                return;
+            }
+        }
+
         mseEngine_.open(streamInfo_.activeStream);
 
         let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
         mediaEngine_.setSrc(objURL);
         drmEngine_.setDrmInfo(streamInfo_);
 
-        // detech autoplay policy
-        let playPromise = mediaEngine_.play(); // This is asynchronous!
-        if (playPromise !== undefined) {
-            playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
-        }
+        // Detecting autoplay success or failure
+        detectAutoplay();
 
         debug_.log('Player, -open');
     }
@@ -236,12 +246,8 @@ function Player(containerId) {
             xhrLoader_.load(request);
         }
 
-        // BD
-        var playPromise = mediaEngine_.play(); // This is asynchronous!
-        if (playPromise !== undefined) {
-            playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
-        }
-        // ED
+        // Detecting autoplay success or failure
+        detectAutoplay();
 
         debug_.log('-addPD');
     }
@@ -376,6 +382,8 @@ function Player(containerId) {
     function playAd() {
         if (adsEngine_) {
             adsEngine_.playAd();
+        } else {
+
         }
     }
 
@@ -544,19 +552,22 @@ function Player(containerId) {
 
     function onMutedAutoplaySuccess() {
         debug_.log('onMutedAutoplaySuccess');
-        mediaEngine_.pause();
         autoplayAllowed_ = true;
         autoplayRequiresMuted_ = true;
+        if (adsEngine_) {
+            mediaEngine_.pause();
+        }
         autoplayChecksResolved();
     }
 
     function onMutedAutoplayFail() {
         debug_.log('onMutedAutoplayFail');
         // Both muted and unmuted autoplay failed. Fall back to click to play.
-        mediaEngine_.setVolume(1);
-        mediaEngine_.unmute();
         autoplayAllowed_ = false;
         autoplayRequiresMuted_ = false;
+
+        mediaEngine_.setVolume(1);
+        mediaEngine_.unmute();
         autoplayChecksResolved();
     }
 
@@ -572,9 +583,11 @@ function Player(containerId) {
     function onAutoplayWithSoundSuccess() {
         // If we make it here, unmuted autoplay works.
         debug_.log('+onAutoplayWithSoundSuccess');
-        mediaEngine_.pause();
         autoplayAllowed_ = true;
         autoplayRequiresMuted_ = false;
+        if (adsEngine_) {
+            mediaEngine_.pause();
+        }
         autoplayChecksResolved();
     }
 
@@ -583,6 +596,15 @@ function Player(containerId) {
         debug_.log('+onAutoplayWithSoundFail');
         checkMutedAutoplaySupport();
     }
+
+    function detectAutoplay() {
+        return;
+        let playPromise = mediaEngine_.play(); // This is asynchronous!
+        if (playPromise !== undefined) {
+            playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
+        }
+    }
+
     // End autoplay policy
 
     ///////////////////////////////////////////////////////////////////////////

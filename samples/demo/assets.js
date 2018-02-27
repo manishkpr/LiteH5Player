@@ -64,29 +64,30 @@ function getInitConfig()
   var cfg = {
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
+    autoplay: true,
 
-    advertising: {
-      //tag: ad67741,
-      //tag: yun_test_ad01,
-      tag: Single_Inline_Linear,
-      //tag: Single_Skippable_Inline,
-      //tag: Single_Non_linear_Inline2,
-      //tag: VMAP_Pre_roll_Bumper,
-      //tag: VMAP_Post_roll_Bumper,
-      //tag: VMAP_Post_roll,
-      //tag: VMAP_Pre_Mid_Post,
-      //tag: VMAP_Pre_3Mid_Post,
-      //tag: VMAP_5Ads_Every_10_Secs,
-      //tag: VMAP_Pre_10_20_Post,
-      //tag: VMAP_Pre_10_20Skip_Post,
-      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      //enablePreloading: true,
-      autoplayadsmuted: true,
-      vpaidmode: 'insecure',
-      forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   //tag: ad67741,
+    //   //tag: yun_test_ad01,
+    //   tag: Single_Inline_Linear,
+    //   //tag: Single_Skippable_Inline,
+    //   //tag: Single_Non_linear_Inline2,
+    //   //tag: VMAP_Pre_roll_Bumper,
+    //   //tag: VMAP_Post_roll_Bumper,
+    //   //tag: VMAP_Post_roll,
+    //   //tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_3Mid_Post,
+    //   //tag: VMAP_5Ads_Every_10_Secs,
+    //   //tag: VMAP_Pre_10_20_Post,
+    //   //tag: VMAP_Pre_10_20Skip_Post,
+    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+    //   //enablePreloading: true,
+    //   autoplayadsmuted: true,
+    //   vpaidmode: 'insecure',
+    //   forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width:300, height:250, id: 'idCompanionAd' } ]
+    // }
   };
 
   return cfg;
@@ -117,9 +118,9 @@ function getMediaInfo()
   //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     // standard url
-    url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
+    //url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
-    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
+    url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
 
     // internal test
     audioCodec: audioCodec,

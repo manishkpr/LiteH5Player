@@ -8,8 +8,9 @@ function MediaSourceEngine() {
     let debug_ = Debug(oldmtn).getInstance();
     let mediaSrc_ = null;
     let activeStream_ = null;
-    let aSourceBuffer = null;
-    let vSourceBuffer = null;
+    let aSourceBuffer_ = null;
+    let vSourceBuffer_ = null;
+    let pdSourceBuffer_ = null;
 
     debug_.log('MediaSourceEngine, constructor');
 
@@ -22,12 +23,15 @@ function MediaSourceEngine() {
         activeStream_ = activeStream;
 
         if (activeStream_.vRep) {
-            vSourceBuffer = new SourceBufferWrapper(activeStream_.vRep);
+            vSourceBuffer_ = new SourceBufferWrapper(activeStream_.vRep);
         }
         if (activeStream_.aRep) {
-            aSourceBuffer = new SourceBufferWrapper(activeStream_.aRep);
+            aSourceBuffer_ = new SourceBufferWrapper(activeStream_.aRep);
         }
-
+        if (activeStream_.pdRep) {
+            pdSourceBuffer_ = new SourceBufferWrapper(activeStream_.pdRep);
+        }
+        
         //
         var hasWebKit = ('WebKitMediaSource' in window);
         var hasMediaSource = ('MediaSource' in window);
@@ -46,12 +50,7 @@ function MediaSourceEngine() {
     }
 
     function close() {
-        if (vSourceBuffer) {
-            vSourceBuffer.removeBuffer();
-        }
-        if (aSourceBuffer) {
-            aSourceBuffer.removeBuffer();
-        }
+        removeBuffer();
         mediaSrc_ = null;
     }
 
@@ -74,22 +73,27 @@ function MediaSourceEngine() {
 
     function appendBuffer(e) {
         if (e.type === 'video') {
-            vSourceBuffer.appendBuffer(e.bytes);
+            vSourceBuffer_.appendBuffer(e.bytes);
         } else if (e.type === 'audio') {
-            aSourceBuffer.appendBuffer(e.bytes);
+            aSourceBuffer_.appendBuffer(e.bytes);
+        } else if (e.type === 'pd') {
+            pdSourceBuffer_.appendBuffer(e.bytes);
         }
     }
 
     function removeBuffer() {
-        if (vSourceBuffer) {
-            vSourceBuffer.removeBuffer();
+        if (vSourceBuffer_) {
+            vSourceBuffer_.removeBuffer();
         }
-        if (aSourceBuffer) {
-            aSourceBuffer.removeBuffer();
+        if (aSourceBuffer_) {
+            aSourceBuffer_.removeBuffer();
+        }
+        if (pdSourceBuffer_) {
+            pdSourceBuffer_.removeBuffer();
         }
 
-        vSourceBuffer = null;
-        aSourceBuffer = null;
+        vSourceBuffer_ = null;
+        aSourceBuffer_ = null;
     }
 
     function onMediaSourceOpen() {
@@ -99,11 +103,14 @@ function MediaSourceEngine() {
         mediaSrc_.removeEventListener('sourceopen', onMediaSourceOpen);
         mediaSrc_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
-        if (vSourceBuffer) {
-            vSourceBuffer.open(mediaSrc_);
+        if (vSourceBuffer_) {
+            vSourceBuffer_.open(mediaSrc_);
         }
-        if (aSourceBuffer) {
-            aSourceBuffer.open(mediaSrc_);
+        if (aSourceBuffer_) {
+            aSourceBuffer_.open(mediaSrc_);
+        }
+        if (pdSourceBuffer_) {
+            pdSourceBuffer_.open(mediaSrc_);
         }
 
         eventBus_.trigger(Events.MSE_OPENED, {});
