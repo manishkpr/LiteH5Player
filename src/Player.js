@@ -77,12 +77,14 @@ function Player(containerId) {
             parser_ = manifestParser_.getParser(streamInfo_.url);
             streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
         }
-
-        // // if it is pd, so we don't need to create mediasource
-        // if (streamInfo_.activeStream.vRep && streamInfo_.activeStream.vRep.type === 'pd') {
-        //     addPD();
-        //     return;
-        // }
+        
+        // BD, use .src for PD
+        // if it is pd, so we don't need to create mediasource
+        if (streamInfo_.activeStream.pdRep) {
+            addPD();
+            return;
+        }
+        // ED
 
         //
         if (!window.MediaSource) {
@@ -227,29 +229,13 @@ function Player(containerId) {
     }
 
     function addPD() {
-        debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.vRep);
-        let url = streamInfo_.activeStream.vRep.media;
+        debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.pdRep);
+        let url = streamInfo_.activeStream.pdRep.media;
 
-        let method = 1;
-        if (method === 1) {
-            media_.src = url;
-        } else {
-            let self = this;
-            function cbSuccess(bytes) {
-                mseEngine_.appendBuffer('video', bytes);
-            }
-
-            let request = {
-                url: url,
-                cbSuccess: cbSuccess.bind(self)
-            };
-            xhrLoader_.load(request);
-        }
+        media_.src = url;
 
         // Detecting autoplay success or failure
         detectAutoplay();
-
-        debug_.log('-addPD');
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -580,25 +566,27 @@ function Player(containerId) {
         }
     }
 
-    function onAutoplayWithSoundSuccess() {
+    function onAutoplayWithSoundSuccess(info) {
         // If we make it here, unmuted autoplay works.
-        debug_.log('+onAutoplayWithSoundSuccess');
-        autoplayAllowed_ = true;
-        autoplayRequiresMuted_ = false;
-        if (adsEngine_) {
-            mediaEngine_.pause();
-        }
-        autoplayChecksResolved();
+        debug_.log('+onAutoplayWithSoundSuccess: ', info);
+        // autoplayAllowed_ = true;
+        // autoplayRequiresMuted_ = false;
+        // if (adsEngine_) {
+        //     mediaEngine_.pause();
+        // }
+        // autoplayChecksResolved();
     }
 
-    function onAutoplayWithSoundFail() {
+    function onAutoplayWithSoundFail(err) {
         // Unmuted autoplay failed. Now try muted autoplay.
-        debug_.log('+onAutoplayWithSoundFail');
-        checkMutedAutoplaySupport();
+        debug_.log('+onAutoplayWithSoundFail: ');
+        console.log('err: ', err);
+        //checkMutedAutoplaySupport();
     }
 
     function detectAutoplay() {
-        return;
+        debug_.log('+detectAutoplay');
+        //media_.autoplay = true;
         let playPromise = mediaEngine_.play(); // This is asynchronous!
         if (playPromise !== undefined) {
             playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);

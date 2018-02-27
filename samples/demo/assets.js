@@ -118,9 +118,10 @@ function getMediaInfo()
   //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
   var info = {
     // standard url
-    //url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
+    url: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/video.mpd',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
-    url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
+    //url: 'http://10.2.68.64/2/pd/fmp4/pure_audio_01.mp4',
 
     // internal test
     audioCodec: audioCodec,

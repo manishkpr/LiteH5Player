@@ -6,11 +6,19 @@ function PDParser() {
     let pdDownloaded_;
     function loadManifest(url) {
         pdDownloaded_ = false;
+
         let pdRep = {
             type: 'pd',
-            codecs: 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"',
+            codecs: 'video/mp4; codecs="mp4a.40.2"',
             media: url
         };
+
+        // pd - pure video
+        // let pdRep = {
+        //     type: 'pd',
+        //     codecs: 'video/mp4; codecs="mp4a.40.2, avc1.4D401e"',
+        //     media: url
+        // };
 
         activeStream_ = {
             pdRep: pdRep

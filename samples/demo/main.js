@@ -1007,7 +1007,8 @@ window.onload = function () {
     addH5PListeners();
 
     // BD
-    //onBtnOpen();
+    //
+    onBtnOpen();
     // ED
 };
 
