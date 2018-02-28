@@ -23,8 +23,7 @@ function UIEngine() {
         // create video element here
         video_ = document.createElement('video');
         video_.setAttribute('class', 'h5p-video');
-        video_.setAttribute('autoplay', 'true');
-        //video_.autoplay = true;
+        //video_.setAttribute('autoplay', 'true');
         video_.setAttribute('playsinline', 'false');
         video_.setAttribute('webkit-playsinline', 'false');
 

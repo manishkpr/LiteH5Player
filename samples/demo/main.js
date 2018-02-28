@@ -422,7 +422,7 @@ function initUI() {
     stopWaitingUI();
 }
 
-function initData() {
+function initH5Player() {
     var cfg = getInitConfig();
     player = new oldmtn.Player('player-container');
     player.init(cfg);
@@ -461,7 +461,7 @@ function initData() {
     //castSender = new oldmtn.CastSender(receiverAppId);
 }
 
-function addH5PListeners() {
+function initUIEventListeners() {
     h5pShade.addEventListener('mouseenter', onH5PShadeMouseenter);
     h5pShade.addEventListener('mousemove', onH5PShadeMousemove);
     h5pShade.addEventListener('mouseleave', onH5PShadeMouseleave);
@@ -953,7 +953,9 @@ function onMediaTimeupdated() {
 }
 
 function onMediaVolumeChanged() {
-
+    var muted = player.isMuted();
+    var volume = player.getVolume();
+    updateContentVolumeBarUI(muted, volume);
 }
 
 function onMediaWaiting() {
@@ -1003,11 +1005,10 @@ window.onload = function () {
     console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
     initUI();
-    initData();
-    addH5PListeners();
+    initUIEventListeners();
+    initH5Player();
 
     // BD
-    //
     onBtnOpen();
     // ED
 };

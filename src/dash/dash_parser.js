@@ -52,6 +52,7 @@ function DashParser() {
     }
 
     function case02() {
+        // the video contains audio
         let aRep = null;
         let vRep = null;
         let vContents = [];
@@ -78,8 +79,8 @@ function DashParser() {
         videoHeaderAdded_ = false;
         videoIndex_ = 0;
 
-        return case01();
-        //return case02();
+        //return case01();
+        return case02();
     }
 
     function getNextFragment() {

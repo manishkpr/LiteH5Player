@@ -65,6 +65,7 @@ function getInitConfig()
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
     autoplay: true,
+    mutedAutoplay: true,
 
     // advertising: {
     //   //tag: ad67741,

@@ -14,25 +14,38 @@ canplay
 canplaythrough
  */
 
-function MediaEngine(media) {
+function MediaEngine(media, cfg) {
     let media_ = media;
-    let eventBus_;
-    let debug_;
+    let cfg_ = cfg;
+    let eventBus_ = EventBus(oldmtn).getInstance();
+    let debug_ = Debug(oldmtn).getInstance();
+
+    // flag
+    let autoplayAllowed_;
+    let autoplayRequiresMuted_;
 
     function setup() {
-        eventBus_ = EventBus(oldmtn).getInstance();
-        debug_ = Debug(oldmtn).getInstance();
         addEventListeners();
     }
 
     // Begin -- public functions
+    function detectAutoplay() {
+        debug_.log('+detectAutoplay: ' + cfg_.autoplay);
+        if (cfg_.autoplay) {
+            let playPromise = play(); // This is asynchronous!
+            if (playPromise !== undefined) {
+                playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
+            }
+        }
+    }
+
     function play() {
-        debug_.log('Native video element request: play');
+        debug_.log('+Native video element request: play');
         return media_.play();
     }
 
     function pause() {
-        debug_.log('Native video element request: pause');
+        debug_.log('+Native video element request: pause');
         media_.pause();
     }
 
@@ -89,7 +102,63 @@ function MediaEngine(media) {
     }
     // End -- public functions
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Begin autoplay policy
+    // see https://developers.google.com/interactive-media-ads/docs/sdks/html5/desktop-autoplay
+    function onMutedAutoplaySuccess() {
+        debug_.log('+onMutedAutoplaySuccess');
+        autoplayAllowed_ = true;
+        autoplayRequiresMuted_ = true;
+    }
+
+    function onMutedAutoplayFail() {
+        debug_.log('+onMutedAutoplayFail');
+        // Both muted and unmuted autoplay failed. Fall back to click to play.
+        autoplayAllowed_ = false;
+        autoplayRequiresMuted_ = false;
+
+        setVolume(1);
+        unmute();
+    }
+
+    function checkMutedAutoplaySupport() {
+        debug_.log('+checkMutedAutoplaySupport');
+        setVolume(0);
+        mute();
+        let playPromise = play();
+        if (playPromise !== undefined) {
+            playPromise.then(onMutedAutoplaySuccess).catch(onMutedAutoplayFail);
+        }
+    }
+
+    function onAutoplayWithSoundSuccess(info) {
+        // If we make it here, unmuted autoplay works.
+        debug_.log('+onAutoplayWithSoundSuccess');
+        autoplayAllowed_ = true;
+        autoplayRequiresMuted_ = false;
+    }
+
+    function onAutoplayWithSoundFail(err) {
+        // Unmuted autoplay failed. Now try muted autoplay.
+        debug_.log('+onAutoplayWithSoundFail');
+        console.log('err: ', err);
+        autoplayAllowed_ = false;
+        if (cfg_.mutedAutoplay) {
+            checkMutedAutoplaySupport();
+        }
+    }
+    // End autoplay policy
+
     // Begin - private function
+    function onMediaAudioAvailable() {
+        debug_.log('+Native video element event: audioavailable');
+    }
+
+    function onMediaAbort() {
+        debug_.log('+Native video element event: abort');
+    }
+
     function onMediaCanplay() {
         //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
         debug_.log('+Native video element event: canplay');
@@ -97,6 +166,7 @@ function MediaEngine(media) {
 
     function onMediaCanplayThrough() {
         debug_.log('+Native video element event: canplaythrough');
+        eventBus_.trigger(Events.MEDIA_CANPLAY_THROUGH);
     }
 
     function onMediaDurationChanged() {
@@ -109,6 +179,18 @@ function MediaEngine(media) {
     function onMediaEnded() {
         debug_.log('+Native video element event: ended');
         eventBus_.trigger(Events.MEDIA_ENDED);
+    }
+
+    function onMediaError() {
+        debug_.log('+Native video element event: error');
+    }
+
+    function onMediaInterruptBegin() {
+        debug_.log('+Native video element event: interruptbegin');
+    }
+
+    function onMediaInterruptEnd() {
+        debug_.log('+Native video element event: interruptend');
     }
 
     function onMediaLoadedData() {
@@ -171,7 +253,7 @@ function MediaEngine(media) {
     function onMediaProgress(e) {
         var progress = TimeRanges.toString(media_.buffered);
 
-        debug_.log('+Native video element event: progress, ' + progress);
+        //debug_.log('+Native video element event: progress, ' + progress);
     }
 
     function onMediaReadyState(e) {
@@ -184,6 +266,10 @@ function MediaEngine(media) {
 
     function onMediaSeeked() {
         eventBus_.trigger(Events.MEDIA_SEEKED);
+    }
+
+    function onMediaSuspend() {
+        debug_.log('+Native video element event: suspend');
     }
 
     function onMediaTimeUpdated(e) {
@@ -204,10 +290,15 @@ function MediaEngine(media) {
 
     // public function
     function addEventListeners() {
+        media_.addEventListener('mozaudioavailable', onMediaAudioAvailable);
+        media_.addEventListener('abort', onMediaAbort);
         media_.addEventListener('canplay', onMediaCanplay);
         media_.addEventListener('canplaythrough', onMediaCanplayThrough);
         media_.addEventListener('durationchange', onMediaDurationChanged);
         media_.addEventListener('ended', onMediaEnded);
+        media_.addEventListener('error', onMediaError);
+        media_.addEventListener('interruptbegin', onMediaInterruptBegin);
+        media_.addEventListener('interruptend', onMediaInterruptEnd);
         media_.addEventListener('loadeddata', onMediaLoadedData);
         media_.addEventListener('loadedmetadata', onMediaLoadedMetadata);
         media_.addEventListener('loadstart', onMediaLoadStart);
@@ -218,15 +309,22 @@ function MediaEngine(media) {
         media_.addEventListener('readyState', onMediaReadyState);
         media_.addEventListener('seeking', onMediaSeeking);
         media_.addEventListener('seeked', onMediaSeeked);
+        media_.addEventListener('suspend', onMediaSuspend);
         media_.addEventListener('timeupdate', onMediaTimeUpdated);
         media_.addEventListener('volumechange', onMediaVolumeChanged);
         media_.addEventListener('waiting', onMediaWaiting);
     }
 
     function removeEventsListeners() {
+        media_.removeEventListener('mozaudioavailable', onMediaAudioAvailable);
+        media_.removeEventListener('abort', onMediaAbort);
         media_.removeEventListener('canplay', onMediaCanplay);
+        media_.removeEventListener('canplaythrough', onMediaCanplayThrough);
         media_.removeEventListener('durationchange', onMediaDurationChanged);
         media_.removeEventListener('ended', onMediaEnded);
+        media_.removeEventListener('error', onMediaError);
+        media_.removeEventListener('interruptbegin', onMediaInterruptBegin);
+        media_.removeEventListener('interruptend', onMediaInterruptEnd);
         media_.removeEventListener('loadeddata', onMediaLoadedData);
         media_.removeEventListener('loadedmetadata', onMediaMetadata);
         media_.removeEventListener('loadstart', onMediaLoadStart);
@@ -237,6 +335,7 @@ function MediaEngine(media) {
         media_.removeEventListener('readyState', onMediaReadyState);
         media_.removeEventListener('seeking', onMediaSeeking);
         media_.removeEventListener('seeked', onMediaSeeked);
+        media_.removeEventListener('suspend', onMediaSuspend);
         media_.removeEventListener('timeupdate', onMediaTimeUpdated);
         media_.removeEventListener('volumechange', onMediaVolumeChanged);
         media_.removeEventListener('waiting', onMediaWaiting);
@@ -265,6 +364,7 @@ function MediaEngine(media) {
     }
 
     let instance = {
+        detectAutoplay: detectAutoplay,
         play: play,
         pause: pause,
         isPaused: isPaused,
@@ -290,4 +390,5 @@ function MediaEngine(media) {
     return instance;
 }
 
-export default MediaEngine;
+MediaEngine.__h5player_factory_name = 'MediaEngine';
+export default FactoryMaker.getSingletonFactory(MediaEngine);

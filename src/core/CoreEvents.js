@@ -15,6 +15,7 @@ class CoreEvents {
         this.SB_UPDATE_ENDED = 'sbUpdateEnded';
 
         // media element eventsa
+        this.MEDIA_CANPLAY_THROUGH = 'mediaCanPlayThrough';
         this.MEDIA_DURATION_CHANGED = 'mediaDurationChanged';
         this.MEDIA_ENDED = 'mediaEnded';
         this.MEDIA_LOADEDDATA = 'mediaLoadedData';
