@@ -1,7 +1,8 @@
 import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
-import TimeRanges from './utils/timeRanges';
 import Events from './core/CoreEvents';
+import Debug from './core/Debug';
+import TimeRanges from './utils/timeRanges';
 
 function SourceBufferWrapper(rep) {
   let rep_ = rep;
@@ -9,6 +10,7 @@ function SourceBufferWrapper(rep) {
   let mediaSrc_ = null;
   let srcBuffer_ = null;
   let eventBus_ = EventBus(oldmtn).getInstance();
+  let debug_ = Debug(oldmtn).getInstance();
 
   function setup() {
   }
@@ -37,7 +39,7 @@ function SourceBufferWrapper(rep) {
 
       mediaSrc_.removeSourceBuffer(srcBuffer_);
     } catch (ex) {
-      console.log(`Caught exception when remove sb event listener`);
+      debug_.log(`Caught exception when remove sb event listener`);
     }
   }
 
@@ -47,14 +49,14 @@ function SourceBufferWrapper(rep) {
         try {
           srcBuffer_.appendBuffer(buffer);
         } catch (err) {
-          console.log(`error while trying to append buffer:${err.message}`);
+          debug_.log(`error while trying to append buffer:${err.message}`);
         }
       }
     });
   }
 
   function removeBuffer() {
-    console.log('--sourceBuffer_remove--');
+    debug_.log('+sourceBuffer_remove');
 
     let bufStart;
     let bufEnd;
@@ -67,37 +69,36 @@ function SourceBufferWrapper(rep) {
   }
 
   function sourceBuffer_updatestart() {
-    let a = this;
-    console.log('--sourceBuffer_updatestart--');
+    //debug_.log('--sourceBuffer_updatestart--');
   }
 
   function sourceBuffer_update() {
-    let a = this;
-    console.log('--sourceBuffer_update--');
+    //debug_.log('--sourceBuffer_update--');
   }
 
   function sourceBuffer_updateend() {
-    let a = this;
-
-    // console.log('--sourceBuffer_updateend--, clientWidth: ' + media_.clientWidth + ', clientHeight: ' + media_.clientHeight);
-    // console.log('--sourceBuffer_updateend--, width: ' + media_.width + ', height: ' + media_.height);
-    // console.log('--sourceBuffer_updateend--, videoWidth: ' + media_.videoWidth + ', videoHeight: ' + media_.videoHeight);
+    // debug_.log('--sourceBuffer_updateend--, clientWidth: ' + media_.clientWidth + ', clientHeight: ' + media_.clientHeight);
+    // debug_.log('--sourceBuffer_updateend--, width: ' + media_.width + ', height: ' + media_.height);
+    // debug_.log('--sourceBuffer_updateend--, videoWidth: ' + media_.videoWidth + ', videoHeight: ' + media_.videoHeight);
 
     //
-    //console.log(`main buffered : ${TimeRanges.toString(media_.buffered)}` + ', currentTime: ' + media_.currentTime);
+    //debug_.log(`main buffered : ${TimeRanges.toString(media_.buffered)}` + ', currentTime: ' + media_.currentTime);
 
+    // BD
+    //if (rep_.type === 'audio')
+    {
+      debug_.log(`Native, ${rep_.type} buffered : ${TimeRanges.toString(srcBuffer_.buffered)}`);
+    }
+    // ED
     eventBus_.trigger(Events.SB_UPDATE_ENDED, {});
   }
 
   function sourceBuffer_error(e) {
-    let a = this;
-
-    console.log('--sourceBuffer_error--', e);
+    debug_.log('+sourceBuffer_error', e);
   }
 
   function sourceBuffer_abort() {
-    let a = this;
-    console.log('--sourceBuffer_abort--');
+    debug_.log('+sourceBuffer_abort');
   }
 
   function waitForUpdateEnd(buffer, callback) {

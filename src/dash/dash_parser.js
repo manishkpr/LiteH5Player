@@ -12,13 +12,60 @@ function DashParser() {
     let audioHeaderAdded_ = false;
     let audioIndex_ = 0;
 
+    function audio_only_case01() {
+        let aRep = null;
+
+        // construct dash audio
+        let aContents = [];
+        for (let i = 1; i <= 15; i++) {
+            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
+            aContents.push(content);
+        }
+
+        aRep = {
+            type: 'audio',
+            codecs: 'audio/mp4; codecs="mp4a.40.2"',
+            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/init.mp4',
+            media: aContents
+        };
+
+        activeStream_ = {
+            aRep: aRep,
+            vRep: null
+        };
+
+        return activeStream_;
+    }
+
+    function video_only_case01() {
+        let vRep = null;
+        let vContents = [];
+        for (let i = 1; i <= 15; i++) {
+            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
+            vContents.push(content);
+        }
+        vRep = {
+            type: 'video',
+            codecs: 'video/mp4; codecs="avc1.64001e"',
+            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
+            media: vContents
+        };
+
+        activeStream_ = {
+            aRep: null,
+            vRep: vRep
+        };
+
+        return activeStream_;
+    }
+
     function case01() {
         let aRep = null;
         let vRep = null;
 
         // construct dash audio
         let aContents = [];
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= 15; i++) {
             let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
             aContents.push(content);
         }
@@ -75,12 +122,62 @@ function DashParser() {
         return activeStream_;
     }
 
+    function case03() {
+        let aRep = null;
+        let vRep = null;
+
+        // construct dash audio
+        let aContents = [];
+        for (let i = 0; i <= 15; i++) {
+            let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/' + i.toString() + '.m4s';
+            aContents.push(content);
+        }
+
+        aRep = {
+            type: 'audio',
+            codecs: 'audio/mp4; codecs="mp4a.40.29"',
+            initialization: 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/Header.m4s',
+            media: aContents
+        };
+
+        // construct dash video
+        let vContents = [];
+        for (let i = 0; i <= 15; i++) {
+            let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/' + i.toString() + '.m4s';
+            vContents.push(content);
+        }
+        vRep = {
+            type: 'video',
+            codecs: 'video/mp4; codecs="avc1.4D4029"',
+            initialization: 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/Header.m4s',
+            media: vContents
+        };
+
+        activeStream_ = {
+            aRep: aRep,
+            vRep: vRep
+        };
+
+        return activeStream_;
+    }
+
     function loadManifest(url) {
         videoHeaderAdded_ = false;
         videoIndex_ = 0;
+        audioHeaderAdded_ = false;
+        audioIndex_ = 0;
 
-        //return case01();
-        return case02();
+        if (url.indexOf('audio_only_case01') !== -1) {
+            return audio_only_case01();
+        } else if (url.indexOf('video_only_case01') !== -1) {
+            return video_only_case01();
+        } else if (url.indexOf('case01') !== -1) {
+            return case01();
+        } else if (url.indexOf('case02') !== -1) {
+            return case02();
+        } else if (url.indexOf('case03') !== -1) {
+            return case03();
+        }
     }
 
     function getNextFragment() {
@@ -101,6 +198,15 @@ function DashParser() {
                 audioHeaderAdded_ = true;
                 break;
             }
+
+            // BD
+            if (videoIndex_ < 1) {
+                ret.type = activeStream_.vRep.type;
+                ret.url = activeStream_.vRep.media[videoIndex_];
+                videoIndex_++;
+                break;
+            }
+            // ED
 
             // media segments
             if (videoIndex_ >= activeStream_.vRep.media.length ||

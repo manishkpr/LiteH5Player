@@ -3,6 +3,7 @@ import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 import Debug from './core/Debug';
 import TimeRanges from './utils/timeRanges';
+import CommonUtils from './utils/common_utils';
 
 /* During the loading process of an audio/video, the following events occur, in this order:
 loadstart
@@ -32,8 +33,15 @@ function MediaEngine(media, cfg) {
     function detectAutoplay() {
         debug_.log('+detectAutoplay: ' + cfg_.autoplay);
         if (cfg_.autoplay) {
+            //media_.autoplay = true;
             let playPromise = play(); // This is asynchronous!
             if (playPromise !== undefined) {
+                // console.log('webkitAudioDecodedByteCount: ' + media_.webkitAudioDecodedByteCount);
+                // console.log('webkitVideoDecodedByteCount: ' + media_.webkitVideoDecodedByteCount);
+                // if (CommonUtils.isSafari()) {
+                //     console.log('audioTracks length: ' + media_.audioTracks.length);
+                // }
+
                 playPromise.then(onAutoplayWithSoundSuccess).catch(onAutoplayWithSoundFail);
             }
         }
@@ -141,8 +149,7 @@ function MediaEngine(media, cfg) {
 
     function onAutoplayWithSoundFail(err) {
         // Unmuted autoplay failed. Now try muted autoplay.
-        debug_.log('+onAutoplayWithSoundFail');
-        console.log('err: ', err);
+        debug_.log('+onAutoplayWithSoundFail, err: ', err);
         autoplayAllowed_ = false;
         if (cfg_.mutedAutoplay) {
             checkMutedAutoplaySupport();
@@ -162,17 +169,19 @@ function MediaEngine(media, cfg) {
     function onMediaCanplay() {
         //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
         debug_.log('+Native video element event: canplay');
+        let a = media_;
     }
 
     function onMediaCanplayThrough() {
         debug_.log('+Native video element event: canplaythrough');
+        let a = media_;
         eventBus_.trigger(Events.MEDIA_CANPLAY_THROUGH);
     }
 
     function onMediaDurationChanged() {
-        debug_.log('+Native video element event: durationchange' +
-            ', currentTime: ' + media_.currentTime +
-            ', duration: ' + media_.duration);
+        // debug_.log('+Native video element event: durationchange' +
+        //     ', currentTime: ' + media_.currentTime +
+        //     ', duration: ' + media_.duration);
         eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
     }
 
