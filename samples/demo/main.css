@@ -1,5 +1,5 @@
 body {
-  margin: 0px;
+  margin: 16px;
   background-color: lightgray;
 }
 
@@ -16,33 +16,33 @@ body {
   height: 100%;
 }
 
-.h5p-video-container {
+.vop-video-container {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: black;
 }
 
-.h5p-video {
+.vop-video {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.h5p-shade {
+.vop-shade {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: transparent;
 }
 
-.h5p-shade:not(.h5p-shade-test1) {
+.vop-shade:not(.vop-shade-test1) {
   /*background-color: red;*/
 }
 
 
 /******** Begin Tooltip ********/
-.h5p-tooltip {
+.vop-tooltip {
   position: absolute;
   max-width: 300px;
   height: 25px;
@@ -50,7 +50,7 @@ body {
   display: none;
 }
 
-.h5p-tooltip-text {
+.vop-tooltip-text {
   position: absolute;
   width: 44px;
   height: 25px;
@@ -62,29 +62,29 @@ body {
 }
 /******** End Tooltip ********/
 
-.h5p-gradient-bottom {
+.vop-gradient-bottom {
   width:100%;position:absolute;background-repeat:repeat-x;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);-moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);-webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   pointer-events:none;
 }
 
-.h5p-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:2;background-position:bottom }
+.vop-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:2;background-position:bottom }
 
-.h5p-chrome-bottom {position:absolute;text-shadow:0 0 2px rgba(0,0,0,.5)}
-.h5p-chrome-bottom {left:12px;right:12px;bottom:0;height:41px;z-index:2;text-align:left;direction:ltr;}
-.h5p-chrome-bottom {
+.vop-chrome-bottom {position:absolute;text-shadow:0 0 2px rgba(0,0,0,.5)}
+.vop-chrome-bottom {left:12px;right:12px;bottom:0;height:41px;z-index:2;text-align:left;direction:ltr;}
+.vop-chrome-bottom {
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1)
 }
 
-.h5p-progress-bar {
+.vop-progress-bar {
   width: 100%;
   height: 5px;
   background-color: red;
   cursor: pointer;
 }
 
-.h5p-scrubber-container {
+.vop-scrubber-container {
   position:absolute;
   height:13px;
   width:13px;
@@ -96,25 +96,25 @@ body {
   pointer-events: none;
 }
 
-.h5p-controls {
+.vop-controls {
   width: 100%;
   height: 36px;
 }
 
-.h5p-left-controls {
+.vop-left-controls {
   height: 100%;
   width: auto;
   float: left;
 }
 
-.h5p-right-controls {
+.vop-right-controls {
   height: 100%;
   width: auto;
   float: right;
 }
 
 /******** Begin custom button ********/
-.h5p-button {
+.vop-button {
   width: 36px;
   height: 100%;
   border:none;
@@ -127,27 +127,27 @@ body {
   line-height:inherit;
   cursor: pointer;
 }
-.h5p-button:focus,
-.h5p-button {outline:0}
-.h5p-button::-moz-focus-inner {padding:0;border:0}
+.vop-button:focus,
+.vop-button {outline:0}
+.vop-button::-moz-focus-inner {padding:0;border:0}
 
 /* */
-.h5p-svg-shadow {
+.vop-svg-shadow {
   stroke: #000;
   stroke-opacity: .15;
   stroke-width: 2px;
   fill: none;
 }
 
-.h5p-svg-fill {
+.vop-svg-fill {
   fill: #fff;
 }
 
-.h5p-play-button {
+.vop-play-button {
   float: left;
 }
 
-.h5p-play-button::before {
+.vop-play-button::before {
   content: '';
   display: block;
   height: 100%;
@@ -158,29 +158,29 @@ body {
 }
 
 /* time unit */
-.h5p-time-display {
+.vop-time-display {
   float: left;
   height: 100%;
   width: auto;
   display:table;
 }
 
-.h5p-time-text {
+.vop-time-text {
   color: white;
   display: table-cell;
   vertical-align: middle;
 }
 
-.h5p-mute-button {
+.vop-mute-button {
   float: left;
 }
 
-.h5p-setting-button {
+.vop-setting-button {
   float: left;
 }
 /******** End custom button ********/
 
-.h5p-ads-container {
+.vop-ads-container {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -189,42 +189,42 @@ body {
 }
 
 /************ Begin volume bar ************/
-.h5p-volume-panel {
+.vop-volume-panel {
   float: left;
   width: 52px;
   height: 100%;
   cursor: pointer;
 }
 
-.h5p-volume-slider {
+.vop-volume-slider {
   position:relative;
   top:50%;
   height:3px;
   background-color: #fff;
 }
 
-.h5p-volume-slider-handle {
+.vop-volume-slider-handle {
   position:absolute;top:50%;width:10px;height:10px;border-radius:5px;margin-top:-5px;background:#fff;
 }
 /************ End volume bar ************/
 
-.h5p-autohide { cursor:none }
-.h5p-autohide .h5p-chrome-bottom {
+.vop-autohide { cursor:none }
+.vop-autohide .vop-chrome-bottom {
   opacity: 0;
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
-.h5p-autohide .h5p-shade,
-.h5p-autohide .h5p-play-button,
-.h5p-autohide .h5p-ads-container,
-.h5p-autohide .h5p-ads-container > div,
-.h5p-autohide .h5p-mute-button,
-.h5p-autohide .h5p-volume-bar,
-.h5p-autohide .h5p-volume-slider,
-.h5p-autohide .h5p-volume-panel,
-.h5p-autohide .h5p-volume-slider,
-.h5p-autohide .h5p-volume-slider-handle {
+.vop-autohide .vop-shade,
+.vop-autohide .vop-play-button,
+.vop-autohide .vop-ads-container,
+.vop-autohide .vop-ads-container > div,
+.vop-autohide .vop-mute-button,
+.vop-autohide .vop-volume-bar,
+.vop-autohide .vop-volume-slider,
+.vop-autohide .vop-volume-panel,
+.vop-autohide .vop-volume-slider,
+.vop-autohide .vop-volume-slider-handle {
   cursor: none;
 }
 

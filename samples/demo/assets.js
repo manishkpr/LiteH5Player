@@ -71,33 +71,33 @@ function getInitConfig()
     autoplay: true,
     mutedAutoplay: true,
 
-    advertising: {
-      //tag: ad67741,
-      //tag: ad67720,
-      //tag: ad67966,
-      //tag: ad68010,
-      //tag: ad68010_local,
-      //tag: yun_test_ad01,
-      //tag: Single_Inline_Linear,
-      //tag: Single_Skippable_Inline,
-      tag: Single_Non_linear_Inline,
-      //tag: Single_Non_linear_Inline2,
-      //tag: VMAP_Pre_roll_Bumper,
-      //tag: VMAP_Post_roll_Bumper,
-      //tag: VMAP_Post_roll,
-      //tag: VMAP_Pre_Mid_Post,
-      //tag: VMAP_Pre_3Mid_Post,
-      //tag: VMAP_5Ads_Every_10_Secs,
-      //tag: VMAP_Pre_10_20_Post,
-      //tag: VMAP_Pre_10_20Skip_Post,
-      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      //enablePreloading: true,
-      //autoplayadsmuted: true,
-      vpaidmode: 'insecure',
-      //forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   //tag: ad67741,
+    //   //tag: ad67720,
+    //   //tag: ad67966,
+    //   //tag: ad68010,
+    //   //tag: ad68010_local,
+    //   //tag: yun_test_ad01,
+    //   //tag: Single_Inline_Linear,
+    //   //tag: Single_Skippable_Inline,
+    //   tag: Single_Non_linear_Inline,
+    //   //tag: Single_Non_linear_Inline2,
+    //   //tag: VMAP_Pre_roll_Bumper,
+    //   //tag: VMAP_Post_roll_Bumper,
+    //   //tag: VMAP_Post_roll,
+    //   //tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_3Mid_Post,
+    //   //tag: VMAP_5Ads_Every_10_Secs,
+    //   //tag: VMAP_Pre_10_20_Post,
+    //   //tag: VMAP_Pre_10_20Skip_Post,
+    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+    //   //enablePreloading: true,
+    //   //autoplayadsmuted: true,
+    //   vpaidmode: 'insecure',
+    //   //forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
+    // }
   };
 
   return cfg;
@@ -131,8 +131,8 @@ function getMediaInfo()
     //url: 'audio_only_case01.mpd',
     //url: 'video_only_case01.mpd',
     //url: 'case01.mpd', // video + audio
-    //url: 'case02.mpd', // video contain audio
-    url: 'case03.mpd', // video + audio
+    url: 'case02.mpd', // video contain audio
+    //url: 'case03.mpd', // video + audio
 
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',

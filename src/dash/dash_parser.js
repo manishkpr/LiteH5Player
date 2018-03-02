@@ -128,7 +128,7 @@ function DashParser() {
 
         // construct dash audio
         let aContents = [];
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 0; i <= 50; i++) {
             let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/' + i.toString() + '.m4s';
             aContents.push(content);
         }
@@ -142,7 +142,7 @@ function DashParser() {
 
         // construct dash video
         let vContents = [];
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 0; i <= 50; i++) {
             let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/' + i.toString() + '.m4s';
             vContents.push(content);
         }
