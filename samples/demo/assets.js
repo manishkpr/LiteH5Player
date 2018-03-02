@@ -72,7 +72,7 @@ function getInitConfig()
     mutedAutoplay: true,
 
     advertising: {
-      tag: ad67741,
+      //tag: ad67741,
       //tag: ad67720,
       //tag: ad67966,
       //tag: ad68010,
@@ -80,7 +80,7 @@ function getInitConfig()
       //tag: yun_test_ad01,
       //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
-      //tag: Single_Non_linear_Inline,
+      tag: Single_Non_linear_Inline,
       //tag: Single_Non_linear_Inline2,
       //tag: VMAP_Pre_roll_Bumper,
       //tag: VMAP_Post_roll_Bumper,

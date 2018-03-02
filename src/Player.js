@@ -500,29 +500,7 @@ function Player(containerId) {
         }
     }
 
-    function onAdStarted(e) {
-        let ad = e.ad;
-
-        let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
-        selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
-        selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
-        selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
-
-        for (let i = 0; i < cfg_.advertising.companions.length; i++) {
-            let companion = cfg_.advertising.companions[i];
-            // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
-            let companionAds = ad.getCompanionAds(companion.width, companion.height, selectionCriteria);
-            if (companionAds && companionAds.length > 0) {
-                let companionAd = companionAds[0];
-                // Get HTML content from the companion ad.
-                let content = companionAd.getContent();
-                // Write the content to the companion ad slot.
-                let div = document.getElementById(companion.id);
-                if (div) {
-                    div.innerHTML = content;
-                }
-            }
-        }
+    function onAdStarted() {
     }
 
     function onAdComplete() {}
