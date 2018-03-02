@@ -275,12 +275,12 @@ function Player(containerId) {
         }
     }
 
-    function currentTime() {
+    function getPosition() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            return adsEngine_.currentTime();
+            return adsEngine_.getPosition();
         } else {
             if (!mediaEngine_) { return; }
-            return mediaEngine_.currentTime();
+            return mediaEngine_.getPosition();
         }
     }
 
@@ -345,8 +345,8 @@ function Player(containerId) {
         return mediaEngine_.getVolume();
     }
 
-    function seek(time) {
-        mediaEngine_.seek(time);
+    function setPosition(time) {
+        mediaEngine_.setPosition(time);
     }
 
     function getWidth() {
@@ -553,7 +553,8 @@ function Player(containerId) {
         play: play,
         pause: pause,
         isPaused: isPaused,
-        currentTime: currentTime,
+        getPosition: getPosition,
+        setPosition: setPosition,
         duration: duration,
         isEnded: isEnded,
         mute: mute,
@@ -561,7 +562,6 @@ function Player(containerId) {
         isMuted: isMuted,
         setVolume: setVolume,
         getVolume: getVolume,
-        seek: seek,
         // Resize
         getWidth: getWidth,
         getHeight: getHeight,

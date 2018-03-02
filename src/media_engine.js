@@ -61,7 +61,7 @@ function MediaEngine(media, cfg) {
         return media_.paused;
     }
 
-    function currentTime() {
+    function getPosition() {
         return media_.currentTime;
     }
 
@@ -69,7 +69,7 @@ function MediaEngine(media, cfg) {
         return media_.duration;
     }
 
-    function seek(time) {
+    function setPosition(time) {
         media_.currentTime = time;
     }
 
@@ -180,7 +180,7 @@ function MediaEngine(media, cfg) {
 
     function onMediaDurationChanged() {
         // debug_.log('+Native video element event: durationchange' +
-        //     ', currentTime: ' + media_.currentTime +
+        //     ', getPosition: ' + media_.getPosition +
         //     ', duration: ' + media_.duration);
         eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
     }
@@ -283,7 +283,7 @@ function MediaEngine(media, cfg) {
 
     function onMediaTimeUpdated(e) {
         eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
-        //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', currentTime: ' + media.currentTime);
+        //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', getPosition: ' + media.getPosition);
     }
 
     function onMediaVolumeChanged() {
@@ -377,9 +377,9 @@ function MediaEngine(media, cfg) {
         play: play,
         pause: pause,
         isPaused: isPaused,
-        currentTime: currentTime,
+        getPosition: getPosition,
+        setPosition: setPosition,
         duration: duration,
-        seek: seek,
         isSeeking: isSeeking,
         isEnded: isEnded,
         mute: mute,

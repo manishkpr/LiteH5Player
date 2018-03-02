@@ -214,7 +214,7 @@ function AdsEngine(adContainer, media, advertising) {
         adsManager_.setVolume(volume);
     }
 
-    function currentTime() {
+    function getPosition() {
         return position_;
     }
 
@@ -513,7 +513,7 @@ function AdsEngine(adContainer, media, advertising) {
         isMuted: isMuted,
         getVolume: getVolume,
         setVolume: setVolume,
-        currentTime: currentTime,
+        getPosition: getPosition,
         duration: duration,
         resize: resize,
         requestAds: requestAds,
