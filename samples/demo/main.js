@@ -65,6 +65,7 @@ var valueVolumeMovePosition = 0;
 
 // reference variable of ad
 var flagAdStarted = false;
+var flagIsLinearAd = false;
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -545,7 +546,7 @@ function onH5PShadeMouseleave() {
 }
 
 function onH5PShadeClick() {
-    if (flagAdStarted) {
+    if (flagAdStarted && flagIsLinearAd) {
         return;
     }
 
@@ -966,8 +967,9 @@ function onLog(e) {
     uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);
 }
 
-function onAdStarted() {
+function onAdStarted(e) {
     flagAdStarted = true;
+    flagIsLinearAd = e.isLinearAd;
 }
 
 function onAdComplete() {
@@ -1009,7 +1011,7 @@ window.onload = function () {
     initH5Player();
 
     // BD
-    onBtnOpen();
+    //onBtnOpen();
     // ED
 };
 

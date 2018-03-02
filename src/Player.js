@@ -137,6 +137,10 @@ function Player(containerId) {
         mediaEngine_.setSrc(objURL);
         drmEngine_.setDrmInfo(streamInfo_);
 
+        if (adsEngine_) {
+            adsEngine_.requestAds();
+        }
+
         debug_.log('Player, -open');
     }
 
@@ -468,7 +472,7 @@ function Player(containerId) {
         mediaEngine_.revokeSrc();
 
         // Detecting autoplay success or failure
-        mediaEngine_.detectAutoplay();
+        //mediaEngine_.detectAutoplay();
 
         //
         scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
@@ -531,6 +535,18 @@ function Player(containerId) {
     }
 
     function test() {
+        var ad67741 = 'https://googleads.g.doubleclick.net/pagead/ads?ad_type=skippablevideo_text_image_flash&client=ca-video-pub-3701526372767426&description_url=[description_url]&hl=en';
+        
+        let self = this;
+        function cbSuccess(bytes) {
+            console.log('bytes: ' + bytes);
+        }
+
+        let request = {
+            url: ad67741,
+            cbSuccess: cbSuccess.bind(self)
+        };
+        xhrLoader_.load(request);
     }
 
     function test2() {

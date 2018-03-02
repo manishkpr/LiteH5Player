@@ -53,8 +53,6 @@ function AdsEngine(adContainer, media, advertising) {
     let position_;
 
     let isMobilePlatform_ = false; //= CommonUtils.isMobilePlatform();
-    let autoplayAllowed_;
-    let autoplayRequiresMuted_;
 
     function setup() {
         if (advertising_.vpaidmode) {
@@ -79,7 +77,7 @@ function AdsEngine(adContainer, media, advertising) {
             new google.ima.AdDisplayContainer(
                 adContainer_,
                 media_,
-                advertising_.companion ? advertising_.companion.div : null);
+                advertising_.companions[0] ? advertising_.companions[0].div : null);
 
         adsLoader_ = new google.ima.AdsLoader(adDisplayContainer_);
         // Mobile Skippable Ads
@@ -124,10 +122,7 @@ function AdsEngine(adContainer, media, advertising) {
         adDisplayContainer_.initialize();
     }
 
-    function requestAds(autoplayAllowed, autoplayRequiresMuted) {
-        autoplayAllowed_ = autoplayAllowed;
-        autoplayRequiresMuted_ = autoplayRequiresMuted;
-
+    function requestAds() {
         width_ = adContainer_.clientWidth;
         height_ = adContainer_.clientHeight;
         // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
@@ -144,8 +139,8 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotWidth = width_;
         adsRequest.nonLinearAdSlotHeight = height_;
 
-        adsRequest.setAdWillAutoPlay(autoplayAllowed_);
-        adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
+        // adsRequest.setAdWillAutoPlay(autoplayAllowed_);
+        // adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
         adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
@@ -173,26 +168,14 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function startAdsInternal() {
-        debug_.log('+AdsEngine.startAdsInternal, autoplayAllowed_: ' + autoplayAllowed_ +
-            ', autoplayRequiresMuted_: ' + autoplayRequiresMuted_ +
-            ', autoplayadsmuted: ' + advertising.autoplayadsmuted);
+        debug_.log('+AdsEngine.startAdsInternal');
 
         // sometimes, requestAds may be caught an error, so we return here directly.
         if (!adsManager_) {
             return;
         }
 
-        if (autoplayAllowed_) {
-            if (autoplayRequiresMuted_) {
-                if (advertising.autoplayadsmuted) {
-                    playAd();
-                } else {
-                    // do nothing here.
-                }
-            } else {
-                playAd();
-            }
-        }
+        playAd();
     }
 
     function isPaused() {
@@ -253,7 +236,9 @@ function AdsEngine(adContainer, media, advertising) {
 
     function resize(width, height, fullscreen) {
         if (adsManager_) {
-            adsManager_.resize(width, height, google.ima.ViewMode.FULLSCREEN);
+            width_ = width;
+            height_ = height;
+            adsManager_.resize(width_, height_, google.ima.ViewMode.FULLSCREEN);
         }
     }
 
@@ -411,13 +396,26 @@ function AdsEngine(adContainer, media, advertising) {
                 duration_ = ad.getDuration();
 
                 eventBus_.trigger(Events.AD_STARTED, {
-                    ad: ad
+                    isLinearAd: isLinearAd_
                 });
                 if (isLinearAd_) {
                     startAdTimer();
                     eventBus_.trigger(Events.AD_TIMEUPDATE);
                 } else {
                     eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
+                }
+
+                // check companions
+                let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
+                selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
+                selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
+                selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
+
+                // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
+                let companionAds = ad.getCompanionAds(width_, height_, selectionCriteria);
+                for (let i = 0; i < companionAds.length; i ++) {
+                    let companionAd = companionAds[i];
+                    console.log(`companion[${i}], type:${companionAd.getContentType()} width:${companionAd.getWidth()}, height:${companionAd.getHeight()}`);
                 }
             }
             break;
