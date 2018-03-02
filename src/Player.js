@@ -378,6 +378,10 @@ function Player(containerId) {
         document.webkitIsFullScreen;
     }
 
+    function getValidBufferPosition(currentPos) {
+        return mediaEngine_.getValidBufferPosition(currentPos);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Begin - TextEngine
     function addTextTrack() {
@@ -434,11 +438,6 @@ function Player(containerId) {
     function addEventListeners() {
         eventBus_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
 
-        eventBus_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-        eventBus_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
-
-        eventBus_.on(oldmtn.Events.SB_UPDATE_ENDED, onSbUpdateEnded, {});
-
         eventBus_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
         eventBus_.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
         eventBus_.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
@@ -472,15 +471,6 @@ function Player(containerId) {
         scheduleCtrl_.start(parser_);
     }
 
-    function onMediaDurationChanged() {
-    }
-
-    function onMediaEnded() {
-    }
-
-    function onSbUpdateEnded() {
-    }
-
     function onAdContentPauseRequested() {
         mediaEngine_.pause();
     }
@@ -504,18 +494,8 @@ function Player(containerId) {
     }
 
     function test() {
-        var ad67741 = 'https://googleads.g.doubleclick.net/pagead/ads?ad_type=skippablevideo_text_image_flash&client=ca-video-pub-3701526372767426&description_url=[description_url]&hl=en';
-        
-        let self = this;
-        function cbSuccess(bytes) {
-            console.log('bytes: ' + bytes);
-        }
+        let media = media_;
 
-        let request = {
-            url: ad67741,
-            cbSuccess: cbSuccess.bind(self)
-        };
-        xhrLoader_.load(request);
     }
 
     function test2() {
@@ -558,6 +538,8 @@ function Player(containerId) {
         getHeight: getHeight,
         resize: resize,
         isFullscreen: isFullscreen,
+        // buffer
+        getValidBufferPosition: getValidBufferPosition,
         // Ads
         playAd: playAd,
         //

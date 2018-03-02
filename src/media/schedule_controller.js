@@ -12,6 +12,10 @@ function ScheduleController() {
     // flag
     let isFragmentProcessing_ = false;
 
+    function setup() {
+        
+    }
+    
     function schedule() {
         if (isFragmentProcessing_) {
             startScheduleTimer(500);
@@ -64,6 +68,7 @@ function ScheduleController() {
         start: start,
         stop: stop
     };
+    setup();
     return instance;
 }
 

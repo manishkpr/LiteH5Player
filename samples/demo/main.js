@@ -32,7 +32,7 @@ var castSender = null;
 var metaWidth;
 var metaHeight;
 
-var colorList_contentProgress = ['red', 'rgba(192,192,192,0.3)'];
+var colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
 var colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
 var colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 
@@ -217,7 +217,9 @@ function stopWaitingUI() {
 }
 
 // begin progress bar
-function genGradientColor(posList, totalRange, colorList) {
+function genGradientColor(posList, colorList) {
+    var totalRange = posList[posList.length - 1];
+
     var gradient = ['to right'];
     for (var i = 0; i < posList.length; ++i) {
         var range = posList[i] * 100 / totalRange;
@@ -300,6 +302,7 @@ function updateProgressBarUI() {
 
     // part - logic process
     var uiPosition;
+    var uiBufferedPos;
     if (ended) {
         if (isProgressBarMousedown) {
             uiPosition = valueProgressMovePosition;
@@ -317,8 +320,9 @@ function updateProgressBarUI() {
 
     // part - output, update ui
     // update time progress bar
-    var progressList = [uiPosition, duration];
-    vopProgressBar.style.background = genGradientColor(progressList, duration, colorList_contentProgress);
+    uiBufferedPos = player_.getValidBufferPosition(uiPosition);
+    var progressList = [uiPosition, uiBufferedPos, duration];
+    vopProgressBar.style.background = genGradientColor(progressList, colorList_contentProgress);
 
     // update time progress scrubber button
     var vScrubber = document.querySelector('.vop-scrubber-container');
@@ -328,8 +332,6 @@ function updateProgressBarUI() {
     var c = oldmtn.CommonUtils.timeToString(uiPosition);
     var d = oldmtn.CommonUtils.timeToString(duration);
     var fmtTime = c + '/' + d;
-
-    //printLog('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
     var tDisplay = document.querySelector('.vop-time-text');
     tDisplay.innerText = fmtTime;
 }
@@ -340,7 +342,7 @@ function updateAdProgressUI() {
 
     // update time progress bar
     var progressList = [getPosition, duration];
-    vopProgressBar.style.background = genGradientColor(progressList, duration, colorList_adProgress);
+    vopProgressBar.style.background = genGradientColor(progressList, colorList_adProgress);
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(getPosition);
@@ -392,7 +394,7 @@ function updateContentVolumeBarUI(muted, volume) {
     // update muted button
     vopMuteSvg.setAttribute('d', uiMutedIcon);
     // update volume slider background
-    vopVolumeSlider.style.background = genGradientColor(uiVolumeList, 1, colorList_volume);
+    vopVolumeSlider.style.background = genGradientColor(uiVolumeList, colorList_volume);
     // update volume slider handle
     vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
 }
@@ -716,7 +718,7 @@ function onBtnTest() {
     //player_.test();
 
     var progressList = [0.5, 1];
-    vopProgressBar.style.background = genGradientColor(progressList, 1, colorList_contentProgress);
+    vopProgressBar.style.background = genGradientColor(progressList, colorList_contentProgress);
 }
 
 function onBtnTest2() {

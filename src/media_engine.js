@@ -362,6 +362,21 @@ function MediaEngine(media, cfg) {
         URL.revokeObjectURL(media_.src);
     }
 
+    function getValidBufferPosition(currentPos) {
+        let bufferedEnd;
+        for (let i = 0; i < media_.buffered.length; ++i) {
+            let start = media_.buffered.start(i);
+            let end = media_.buffered.end(i)
+
+            if (currentPos >= start && currentPos <= end) {
+                bufferedEnd = end;
+                break;
+            }
+        }
+
+        return bufferedEnd;
+    }
+
     function close() {
         debug_.log('+media_engine.js, close');
         // Detach properly the MediaSource from the HTMLMediaElement as
@@ -392,7 +407,8 @@ function MediaEngine(media, cfg) {
 
         close: close,
         setSrc: setSrc,
-        revokeSrc: revokeSrc
+        revokeSrc: revokeSrc,
+        getValidBufferPosition: getValidBufferPosition
     };
 
     setup();

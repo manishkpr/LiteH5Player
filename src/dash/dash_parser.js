@@ -127,9 +127,11 @@ function DashParser() {
         let aRep = null;
         let vRep = null;
 
+        let cnt = 50;
+        
         // construct dash audio
         let aContents = [];
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 0; i <= cnt; i++) {
             let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/' + i.toString() + '.m4s';
             aContents.push(content);
         }
@@ -143,7 +145,7 @@ function DashParser() {
 
         // construct dash video
         let vContents = [];
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 0; i <= cnt; i++) {
             let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/' + i.toString() + '.m4s';
             vContents.push(content);
         }
@@ -156,7 +158,8 @@ function DashParser() {
 
         activeStream_ = {
             aRep: aRep,
-            vRep: vRep
+            vRep: vRep,
+            mediaPresentationDuration: 290 // manifest max duration
         };
 
         return activeStream_;
