@@ -117,6 +117,7 @@ function DashParser() {
         activeStream_ = {
             vRep: vRep,
             aRep: null,
+            mediaPresentationDuration: 176
         };
 
         return activeStream_;

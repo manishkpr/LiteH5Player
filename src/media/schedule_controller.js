@@ -20,7 +20,7 @@ function ScheduleController() {
 
         let fragment = parser_.getNextFragment();
         if (!fragment) {
-            // stop
+            eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
             return;
         }
 

@@ -45,6 +45,7 @@ class CoreEvents {
 
         // controller events
         this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
+        this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
 
         //
         this.TEST_MSG = 'testMsg';

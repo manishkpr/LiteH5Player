@@ -16,6 +16,7 @@ function MediaSourceEngine() {
 
     function setup() {
         eventBus_.on(Events.FRAGMENT_DOWNLOADED, onFragmentDownloaded);
+        eventBus_.on(Events.FRAGMENT_DOWNLOADED_ENDED, onFragmentDownloadedEnded);
     }
 
     function open(activeStream) {
@@ -102,6 +103,11 @@ function MediaSourceEngine() {
         // once received, don't listen anymore to sourceopen event
         mediaSrc_.removeEventListener('sourceopen', onMediaSourceOpen);
         mediaSrc_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
+        
+        // set media source duration
+        if (activeStream_.mediaPresentationDuration) {
+            setDuration(activeStream_.mediaPresentationDuration);
+        }
 
         if (vSourceBuffer_) {
             vSourceBuffer_.open(mediaSrc_);
@@ -126,6 +132,10 @@ function MediaSourceEngine() {
 
     function onFragmentDownloaded(e) {
         appendBuffer(e);
+    }
+
+    function onFragmentDownloadedEnded() {
+        signalEndOfStream();
     }
 
     let instance = {

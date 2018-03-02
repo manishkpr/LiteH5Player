@@ -65,7 +65,7 @@ function MediaEngine(media, cfg) {
         return media_.currentTime;
     }
 
-    function duration() {
+    function getDuration() {
         return media_.duration;
     }
 
@@ -379,7 +379,7 @@ function MediaEngine(media, cfg) {
         isPaused: isPaused,
         getPosition: getPosition,
         setPosition: setPosition,
-        duration: duration,
+        getDuration: getDuration,
         isSeeking: isSeeking,
         isEnded: isEnded,
         mute: mute,

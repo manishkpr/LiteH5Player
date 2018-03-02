@@ -15,6 +15,7 @@ var vopVolumeSliderHandle = null;
 var vopPlaySvg;
 var vopMuteSvg;
 var vopSettingSvg;
+var vopFullscreen;
 var vopFullScreenCorner0;
 var vopFullScreenCorner1;
 var vopFullScreenCorner2;
@@ -59,14 +60,149 @@ var flagEndedBeforeMousedown = false;
 var flagPositionBeforeMousedown = 0;
 var valueProgressMovePosition = 0;
 
-// reference variable of volume bar
-var flagvopVolumeSliderMousedown = false;
+// flags reference variable of volume bar
+var flagVolumeSliderMousedown = false;
 var valueVolumeMovePosition = 0;
 
 // reference variable of ad
 var flagAdStarted = false;
 var flagIsLinearAd = false;
 
+// Title: init part
+function initUI() {
+    vopPlayer = document.querySelector('.html5-video-player');
+    vopShade = document.querySelector('.vop-shade');
+
+    vopTooltip = document.querySelector('.vop-tooltip');
+    vopTooltipText = document.querySelector('.vop-tooltip-text');
+
+    vopChromeBottom = document.querySelector('.vop-chrome-bottom');
+    vopProgressBar = document.querySelector('.vop-progress-bar');
+    vopMuteButton = document.querySelector('.vop-mute-button');
+    vopVolumeSlider = document.querySelector('.vop-volume-slider');
+    vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
+
+    uiConsole = document.getElementById('idConsole');
+
+    var v = document.querySelector('.vop-play-button');
+    vopPlaySvg = v.querySelector('.vop-svg-fill');
+
+    vopMuteSvg = vopMuteButton.querySelector('.vop-svg-fill');
+
+    var v = document.querySelector('.vop-setting-button');
+    vopSettingSvg = v.querySelector('.vop-svg-fill');
+
+    vopFullscreen = document.querySelector('.vop-fullscreen-button');
+
+    var v = document.querySelector('.vop-fullscreen-button-corner-0');
+    vopFullScreenCorner0 = v.querySelector('.vop-svg-fill');
+    var v = document.querySelector('.vop-fullscreen-button-corner-1');
+    vopFullScreenCorner1 = v.querySelector('.vop-svg-fill');
+    var v = document.querySelector('.vop-fullscreen-button-corner-2');
+    vopFullScreenCorner2 = v.querySelector('.vop-svg-fill');
+    var v = document.querySelector('.vop-fullscreen-button-corner-3');
+    vopFullScreenCorner3 = v.querySelector('.vop-svg-fill');
+
+    vopPlaySvg.setAttribute('d', icon_play);
+    vopMuteSvg.setAttribute('d', icon_volume_high);
+    vopSettingSvg.setAttribute('d', icon_setting);
+
+    vopFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
+    vopFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
+    vopFullScreenCorner2.setAttribute('d', fullscreen_no_corner_2);
+    vopFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
+
+    stopWaitingUI();
+}
+
+function initPlayer() {
+    var cfg = getInitConfig();
+    player_ = new oldmtn.Player('player-container');
+    player_.init(cfg);
+
+    player_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+    player_.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
+
+    player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
+    player_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
+    player_.on(oldmtn.Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
+    player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetaData, {});
+    player_.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
+    player_.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
+    player_.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
+    player_.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
+    player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
+    player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, onMediaVolumeChanged, {});
+    player_.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
+
+    player_.on(oldmtn.Events.LOG, onLog, {});
+
+    // ad callback event
+    player_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
+    player_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
+    player_.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
+
+    //
+    player_.on(oldmtn.Events.FULLSCREEN_CHANGE, onFullscreenChanged, {});
+
+    // chrome cast part
+    var receiverAppId = 'E19ACDB8'; // joseph test app1
+    //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
+    //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
+
+    // init chromecast sender
+    //castSender = new oldmtn.CastSender(receiverAppId);
+}
+
+function initUIEventListeners() {
+    vopPlayer.addEventListener('mouseenter', onvopShadeMouseenter);
+    vopPlayer.addEventListener('mousemove', onvopShadeMousemove);
+    vopPlayer.addEventListener('mouseleave', onShadeMouseleave);
+
+    vopPlayer.addEventListener('click', onvopShadeClick);
+
+    vopProgressBar.addEventListener('mousedown', onvopProgressBarMousedown);
+    vopProgressBar.addEventListener('mousemove', onvopProgressBarMousemove);
+    vopProgressBar.addEventListener('mouseleave', onProgressBarMouseleave);
+
+    vopChromeBottom.addEventListener('click', onvopChromeBottomClick);
+    vopMuteButton.addEventListener('click', onvopMuteButtonClick);
+    vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
+    vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
+
+    vopFullscreen.addEventListener('click', onFullscreenClick);
+
+    // resize listener
+    if (window.ResizeObserver) {
+        function onPlayerSize(entries) {
+            for (var i = 0; i < entries.length; i ++) {
+                var entry = entries[i];
+                const cr = entry.contentRect;
+                const cWidth = entry.target.clientWidth;
+                const cHeight = entry.target.clientHeight;
+
+                player_.resize(cWidth, cHeight);
+                // BD
+                // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
+                // console.log('Element:', entry.target);
+                // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
+                // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+                // ED
+            }
+        }
+        var ro = new ResizeObserver(onPlayerSize);
+
+        // Observer one or multiple elements
+        var v = document.querySelector('.html5-video-player');
+        ro.observe(v);
+    } else {
+        var v = document.querySelector('.html5-video-player');
+        new ResizeSensor(v, function () {
+            printLog('ResizeSensor, html5-video-player, clientWidth: ' + v.clientWidth + ', clientHeight: ' + v.clientHeight);
+            player_.resize(v.clientWidth, v.clientHeight);
+        });
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
@@ -128,7 +264,7 @@ function getProgressMovePosition(e) {
     }
 
     // update time progress scrubber button
-    var duration = player_.duration();
+    var duration = player_.getDuration();
     return (offsetX / rect.width) * duration;
 }
 
@@ -157,7 +293,7 @@ function getTooltipOffsetX(e) {
 function updateProgressBarUI() {
     // part - input
     var getPosition = player_.getPosition();
-    var duration = player_.duration();
+    var duration = player_.getDuration();
     var paused = player_.isPaused();
     var ended = player_.isEnded();
     var isProgressBarMousedown = flagProgressBarMousedown;
@@ -200,7 +336,7 @@ function updateProgressBarUI() {
 
 function updateAdProgressUI() {
     var getPosition = player_.getPosition();
-    var duration = player_.duration();
+    var duration = player_.getDuration();
 
     // update time progress bar
     var progressList = [getPosition, duration];
@@ -270,7 +406,7 @@ function h5EnterFullscreen() {
     //var v = document.querySelector('.vop-video-container');
     //var v = document.querySelector('.vop-video');
     //var v = document.querySelector('video');
-    // Refer to youtube player_
+    // Refer to youtube player
     var v = document.querySelector('.html5-video-player');
 
     // Try to enter fullscreen mode in the browser
@@ -350,12 +486,12 @@ function docVolumeSliderMouseup(e) {
     releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
-    flagvopVolumeSliderMousedown = false;
+    flagVolumeSliderMousedown = false;
 
     // if mouse up out of 'vop-shade', hide control bar directly
     var pt = { x: e.clientX, y: e.clientY };
     if (!isPtInElement(pt, vopShade)) {
-        onvopShadeMouseleave();
+        onShadeMouseleave();
     }
 }
 
@@ -377,137 +513,6 @@ function captureVolumeSliderMouseEvents() {
 function releaseVolumeSliderMouseEvents() {
     document.removeEventListener ('mousemove', docVolumeSliderMousemove, true);
     document.removeEventListener ('mouseup', docVolumeSliderMouseup, true);
-}
-
-function initUI() {
-    vopPlayer = document.querySelector('.html5-video-player');
-    vopShade = document.querySelector('.vop-shade');
-
-    vopTooltip = document.querySelector('.vop-tooltip');
-    vopTooltipText = document.querySelector('.vop-tooltip-text');
-
-    vopChromeBottom = document.querySelector('.vop-chrome-bottom');
-    vopProgressBar = document.querySelector('.vop-progress-bar');
-    vopMuteButton = document.querySelector('.vop-mute-button');
-    vopVolumeSlider = document.querySelector('.vop-volume-slider');
-    vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
-
-    uiConsole = document.getElementById('idConsole');
-
-    var v = document.querySelector('.vop-play-button');
-    vopPlaySvg = v.querySelector('.vop-svg-fill');
-
-    vopMuteSvg = vopMuteButton.querySelector('.vop-svg-fill');
-
-    var v = document.querySelector('.vop-setting-button');
-    vopSettingSvg = v.querySelector('.vop-svg-fill');
-
-    var v = document.querySelector('.vop-fullscreen-button-corner-0');
-    vopFullScreenCorner0 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-1');
-    vopFullScreenCorner1 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-2');
-    vopFullScreenCorner2 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-3');
-    vopFullScreenCorner3 = v.querySelector('.vop-svg-fill');
-
-    vopPlaySvg.setAttribute('d', icon_play);
-    vopMuteSvg.setAttribute('d', icon_volume_high);
-    vopSettingSvg.setAttribute('d', icon_setting);
-
-    vopFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
-    vopFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
-    vopFullScreenCorner2.setAttribute('d', fullscreen_no_corner_2);
-    vopFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
-
-    stopWaitingUI();
-}
-
-function initvoplayer() {
-    var cfg = getInitConfig();
-    player_ = new oldmtn.Player('player-container');
-    player_.init(cfg);
-
-    player_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
-    player_.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
-
-    player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-    player_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
-    player_.on(oldmtn.Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
-    player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetaData, {});
-    player_.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
-    player_.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
-    player_.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
-    player_.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
-    player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
-    player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, onMediaVolumeChanged, {});
-    player_.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
-
-    player_.on(oldmtn.Events.LOG, onLog, {});
-
-    // ad callback event
-    player_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
-    player_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
-    player_.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
-
-    //
-    player_.on(oldmtn.Events.FULLSCREEN_CHANGE, onFullscreenChanged, {});
-
-    // chrome cast part
-    var receiverAppId = 'E19ACDB8'; // joseph test app1
-    //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
-    //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
-
-    // init chromecast sender
-    //castSender = new oldmtn.CastSender(receiverAppId);
-}
-
-function initUIEventListeners() {
-    vopPlayer.addEventListener('mouseenter', onvopShadeMouseenter);
-    vopPlayer.addEventListener('mousemove', onvopShadeMousemove);
-    vopPlayer.addEventListener('mouseleave', onvopShadeMouseleave);
-
-    vopPlayer.addEventListener('click', onvopShadeClick);
-
-    vopProgressBar.addEventListener('mousedown', onvopProgressBarMousedown);
-    vopProgressBar.addEventListener('mousemove', onvopProgressBarMousemove);
-    vopProgressBar.addEventListener('mouseleave', onvopProgressBarMouseleave);
-
-    vopChromeBottom.addEventListener('click', onvopChromeBottomClick);
-    vopMuteButton.addEventListener('click', onvopMuteButtonClick);
-    vopVolumeSlider.addEventListener('mousedown', onvopVolumeSliderMousedown);
-    vopVolumeSlider.addEventListener('mousemove', onvopVolumeSliderMousemove);
-
-    // resize listener
-    if (window.ResizeObserver) {
-        function onPlayerSize(entries) {
-            for (var i = 0; i < entries.length; i ++) {
-                var entry = entries[i];
-                const cr = entry.contentRect;
-                const cWidth = entry.target.clientWidth;
-                const cHeight = entry.target.clientHeight;
-
-                player_.resize(cWidth, cHeight);
-                // BD
-                // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
-                // console.log('Element:', entry.target);
-                // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
-                // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-                // ED
-            }
-        }
-        var ro = new ResizeObserver(onPlayerSize);
-
-        // Observer one or multiple elements
-        var v = document.querySelector('.html5-video-player');
-        ro.observe(v);
-    } else {
-        var v = document.querySelector('.html5-video-player');
-        new ResizeSensor(v, function () {
-            printLog('ResizeSensor, html5-video-player, clientWidth: ' + v.clientWidth + ', clientHeight: ' + v.clientHeight);
-            player_.resize(v.clientWidth, v.clientHeight);
-        });
-    }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -533,14 +538,14 @@ function onvopShadeMousemove(e) {
         timerControlBar = null;
     }
     timerControlBar = setTimeout(function () {
-        onvopShadeMouseleave();
+        onShadeMouseleave();
     }, 3000);
 }
 
-function onvopShadeMouseleave() {
+function onShadeMouseleave() {
     var paused = player_.isPaused();
     var fullscreen = isFullscreen();
-    if (!paused && !flagProgressBarMousedown && !flagvopVolumeSliderMousedown && !fullscreen) {
+    if (!paused && !flagProgressBarMousedown && !flagVolumeSliderMousedown && !fullscreen) {
         $('.html5-video-player').addClass('vop-autohide');
     }
 }
@@ -651,7 +656,7 @@ function onBtnSetting() {
     printLog('--onBtnSetting--');
 }
 
-function onBtnFullscreen() {
+function onFullscreenClick() {
     printLog('--onBtnFullscreen--');
     if (isFullscreen()) {
         h5LeaveFullscreen();
@@ -819,11 +824,13 @@ function onvopProgressBarMousemove(e) {
         return;
     }
 
+    // part - process
     // process normal mouse move logic
     valueProgressMovePosition = getProgressMovePosition(e);
-    var offsetX = getTooltipOffsetX(e);
 
     // part - output
+    // update tooltip offset
+    var offsetX = getTooltipOffsetX(e);
     var strTime = timeToString(valueProgressMovePosition);
     vopTooltip.style.left = offsetX.toString() + 'px';
     vopTooltip.style.display = 'block';
@@ -832,24 +839,24 @@ function onvopProgressBarMousemove(e) {
     //console.log('vopTooltip.style.left: ' + vopTooltip.style.left);
 }
 
-function onvopProgressBarMouseleave() {
+function onProgressBarMouseleave() {
     vopTooltip.style.display = 'none';
 }
 
-function onvopVolumeSliderMousedown(e) {
-    console.log('+onvopVolumeSliderMousedown');
+function onVolumeSliderMousedown(e) {
+    console.log('+onVolumeSliderMousedown');
     captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
-    flagvopVolumeSliderMousedown = true;
+    flagVolumeSliderMousedown = true;
 
     docVolumeSliderMousemove(e);
 }
 
-function onvopVolumeSliderMousemove() {
+function onVolumeSliderMousemove() {
     // if mouse down, just return
-    if (flagvopVolumeSliderMousedown) {
+    if (flagVolumeSliderMousedown) {
         return;
     }
 
@@ -875,7 +882,6 @@ function onMediaDurationChanged() {
 }
 
 function onMediaEnded() {
-    // 
     var paused = player_.isPaused();
     var ended = player_.isEnded();
     updatePlayBtnUI(paused, ended);
@@ -939,12 +945,11 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + player_.getPosition() + ', duration: ' + player_.duration());
+    //printLog('+onMediaTimeupdated, position: ' + player_.getPosition() + ', duration: ' + player_.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
     if (flagProgressBarMousedown) {
-
     } else {
         valueProgressMovePosition = player_.getPosition();
         updateProgressBarUI();
@@ -976,7 +981,7 @@ function onAdComplete() {
 
 function onAdTimeUpdate() {
     var position = player_.getPosition();
-    var duration = player_.duration();
+    var duration = player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     updateAdProgressUI();
 }
@@ -1006,7 +1011,7 @@ window.onload = function () {
 
     initUI();
     initUIEventListeners();
-    initvoplayer();
+    initPlayer();
 
     // BD
     //onBtnOpen();

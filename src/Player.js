@@ -284,12 +284,12 @@ function Player(containerId) {
         }
     }
 
-    function duration() {
+    function getDuration() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            return adsEngine_.duration();
+            return adsEngine_.getDuration();
         } else {
             if (!mediaEngine_) { return; }
-            return mediaEngine_.duration();
+            return mediaEngine_.getDuration();
         }
     }
     
@@ -379,13 +379,6 @@ function Player(containerId) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////
-    // Events API
-    function signalEndOfStream() {
-        if (mseEngine_) {
-            mseEngine_.signalEndOfStream();
-        }
-    }
-
     // Begin - TextEngine
     function addTextTrack() {
         textEngine_.addTextTrack();
@@ -486,8 +479,6 @@ function Player(containerId) {
     }
 
     function onSbUpdateEnded() {
-        // Need to signal end of stream everytime when add buffer completed
-        //mseEngine_.signalEndOfStream();
     }
 
     function onAdContentPauseRequested() {
@@ -555,7 +546,7 @@ function Player(containerId) {
         isPaused: isPaused,
         getPosition: getPosition,
         setPosition: setPosition,
-        duration: duration,
+        getDuration: getDuration,
         isEnded: isEnded,
         mute: mute,
         unmute: unmute,
