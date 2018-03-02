@@ -131,8 +131,8 @@ function getMediaInfo()
     //url: 'audio_only_case01.mpd',
     //url: 'video_only_case01.mpd',
     //url: 'case01.mpd', // video + audio
-    url: 'case02.mpd', // video contain audio
-    //url: 'case03.mpd', // video + audio
+    //url: 'case02.mpd', // video contain audio
+    url: 'case03.mpd', // video + audio
 
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
