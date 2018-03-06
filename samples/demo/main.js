@@ -642,7 +642,10 @@ function onSettingClick() {
         settingContext.currMenu = 'main_menu';
     } else if (settingContext.currMenu === 'main_menu') {
         if (vopPanel.style.display === 'none') {
+
             vopPanel.style.display = 'block';
+            var elem_child = vopPanelMenu.childNodes;
+            elem_child[1].focus();
         } else {
             vopPanel.style.display = 'none';
         }
@@ -1220,7 +1223,7 @@ function createQualityMenu() {
     header.appendChild(button);
 
     // add quality menuitem
-    var firstItem = null;
+    var focusItem = null;
     for (var i = 0; i < settingContext.qualityList.length; i ++) {
         var quality = settingContext.qualityList[i];
 
@@ -1232,8 +1235,8 @@ function createQualityMenu() {
         }
         menuitem.setAttribute('tabindex', '0');
         menuitem.addEventListener('blur', onMainMenuBlur);
-        if (i === 0) {
-            firstItem = menuitem;
+        if (quality == settingContext.currQuality) {
+            focusItem = menuitem;
         }
         menuitem.addEventListener('click', onQualityItemClick);
 
@@ -1249,7 +1252,21 @@ function createQualityMenu() {
     vopPanel.style.display = 'block';
 
     //
-    firstItem.focus();
+    focusItem.focus();
+}
+
+function updateQualityMenuUI() {
+    var elem_child = vopPanelMenu.childNodes;
+    for (var i = 0; i < elem_child.length; i ++) {
+        var menuitem = elem_child[i];
+
+        var label = menuitem.querySelector('.vop-menuitem-label');
+        if (label.innerText === settingContext.currQuality) {
+            menuitem.setAttribute('aria-checked', 'true');
+        } else {
+            menuitem.setAttribute('aria-checked', 'false');
+        }
+    }
 }
 
 function createAudioTrackMenu() {
@@ -1319,6 +1336,20 @@ function createAudioTrackMenu() {
     firstItem.focus();
 }
 
+function updateAudioTrackMenuUI() {
+    var elem_child = vopPanelMenu.childNodes;
+    for (var i = 0; i < elem_child.length; i ++) {
+        var menuitem = elem_child[i];
+
+        var label = menuitem.querySelector('.vop-menuitem-label');
+        if (label.innerText === settingContext.currAudioTrack) {
+            menuitem.setAttribute('aria-checked', 'true');
+        } else {
+            menuitem.setAttribute('aria-checked', 'false');
+        }
+    }
+}
+
 function onQualityMenuClick(e) {
     e.stopPropagation();
     console.log('+onQualityMenuClick: ' + e.target.innerText);
@@ -1337,18 +1368,27 @@ function onAudioTrackMenuClick(e) {
 }
 
 function onMainMenuBlur(e) {
-    printLog('+onMainMenuBlur');
+    var text = '';
+    if (e.relatedTarget) {
+        text = ', text: ' + e.relatedTarget.innerText;
+    }
+    
+    printLog('+onMainMenuBlur, settingContext.currMenu: ' + settingContext.currMenu + text);
 
     if (e.relatedTarget) {
-        printLog('blur from setting, settingContext.currMenu: ' + settingContext.currMenu);
         if (e.relatedTarget === vopSetting) {
             if (settingContext.currMenu === 'main_menu' ||
                 settingContext.currMenu === 'quality_menu' ||
                 settingContext.currMenu === 'audioTrack_menu') {
                 // do nothing
             }
+        } else if (e.relatedTarget.getAttribute('tabindex') === '0') {
+            // do nothing
+            var a1 = e.relatedTarget.getAttribute('tabindex');
+            console.log('a1: ' + a1 + ', innerText: ' + e.relatedTarget.innerText);
         }
     } else {
+        printLog('+onMainMenuBlur, before onSettingClick');
         onSettingClick();
     }
 }
@@ -1362,11 +1402,19 @@ function onQualityBack(e) {
 }
 
 function onQualityItemClick(e) {
+    printLog('onQualityItemClick, settingContext.currMenu: ' + settingContext.currMenu
+        + ', text: ' + e.target.innerText);
     e.stopPropagation();
+
+    settingContext.currQuality = e.target.innerText;
+    updateQualityMenuUI();
 }
 
 function onAudioTrackItemClick(e) {
     e.stopPropagation();
+
+    settingContext.currAudioTrack = e.target.innerText;
+    updateAudioTrackMenuUI();
 }
 
 function onAudioTrackBack(e) {

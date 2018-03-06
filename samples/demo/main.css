@@ -248,7 +248,6 @@ body {
   background-color:transparent;
   border:none;
   color:inherit;
-  outline:0;
   cursor: pointer;
 }
 
@@ -267,7 +266,6 @@ body {
   height: 33px;
   cursor: pointer;
   display: table-row;
-  outline: 0;
 }
 
 .vop-menuitem:hover {
