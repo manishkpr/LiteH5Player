@@ -20,7 +20,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: gray;
 }
 
 .vop-video {
@@ -160,9 +160,11 @@ body {
 /* time unit */
 .vop-time-display {
   float: left;
-  height: 100%;
   width: auto;
-  display:table;
+  height: 100%;
+  padding-left: 6px;
+  padding-top: 3px;
+  display: table;
 }
 
 .vop-time-text {
@@ -207,6 +209,124 @@ body {
   position:absolute;top:50%;width:10px;height:10px;border-radius:5px;margin-top:-5px;background:#fff;
 }
 /************ End volume bar ************/
+
+/************ Begin vop popup ************/
+.vop-panel {
+  position: absolute;
+
+  right: 11px;
+  bottom: 45px;
+
+  max-height: 255px;
+  overflow-y: auto;
+
+  background: rgba(28,28,28,0.9);
+  display: block;
+}
+
+.vop-panel-header {
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  line-height: inherit;
+  font-size: 109%;
+  color: #eee;
+  padding: 6px 0;
+  height: 33px;
+  white-space: nowrap;
+}
+
+.vop-panel-title {
+  font-weight: 500;
+  padding: 0 10px 0 35px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: left 3px center;
+  background-size: 32px 32px;
+  -moz-background-size: 32px 32px;
+  -webkit-background-size: 32px 32px;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJNIDE5LjQxLDIwLjA5IDE0LjgzLDE1LjUgMTkuNDEsMTAuOTEgMTgsOS41IGwgLTYsNiA2LDYgeiIgZmlsbD0iI2ZmZiIgLz48L3N2Zz4=);
+
+  background-color:transparent;
+  border:none;
+  color:inherit;
+  outline:0;
+  cursor: pointer;
+}
+
+.vop-panel-menu {
+  padding: 6px 0;
+  box-sizing: border-box;
+
+  color: #eee;
+  width: 100%;
+
+  display: table;
+}
+
+.vop-menuitem {
+  width: 100%;
+  height: 33px;
+  cursor: pointer;
+  display: table-row;
+  outline: 0;
+}
+
+.vop-menuitem:hover {
+  background-color: rgba(255,255,255,.1);
+}
+
+.vop-menuitem-label {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 15px;
+
+  text-align: right;
+  font-size: 90%;
+  font-weight: 500;
+}
+
+.vop-menuitem-content {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 15px;
+  font-size: 80%;
+  text-align: right;
+}
+
+.vop-menu-content-text {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.vop-menuitem[role=menuitemradio]
+ .vop-menuitem-label {
+  padding-left: 35px;
+  padding-right: 20px;
+  border-bottom: none;
+}
+
+.vop-menuitem[role=menuitemradio][aria-checked=true]
+  .vop-menuitem-label {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJNOSAxNi4yTDQuOCAxMmwtMS40IDEuNEw5IDE5IDIxIDdsLTEuNC0xLjRMOSAxNi4yeiIgZmlsbD0iI2ZmZiIgLz48L3N2Zz4=);
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  -moz-background-size: 18px 18px;
+  -webkit-background-size: 18px 18px;
+  background-position: left 10px center;
+}
+
+.vop-menuitem[aria-haspopup=true]
+  .vop-menuitem-content {
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 32px 32px;
+  -moz-background-size: 32px 32px;
+  -webkit-background-size: 32px 32px;
+  padding-right: 38px;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJtIDEyLjU5LDIwLjM0IDQuNTgsLTQuNTkgLTQuNTgsLTQuNTkgMS40MSwtMS40MSA2LDYgLTYsNiB6IiBmaWxsPSIjZmZmIiAvPjwvc3ZnPg==);
+}
+
+
+/************ End vop popup ************/
 
 .vop-autohide { cursor:none }
 .vop-autohide .vop-chrome-bottom {

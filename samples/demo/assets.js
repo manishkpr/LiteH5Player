@@ -132,8 +132,9 @@ function getMediaInfo()
     //url: 'video_only_case01.mpd',
     //url: 'case01.mpd', // video + audio
     //url: 'case02.mpd', // video contain audio
-    url: 'case03.mpd', // video + audio
+    //url: 'case03.mpd', // video + audio
 
+    url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/fmp4.mp4',
     //url: 'http://10.2.68.64/2/pd/fmp4/pure_audio_01.mp4',

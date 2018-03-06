@@ -8,6 +8,7 @@ var vopTooltip = null;
 var vopTooltipText = null;
 var vopChromeBottom = null;
 var vopProgressBar = null;
+var vopScrubberContainer = null;
 var vopMuteButton = null;
 var vopVolumeSlider = null;
 var vopVolumeSliderHandle = null;
@@ -15,6 +16,9 @@ var vopVolumeSliderHandle = null;
 var vopPlaySvg;
 var vopMuteSvg;
 var vopSettingSvg;
+var vopSetting
+var vopPanel;
+var vopPanelMenu;
 var vopFullscreen;
 var vopFullScreenCorner0;
 var vopFullScreenCorner1;
@@ -54,15 +58,33 @@ var fullscreen_yes_corner_2 = 'm 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z';
 var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 
 // flags reference variable of progress bar
-var flagProgressBarMousedown = false;
-var flagPausedBeforeMousedown = false;
-var flagEndedBeforeMousedown = false;
-var flagPositionBeforeMousedown = 0;
-var valueProgressMovePosition = 0;
+var progressBarContext = {
+    mousedown: false,
+    pausedBeforeMousedown: false,
+    endedBeforeMousedown: false,
+    posBeforeMousedown: 0,
+    timer: null,
+    //
+    movePos: 0
+};
+var flagThumbnailMode = false;
 
 // flags reference variable of volume bar
 var flagVolumeSliderMousedown = false;
 var valueVolumeMovePosition = 0;
+
+// menu context
+var settingContext = {
+    currMenu: 'none',
+
+    qualityList: ['1080p', '720p', '480p', '360p', '240p', '144p', 'Auto'],
+    isQualityAuto: true,
+    currQuality: '360p',
+
+    audioTrackList: ['Bipbop1', 'Bipbop2'],
+    isAudioTrackAuto: true,
+    currAudioTrack: 'Bipbop1'
+};
 
 // reference variable of ad
 var flagAdStarted = false;
@@ -78,6 +100,7 @@ function initUI() {
 
     vopChromeBottom = document.querySelector('.vop-chrome-bottom');
     vopProgressBar = document.querySelector('.vop-progress-bar');
+    vopScrubberContainer = document.querySelector('.vop-scrubber-container');
     vopMuteButton = document.querySelector('.vop-mute-button');
     vopVolumeSlider = document.querySelector('.vop-volume-slider');
     vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
@@ -89,8 +112,8 @@ function initUI() {
 
     vopMuteSvg = vopMuteButton.querySelector('.vop-svg-fill');
 
-    var v = document.querySelector('.vop-setting-button');
-    vopSettingSvg = v.querySelector('.vop-svg-fill');
+    vopSetting = document.querySelector('.vop-setting-button');
+    vopSettingSvg = vopSetting.querySelector('.vop-svg-fill');
 
     vopFullscreen = document.querySelector('.vop-fullscreen-button');
 
@@ -155,14 +178,14 @@ function initPlayer() {
 }
 
 function initUIEventListeners() {
-    vopPlayer.addEventListener('mouseenter', onvopShadeMouseenter);
-    vopPlayer.addEventListener('mousemove', onvopShadeMousemove);
+    vopPlayer.addEventListener('mouseenter', onShadeMouseenter);
+    vopPlayer.addEventListener('mousemove', onShadeMousemove);
     vopPlayer.addEventListener('mouseleave', onShadeMouseleave);
 
-    vopPlayer.addEventListener('click', onvopShadeClick);
+    vopPlayer.addEventListener('click', onShadeClick);
 
-    vopProgressBar.addEventListener('mousedown', onvopProgressBarMousedown);
-    vopProgressBar.addEventListener('mousemove', onvopProgressBarMousemove);
+    vopProgressBar.addEventListener('mousedown', onProgressBarMousedown);
+    vopProgressBar.addEventListener('mousemove', onProgressBarMousemove);
     vopProgressBar.addEventListener('mouseleave', onProgressBarMouseleave);
 
     vopChromeBottom.addEventListener('click', onvopChromeBottomClick);
@@ -170,10 +193,15 @@ function initUIEventListeners() {
     vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
     vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
 
+    vopSetting.addEventListener('click', onSettingClick);
     vopFullscreen.addEventListener('click', onFullscreenClick);
 
+    vopPanel = document.querySelector('.vop-panel');
+    vopPanelMenu = document.querySelector('.vop-panel-menu');
+
     // resize listener
-    if (window.ResizeObserver) {
+    //if (window.ResizeObserver) {
+    if (false) {
         function onPlayerSize(entries) {
             for (var i = 0; i < entries.length; i ++) {
                 var entry = entries[i];
@@ -182,12 +210,6 @@ function initUIEventListeners() {
                 const cHeight = entry.target.clientHeight;
 
                 player_.resize(cWidth, cHeight);
-                // BD
-                // console.log('resize event, width: ' + cWidth + ', height: ' + cr.height);
-                // console.log('Element:', entry.target);
-                // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
-                // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-                // ED
             }
         }
         var ro = new ResizeObserver(onPlayerSize);
@@ -199,6 +221,7 @@ function initUIEventListeners() {
         var v = document.querySelector('.html5-video-player');
         new ResizeSensor(v, function () {
             printLog('ResizeSensor, html5-video-player, clientWidth: ' + v.clientWidth + ', clientHeight: ' + v.clientHeight);
+            updateProgressBarUI();
             player_.resize(v.clientWidth, v.clientHeight);
         });
     }
@@ -294,27 +317,27 @@ function getTooltipOffsetX(e) {
 
 function updateProgressBarUI() {
     // part - input
-    var getPosition = player_.getPosition();
+    var position = player_.getPosition();
     var duration = player_.getDuration();
     var paused = player_.isPaused();
     var ended = player_.isEnded();
-    var isProgressBarMousedown = flagProgressBarMousedown;
+    var isProgressBarMousedown = progressBarContext.mousedown;
 
     // part - logic process
     var uiPosition;
     var uiBufferedPos;
     if (ended) {
         if (isProgressBarMousedown) {
-            uiPosition = valueProgressMovePosition;
+            uiPosition = progressBarContext.movePos;
         } else {
-            // when the playback is ended, the getPosition should be equal to the duration.
-            uiPosition = getPosition;
+            // when the playback is ended, the position should be equal to the duration.
+            uiPosition = position;
         }
     } else {
-        if (paused) {
-            uiPosition = valueProgressMovePosition;
+        if (paused || progressBarContext.mousedown) {
+            uiPosition = progressBarContext.movePos;
         } else {
-            uiPosition = getPosition;
+            uiPosition = position;
         }
     }
 
@@ -325,8 +348,7 @@ function updateProgressBarUI() {
     vopProgressBar.style.background = genGradientColor(progressList, colorList_contentProgress);
 
     // update time progress scrubber button
-    var vScrubber = document.querySelector('.vop-scrubber-container');
-    vScrubber.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
+    vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(uiPosition);
@@ -349,7 +371,6 @@ function updateAdProgressUI() {
     var d = oldmtn.CommonUtils.timeToString(duration);
     var fmtTime = c + '/' + d;
 
-    //printLog('--onMediaDurationChanged--, p: ' + c + ', d: ' + d);
     var tDisplay = document.querySelector('.vop-time-text');
     tDisplay.innerText = fmtTime;
 }
@@ -440,29 +461,6 @@ function h5LeaveFullscreen() {
     }
 }
 
-function docProgressBarMousemove(e) {
-    console.log('+docProgressBarMousemove');
-
-    valueProgressMovePosition = getProgressMovePosition(e);
-    updateProgressBarUI();
-}
-
-function docProgressBarMouseup(e) {
-    console.log('+docProgressBarMouseup');
-    releaseProgressBarMouseEvents();
-    e.preventDefault();
-
-    // update ui first
-    valueProgressMovePosition = getProgressMovePosition(e);
-    updateProgressBarUI();
-
-    if (flagPositionBeforeMousedown != valueProgressMovePosition) {
-        player_.setPosition(valueProgressMovePosition);
-    }
-
-    flagProgressBarMousedown = false;
-}
-
 function docVolumeSliderMousemove(e) {
     updateVolumeMovePosition(e);
     
@@ -484,7 +482,7 @@ function docVolumeSliderMousemove(e) {
 }
 
 function docVolumeSliderMouseup(e) {
-    console.log('+docVolumeSliderMouseup');
+    printLog('+docVolumeSliderMouseup');
     releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
@@ -495,16 +493,6 @@ function docVolumeSliderMouseup(e) {
     if (!isPtInElement(pt, vopShade)) {
         onShadeMouseleave();
     }
-}
-
-function captureProgressBarMouseEvents() {
-    document.addEventListener('mousemove', docProgressBarMousemove, true);
-    document.addEventListener('mouseup', docProgressBarMouseup, true);
-}
-
-function releaseProgressBarMouseEvents() {
-    document.removeEventListener ('mousemove', docProgressBarMousemove, true);
-    document.removeEventListener ('mouseup', docProgressBarMouseup, true);
 }
 
 function captureVolumeSliderMouseEvents() {
@@ -518,20 +506,12 @@ function releaseVolumeSliderMouseEvents() {
 }
 
 ///////////////////////////////////////////////////////////////////
-function printLog(msg) {
-    onLog({
-        message: msg
-    });
-    console.log(msg);
-}
-
-///////////////////////////////////////////////////////////////////
-function onvopShadeMouseenter() {
+function onShadeMouseenter() {
     $('.html5-video-player').removeClass('vop-autohide');
 }
 
-function onvopShadeMousemove(e) {
-    //console.log('+onvopShadeMousemove');
+function onShadeMousemove(e) {
+    //printLog('+onShadeMousemove');
 
     $('.html5-video-player').removeClass('vop-autohide');
 
@@ -547,12 +527,12 @@ function onvopShadeMousemove(e) {
 function onShadeMouseleave() {
     var paused = player_.isPaused();
     var fullscreen = isFullscreen();
-    if (!paused && !flagProgressBarMousedown && !flagVolumeSliderMousedown && !fullscreen) {
+    if (!paused && !progressBarContext.mousedown && !flagVolumeSliderMousedown && !fullscreen) {
         $('.html5-video-player').addClass('vop-autohide');
     }
 }
 
-function onvopShadeClick() {
+function onShadeClick() {
     if (flagAdStarted && flagIsLinearAd) {
         return;
     }
@@ -576,8 +556,8 @@ function onBtnPlay() {
     var currPaused = player_.isPaused();
     var currEnded = player_.isEnded();
     if (currEnded) {
-        flagPausedBeforeMousedown = true;
-        flagEndedBeforeMousedown = true;
+        progressBarContext.pausedBeforeMousedown = true;
+        progressBarContext.endedBeforeMousedown = true;
         player_.setPosition(0);
     } else {
         var newPaused;
@@ -654,12 +634,27 @@ function onBtnPlayAd() {
     }
 }
 
-function onBtnSetting() {
-    printLog('--onBtnSetting--');
+function onSettingClick() {
+    printLog('+onBtnSetting, currMenu: ' + settingContext.currMenu);
+
+    if (settingContext.currMenu === 'none') {
+        createMainMenu();
+        settingContext.currMenu = 'main_menu';
+    } else if (settingContext.currMenu === 'main_menu') {
+        if (vopPanel.style.display === 'none') {
+            vopPanel.style.display = 'block';
+        } else {
+            vopPanel.style.display = 'none';
+        }
+    } else if (settingContext.currMenu === 'quality_menu' ||
+        settingContext.currMenu === 'audioTrack_menu') {
+        destroyMenu();
+        settingContext.currMenu = 'none';
+    }
 }
 
 function onFullscreenClick() {
-    printLog('--onBtnFullscreen--');
+    printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
     } else {
@@ -736,7 +731,7 @@ function onBtnTest2() {
     // var v = document.querySelector('.vop-video');
     // v.addEventListener("webkitfullscreenchange", function() {
     //   printLog('--webkitfullscreenchange--');
-    //     //console.log(document.webkitIsFullScreen);
+    //     //printLog(document.webkitIsFullScreen);
     // }, false);
 
     // v.webkitEnterFullScreen();
@@ -791,62 +786,127 @@ function onVideoControlBarClick() {
     //printLog('--onVideoControlBarClick--');
 }
 
-function onvopRootClick() {
-    //printLog('--onvopRootClick--');
+function doEnterThumbnailMode() {
+    printLog('+doEnterThumbnailMode');
+    if (!flagThumbnailMode) {
+        // need to pause content first before starting a seek operation.
+        if (!progressBarContext.pausedBeforeMousedown) {
+            player_.pause();
+
+            var paused = true;
+            var ended = player_.isEnded();
+            updatePlayBtnUI(paused, ended);
+        }
+
+        progressBarContext.timer = null;
+        flagThumbnailMode = true;
+    }
 }
 
-function onvopProgressBarMousedown(e) {
-    console.log('+onvopProgressBarMousedown');
+function doProcessThumbnailMove() {
+    // for further action, you can add thumbnail popup here.
+}
+
+function doProcessThumbnailUp() {
+    // for further action, you can add thumbnail ended event here.
+}
+
+function onProgressBarMousedown(e) {
+    printLog('+onProgressBarMousedown');
     captureProgressBarMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
-    flagProgressBarMousedown = true;
-    flagPausedBeforeMousedown = player_.isPaused();
-    flagEndedBeforeMousedown = player_.isEnded();
-    flagPositionBeforeMousedown = player_.getPosition();
-
-    // need to pause content first before starting a setPosition operation.
-    if (!flagPausedBeforeMousedown) {
-        player_.pause();
-
-        var paused = true;
-        var ended = player_.isEnded();
-        updatePlayBtnUI(paused, ended);
-    }
+    progressBarContext.mousedown = true;
+    progressBarContext.pausedBeforeMousedown = player_.isPaused();
+    progressBarContext.endedBeforeMousedown = player_.isEnded();
+    progressBarContext.posBeforeMousedown = player_.getPosition();
+    flagThumbnailMode = false;
+    progressBarContext.timer = setTimeout(function() {
+        doEnterThumbnailMode();
+    }, 200);
 
     // update progress bar ui
-    valueProgressMovePosition = getProgressMovePosition(e);
+    progressBarContext.movePos = getProgressMovePosition(e);
     updateProgressBarUI();
 }
 
-function onvopProgressBarMousemove(e) {
+function onProgressBarMousemove(e) {
     // if mouse down, just return
-    if (flagProgressBarMousedown) {
+    if (progressBarContext.mousedown) {
         return;
     }
 
     // part - process
     // process normal mouse move logic
-    valueProgressMovePosition = getProgressMovePosition(e);
+    let pos = getProgressMovePosition(e);
 
     // part - output
     // update tooltip offset
     var offsetX = getTooltipOffsetX(e);
-    var strTime = timeToString(valueProgressMovePosition);
+    var strTime = timeToString(pos);
     vopTooltip.style.left = offsetX.toString() + 'px';
     vopTooltip.style.display = 'block';
 
     vopTooltipText.innerText = strTime;
-    //console.log('vopTooltip.style.left: ' + vopTooltip.style.left);
+    //printLog('vopTooltip.style.left: ' + vopTooltip.style.left);
 }
 
 function onProgressBarMouseleave() {
+    printLog('+onProgressBarMouseleave');
     vopTooltip.style.display = 'none';
 }
 
+function captureProgressBarMouseEvents() {
+    document.addEventListener('mousemove', docProgressBarMousemove, true);
+    document.addEventListener('mouseup', docProgressBarMouseup, true);
+}
+
+function releaseProgressBarMouseEvents() {
+    document.removeEventListener ('mousemove', docProgressBarMousemove, true);
+    document.removeEventListener ('mouseup', docProgressBarMouseup, true);
+}
+
+function docProgressBarMousemove(e) {
+    printLog('+docProgressBarMousemove');
+
+    doEnterThumbnailMode();
+    doProcessThumbnailMove();
+
+    progressBarContext.movePos = getProgressMovePosition(e);
+    updateProgressBarUI();
+}
+
+function docProgressBarMouseup(e) {
+    printLog('+docProgressBarMouseup');
+    releaseProgressBarMouseEvents();
+    e.preventDefault();
+
+    if (flagThumbnailMode) {
+        // thumbnail mode click event
+        doProcessThumbnailUp();
+    } else {
+        // plain click event
+        if (progressBarContext.timer) {
+            // it's quick click, don't need to pause
+            clearTimeout(progressBarContext.timer);
+            progressBarContext.timer = null;
+        }
+    }
+
+    // update ui first
+    progressBarContext.movePos = getProgressMovePosition(e);
+    updateProgressBarUI();
+
+    if (progressBarContext.posBeforeMousedown != progressBarContext.movePos) {
+        player_.setPosition(progressBarContext.movePos);
+    }
+
+    progressBarContext.mousedown = false;
+}
+
 function onVolumeSliderMousedown(e) {
-    console.log('+onVolumeSliderMousedown');
+    printLog('+onVolumeSliderMousedown');
     captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -889,7 +949,7 @@ function onMediaEnded() {
     updatePlayBtnUI(paused, ended);
 
     //
-    valueProgressMovePosition = player_.getPosition();
+    progressBarContext.movePos = player_.getPosition();
     updateProgressBarUI();
 
     //
@@ -914,8 +974,8 @@ function onMediaLoadedMetaData(e) {
 
     vp.style.paddingBottom = ((metaHeight / metaWidth) * 100).toString() + '%';
 
-    console.log('vp.clientWidth: ' + vp.clientWidth);
-    console.log('vp.clientHeight: ' + vp.clientHeight);
+    printLog('vp.clientWidth: ' + vp.clientWidth);
+    printLog('vp.clientHeight: ' + vp.clientHeight);
     player_.resize(vp.clientWidth, vp.clientHeight);
 }
 
@@ -937,7 +997,7 @@ function onMediaSeeking() {
 function onMediaSeeked() {
     printLog('+onMediaSeeked, getPosition: ' + player_.getPosition());
 
-    if (!flagPausedBeforeMousedown || flagEndedBeforeMousedown) {
+    if (!progressBarContext.pausedBeforeMousedown || progressBarContext.endedBeforeMousedown) {
         player_.play();
         // update ui
         var paused = false;
@@ -951,9 +1011,9 @@ function onMediaTimeupdated() {
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
-    if (flagProgressBarMousedown) {
+    if (progressBarContext.mousedown) {
     } else {
-        valueProgressMovePosition = player_.getPosition();
+        progressBarContext.movePos = player_.getPosition();
         updateProgressBarUI();
     }
 }
@@ -1004,6 +1064,319 @@ function onFullscreenChanged() {
     }
 }
 
+
+/////////////////////////////////////////////////////////////////////////
+// Title: Dynamic create UI
+function destroyMenu() {
+    var v = document.querySelector('.vop-panel-header');
+    if (v) {
+        vopPanel.removeChild(v);
+    }
+    while (vopPanelMenu.firstChild) {
+        vopPanelMenu.removeChild(vopPanelMenu.firstChild);
+    }
+}
+
+function createMainMenu() {
+// The main menu html:
+// <div class="vop-panel-menu">
+//     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
+//         <div class="vop-menuitem-label">
+//             Quality
+//         </div>
+//         <div class="vop-menuitem-content">
+//             <span class="vop-menu-content-text">360p</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
+//         <div class="vop-menuitem-label">
+//             Language
+//         </div>
+//         <div class="vop-menuitem-content">
+//             <span>Auto</span>
+//             <span class="vop-menu-content-text">Bipbop1</span>
+//         </div>
+//     </div>
+// </div>
+
+    // Part - input: current quality, current audio track, etc.
+    var qualityCnt = 3;
+    var audioTrackCnt = 2;
+
+    // Part - process: created quality menu item
+    var qualityMenuitem = document.createElement('div');
+    qualityMenuitem.setAttribute('class', 'vop-menuitem');
+    qualityMenuitem.setAttribute('role', 'menuitem');
+    if (qualityCnt > 1) {
+        qualityMenuitem.setAttribute('aria-haspopup', 'true');
+    }
+    qualityMenuitem.setAttribute('tabindex', '0');
+    qualityMenuitem.addEventListener('blur', onMainMenuBlur);
+
+    var label = document.createElement('div');
+    label.setAttribute('class', 'vop-menuitem-label');
+    label.innerText = 'Quality';
+
+    var content = document.createElement('div');
+    content.setAttribute('class', 'vop-menuitem-content');
+
+    if (settingContext.isQualityAuto) {
+        var spanAuto = document.createElement('span');
+        spanAuto.innerText = 'Auto';
+
+        content.appendChild(spanAuto);
+    }
+
+    var contentText = document.createElement('span');
+    contentText.setAttribute('class', 'vop-menu-content-text');
+    contentText.innerText = settingContext.currQuality;
+    content.appendChild(contentText);
+
+    qualityMenuitem.appendChild(label);
+    qualityMenuitem.appendChild(content);
+
+    qualityMenuitem.addEventListener('click', onQualityMenuClick);
+
+    // create audio track menu item
+    var audioMenuitem = document.createElement('div');
+    audioMenuitem.setAttribute('class', 'vop-menuitem');
+    audioMenuitem.setAttribute('role', 'menuitem');
+    if (audioTrackCnt > 1) {
+        audioMenuitem.setAttribute('aria-haspopup', 'true');
+    }
+    audioMenuitem.setAttribute('tabindex', '0');
+    audioMenuitem.addEventListener('blur', onMainMenuBlur);
+
+    label = document.createElement('div');
+    label.setAttribute('class', 'vop-menuitem-label');
+    label.innerText = 'Language';
+
+    content = document.createElement('div');
+    content.setAttribute('class', 'vop-menuitem-content');
+
+    if (settingContext.isAudioTrackAuto) {
+        var spanAuto = document.createElement('span');
+        spanAuto.innerText = 'Auto';
+
+        content.appendChild(spanAuto);
+    }
+
+    contentText = document.createElement('span');
+    contentText.setAttribute('class', 'vop-menu-content-text');
+    contentText.innerText = settingContext.currAudioTrack;
+    content.appendChild(contentText);
+
+    audioMenuitem.appendChild(label);
+    audioMenuitem.appendChild(content);
+
+    audioMenuitem.addEventListener('click', onAudioTrackMenuClick);
+
+    // Part post process
+    vopPanelMenu.appendChild(qualityMenuitem);
+    vopPanelMenu.appendChild(audioMenuitem);
+    vopPanel.style.display = 'block';
+
+    // set focus
+    qualityMenuitem.focus();
+}
+
+function createQualityMenu() {
+// The quality menu html:
+// <div class="vop-panel-header">
+//     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
+// </div>
+// <div class="vop-panel-menu">
+//     <div class="vop-menuitem" role="menuitemradio">
+//         <div class="vop-menuitem-label">
+//             <span>720p</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitemradio">
+//         <div class="vop-menuitem-label">
+//             <span>480p</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitemradio">
+//         <div class="vop-menuitem-label">
+//             <span>360p</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
+//         <div class="vop-menuitem-label">
+//             <span>Auto</span>
+//         </div>
+//     </div>
+// </div>
+
+    // add quality back menu
+    var header = document.createElement('div');
+    header.setAttribute('class', 'vop-panel-header');
+
+    var button = document.createElement('button');
+    button.setAttribute('class', 'vop-panel-title');
+    button.innerText = 'Quality';
+    button.addEventListener('click', onQualityBack);
+
+    header.appendChild(button);
+
+    // add quality menuitem
+    var firstItem = null;
+    for (var i = 0; i < settingContext.qualityList.length; i ++) {
+        var quality = settingContext.qualityList[i];
+
+        var menuitem = document.createElement('div');
+        menuitem.setAttribute('class', 'vop-menuitem');
+        menuitem.setAttribute('role', 'menuitemradio');
+        if (quality == settingContext.currQuality) {
+            menuitem.setAttribute('aria-checked', 'true');
+        }
+        menuitem.setAttribute('tabindex', '0');
+        menuitem.addEventListener('blur', onMainMenuBlur);
+        if (i === 0) {
+            firstItem = menuitem;
+        }
+        menuitem.addEventListener('click', onQualityItemClick);
+
+        var label = document.createElement('div');
+        label.setAttribute('class', 'vop-menuitem-label');
+        label.innerText = quality;
+        
+        menuitem.appendChild(label);
+        vopPanelMenu.appendChild(menuitem);
+    }
+
+    vopPanel.insertBefore(header, vopPanelMenu);
+    vopPanel.style.display = 'block';
+
+    //
+    firstItem.focus();
+}
+
+function createAudioTrackMenu() {
+// The audio track menu html:
+// <div class="vop-panel-header">
+//     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
+// </div>
+// <div class="vop-panel-menu">
+//     <div class="vop-menuitem" role="menuitemradio">
+//         <div class="vop-menuitem-label">
+//             <span>Bipbop1</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitemradio">
+//         <div class="vop-menuitem-label">
+//             <span>Bipbop2</span>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
+//         <div class="vop-menuitem-label">
+//             <span>Auto</span>
+//         </div>
+//     </div>
+// </div>
+
+    // add quality back menu
+    var header = document.createElement('div');
+    header.setAttribute('class', 'vop-panel-header');
+
+    var button = document.createElement('button');
+    button.setAttribute('class', 'vop-panel-title');
+    button.innerText = 'Audio';
+    button.addEventListener('click', onQualityBack);
+
+    header.appendChild(button);
+
+    // add quality menuitem
+    var firstItem = null;
+    for (var i = 0; i < settingContext.audioTrackList.length; i ++) {
+        var audioTrack = settingContext.audioTrackList[i];
+
+        var menuitem = document.createElement('div');
+        menuitem.setAttribute('class', 'vop-menuitem');
+        menuitem.setAttribute('role', 'menuitemradio');
+        if (audioTrack == settingContext.currAudioTrack) {
+            menuitem.setAttribute('aria-checked', 'true');
+        }
+        menuitem.setAttribute('tabindex', '0');
+        menuitem.addEventListener('blur', onMainMenuBlur);
+        if (i === 0) {
+            firstItem = menuitem;
+        }
+        menuitem.addEventListener('click', onAudioTrackItemClick);
+
+        var label = document.createElement('div');
+        label.setAttribute('class', 'vop-menuitem-label');
+        label.innerText = audioTrack;
+        
+        menuitem.appendChild(label);
+        vopPanelMenu.appendChild(menuitem);
+    }
+
+    vopPanel.insertBefore(header, vopPanelMenu);
+    vopPanel.style.display = 'block';
+
+    //
+    firstItem.focus();
+}
+
+function onQualityMenuClick(e) {
+    e.stopPropagation();
+    console.log('+onQualityMenuClick: ' + e.target.innerText);
+
+    destroyMenu();
+    createQualityMenu();
+    settingContext.currMenu = 'quality_menu';
+}
+
+function onAudioTrackMenuClick(e) {
+    e.stopPropagation();
+
+    destroyMenu();
+    createAudioTrackMenu();
+    settingContext.currMenu = 'audioTrack_menu';
+}
+
+function onMainMenuBlur(e) {
+    printLog('+onMainMenuBlur');
+
+    if (e.relatedTarget) {
+        printLog('blur from setting, settingContext.currMenu: ' + settingContext.currMenu);
+        if (e.relatedTarget === vopSetting) {
+            if (settingContext.currMenu === 'main_menu' ||
+                settingContext.currMenu === 'quality_menu' ||
+                settingContext.currMenu === 'audioTrack_menu') {
+                // do nothing
+            }
+        }
+    } else {
+        onSettingClick();
+    }
+}
+
+function onQualityBack(e) {
+    e.stopPropagation();
+
+    destroyMenu();
+    createMainMenu();
+    settingContext.currMenu = 'main_menu';
+}
+
+function onQualityItemClick(e) {
+    e.stopPropagation();
+}
+
+function onAudioTrackItemClick(e) {
+    e.stopPropagation();
+}
+
+function onAudioTrackBack(e) {
+    e.stopPropagation();
+
+    destroyMenu();
+    createMainMenu();
+    settingContext.currMenu = 'main_menu';
+}
+
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
 window.onload = function () {
@@ -1014,6 +1387,9 @@ window.onload = function () {
     initUI();
     initUIEventListeners();
     initPlayer();
+
+    //createMainMenu();
+    //createQualityMenu();
 
     // BD
     //onBtnOpen();

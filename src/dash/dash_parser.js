@@ -18,14 +18,14 @@ function DashParser() {
         // construct dash audio
         let aContents = [];
         for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
             aContents.push(content);
         }
 
         aRep = {
             type: 'audio',
             codecs: 'audio/mp4; codecs="mp4a.40.2"',
-            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/init.mp4',
+            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/init.mp4',
             media: aContents
         };
 
@@ -41,13 +41,13 @@ function DashParser() {
         let vRep = null;
         let vContents = [];
         for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
             vContents.push(content);
         }
         vRep = {
             type: 'video',
             codecs: 'video/mp4; codecs="avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
+            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
             media: vContents
         };
 
@@ -66,27 +66,27 @@ function DashParser() {
         // construct dash audio
         let aContents = [];
         for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
             aContents.push(content);
         }
 
         aRep = {
             type: 'audio',
             codecs: 'audio/mp4; codecs="mp4a.40.2"',
-            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/init.mp4',
+            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/init.mp4',
             media: aContents
         };
 
         // construct dash video
         let vContents = [];
         for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
             vContents.push(content);
         }
         vRep = {
             type: 'video',
             codecs: 'video/mp4; codecs="avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
+            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
             media: vContents
         };
 
@@ -127,32 +127,32 @@ function DashParser() {
         let aRep = null;
         let vRep = null;
 
-        let cnt = 50;
+        let cnt = 20;
         
         // construct dash audio
         let aContents = [];
         for (let i = 0; i <= cnt; i++) {
-            let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/undoc/test2_main_index/Audio1/' + i.toString() + '.m4s';
             aContents.push(content);
         }
 
         aRep = {
             type: 'audio',
             codecs: 'audio/mp4; codecs="mp4a.40.29"',
-            initialization: 'http://10.2.68.64/2/dash_example/test2_main_index/Audio1/Header.m4s',
+            initialization: 'http://10.2.68.64/2/dash/undoc/test2_main_index/Audio1/Header.m4s',
             media: aContents
         };
 
         // construct dash video
         let vContents = [];
         for (let i = 0; i <= cnt; i++) {
-            let content = 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/dash/undoc/test2_main_index/Video1/' + i.toString() + '.m4s';
             vContents.push(content);
         }
         vRep = {
             type: 'video',
             codecs: 'video/mp4; codecs="avc1.4D4029"',
-            initialization: 'http://10.2.68.64/2/dash_example/test2_main_index/Video1/Header.m4s',
+            initialization: 'http://10.2.68.64/2/dash/undoc/test2_main_index/Video1/Header.m4s',
             media: vContents
         };
 

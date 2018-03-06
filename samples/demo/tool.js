@@ -28,3 +28,10 @@ function timeToString(seconds) {
     return (h === 0 ? '' : formatTime(h) + ':') + formatTime(m) + ':' + formatTime(s);
 }
 
+///////////////////////////////////////////////////////////////////
+function printLog(msg) {
+    onLog({
+        message: msg
+    });
+    console.log('UI: ' + msg);
+}
