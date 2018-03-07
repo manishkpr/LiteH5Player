@@ -31,6 +31,8 @@ var vopFullScreenCorner1;
 var vopFullScreenCorner2;
 var vopFullScreenCorner3;
 
+var vopSpinner;
+
 var uiConsole = null;
 
 // UI Data
@@ -149,6 +151,8 @@ function initUI() {
     vopPanel = document.querySelector('.vop-panel');
     vopPanelMenu = document.querySelector('.vop-panel-menu');
 
+    vopSpinner = document.querySelector('.vop-spinner');
+
     stopWaitingUI();
 }
 
@@ -245,13 +249,11 @@ function initUIEventListeners() {
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
 function startWaitingUI() {
-    var idBufferingContainer = document.getElementById('idBufferingContainer');
-    idBufferingContainer.style.display = 'block';
+    vopSpinner.style.display = 'block';
 }
 
 function stopWaitingUI() {
-    var idBufferingContainer = document.getElementById('idBufferingContainer');
-    idBufferingContainer.style.display = 'none';
+    vopSpinner.style.display = 'none';
 }
 
 // begin progress bar
@@ -942,9 +944,6 @@ function onVolumeSliderMousemove() {
     // process normal mouse move logic
 }
 
-function onBufferIconClick() {
-    //printLog('--onBufferIconClick--');
-}
 
 ////////////////////////////////////////////////////////////////////////////////////
 // player_ event callback
