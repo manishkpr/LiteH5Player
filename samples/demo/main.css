@@ -29,18 +29,6 @@ body {
   height: 100%;
 }
 
-.vop-shade {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-}
-
-.vop-shade:not(.vop-shade-test1) {
-  /*background-color: red;*/
-}
-
-
 /******** Begin Tooltip ********/
 .vop-tooltip {
   position: absolute;
@@ -69,8 +57,20 @@ body {
 
 .vop-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:2;background-position:bottom }
 
-.vop-chrome-bottom {position:absolute;text-shadow:0 0 2px rgba(0,0,0,.5)}
-.vop-chrome-bottom {left:12px;right:12px;bottom:0;height:41px;z-index:2;text-align:left;direction:ltr;}
+.vop-chrome-bottom {
+  position:absolute;
+  text-shadow:0 0 2px rgba(0,0,0,.5);
+  display: none;
+}
+.vop-chrome-bottom {
+  left:12px;
+  right:12px;
+  bottom:0px;
+  height:41px;
+  z-index:2;
+  text-align:left;
+  direction:ltr;
+}
 .vop-chrome-bottom {
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
@@ -326,6 +326,7 @@ body {
 }
 /************ End vop popup menu ************/
 
+/************ Begin bottom bar auto hide ************/
 .vop-autohide { cursor:none }
 .vop-autohide .vop-chrome-bottom {
   opacity: 0;
@@ -333,18 +334,12 @@ body {
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
-.vop-autohide .vop-shade,
-.vop-autohide .vop-play-button,
-.vop-autohide .vop-ads-container,
-.vop-autohide .vop-mute-button,
-.vop-autohide .vop-volume-bar,
-.vop-autohide .vop-volume-slider,
-.vop-autohide .vop-volume-panel,
-.vop-autohide .vop-volume-slider,
-.vop-autohide .vop-volume-slider-handle {
+
+.vop-autohide * {
   cursor: none;
 }
 
+/************ End bottom bar auto hide ************/
 
 
 

@@ -43,12 +43,10 @@ function UIEngine() {
             playerContainer_.appendChild(videoContainer_);
         }
 
-        let h5pShade = document.querySelector('.vop-shade');
-        firstChild = h5pShade.firstChild;
         if (firstChild) {
-            h5pShade.insertBefore(adContainer_, firstChild);
+            playerContainer_.insertBefore(adContainer_, firstChild);
         } else {
-            h5pShade.appendChild(adContainer_);
+            playerContainer_.appendChild(adContainer_);
         }
     }
 

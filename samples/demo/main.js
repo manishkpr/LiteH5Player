@@ -1,9 +1,14 @@
 //
 var browserInfo;
 
+// player reference
+var player_ = null;
+var castSender = null;
+
+var flagPlayerInited = false;
+
 // UI Controls
 var vopPlayer = null;
-var vopShade = null;
 var vopTooltip = null;
 var vopTooltipText = null;
 var vopChromeBottom = null;
@@ -29,9 +34,6 @@ var vopFullScreenCorner3;
 var uiConsole = null;
 
 // UI Data
-var player_ = null;
-var castSender = null;
-
 var metaWidth;
 var metaHeight;
 
@@ -56,7 +58,7 @@ var fullscreen_yes_corner_1 = 'm 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z';
 var fullscreen_yes_corner_2 = 'm 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z';
 var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 
-// 
+// flag
 var timerHideControlBar;
 
 // flags reference variable of progress bar
@@ -101,7 +103,6 @@ var flagIsLinearAd = false;
 // Title: init part
 function initUI() {
     vopPlayer = document.querySelector('.html5-video-player');
-    vopShade = document.querySelector('.vop-shade');
 
     vopTooltip = document.querySelector('.vop-tooltip');
     vopTooltipText = document.querySelector('.vop-tooltip-text');
@@ -159,6 +160,7 @@ function initPlayer() {
     player_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
     player_.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
 
+    player_.on(oldmtn.Events.MEDIA_CANPLAY, onMediaCanPlay, {});
     player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
     player_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
     player_.on(oldmtn.Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
@@ -247,7 +249,7 @@ function initUIEventListeners() {
 // Title: UI reference functions
 function startWaitingUI() {
     var idBufferingContainer = document.getElementById('idBufferingContainer');
-    idBufferingContainer.style.display = 'block';
+    //idBufferingContainer.style.display = 'block';
 }
 
 function stopWaitingUI() {
@@ -506,7 +508,7 @@ function docVolumeSliderMouseup(e) {
 
     // if mouse up out of 'vop-shade', hide control bar directly
     var pt = { x: e.clientX, y: e.clientY };
-    if (!isPtInElement(pt, vopShade)) {
+    if (!isPtInElement(pt, vopPlayer)) {
         onPlayerMouseleave();
     }
 }
@@ -955,6 +957,15 @@ function onMSEOpened(ev) {
 
 function onSBUpdateEnded(ev) {
     //player_.addV();
+}
+
+function onMediaCanPlay() {
+    if (!flagPlayerInited) {
+        flagPlayerInited = true;
+
+        updateProgressBarUI();
+        vopChromeBottom.style.display = 'block';
+    }
 }
 
 function onMediaDurationChanged() {

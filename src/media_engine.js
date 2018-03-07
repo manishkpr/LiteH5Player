@@ -169,7 +169,7 @@ function MediaEngine(media, cfg) {
     function onMediaCanplay() {
         //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
         debug_.log('+Native video element event: canplay');
-        let a = media_;
+        eventBus_.trigger(Events.MEDIA_CANPLAY);
     }
 
     function onMediaCanplayThrough() {
