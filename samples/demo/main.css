@@ -210,7 +210,7 @@ body {
 }
 /************ End volume bar ************/
 
-/************ Begin vop popup ************/
+/************ Begin vop popup menu ************/
 .vop-panel {
   position: absolute;
 
@@ -249,6 +249,7 @@ body {
   border:none;
   color:inherit;
   cursor: pointer;
+  outline: 0px;
 }
 
 .vop-panel-menu {
@@ -266,6 +267,7 @@ body {
   height: 33px;
   cursor: pointer;
   display: table-row;
+  outline: 0px;
 }
 
 .vop-menuitem:hover {
@@ -322,9 +324,7 @@ body {
   padding-right: 38px;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJtIDEyLjU5LDIwLjM0IDQuNTgsLTQuNTkgLTQuNTgsLTQuNTkgMS40MSwtMS40MSA2LDYgLTYsNiB6IiBmaWxsPSIjZmZmIiAvPjwvc3ZnPg==);
 }
-
-
-/************ End vop popup ************/
+/************ End vop popup menu ************/
 
 .vop-autohide { cursor:none }
 .vop-autohide .vop-chrome-bottom {
@@ -336,7 +336,6 @@ body {
 .vop-autohide .vop-shade,
 .vop-autohide .vop-play-button,
 .vop-autohide .vop-ads-container,
-.vop-autohide .vop-ads-container > div,
 .vop-autohide .vop-mute-button,
 .vop-autohide .vop-volume-bar,
 .vop-autohide .vop-volume-slider,
@@ -360,7 +359,7 @@ body {
 #idBufferingContainer {
   position: absolute;
 
-  background-color: lightgreen;
+  /*background-color: lightgreen;*/
   margin: auto;
   width: 200px;
   height: 200px;

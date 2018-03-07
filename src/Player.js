@@ -488,9 +488,10 @@ function Player(containerId) {
     // End -- internal events listener functions
 
     ///////////////////////////////////////////////////////////////////////////
-    //function onTestMsg() {
-    function onTestMsg() {
-       console.log('+onTestMsg');
+    // Title: debug function here
+    function manualSchedule() {
+        scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
+        scheduleCtrl_.manualSchedule();
     }
 
     function test() {
@@ -542,7 +543,8 @@ function Player(containerId) {
         getValidBufferPosition: getValidBufferPosition,
         // Ads
         playAd: playAd,
-        //
+        // debug
+        manualSchedule: manualSchedule,
         test: test,
         test2: test2
     };

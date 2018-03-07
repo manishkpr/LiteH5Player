@@ -27,6 +27,10 @@
         <div class="vop-tooltip">
           <span class="vop-tooltip-text">00:00</span>
         </div>
+        <div class="vop-panel">
+          <div class="vop-panel-menu">
+          </div>
+        </div>
         <div class="vop-gradient-bottom"></div>
         <div class="vop-chrome-bottom">
           <div class="vop-progress-bar">
@@ -35,7 +39,7 @@
           </div>
           <div class="vop-controls" onclick="onVideoControlBarClick()">
             <div class="vop-left-controls">
-              <button class="vop-play-button vop-button" onclick="onBtnPlay()" title="play">
+              <button class="vop-play-button vop-button" title="play">
                 <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
                   <use class="vop-svg-shadow"></use>
                   <path class="vop-svg-fill">
@@ -85,12 +89,6 @@
             </div>
           </div>
         </div>
-
-        <div class="vop-panel">
-          <div class="vop-panel-menu">
-          </div>
-        </div>
-
       <div id="idBufferingContainer" onclick="onBufferIconClick()">
         <svg class="spinnerSvg" viewBox="25 25 50 50">
           <circle class="spinnerPath" cx="50" cy="50" r="20"
@@ -105,9 +103,9 @@
   <div id="idBtnController">
     <button type="button" onclick="onBtnOpen()">open</button>
     <button type="button" onclick="onBtnClose()">close</button>
-    <button type="button" onclick="onBtnPlay()">play</button>
+    <button type="button" onclick="onPlayButtonClick()">play</button>
     <button type="button" onclick="onBtnAddA()">addA</button>
-    <button type="button" onclick="onBtnAddV()">addV</button>
+    <button type="button" onclick="onBtnManualSchedule()">add</button>
     <button type="button" onclick="onBtnAddPD()">addPD</button>
     <button type="button" onclick="onBtnDelAll()">del all</button>
     <button type="button" onclick="onBtnStop()" style="display:none">stop</button>

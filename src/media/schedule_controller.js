@@ -11,6 +11,7 @@ function ScheduleController() {
 
     // flag
     let isFragmentProcessing_ = false;
+    let manualMode_ = true;
 
     function setup() {
         
@@ -45,6 +46,10 @@ function ScheduleController() {
     }
 
     function startScheduleTimer(value) {
+        if (manualMode_) {
+            return;
+        }
+
         if (scheduleTimeout_) {
             clearTimeout(scheduleTimeout_);
             scheduleTimeout_ = null;
@@ -64,9 +69,16 @@ function ScheduleController() {
         }
     }
 
+    function manualSchedule() {
+        schedule();
+    }
+
     let instance = {
         start: start,
-        stop: stop
+        stop: stop,
+
+        // for debug
+        manualSchedule: manualSchedule
     };
     setup();
     return instance;
