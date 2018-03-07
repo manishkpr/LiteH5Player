@@ -157,9 +157,6 @@ function initPlayer() {
     player_ = new oldmtn.Player('player-container');
     player_.init(cfg);
 
-    player_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
-    player_.on(oldmtn.Events.SB_UPDATE_ENDED, onSBUpdateEnded, {});
-
     player_.on(oldmtn.Events.MEDIA_CANPLAY, onMediaCanPlay, {});
     player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
     player_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
@@ -249,7 +246,7 @@ function initUIEventListeners() {
 // Title: UI reference functions
 function startWaitingUI() {
     var idBufferingContainer = document.getElementById('idBufferingContainer');
-    //idBufferingContainer.style.display = 'block';
+    idBufferingContainer.style.display = 'block';
 }
 
 function stopWaitingUI() {
@@ -951,14 +948,6 @@ function onBufferIconClick() {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // player_ event callback
-function onMSEOpened(ev) {
-    //player_.addV();
-}
-
-function onSBUpdateEnded(ev) {
-    //player_.addV();
-}
-
 function onMediaCanPlay() {
     if (!flagPlayerInited) {
         flagPlayerInited = true;

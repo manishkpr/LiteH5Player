@@ -341,17 +341,8 @@ body {
 
 /************ End bottom bar auto hide ************/
 
-
-
-
-#idBtnController {
-  position: relative;
-}
-
-
-/*************************************************/
-/*Begin loading animation*/
-#idBufferingContainer {
+/************ Begin loading animation ************/
+.vop-spinner {
   position: absolute;
 
   /*background-color: lightgreen;*/
@@ -423,6 +414,11 @@ body {
   80%, 90% {
     stroke: #ffa700;
   }
+}
+
+
+#idBtnController {
+  position: relative;
 }
 
 .spinner {
