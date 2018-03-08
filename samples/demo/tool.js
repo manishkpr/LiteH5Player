@@ -29,7 +29,7 @@ function timeToString(seconds) {
 }
 
 ///////////////////////////////////////////////////////////////////
-const LOG_DEBUG = 0;
+const LOG_DEBUG = undefined;
 const LOG_INFO = 1;
 const LOG_WARN = 2;
 const LOG_ERROR = 3;
@@ -39,6 +39,9 @@ function printLog(msg, level) {
         message: msg
     });
 
+    if (level === LOG_DEBUG) {
+        console.log('UI: ' + msg);
+    }
     if (level === LOG_INFO) {
         console.log('UI: ' + msg);
     }

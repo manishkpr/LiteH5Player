@@ -22,7 +22,7 @@ var vopVolumeSliderHandle = null;
 var vopPlaySvg;
 var vopMuteSvg;
 var vopSettingSvg;
-var vopSetting
+var vopSetting;
 var vopPanel;
 var vopPanelMenu;
 var vopFullscreen;
@@ -237,7 +237,7 @@ function initUIEventListeners() {
     } else {
         var v = document.querySelector('.html5-video-player');
         new ResizeSensor(v, function () {
-            printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight), LOG_DEBUG);
+            printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
             updateProgressBarUI();
             player_.resize(v.clientWidth, v.clientHeight);
         });
@@ -438,7 +438,7 @@ function updateContentVolumeBarUI(muted, volume) {
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
 function h5EnterFullscreen() {
-    printLog('+h5EnterFullscreen', LOG_DEBUG);
+    printLog('+h5EnterFullscreen');
     //var v = document.querySelector('.player');
     //var v = document.querySelector('.vop-video-container');
     //var v = document.querySelector('.vop-video');
@@ -461,7 +461,7 @@ function h5EnterFullscreen() {
 }
 
 function h5LeaveFullscreen() {
-    printLog('+h5LeaveFullscreen', LOG_DEBUG);
+    printLog('+h5LeaveFullscreen');
 
     var cancelFullscreen =
     document.exitFullscreen ||
@@ -496,7 +496,7 @@ function docVolumeSliderMousemove(e) {
 }
 
 function docVolumeSliderMouseup(e) {
-    printLog('+docVolumeSliderMouseup', LOG_DEBUG);
+    printLog('+docVolumeSliderMouseup');
     releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
@@ -561,9 +561,9 @@ function onBtnOpen() {
 }
 
 function onBtnClose() {
-    printLog('+onBtnClose', LOG_DEBUG);
+    printLog('+onBtnClose');
     player_.close();
-    printLog('-onBtnClose', LOG_DEBUG);
+    printLog('-onBtnClose');
 }
 
 function onPlayButtonClick() {
@@ -649,7 +649,7 @@ function onPlayButtonClickAd() {
 }
 
 function onSettingClick() {
-    printLog('+onBtnSetting, currMenu: ' + settingContext.currMenu, LOG_DEBUG);
+    printLog('+onBtnSetting, currMenu: ' + settingContext.currMenu);
 
     if (settingContext.currMenu === 'none') {
         createMainMenu();
@@ -670,7 +670,7 @@ function onSettingClick() {
 }
 
 function onFullscreenClick() {
-    printLog('+onBtnFullscreen', LOG_DEBUG);
+    printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
     } else {
@@ -733,7 +733,7 @@ function onBtnTest() {
 }
 
 function onBtnTest2() {
-    printLog('--onBtnTest2--', LOG_DEBUG);
+    printLog('--onBtnTest2--');
     //player_.test2();
 
     player_.resize(1024, 768);
@@ -801,7 +801,7 @@ function onVideoControlBarClick() {
 }
 
 function doEnterThumbnailMode() {
-    printLog('+doEnterThumbnailMode', LOG_DEBUG);
+    printLog('+doEnterThumbnailMode');
     if (!flagThumbnailMode) {
         // need to pause content first before starting a seek operation.
         if (!progressBarContext.pausedBeforeMousedown) {
@@ -826,7 +826,7 @@ function doProcessThumbnailUp() {
 }
 
 function onProgressBarMousedown(e) {
-    printLog('+onProgressBarMousedown', LOG_DEBUG);
+    printLog('+onProgressBarMousedown');
     captureProgressBarMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -863,11 +863,11 @@ function onProgressBarMousemove(e) {
     vopTooltip.style.display = 'block';
 
     vopTooltipText.innerText = strTime;
-    //printLog('vopTooltip.style.left: ' + vopTooltip.style.left, LOG_DEBUG);
+    //printLog('vopTooltip.style.left: ' + vopTooltip.style.left);
 }
 
 function onProgressBarMouseleave() {
-    printLog('+onProgressBarMouseleave', LOG_DEBUG);
+    printLog('+onProgressBarMouseleave');
     vopTooltip.style.display = 'none';
 }
 
@@ -882,7 +882,7 @@ function releaseProgressBarMouseEvents() {
 }
 
 function docProgressBarMousemove(e) {
-    printLog('+docProgressBarMousemove', LOG_DEBUG);
+    printLog('+docProgressBarMousemove');
 
     var movePos = getProgressMovePosition(e);
     if (progressBarContext.movePos === movePos) {
@@ -925,7 +925,7 @@ function docProgressBarMouseup(e) {
 }
 
 function onVolumeSliderMousedown(e) {
-    printLog('+onVolumeSliderMousedown', LOG_DEBUG);
+    printLog('+onVolumeSliderMousedown');
     captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -991,8 +991,8 @@ function onMediaLoadedMetaData(e) {
 
     vp.style.paddingBottom = ((metaHeight / metaWidth) * 100).toString() + '%';
 
-    printLog('vp.clientWidth: ' + vp.clientWidth, LOG_DEBUG);
-    printLog('vp.clientHeight: ' + vp.clientHeight, LOG_DEBUG);
+    printLog('vp.clientWidth: ' + vp.clientWidth);
+    printLog('vp.clientHeight: ' + vp.clientHeight);
     player_.resize(vp.clientWidth, vp.clientHeight);
 }
 
@@ -1008,11 +1008,11 @@ function onMediaPlaying() {
 }
 
 function onMediaSeeking() {
-    printLog('+onMediaSeeking, getPosition: ' + player_.getPosition(), LOG_DEBUG);
+    printLog('+onMediaSeeking, getPosition: ' + player_.getPosition());
 }
 
 function onMediaSeeked() {
-    printLog('+onMediaSeeked, getPosition: ' + player_.getPosition(), LOG_DEBUG);
+    printLog('+onMediaSeeked, getPosition: ' + player_.getPosition());
 
     if (!progressBarContext.pausedBeforeMousedown || progressBarContext.endedBeforeMousedown) {
         player_.play();
@@ -1024,7 +1024,7 @@ function onMediaSeeked() {
 }
 
 function onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + player_.getPosition() + ', duration: ' + player_.getDuration(), LOG_DEBUG);
+    //printLog('+onMediaTimeupdated, position: ' + player_.getPosition() + ', duration: ' + player_.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
@@ -1050,29 +1050,30 @@ function onLog(e) {
 }
 
 function onAdStarted(e) {
+    printLog('onAdStarted, linear: ' + e.isLinearAd);
     flagAdStarted = true;
     flagIsLinearAd = e.isLinearAd;
     if (!flagIsLinearAd) {
         var v = document.querySelector('.vop-ads-container');
-
         v.style.marginTop = '-' + (vopControlBar.clientHeight + 10).toString() + 'px';
     }
 }
 
 function onAdComplete() {
+    printLog('onAdComplete, linear: ' + flagIsLinearAd);
     flagAdStarted = false;
 }
 
 function onAdTimeUpdate() {
     var position = player_.getPosition();
     var duration = player_.getDuration();
-    //printLog('ad position: ' + position + ', duration: ' + duration, LOG_DEBUG);
+    //printLog('ad position: ' + position + ', duration: ' + duration);
     updateAdProgressUI();
 }
 
 function onFullscreenChanged() {
     var v = player_.isFullscreen();
-    printLog('fullscreen changed, ret: ' + v, LOG_DEBUG);
+    printLog('fullscreen changed, ret: ' + v);
     if (v) {
         vopFullScreenCorner0.setAttribute('d', fullscreen_yes_corner_0);
         vopFullScreenCorner1.setAttribute('d', fullscreen_yes_corner_1);
@@ -1368,7 +1369,7 @@ function updateAudioTrackMenuUI() {
 
 function onQualityMenuClick(e) {
     e.stopPropagation();
-    printLog('+onQualityMenuClick: ' + e.target.innerText, LOG_DEBUG);
+    printLog('+onQualityMenuClick: ' + e.target.innerText);
 
     destroyMenu();
     createQualityMenu();
@@ -1389,7 +1390,7 @@ function onMainMenuBlur(e) {
         text = ', text: ' + e.relatedTarget.innerText;
     }
     
-    printLog('+onMainMenuBlur, settingContext.currMenu: ' + settingContext.currMenu + text, LOG_DEBUG);
+    printLog('+onMainMenuBlur, settingContext.currMenu: ' + settingContext.currMenu + text);
 
     if (e.relatedTarget) {
         if (e.relatedTarget === vopSetting) {
@@ -1404,7 +1405,7 @@ function onMainMenuBlur(e) {
             console.log('a1: ' + a1 + ', innerText: ' + e.relatedTarget.innerText);
         }
     } else {
-        printLog('+onMainMenuBlur, before onSettingClick', LOG_DEBUG);
+        printLog('+onMainMenuBlur, before onSettingClick');
         onSettingClick();
     }
 }
@@ -1419,7 +1420,7 @@ function onQualityBack(e) {
 
 function onQualityItemClick(e) {
     printLog('onQualityItemClick, settingContext.currMenu: ' + settingContext.currMenu
-        + ', text: ' + e.target.innerText, LOG_DEBUG);
+        + ', text: ' + e.target.innerText);
     e.stopPropagation();
 
     settingContext.currQuality = e.target.innerText;
