@@ -8,7 +8,7 @@ var castSender = null;
 var flagPlayerInited = false;
 
 // UI Controls
-var vopPlayer = null;
+var vopH5Player = null;
 var vopTooltip = null;
 var vopTooltipText = null;
 var vopControlBar = null;
@@ -104,7 +104,7 @@ var flagIsLinearAd = false;
 
 // Title: init part
 function initUI() {
-    vopPlayer = document.querySelector('.html5-video-player');
+    vopH5Player = document.querySelector('.html5-video-player');
 
     vopTooltip = document.querySelector('.vop-tooltip');
     vopTooltipText = document.querySelector('.vop-tooltip-text');
@@ -192,11 +192,11 @@ function initPlayer() {
 }
 
 function initUIEventListeners() {
-    vopPlayer.addEventListener('mouseenter', onPlayerMouseenter);
-    vopPlayer.addEventListener('mousemove', onPlayerMousemove);
-    vopPlayer.addEventListener('mouseleave', onPlayerMouseleave);
+    vopH5Player.addEventListener('mouseenter', onPlayerMouseenter);
+    vopH5Player.addEventListener('mousemove', onPlayerMousemove);
+    vopH5Player.addEventListener('mouseleave', onPlayerMouseleave);
 
-    vopPlayer.addEventListener('click', onPlayerClick);
+    vopH5Player.addEventListener('click', onPlayerClick);
 
     vopProgressBar.addEventListener('mousedown', onProgressBarMousedown);
     vopProgressBar.addEventListener('mousemove', onProgressBarMousemove);
@@ -504,7 +504,7 @@ function docVolumeSliderMouseup(e) {
 
     // if mouse up out of 'vop-shade', hide control bar directly
     var pt = { x: e.clientX, y: e.clientY };
-    if (!isPtInElement(pt, vopPlayer)) {
+    if (!isPtInElement(pt, vopH5Player)) {
         onPlayerMouseleave();
     }
 }
@@ -987,8 +987,6 @@ function onMediaLoadedMetaData(e) {
     metaHeight = e.height;
 
     var vp = document.querySelector('.player');
-    var v = document.querySelector('.html5-video-player');
-
     vp.style.paddingBottom = ((metaHeight / metaWidth) * 100).toString() + '%';
 
     printLog('vp.clientWidth: ' + vp.clientWidth);
@@ -1008,11 +1006,11 @@ function onMediaPlaying() {
 }
 
 function onMediaSeeking() {
-    printLog('+onMediaSeeking, getPosition: ' + player_.getPosition());
+    printLog('+onMediaSeeking, pos: ' + player_.getPosition());
 }
 
 function onMediaSeeked() {
-    printLog('+onMediaSeeked, getPosition: ' + player_.getPosition());
+    printLog('+onMediaSeeked, pos: ' + player_.getPosition());
 
     if (!progressBarContext.pausedBeforeMousedown || progressBarContext.endedBeforeMousedown) {
         player_.play();
