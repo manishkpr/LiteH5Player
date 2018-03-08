@@ -47,8 +47,8 @@ function AdsEngine(adContainer, media, advertising) {
 
     let adsLoaded_ = false;
     let contentInitialized_ = false;
-    let nonLinearAdWidth_ = 0;
-    let nonLinearAdHeight_ = 0;
+    let adWidth_ = 0;
+    let adHeight_ = 0;
 
     let countdownTimer_ = null;
     let duration_;
