@@ -47,6 +47,8 @@ function AdsEngine(adContainer, media, advertising) {
 
     let adsLoaded_ = false;
     let contentInitialized_ = false;
+    let nonLinearAdWidth_ = 0;
+    let nonLinearAdHeight_ = 0;
 
     let countdownTimer_ = null;
     let duration_;
@@ -123,8 +125,9 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function requestAds() {
-        width_ = adContainer_.clientWidth;
-        height_ = adContainer_.clientHeight;
+        width_ = adContainer_.parentNode.clientWidth;
+        height_ = adContainer_.parentNode.clientHeight;
+        console.log('width_: ' + width_ + ', height: ' + height_);
         // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
         // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
         // console.log('ads: ' + ads);
@@ -156,6 +159,11 @@ function AdsEngine(adContainer, media, advertising) {
 
     // AdsEngine public functions
     function playAd() {
+        // sometimes, requestAds may be caught an error, so we return here directly.
+        if (!adsManager_) {
+            return;
+        }
+
         if (contentInitialized_ && adsLoaded_) {
             try {
                 initialUserAction();
@@ -165,17 +173,6 @@ function AdsEngine(adContainer, media, advertising) {
                 // An error may be thrown if there was a problem with the VAST response.
             }
         }
-    }
-
-    function startAdsInternal() {
-        debug_.log('+AdsEngine.startAdsInternal');
-
-        // sometimes, requestAds may be caught an error, so we return here directly.
-        if (!adsManager_) {
-            return;
-        }
-
-        playAd();
     }
 
     function isPaused() {
@@ -218,7 +215,7 @@ function AdsEngine(adContainer, media, advertising) {
         return position_;
     }
 
-    function duration() {
+    function getDuration() {
         return duration_;
     }
 
@@ -246,14 +243,16 @@ function AdsEngine(adContainer, media, advertising) {
     function onAdsManagerLoaded(adsManagerLoadedEvent) {
         debug_.log('+onAdsManagerLoaded');
 
-        var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+        let adsRenderingSettings = new google.ima.AdsRenderingSettings();
+        adsRenderingSettings.autoAlign = true;
         if (advertising_.enablePreloading) {
             adsRenderingSettings.enablePreloading = advertising_.enablePreloading;
         }
         adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+        //adsRenderingSettings.useStyledLinearAds = true;
+        adsRenderingSettings.useStyledNonLinearAds = true;
 
-        adsManager_ = adsManagerLoadedEvent.getAdsManager(
-                media_, adsRenderingSettings);
+        adsManager_ = adsManagerLoadedEvent.getAdsManager(media_, adsRenderingSettings);
 
         // Attach the pause/resume events.
         // Handle errors.
@@ -262,7 +261,7 @@ function AdsEngine(adContainer, media, advertising) {
             onAdError,
             false,
             this);
-        var events = [
+        let events = [
             // For non-auto ad breaks, listen for ad break ready
             google.ima.AdEvent.Type.AD_BREAK_READY,
             google.ima.AdEvent.Type.AD_METADATA,
@@ -298,8 +297,8 @@ function AdsEngine(adContainer, media, advertising) {
 
         adsLoaded_ = true;
         if (contentInitialized_ && !isMobilePlatform_) {
-            debug_.log('startAdsInternal when contentInitialized_');
-            startAdsInternal();
+            debug_.log('playAd when contentInitialized_');
+            playAd();
         }
 
         debug_.log('-onAdsManagerLoaded');
@@ -394,10 +393,12 @@ function AdsEngine(adContainer, media, advertising) {
 
                 position_ = 0;
                 duration_ = ad.getDuration();
+                adWidth_ = ad.getWidth();
+                adHeight_ = ad.getHeight();
 
-                eventBus_.trigger(Events.AD_STARTED, {
-                    isLinearAd: isLinearAd_
-                });
+                eventBus_.trigger(Events.AD_STARTED, { isLinearAd: isLinearAd_,
+                        width: adWidth_,
+                        height: adHeight_ });
                 if (isLinearAd_) {
                     startAdTimer();
                     eventBus_.trigger(Events.AD_TIMEUPDATE);
@@ -447,8 +448,8 @@ function AdsEngine(adContainer, media, advertising) {
             'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
         if (adsLoaded_ && !isMobilePlatform_) {
-            debug_.log('startAdsInternal when adsLoaded_');
-            startAdsInternal();
+            debug_.log('playAd when adsLoaded_');
+            playAd();
         }
         debug_.log('-onMediaLoadedMetadata');
     }
@@ -492,12 +493,17 @@ function AdsEngine(adContainer, media, advertising) {
 
     //
     function test() {
-        playAd();
-        // let skippableState = adsManager_.getAdSkippableState();
-        // console.log('skippableState: ' + skippableState);
-        // //adsManager_.skip();
+        // playAd();
 
-        // onMediaEnded();
+        if (contentInitialized_ && adsLoaded_) {
+            try {
+                initialUserAction();
+                adsManager_.init(width_, height_, google.ima.ViewMode.NORMAL);
+                adsManager_.start();
+            } catch (adError) {
+                // An error may be thrown if there was a problem with the VAST response.
+            }
+        }
     }
 
     let instance = {
@@ -514,7 +520,7 @@ function AdsEngine(adContainer, media, advertising) {
         getVolume: getVolume,
         setVolume: setVolume,
         getPosition: getPosition,
-        duration: duration,
+        getDuration: getDuration,
         resize: resize,
         requestAds: requestAds,
         playAd: playAd,

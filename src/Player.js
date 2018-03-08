@@ -234,6 +234,10 @@ function Player(containerId) {
         let url = streamInfo_.activeStream.pdRep.media;
 
         media_.src = url;
+
+        if (adsEngine_) {
+            adsEngine_.requestAds();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -495,8 +499,7 @@ function Player(containerId) {
     }
 
     function test() {
-        let media = media_;
-
+        adsEngine_.test();
     }
 
     function test2() {
@@ -519,7 +522,6 @@ function Player(containerId) {
         close: close,
         addA: addA,
         addV: addV,
-        addPD: addPD,
         on: on,
         off: off,
         play: play,

@@ -20,7 +20,7 @@
 <body>
   <h2>LiteH5Player</h2>
 
-  <div class="player"">
+  <div class="player">
     <div id="player-container" class="html5-video-player">
         <div class="vop-tooltip">
           <span class="vop-tooltip-text">00:00</span>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="vop-gradient-bottom"></div>
-        <div class="vop-chrome-bottom">
+        <div class="vop-control-bar">
           <div class="vop-progress-bar">
             <div class="vop-scrubber-container">
             </div>
@@ -87,7 +87,8 @@
             </div>
           </div>
         </div>
-
+        <div class="vop-caption-window">
+        </div>
         <div class="vop-spinner">
           <div class="vop-spinner-container">
             <div class="vop-spinner-rotator">
@@ -112,7 +113,7 @@
     <button type="button" onclick="onPlayButtonClick()">play</button>
     <button type="button" onclick="onBtnAddA()">addA</button>
     <button type="button" onclick="onBtnManualSchedule()">add</button>
-    <button type="button" onclick="onBtnAddPD()">addPD</button>
+    <button type="button" onclick="onBtnInitAD()">initAd</button>
     <button type="button" onclick="onBtnDelAll()">del all</button>
     <button type="button" onclick="onBtnStop()" style="display:none">stop</button>
     <button type="button" onclick="onBtnPlayAd()">play ad</button>

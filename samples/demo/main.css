@@ -29,6 +29,13 @@ body {
   height: 100%;
 }
 
+.vop-ads-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
 /******** Begin Tooltip ********/
 .vop-tooltip {
   position: absolute;
@@ -57,12 +64,12 @@ body {
 
 .vop-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:2;background-position:bottom }
 
-.vop-chrome-bottom {
+.vop-control-bar {
   position:absolute;
   text-shadow:0 0 2px rgba(0,0,0,.5);
   display: none;
 }
-.vop-chrome-bottom {
+.vop-control-bar {
   left:12px;
   right:12px;
   bottom:0px;
@@ -71,7 +78,7 @@ body {
   text-align:left;
   direction:ltr;
 }
-.vop-chrome-bottom {
+.vop-control-bar {
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1)
@@ -182,13 +189,6 @@ body {
 }
 /******** End custom button ********/
 
-.vop-ads-container {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 0px;
-  height: 0px;
-}
 
 /************ Begin volume bar ************/
 .vop-volume-panel {
@@ -328,7 +328,7 @@ body {
 
 /************ Begin bottom bar auto hide ************/
 .vop-autohide { cursor:none }
-.vop-autohide .vop-chrome-bottom {
+.vop-autohide .vop-control-bar {
   opacity: 0;
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
@@ -341,6 +341,26 @@ body {
 
 /************ End bottom bar auto hide ************/
 
+/************ Begin caption window ************/
+.vop-caption-window {
+  position: absolute;
+  top: 128px;
+  width: 100%;
+  height: 72px;
+  background-color: orange;
+  display: none;
+
+  line-height: normal;
+  z-index: 37;
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: grab;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none
+}
+/************ End caption window ************/
+
 /************ Begin loading animation ************/
 .vop-spinner {
   position: absolute;
@@ -349,7 +369,8 @@ body {
   width: 64px;
   margin-left: -32px;
   z-index: 18;
-  pointer-events: none
+  pointer-events: none;
+  display: none;
 }
 
 .vop-spinner-container {
@@ -563,7 +584,6 @@ body {
     transform: rotate(-130deg)
   }
 }
-
 /************ End loading animation ************/
 
 #idBtnController {
