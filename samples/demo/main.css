@@ -211,19 +211,30 @@ body {
 /************ End volume bar ************/
 
 /************ Begin vop popup menu ************/
+.vop-popup {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(28,28,28,0.9);
+  text-shadow: 0 0 2px rgba(0,0,0,.5);
+  -moz-transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+  -webkit-transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+  transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+}
+
 .vop-settings-menu {
   right: 11px;
   bottom: 45px;
 }
 
 .vop-panel {
-  position: absolute;
-
-  max-height: 255px;
+  bottom: 0;
+  right: 0;
   overflow-y: auto;
-
-  background: rgba(28,28,28,0.9);
-  display: block;
+  overflow-x: hidden;
 }
 
 .vop-panel-header {

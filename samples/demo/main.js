@@ -23,6 +23,7 @@ var vopPlaySvg;
 var vopMuteSvg;
 var vopSettingsBtn;
 var vopSettingsBtnSvg;
+var vopSettingsMenu;
 var vopPanel;
 var vopPanelMenu;
 var vopFullscreen;
@@ -148,6 +149,7 @@ function initUI() {
     vopFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
 
     // setting panel
+    vopSettingsMenu = document.querySelector('.vop-settings-menu');
     vopPanel = document.querySelector('.vop-panel');
     vopPanelMenu = document.querySelector('.vop-panel-menu');
 
@@ -655,12 +657,12 @@ function onSettingClick() {
         createMainMenu();
         settingContext.currMenu = 'main_menu';
     } else if (settingContext.currMenu === 'main_menu') {
-        if (vopPanel.style.display === 'none') {
-            vopPanel.style.display = 'block';
+        if (vopSettingsMenu.style.display === 'none') {
+            vopSettingsMenu.style.display = 'block';
             var elem_child = vopPanelMenu.childNodes;
             elem_child[1].focus();
         } else {
-            vopPanel.style.display = 'none';
+            vopSettingsMenu.style.display = 'none';
         }
     } else if (settingContext.currMenu === 'quality_menu' ||
         settingContext.currMenu === 'audioTrack_menu') {
@@ -1196,7 +1198,7 @@ function createMainMenu() {
     vopPanelMenu.appendChild(audioMenuitem);
 
     //
-    vopPanel.style.display = 'block';
+    vopSettingsMenu.style.display = 'block';
     qualityMenuitem.focus();
 }
 
@@ -1267,7 +1269,7 @@ function createQualityMenu() {
 
     vopPanel.insertBefore(header, vopPanelMenu);
     //
-    vopPanel.style.display = 'block';
+    vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
@@ -1347,7 +1349,7 @@ function createAudioTrackMenu() {
 
     vopPanel.insertBefore(header, vopPanelMenu);
     //
-    vopPanel.style.display = 'block';
+    vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
