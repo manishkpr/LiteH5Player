@@ -24,8 +24,8 @@ var vopMuteSvg;
 var vopSettingsBtn;
 var vopSettingsBtnSvg;
 var vopSettingsMenu;
-var vopPanel;
-var vopPanelMenu;
+var vopSettingsMenuPanel;
+var vopSettingsMenuPanelMenu;
 var vopFullscreen;
 var vopFullScreenCorner0;
 var vopFullScreenCorner1;
@@ -150,8 +150,8 @@ function initUI() {
 
     // setting panel
     vopSettingsMenu = document.querySelector('.vop-settings-menu');
-    vopPanel = document.querySelector('.vop-panel');
-    vopPanelMenu = document.querySelector('.vop-panel-menu');
+    vopSettingsMenuPanel = vopSettingsMenu.querySelector('.vop-panel');
+    vopSettingsMenuPanelMenu = vopSettingsMenu.querySelector('.vop-panel-menu');
 
     vopSpinner = document.querySelector('.vop-spinner');
 }
@@ -214,7 +214,7 @@ function initUIEventListeners() {
     vopFullscreen.addEventListener('click', onFullscreenClick);
 
     // don't route 'click' event from panel to its parent div
-    vopPanel.addEventListener('click', function(e) {
+    vopSettingsMenuPanel.addEventListener('click', function(e) {
         e.stopPropagation();
     });
 
@@ -659,7 +659,7 @@ function onSettingClick() {
     } else if (settingContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
-            var elem_child = vopPanelMenu.childNodes;
+            var elem_child = vopSettingsMenuPanelMenu.childNodes;
             elem_child[1].focus();
         } else {
             vopSettingsMenu.style.display = 'none';
@@ -1092,10 +1092,10 @@ function onFullscreenChanged() {
 function destroyMenu() {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
-        vopPanel.removeChild(v);
+        vopSettingsMenuPanel.removeChild(v);
     }
-    while (vopPanelMenu.firstChild) {
-        vopPanelMenu.removeChild(vopPanelMenu.firstChild);
+    while (vopSettingsMenuPanelMenu.firstChild) {
+        vopSettingsMenuPanelMenu.removeChild(vopSettingsMenuPanelMenu.firstChild);
     }
 }
 
@@ -1194,8 +1194,8 @@ function createMainMenu() {
     audioMenuitem.addEventListener('click', onAudioTrackMenuClick);
 
     // Part post process
-    vopPanelMenu.appendChild(qualityMenuitem);
-    vopPanelMenu.appendChild(audioMenuitem);
+    vopSettingsMenuPanelMenu.appendChild(qualityMenuitem);
+    vopSettingsMenuPanelMenu.appendChild(audioMenuitem);
 
     //
     vopSettingsMenu.style.display = 'block';
@@ -1264,17 +1264,17 @@ function createQualityMenu() {
         label.innerText = quality;
 
         menuitem.appendChild(label);
-        vopPanelMenu.appendChild(menuitem);
+        vopSettingsMenuPanelMenu.appendChild(menuitem);
     }
 
-    vopPanel.insertBefore(header, vopPanelMenu);
+    vopSettingsMenuPanel.insertBefore(header, vopSettingsMenuPanelMenu);
     //
     vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
 function updateQualityMenuUI() {
-    var elem_child = vopPanelMenu.childNodes;
+    var elem_child = vopSettingsMenuPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i ++) {
         var menuitem = elem_child[i];
 
@@ -1344,17 +1344,17 @@ function createAudioTrackMenu() {
         label.innerText = audioTrack;
         
         menuitem.appendChild(label);
-        vopPanelMenu.appendChild(menuitem);
+        vopSettingsMenuPanelMenu.appendChild(menuitem);
     }
 
-    vopPanel.insertBefore(header, vopPanelMenu);
+    vopSettingsMenuPanel.insertBefore(header, vopSettingsMenuPanelMenu);
     //
     vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
 function updateAudioTrackMenuUI() {
-    var elem_child = vopPanelMenu.childNodes;
+    var elem_child = vopSettingsMenuPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i ++) {
         var menuitem = elem_child[i];
 
