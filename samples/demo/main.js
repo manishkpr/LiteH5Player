@@ -2,6 +2,7 @@
 var browserInfo;
 
 // player reference
+var cfg_;
 var player_ = null;
 var castSender = null;
 
@@ -157,9 +158,9 @@ function initUI() {
 }
 
 function initPlayer() {
-    var cfg = getInitConfig();
+    cfg_ = getInitConfig();
     player_ = new oldmtn.Player('player-container');
-    player_.init(cfg);
+    player_.init(cfg_);
 
     player_.on(oldmtn.Events.MEDIA_CANPLAY, onMediaCanPlay, {});
     player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
@@ -955,6 +956,10 @@ function onMediaCanPlay() {
 
         updateProgressBarUI();
         vopControlBar.style.display = 'block';
+
+        if (cfg_.autoplay) {
+            player_.play();
+        }
     }
 }
 
