@@ -58,25 +58,36 @@ body {
 /******** End Tooltip ********/
 
 .vop-gradient-bottom {
-  width:100%;position:absolute;background-repeat:repeat-x;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);-moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);-webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+  width: 100%;
+  position: absolute;
+  background-repeat: repeat-x;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+  -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+  -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+  transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   pointer-events:none;
 }
 
-.vop-gradient-bottom { height:49px;padding-top:49px;bottom:0;z-index:2;background-position:bottom }
+.vop-gradient-bottom {
+  height: 49px;
+  padding-top: 49px;
+  bottom: 0;
+  z-index: 2;
+  background-position: bottom;
+}
 
 .vop-control-bar {
   position:absolute;
   text-shadow:0 0 2px rgba(0,0,0,.5);
-  display: none;
 }
 .vop-control-bar {
-  left:12px;
-  right:12px;
-  bottom:0px;
-  height:41px;
-  z-index:2;
-  text-align:left;
-  direction:ltr;
+  left: 12px;
+  right: 12px;
+  bottom: 0px;
+  height: 41px;
+  z-index: 2;
+  text-align: left;
+  direction: ltr;
 }
 .vop-control-bar {
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
@@ -341,6 +352,9 @@ body {
 
 /************ Begin bottom bar auto hide ************/
 .vop-autohide { cursor:none }
+.vop-autohide .vop-gradient-bottom {
+  display: none;
+}
 .vop-autohide .vop-control-bar {
   opacity: 0;
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
