@@ -21,8 +21,8 @@ var vopVolumeSliderHandle = null;
 
 var vopPlaySvg;
 var vopMuteSvg;
-var vopSettingSvg;
-var vopSetting;
+var vopSettingsBtn;
+var vopSettingsBtnSvg;
 var vopPanel;
 var vopPanelMenu;
 var vopFullscreen;
@@ -124,8 +124,8 @@ function initUI() {
 
     vopMuteSvg = vopMuteButton.querySelector('.vop-svg-fill');
 
-    vopSetting = document.querySelector('.vop-setting-button');
-    vopSettingSvg = vopSetting.querySelector('.vop-svg-fill');
+    vopSettingsBtn = document.querySelector('.vop-settings-button');
+    vopSettingsBtnSvg = vopSettingsBtn.querySelector('.vop-svg-fill');
 
     vopFullscreen = document.querySelector('.vop-fullscreen-button');
 
@@ -140,7 +140,7 @@ function initUI() {
 
     vopPlaySvg.setAttribute('d', icon_play);
     vopMuteSvg.setAttribute('d', icon_volume_high);
-    vopSettingSvg.setAttribute('d', icon_setting);
+    vopSettingsBtnSvg.setAttribute('d', icon_setting);
 
     vopFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
     vopFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
@@ -208,7 +208,7 @@ function initUIEventListeners() {
     vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
     vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
 
-    vopSetting.addEventListener('click', onSettingClick);
+    vopSettingsBtn.addEventListener('click', onSettingClick);
     vopFullscreen.addEventListener('click', onFullscreenClick);
 
     // don't route 'click' event from panel to its parent div
@@ -1391,7 +1391,7 @@ function onMainMenuBlur(e) {
     printLog('+onMainMenuBlur, settingContext.currMenu: ' + settingContext.currMenu + text);
 
     if (e.relatedTarget) {
-        if (e.relatedTarget === vopSetting) {
+        if (e.relatedTarget === vopSettingsBtn) {
             if (settingContext.currMenu === 'main_menu' ||
                 settingContext.currMenu === 'quality_menu' ||
                 settingContext.currMenu === 'audioTrack_menu') {

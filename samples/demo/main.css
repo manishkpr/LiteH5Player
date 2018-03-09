@@ -184,7 +184,7 @@ body {
   float: left;
 }
 
-.vop-setting-button {
+.vop-settings-button {
   float: left;
 }
 /******** End custom button ********/
@@ -211,11 +211,13 @@ body {
 /************ End volume bar ************/
 
 /************ Begin vop popup menu ************/
-.vop-panel {
-  position: absolute;
-
+.vop-settings-menu {
   right: 11px;
   bottom: 45px;
+}
+
+.vop-panel {
+  position: absolute;
 
   max-height: 255px;
   overflow-y: auto;
