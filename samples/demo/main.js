@@ -32,8 +32,8 @@ var vopFullScreenCorner0;
 var vopFullScreenCorner1;
 var vopFullScreenCorner2;
 var vopFullScreenCorner3;
-
 var vopSpinner;
+var uiGiantBtnContainer;
 
 var uiConsole = null;
 
@@ -155,7 +155,68 @@ function initUI() {
     vopSettingsMenuPanelMenu = vopSettingsMenu.querySelector('.vop-panel-menu');
 
     vopSpinner = document.querySelector('.vop-spinner');
+
+    uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
 }
+
+function initUIEventListeners() {
+    vopH5Player.addEventListener('mouseenter', onPlayerMouseenter);
+    vopH5Player.addEventListener('mousemove', onPlayerMousemove);
+    vopH5Player.addEventListener('mouseleave', onPlayerMouseleave);
+
+    vopH5Player.addEventListener('click', onPlayerClick);
+
+    vopProgressBar.addEventListener('mousedown', onProgressBarMousedown);
+    vopProgressBar.addEventListener('mousemove', onProgressBarMousemove);
+    vopProgressBar.addEventListener('mouseleave', onProgressBarMouseleave);
+
+    vopControlBar.addEventListener('click', onChromeBottomClick);
+    vopPlayButton.addEventListener('click', onPlayButtonClick);
+    vopMuteButton.addEventListener('click', onMuteButtonClick);
+    vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
+    vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
+
+    vopSettingsBtn.addEventListener('click', onSettingClick);
+    vopFullscreen.addEventListener('click', onFullscreenClick);
+
+    // don't route 'click' event from panel to its parent div
+    vopSettingsMenuPanel.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    uiGiantBtnContainer.addEventListener('click', function(e) {
+        e.stopPropagation();
+        onPlayFromGiantButton();
+    });
+
+    // resize listener
+    //if (window.ResizeObserver) {
+    if (false) {
+        function onPlayerSize(entries) {
+            for (var i = 0; i < entries.length; i ++) {
+                var entry = entries[i];
+                const cr = entry.contentRect;
+                const cWidth = entry.target.clientWidth;
+                const cHeight = entry.target.clientHeight;
+
+                player_.resize(cWidth, cHeight);
+            }
+        }
+        var ro = new ResizeObserver(onPlayerSize);
+
+        // Observer one or multiple elements
+        var v = document.querySelector('.html5-video-player');
+        ro.observe(v);
+    } else {
+        var v = document.querySelector('.html5-video-player');
+        new ResizeSensor(v, function () {
+            printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
+            updateProgressBarUI();
+            player_.resize(v.clientWidth, v.clientHeight);
+        });
+    }
+}
+
 
 function initPlayer() {
     cfg_ = getInitConfig();
@@ -192,59 +253,6 @@ function initPlayer() {
 
     // init chromecast sender
     //castSender = new oldmtn.CastSender(receiverAppId);
-}
-
-function initUIEventListeners() {
-    vopH5Player.addEventListener('mouseenter', onPlayerMouseenter);
-    vopH5Player.addEventListener('mousemove', onPlayerMousemove);
-    vopH5Player.addEventListener('mouseleave', onPlayerMouseleave);
-
-    vopH5Player.addEventListener('click', onPlayerClick);
-
-    vopProgressBar.addEventListener('mousedown', onProgressBarMousedown);
-    vopProgressBar.addEventListener('mousemove', onProgressBarMousemove);
-    vopProgressBar.addEventListener('mouseleave', onProgressBarMouseleave);
-
-    vopControlBar.addEventListener('click', onChromeBottomClick);
-    vopPlayButton.addEventListener('click', onPlayButtonClick);
-    vopMuteButton.addEventListener('click', onMuteButtonClick);
-    vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
-    vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
-
-    vopSettingsBtn.addEventListener('click', onSettingClick);
-    vopFullscreen.addEventListener('click', onFullscreenClick);
-
-    // don't route 'click' event from panel to its parent div
-    vopSettingsMenuPanel.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-    // resize listener
-    //if (window.ResizeObserver) {
-    if (false) {
-        function onPlayerSize(entries) {
-            for (var i = 0; i < entries.length; i ++) {
-                var entry = entries[i];
-                const cr = entry.contentRect;
-                const cWidth = entry.target.clientWidth;
-                const cHeight = entry.target.clientHeight;
-
-                player_.resize(cWidth, cHeight);
-            }
-        }
-        var ro = new ResizeObserver(onPlayerSize);
-
-        // Observer one or multiple elements
-        var v = document.querySelector('.html5-video-player');
-        ro.observe(v);
-    } else {
-        var v = document.querySelector('.html5-video-player');
-        new ResizeSensor(v, function () {
-            printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
-            updateProgressBarUI();
-            player_.resize(v.clientWidth, v.clientHeight);
-        });
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -529,7 +537,6 @@ function onPlayerMouseenter() {
 
 function onPlayerMousemove(e) {
     //printLog('+onPlayerMousemove');
-
     $('.html5-video-player').removeClass('vop-autohide');
 
     if (timerHideControlBar) {
@@ -550,9 +557,7 @@ function onPlayerMouseleave() {
 }
 
 function onPlayerClick() {
-    if (flagAdStarted && flagIsLinearAd) {
-        return;
-    }
+    if (flagAdStarted && flagIsLinearAd) { return; }
 
     onPlayButtonClick();
 }
@@ -679,6 +684,11 @@ function onFullscreenClick() {
     } else {
         h5EnterFullscreen();
     }
+}
+
+function onPlayFromGiantButton() {
+    onPlayButtonClick();
+    uiGiantBtnContainer.style.display = 'none';
 }
 
 function onBtnSeek() {
@@ -957,8 +967,9 @@ function onMediaCanPlay() {
         updateProgressBarUI();
         vopControlBar.style.display = 'block';
 
+        //
         if (cfg_.autoplay) {
-            player_.play();
+            onPlayFromGiantButton();
         }
     }
 }
