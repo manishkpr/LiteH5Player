@@ -396,7 +396,8 @@ function AdsEngine(adContainer, media, advertising) {
                 adWidth_ = ad.getWidth();
                 adHeight_ = ad.getHeight();
 
-                eventBus_.trigger(Events.AD_STARTED, { isLinearAd: isLinearAd_,
+                eventBus_.trigger(Events.AD_STARTED,
+                    { isLinearAd: isLinearAd_,
                         width: adWidth_,
                         height: adHeight_ });
                 if (isLinearAd_) {

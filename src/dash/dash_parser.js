@@ -104,13 +104,13 @@ function DashParser() {
         let vRep = null;
         let vContents = [];
         for (let i = 1; i <= 6; i++) {
-            let content = 'http://10.2.68.64/2/pd/fmp4/111/segment_file' + i.toString() + '.m4s';
+            let content = 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/segment_file' + i.toString() + '.m4s';
             vContents.push(content);
         }
         vRep = {
             type: 'video',
             codecs: 'video/mp4; codecs="mp4a.40.2, avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/pd/fmp4/111/segment_fileinit.mp4',
+            initialization: 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/segment_fileinit.mp4',
             media: vContents
         };
 
