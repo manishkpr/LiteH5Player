@@ -142,7 +142,8 @@ body {
 }
 
 .vop-load-progress,
-.vop-play-progress {
+.vop-play-progress,
+.vop-hover-progress {
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -162,7 +163,19 @@ body {
 
 .vop-play-progress {
   background-color: red;
-  transform: scaleX(0.2);
+  transform: scaleX(0.5);
+}
+
+.vop-hover-progress {
+  background: rgba(255,255,255,.5);
+  opacity: 0;
+  -moz-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+  -webkit-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+  transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+}
+
+.vop-progress-bar:hover .vop-hover-progress {
+  opacity: 1;
 }
 
 .vop-scrubber-container {

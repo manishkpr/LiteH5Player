@@ -16,6 +16,7 @@ var vopControlBar = null;
 var vopProgressBar = null;
 var vopLoadProgress = null;
 var vopPlayProgress = null;
+var vopHoverProgress = null;
 var vopScrubberContainer = null;
 var vopPlayButton = null;
 var vopMuteButton = null;
@@ -117,6 +118,7 @@ function initUI() {
     vopProgressBar = document.querySelector('.vop-progress-bar');
     vopLoadProgress = document.querySelector('.vop-load-progress');
     vopPlayProgress = document.querySelector('.vop-play-progress');
+    vopHoverProgress = document.querySelector('.vop-hover-progress');
 
     vopScrubberContainer = document.querySelector('.vop-scrubber-container');
     vopPlayButton = document.querySelector('.vop-play-button');
@@ -375,7 +377,6 @@ function updateProgressBarUI() {
     // part - output, update ui
     // update time progress bar
     uiBufferedPos = player_.getValidBufferPosition(uiPosition);
-    var progressList = [uiPosition, uiBufferedPos, duration];
     vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos/duration + ')';
     vopPlayProgress.style.transform = 'scaleX(' + uiPosition/duration + ')';
 
@@ -390,12 +391,24 @@ function updateProgressBarUI() {
     tDisplay.innerText = fmtTime;
 }
 
+function updateProgressBarHoverUI(movePos) {
+    var position = player_.getPosition();
+    var duration = player_.getDuration();
+    if (movePos <= position || progressBarContext.mousedown) {
+        vopHoverProgress.style.transform = 'scaleX(0)';
+    } else {
+        var rect = vopProgressBar.getBoundingClientRect();
+        var offsetX = (position/duration)*rect.width;
+        vopHoverProgress.style.left = offsetX + 'px';
+        vopHoverProgress.style.transform = 'scaleX(' + (movePos - position)/duration + ')';
+    }
+}
+
 function updateAdProgressUI() {
     var position = player_.getPosition();
     var duration = player_.getDuration();
 
     // update time progress bar
-    var progressList = [position, duration];
     vopPlayProgress.style.transform = 'scaleX(' + position/duration + ')';
 
     // update time display label
@@ -746,9 +759,6 @@ function onBtnTest() {
     // }
 
     //player_.test();
-
-    var progressList = [0.5, 1];
-    vopProgressBar.style.background = genGradientColor(progressList, colorList_contentProgress);
 }
 
 function onBtnTest2() {
@@ -862,6 +872,7 @@ function onProgressBarMousedown(e) {
     // update progress bar ui
     progressBarContext.movePos = getProgressMovePosition(e);
     updateProgressBarUI();
+    updateProgressBarHoverUI(progressBarContext.movePos);
 }
 
 function onProgressBarMousemove(e) {
@@ -872,12 +883,14 @@ function onProgressBarMousemove(e) {
 
     // part - process
     // process normal mouse move logic
-    let pos = getProgressMovePosition(e);
+    var movePos = getProgressMovePosition(e);
 
     // part - output
+    updateProgressBarHoverUI(movePos);
+    
     // update tooltip offset
     var offsetX = getTooltipOffsetX(e);
-    var strTime = timeToString(pos);
+    var strTime = timeToString(movePos);
     vopTooltip.style.left = offsetX.toString() + 'px';
     vopTooltip.style.display = 'block';
 
@@ -913,6 +926,7 @@ function docProgressBarMousemove(e) {
 
     progressBarContext.movePos = movePos;
     updateProgressBarUI();
+    updateProgressBarHoverUI(movePos);
 }
 
 function docProgressBarMouseup(e) {
@@ -935,6 +949,7 @@ function docProgressBarMouseup(e) {
     // update ui first
     progressBarContext.movePos = getProgressMovePosition(e);
     updateProgressBarUI();
+    updateProgressBarHoverUI(progressBarContext.movePos);
 
     if (progressBarContext.posBeforeMousedown != progressBarContext.movePos) {
         player_.setPosition(progressBarContext.movePos);
