@@ -97,6 +97,12 @@ function MediaSourceEngine() {
         aSourceBuffer_ = null;
     }
 
+    function test() {
+        if (vSourceBuffer_) {
+            vSourceBuffer_.removeBuffer();
+        }
+    }
+
     function onMediaSourceOpen() {
         debug_.log('+onMediaSourceOpen');
 
@@ -145,7 +151,8 @@ function MediaSourceEngine() {
         signalEndOfStream: signalEndOfStream,
         getMediaSource: getMediaSource,
         appendBuffer: appendBuffer,
-        removeBuffer: removeBuffer
+        removeBuffer: removeBuffer,
+        test: test
     };
     setup();
     return instance;

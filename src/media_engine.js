@@ -69,6 +69,14 @@ function MediaEngine(media, cfg) {
         return media_.duration;
     }
 
+    function getSeekableRange() {
+        return media_.seekable;
+    }
+
+    function getBufferedRanges() {
+        return media_.buffered;
+    }
+
     function setPosition(time) {
         media_.currentTime = time;
     }
@@ -363,6 +371,10 @@ function MediaEngine(media, cfg) {
     }
 
     function getValidBufferPosition(currentPos) {
+        // BD
+        debug_.log('getValidBufferPosition, currentPos: ' + currentPos + ', buffered: ' + TimeRanges.toString(media_.buffered));
+        // ED
+
         let bufferedEnd;
         for (let i = 0; i < media_.buffered.length; ++i) {
             let start = media_.buffered.start(i);
@@ -395,6 +407,8 @@ function MediaEngine(media, cfg) {
         getPosition: getPosition,
         setPosition: setPosition,
         getDuration: getDuration,
+        getSeekableRange: getSeekableRange,
+        getBufferedRanges: getBufferedRanges,
         isSeeking: isSeeking,
         isEnded: isEnded,
         mute: mute,

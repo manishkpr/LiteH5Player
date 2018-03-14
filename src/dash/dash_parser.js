@@ -165,6 +165,29 @@ function DashParser() {
         return activeStream_;
     }
 
+    function live01() {
+        let vRep = null;
+        let vContents = [];
+        for (let i = 484; i <= 503; i++) {
+            let content = 'http://10.2.68.64/2/live/01/760507' + i.toString() + '.m4s';
+            vContents.push(content);
+        }
+        vRep = {
+            type: 'video',
+            codecs: 'video/mp4; codecs="avc1.64001e"',
+            initialization: 'http://10.2.68.64/2/live/01/init.mp4',
+            media: vContents
+        };
+
+        activeStream_ = {
+            aRep: null,
+            vRep: vRep,
+            mediaPresentationDuration: 1521014975
+        };
+
+        return activeStream_;
+    }
+
     function loadManifest(url) {
         videoHeaderAdded_ = false;
         videoIndex_ = 0;
@@ -181,6 +204,10 @@ function DashParser() {
             return case02();
         } else if (url.indexOf('case03') !== -1) {
             return case03();
+        }
+        // live samples
+        else if (url.indexOf('live01') !== -1) {
+            return live01();
         }
     }
 

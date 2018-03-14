@@ -51,9 +51,10 @@ body {
   width: 158px;
   height: 90px;
   background-color: #000;
-  background: url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -480px -180px / 800px 450px;
+/*  background: url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw")
+  -180px -0px / 800px 450px;*/
   background-repeat: no-repeat;
-  /*display: none;*/
+  display: none
 }
 
 .vop-tooltip-text-wrapper {
@@ -74,6 +75,10 @@ body {
   border-radius: 2px
 }
 
+.vop-preview .vop-tooltip-bg {
+  display: block;
+}
+
 .vop-preview .vop-tooltip-text-wrapper {
   position: absolute;
   bottom: 5px;
@@ -87,8 +92,6 @@ body {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0
 }
-
-
 /******** End Tooltip ********/
 
 .vop-gradient-bottom {

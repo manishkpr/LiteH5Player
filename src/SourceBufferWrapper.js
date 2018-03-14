@@ -64,6 +64,10 @@ function SourceBufferWrapper(rep) {
       bufStart = srcBuffer_.buffered.start(i);
       bufEnd = srcBuffer_.buffered.end(i);
 
+      // BD
+      bufEnd = 30;
+      // ED
+      
       srcBuffer_.remove(bufStart, bufEnd);
     }
   }

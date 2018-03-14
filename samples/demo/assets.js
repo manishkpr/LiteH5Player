@@ -133,6 +133,8 @@ function getMediaInfo()
     //url: 'case01.mpd', // video + audio
     url: 'case02.mpd', // video contain audio(microsoft demo)
     //url: 'case03.mpd', // video + audio
+    //--Item: Live
+    //url: 'live01.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',

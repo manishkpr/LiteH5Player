@@ -11,7 +11,7 @@ function ScheduleController() {
 
     // flag
     let isFragmentProcessing_ = false;
-    let manualMode_ = false;
+    let manualMode_ = true;
 
     function setup() {
         

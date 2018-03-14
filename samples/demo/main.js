@@ -3,14 +3,17 @@ var browserInfo;
 
 // player reference
 var cfg_;
+var mediaCfg_;
 var player_ = null;
 var castSender = null;
 
+// flag
 var flagPlayerInited = false;
 
 // UI Controls
 var vopH5Player = null;
 var vopTooltip = null;
+var vopTooltipBg = null;
 var vopTooltipText = null;
 var vopControlBar = null;
 var vopProgressBar = null;
@@ -112,6 +115,7 @@ function initUI() {
     vopH5Player = document.querySelector('.html5-video-player');
 
     vopTooltip = document.querySelector('.vop-tooltip');
+    vopTooltipBg = document.querySelector('.vop-tooltip-bg');
     vopTooltipText = document.querySelector('.vop-tooltip-text');
 
     vopControlBar = document.querySelector('.vop-control-bar');
@@ -326,69 +330,58 @@ function getProgressMovePosition(e) {
     return (offsetX / rect.width) * duration;
 }
 
-function getTooltipOffsetX(e) {
-    // part - input
-    // bounding client rect can return the progress bar's rect relative to current page.
-    var rect = vopProgressBar.getBoundingClientRect();
-    var tooltipTextWidth = 44;
-
-    // part - logic process
-    var offsetToProgressBar = (e.clientX - rect.left);
-    var offsetToVideo = offsetToProgressBar + 12;
-
-    var tooltipLeft = offsetToVideo - tooltipTextWidth/2;
-    var tooltipRight = offsetToVideo + tooltipTextWidth/2;
-
-    if (tooltipLeft < 12) {
-        tooltipLeft = 12;
-    } else if (tooltipRight > rect.right) {
-        tooltipLeft = rect.right - tooltipTextWidth;
-    }
-
-    return tooltipLeft;
-}
-
 function updateProgressBarUI() {
     // part - input
     var position = player_.getPosition();
     var duration = player_.getDuration();
     var paused = player_.isPaused();
     var ended = player_.isEnded();
-    var isProgressBarMousedown = progressBarContext.mousedown;
 
-    // part - logic process
-    var uiPosition;
-    var uiBufferedPos;
-    if (ended) {
-        if (isProgressBarMousedown) {
-            uiPosition = progressBarContext.movePos;
-        } else {
-            // when the playback is ended, the position should be equal to the duration.
-            uiPosition = position;
-        }
+    var isLive = (duration === Infinity) ? true : false;
+    if (isLive) {
+        var seekable = player_.getSeekableRange();
+        var buffered = player_.getBufferedRanges();
+        console.log('seekable: ' + TimeRangesToString(seekable));
+        console.log('buffered: ' + TimeRangesToString(buffered));
+
+        // update time display label
+        var tDisplay = document.querySelector('.vop-time-text');
+        tDisplay.innerText = 'Live';
     } else {
-        if (paused || progressBarContext.mousedown) {
-            uiPosition = progressBarContext.movePos;
+        // part - logic process
+        var uiPosition;
+        var uiBufferedPos;
+        if (ended) {
+            if (progressBarContext.mousedown) {
+                uiPosition = progressBarContext.movePos;
+            } else {
+                // when the playback is ended, the position should be equal to the duration.
+                uiPosition = position;
+            }
         } else {
-            uiPosition = position;
+            if (paused || progressBarContext.mousedown) {
+                uiPosition = progressBarContext.movePos;
+            } else {
+                uiPosition = position;
+            }
         }
+
+        // part - output, update ui
+        // update time progress bar
+        uiBufferedPos = player_.getValidBufferPosition(uiPosition);
+        vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos/duration + ')';
+        vopPlayProgress.style.transform = 'scaleX(' + uiPosition/duration + ')';
+
+        // update time progress scrubber button
+        vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
+
+        // update time display label
+        var c = oldmtn.CommonUtils.timeToString(uiPosition);
+        var d = oldmtn.CommonUtils.timeToString(duration);
+        var fmtTime = c + '/' + d;
+        var tDisplay = document.querySelector('.vop-time-text');
+        tDisplay.innerText = fmtTime;
     }
-
-    // part - output, update ui
-    // update time progress bar
-    uiBufferedPos = player_.getValidBufferPosition(uiPosition);
-    vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos/duration + ')';
-    vopPlayProgress.style.transform = 'scaleX(' + uiPosition/duration + ')';
-
-    // update time progress scrubber button
-    vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
-
-    // update time display label
-    var c = oldmtn.CommonUtils.timeToString(uiPosition);
-    var d = oldmtn.CommonUtils.timeToString(duration);
-    var fmtTime = c + '/' + d;
-    var tDisplay = document.querySelector('.vop-time-text');
-    tDisplay.innerText = fmtTime;
 }
 
 function updateProgressBarHoverUI(movePos) {
@@ -402,6 +395,48 @@ function updateProgressBarHoverUI(movePos) {
         vopHoverProgress.style.left = offsetX + 'px';
         vopHoverProgress.style.transform = 'scaleX(' + (movePos - position)/duration + ')';
     }
+}
+
+function updateTooltipUI(e, movePos) {
+    var hasVttThumbnail = true;
+    function getTooltipOffsetX(e) {
+        // part - input
+        // bounding client rect can return the progress bar's rect relative to current page.
+        var rect = vopProgressBar.getBoundingClientRect();
+        var leftMin = 12;
+        var rightMax = 12 + rect.width;
+        var tooltipWidth = (hasVttThumbnail === true) ? 162 : 60;
+
+        // part - logic process
+        var offsetToProgressBar = (e.clientX - rect.left);
+        var offsetToVideo = offsetToProgressBar + 12;
+
+        var tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth/2;
+        var tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth/2;
+
+        if (tooltipLeft_RelativeToVideo < leftMin) {
+            tooltipLeft_RelativeToVideo = leftMin;
+        } else if (tooltipRight_RelativeToVideo > rightMax) {
+            tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
+        }
+
+        return tooltipLeft_RelativeToVideo;
+    }
+
+    if (hasVttThumbnail) {
+        $('.vop-tooltip').addClass('vop-preview');
+        vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
+    } else {
+        $('.vop-tooltip').removeClass('vop-preview');
+    }
+
+    // update tooltip offset
+    var strTime = timeToString(movePos);
+    vopTooltipText.innerText = strTime;
+
+    var offsetX = getTooltipOffsetX(e);
+    vopTooltip.style.left = offsetX.toString() + 'px';
+    vopTooltip.style.display = 'block';
 }
 
 function updateAdProgressUI() {
@@ -583,8 +618,8 @@ function onPlayerClick() {
 
 // browser & UI callback functions
 function onBtnOpen() {
-    var playerCfg = getMediaInfo();
-    player_.open(playerCfg);
+    mediaCfg_ = getMediaInfo();
+    player_.open(mediaCfg_);
 }
 
 function onBtnClose() {
@@ -763,9 +798,9 @@ function onBtnTest() {
 
 function onBtnTest2() {
     printLog('--onBtnTest2--');
-    //player_.test2();
+    player_.test2();
 
-    player_.resize(1024, 768);
+    //player_.resize(1024, 768);
     //stopWaitingUI();
 
     // var v = document.querySelector('.ytp-play-button');
@@ -887,15 +922,8 @@ function onProgressBarMousemove(e) {
 
     // part - output
     updateProgressBarHoverUI(movePos);
-    
-    // update tooltip offset
-    var offsetX = getTooltipOffsetX(e);
-    var strTime = timeToString(movePos);
-    vopTooltip.style.left = offsetX.toString() + 'px';
-    vopTooltip.style.display = 'block';
 
-    vopTooltipText.innerText = strTime;
-    //printLog('vopTooltip.style.left: ' + vopTooltip.style.left);
+    updateTooltipUI(e, movePos);
 }
 
 function onProgressBarMouseleave() {
@@ -926,7 +954,7 @@ function docProgressBarMousemove(e) {
 
     progressBarContext.movePos = movePos;
     updateProgressBarUI();
-    updateProgressBarHoverUI(movePos);
+    updateProgressBarHoverUI(progressBarContext.movePos);
 }
 
 function docProgressBarMouseup(e) {
@@ -988,7 +1016,7 @@ function onMediaCanPlay() {
         updateProgressBarUI();
         vopControlBar.style.display = 'block';
 
-        //
+        // process config parameter
         if (cfg_.autoplay) {
             onPlayFromGiantButton();
         }

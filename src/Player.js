@@ -296,6 +296,16 @@ function Player(containerId) {
             return mediaEngine_.getDuration();
         }
     }
+
+    function getSeekableRange() {
+        if (!mediaEngine_) { return; }
+        return mediaEngine_.getSeekableRange();
+    }
+
+    function getBufferedRanges() {
+        if (!mediaEngine_) { return; }
+        return mediaEngine_.getBufferedRanges();
+    }
     
     function isEnded() {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
@@ -499,10 +509,16 @@ function Player(containerId) {
     }
 
     function test() {
-        adsEngine_.test();
+        let a1 = getBufferedRanges();
+        let b1 = getSeekableRange();
+        let a1Str = TimeRanges.toString(a1);
+        let b1Str = TimeRanges.toString(b1);
+        console.log('buffered: ' + a1Str);
+        console.log('seekable: ' + b1Str);
     }
 
     function test2() {
+        mseEngine_.test();
     }
 
     function attribute() {
@@ -530,6 +546,8 @@ function Player(containerId) {
         getPosition: getPosition,
         setPosition: setPosition,
         getDuration: getDuration,
+        getSeekableRange: getSeekableRange,
+        getBufferedRanges: getBufferedRanges,
         isEnded: isEnded,
         mute: mute,
         unmute: unmute,
