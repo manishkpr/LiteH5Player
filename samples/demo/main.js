@@ -14,6 +14,8 @@ var vopTooltip = null;
 var vopTooltipText = null;
 var vopControlBar = null;
 var vopProgressBar = null;
+var vopLoadProgress = null;
+var vopPlayProgress = null;
 var vopScrubberContainer = null;
 var vopPlayButton = null;
 var vopMuteButton = null;
@@ -113,6 +115,9 @@ function initUI() {
 
     vopControlBar = document.querySelector('.vop-control-bar');
     vopProgressBar = document.querySelector('.vop-progress-bar');
+    vopLoadProgress = document.querySelector('.vop-load-progress');
+    vopPlayProgress = document.querySelector('.vop-play-progress');
+
     vopScrubberContainer = document.querySelector('.vop-scrubber-container');
     vopPlayButton = document.querySelector('.vop-play-button');
     vopMuteButton = document.querySelector('.vop-mute-button');
@@ -371,7 +376,8 @@ function updateProgressBarUI() {
     // update time progress bar
     uiBufferedPos = player_.getValidBufferPosition(uiPosition);
     var progressList = [uiPosition, uiBufferedPos, duration];
-    vopProgressBar.style.background = genGradientColor(progressList, colorList_contentProgress);
+    vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos/duration + ')';
+    vopPlayProgress.style.transform = 'scaleX(' + uiPosition/duration + ')';
 
     // update time progress scrubber button
     vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
@@ -385,15 +391,15 @@ function updateProgressBarUI() {
 }
 
 function updateAdProgressUI() {
-    var getPosition = player_.getPosition();
+    var position = player_.getPosition();
     var duration = player_.getDuration();
 
     // update time progress bar
-    var progressList = [getPosition, duration];
-    vopProgressBar.style.background = genGradientColor(progressList, colorList_adProgress);
+    var progressList = [position, duration];
+    vopPlayProgress.style.transform = 'scaleX(' + position/duration + ')';
 
     // update time display label
-    var c = oldmtn.CommonUtils.timeToString(getPosition);
+    var c = oldmtn.CommonUtils.timeToString(position);
     var d = oldmtn.CommonUtils.timeToString(duration);
     var fmtTime = c + '/' + d;
 
