@@ -42,19 +42,19 @@ body {
 
   bottom: 50px;
   z-index: 15;
-
-  /*display: none;*/
+  display: none;
 }
 
 .vop-tooltip-bg {
   position: relative;
+  background-color: #000;
+  background-repeat: no-repeat;
+  display: none;
+
   width: 158px;
   height: 90px;
-  background-color: #000;
-/*  background: url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw")
+  /*  background: url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw")
   -180px -0px / 800px 450px;*/
-  background-repeat: no-repeat;
-  display: none
 }
 
 .vop-tooltip-text-wrapper {

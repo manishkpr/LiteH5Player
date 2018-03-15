@@ -371,10 +371,6 @@ function MediaEngine(media, cfg) {
     }
 
     function getValidBufferPosition(currentPos) {
-        // BD
-        debug_.log('getValidBufferPosition, currentPos: ' + currentPos + ', buffered: ' + TimeRanges.toString(media_.buffered));
-        // ED
-
         let bufferedEnd;
         for (let i = 0; i < media_.buffered.length; ++i) {
             let start = media_.buffered.start(i);

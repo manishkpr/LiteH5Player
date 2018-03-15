@@ -183,7 +183,9 @@ function initUIEventListeners() {
 
     vopControlBar.addEventListener('click', onChromeBottomClick);
     vopPlayButton.addEventListener('click', onPlayButtonClick);
+    vopPlayButton.addEventListener('mousemove', onPlayButtonMousemove);
     vopMuteButton.addEventListener('click', onMuteButtonClick);
+    vopMuteButton.addEventListener('mousemove', onMuteButtonMousemove);
     vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
     vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
 
@@ -337,6 +339,7 @@ function updateProgressBarUI() {
     var paused = player_.isPaused();
     var ended = player_.isEnded();
 
+    // part - logic process
     var isLive = (duration === Infinity) ? true : false;
     if (isLive) {
         var seekable = player_.getSeekableRange();
@@ -348,7 +351,6 @@ function updateProgressBarUI() {
         var tDisplay = document.querySelector('.vop-time-text');
         tDisplay.innerText = 'Live';
     } else {
-        // part - logic process
         var uiPosition;
         var uiBufferedPos;
         if (ended) {
@@ -359,7 +361,7 @@ function updateProgressBarUI() {
                 uiPosition = position;
             }
         } else {
-            if (paused || progressBarContext.mousedown) {
+            if (progressBarContext.mousedown) {
                 uiPosition = progressBarContext.movePos;
             } else {
                 uiPosition = position;
@@ -385,8 +387,13 @@ function updateProgressBarUI() {
 }
 
 function updateProgressBarHoverUI(movePos) {
+    if (movePos === 0) {
+        var a = 2;
+        var b = a;
+    }
     var position = player_.getPosition();
     var duration = player_.getDuration();
+    console.log('+updateProgressBarHoverUI, pos: ' + position + ', duration: ' + duration + ', movePos: ' + movePos);
     if (movePos <= position || progressBarContext.mousedown) {
         vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
@@ -502,6 +509,14 @@ function updateContentVolumeBarUI(muted, volume) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
+function removeAutohideAction() {
+    $('.html5-video-player').removeClass('vop-autohide');
+    if (timerHideControlBar) {
+        clearTimeout(timerHideControlBar);
+        timerHideControlBar = null;
+    }
+}
+
 function h5EnterFullscreen() {
     printLog('+h5EnterFullscreen');
     //var v = document.querySelector('.player');
@@ -590,13 +605,8 @@ function onPlayerMouseenter() {
 }
 
 function onPlayerMousemove(e) {
-    //printLog('+onPlayerMousemove');
-    $('.html5-video-player').removeClass('vop-autohide');
-
-    if (timerHideControlBar) {
-        clearTimeout(timerHideControlBar);
-        timerHideControlBar = null;
-    }
+    printLog('+onPlayerMousemove');
+    removeAutohideAction();
     timerHideControlBar = setTimeout(function () {
         onPlayerMouseleave();
     }, 3000);
@@ -653,6 +663,11 @@ function onPlayButtonClick() {
     }
 }
 
+function onPlayButtonMousemove(e) {
+    e.stopPropagation();
+    removeAutohideAction();
+}
+
 function onChromeBottomClick(e) {
     e.stopPropagation();
 }
@@ -681,6 +696,11 @@ function onMuteButtonClick() {
         }
     }
     updateContentVolumeBarUI(muted, volume);
+}
+
+function onMuteButtonMousemove(e) {
+    e.stopPropagation();
+    removeAutohideAction();
 }
 
 function onBtnAddA() {
@@ -911,6 +931,10 @@ function onProgressBarMousedown(e) {
 }
 
 function onProgressBarMousemove(e) {
+    printLog('+onProgressBarMousemove');
+    e.stopPropagation();
+    removeAutohideAction();
+
     // if mouse down, just return
     if (progressBarContext.mousedown) {
         return;
@@ -919,10 +943,10 @@ function onProgressBarMousemove(e) {
     // part - process
     // process normal mouse move logic
     var movePos = getProgressMovePosition(e);
+    progressBarContext.movePos = movePos;
 
     // part - output
     updateProgressBarHoverUI(movePos);
-
     updateTooltipUI(e, movePos);
 }
 
@@ -1095,8 +1119,9 @@ function onMediaTimeupdated() {
     // in this situation, we won't update progress bar ui.
     if (progressBarContext.mousedown) {
     } else {
-        progressBarContext.movePos = player_.getPosition();
+        //progressBarContext.movePos = player_.getPosition();
         updateProgressBarUI();
+        updateProgressBarHoverUI(progressBarContext.movePos);
     }
 }
 
