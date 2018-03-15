@@ -317,6 +317,7 @@ body {
 .vop-giant-button {
   background-color: orange;
   cursor: pointer;
+  border-radius: 3px;
 }
 
 /************ Begin vop popup menu ************/
@@ -460,7 +461,7 @@ body {
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
 
-.vop-autohide * {
+.vop-autohide:not(.vop-giant-button-container) {
   cursor: none;
 }
 

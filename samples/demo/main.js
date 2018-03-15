@@ -590,11 +590,21 @@ function releaseVolumeSliderMouseEvents() {
 
 ///////////////////////////////////////////////////////////////////
 function onPlayerMouseenter() {
+    // don't show control bar if the stream is not initialized.
+    if (!flagPlayerInited) {
+        return;
+    }
+    
     $('.html5-video-player').removeClass('vop-autohide');
 }
 
 function onPlayerMousemove(e) {
     printLog('+onPlayerMousemove');
+    // don't show control bar if the stream is not initialized.
+    if (!flagPlayerInited) {
+        return;
+    }
+
     removeAutohideAction();
     timerHideControlBar = setTimeout(function () {
         onPlayerMouseleave();
@@ -924,11 +934,8 @@ function onProgressBarMousemove(e) {
         return;
     }
 
-    // part - process
-    // process normal mouse move logic
+    // update progress bar ui
     progressBarContext.movePos = getProgressMovePosition(e);
-
-    // part - output
     updateProgressBarHoverUI();
     updateTooltipUI(e);
 }
@@ -966,8 +973,8 @@ function docProgressBarMousemove(e) {
 
 function docProgressBarMouseup(e) {
     printLog('+docProgressBarMouseup');
-    releaseProgressBarMouseEvents();
     e.preventDefault();
+    releaseProgressBarMouseEvents();
 
     if (flagThumbnailMode) {
         // thumbnail mode click event
@@ -1003,7 +1010,6 @@ function onVolumeSliderMousedown(e) {
 
     docVolumeSliderMousemove(e);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////
 // player_ event callback
