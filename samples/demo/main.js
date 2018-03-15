@@ -386,25 +386,21 @@ function updateProgressBarUI() {
     }
 }
 
-function updateProgressBarHoverUI(movePos) {
-    if (movePos === 0) {
-        var a = 2;
-        var b = a;
-    }
+function updateProgressBarHoverUI() {
     var position = player_.getPosition();
     var duration = player_.getDuration();
-    console.log('+updateProgressBarHoverUI, pos: ' + position + ', duration: ' + duration + ', movePos: ' + movePos);
-    if (movePos <= position || progressBarContext.mousedown) {
+
+    if (progressBarContext.movePos <= position || progressBarContext.mousedown) {
         vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
         var rect = vopProgressBar.getBoundingClientRect();
         var offsetX = (position/duration)*rect.width;
         vopHoverProgress.style.left = offsetX + 'px';
-        vopHoverProgress.style.transform = 'scaleX(' + (movePos - position)/duration + ')';
+        vopHoverProgress.style.transform = 'scaleX(' + (progressBarContext.movePos - position)/duration + ')';
     }
 }
 
-function updateTooltipUI(e, movePos) {
+function updateTooltipUI(e) {
     var hasVttThumbnail = true;
     function getTooltipOffsetX(e) {
         // part - input
@@ -438,7 +434,7 @@ function updateTooltipUI(e, movePos) {
     }
 
     // update tooltip offset
-    var strTime = timeToString(movePos);
+    var strTime = timeToString(progressBarContext.movePos);
     vopTooltipText.innerText = strTime;
 
     var offsetX = getTooltipOffsetX(e);
@@ -927,7 +923,7 @@ function onProgressBarMousedown(e) {
     // update progress bar ui
     progressBarContext.movePos = getProgressMovePosition(e);
     updateProgressBarUI();
-    updateProgressBarHoverUI(progressBarContext.movePos);
+    updateProgressBarHoverUI();
 }
 
 function onProgressBarMousemove(e) {
@@ -942,12 +938,11 @@ function onProgressBarMousemove(e) {
 
     // part - process
     // process normal mouse move logic
-    var movePos = getProgressMovePosition(e);
-    progressBarContext.movePos = movePos;
+    progressBarContext.movePos = getProgressMovePosition(e);
 
     // part - output
-    updateProgressBarHoverUI(movePos);
-    updateTooltipUI(e, movePos);
+    updateProgressBarHoverUI();
+    updateTooltipUI(e);
 }
 
 function onProgressBarMouseleave() {
@@ -978,7 +973,7 @@ function docProgressBarMousemove(e) {
 
     progressBarContext.movePos = movePos;
     updateProgressBarUI();
-    updateProgressBarHoverUI(progressBarContext.movePos);
+    updateProgressBarHoverUI();
 }
 
 function docProgressBarMouseup(e) {
@@ -1001,7 +996,7 @@ function docProgressBarMouseup(e) {
     // update ui first
     progressBarContext.movePos = getProgressMovePosition(e);
     updateProgressBarUI();
-    updateProgressBarHoverUI(progressBarContext.movePos);
+    updateProgressBarHoverUI();
 
     if (progressBarContext.posBeforeMousedown != progressBarContext.movePos) {
         player_.setPosition(progressBarContext.movePos);
@@ -1121,7 +1116,7 @@ function onMediaTimeupdated() {
     } else {
         //progressBarContext.movePos = player_.getPosition();
         updateProgressBarUI();
-        updateProgressBarHoverUI(progressBarContext.movePos);
+        updateProgressBarHoverUI();
     }
 }
 
