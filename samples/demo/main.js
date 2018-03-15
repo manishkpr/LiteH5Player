@@ -183,14 +183,16 @@ function initUIEventListeners() {
 
     vopControlBar.addEventListener('click', onChromeBottomClick);
     vopPlayButton.addEventListener('click', onPlayButtonClick);
-    vopPlayButton.addEventListener('mousemove', onPlayButtonMousemove);
     vopMuteButton.addEventListener('click', onMuteButtonClick);
-    vopMuteButton.addEventListener('mousemove', onMuteButtonMousemove);
     vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
-    vopVolumeSlider.addEventListener('mousemove', onVolumeSliderMousemove);
-
     vopSettingsBtn.addEventListener('click', onSettingClick);
     vopFullscreen.addEventListener('click', onFullscreenClick);
+
+    vopPlayButton.addEventListener('mousemove', onControlMousemove);
+    vopMuteButton.addEventListener('mousemove', onControlMousemove);
+    vopSettingsBtn.addEventListener('mousemove', onControlMousemove);
+    vopFullscreen.addEventListener('mousemove', onControlMousemove);
+    vopVolumeSlider.addEventListener('mousemove', onControlMousemove);
 
     // don't route 'click' event from panel to its parent div
     vopSettingsMenuPanel.addEventListener('click', function(e) {
@@ -353,19 +355,10 @@ function updateProgressBarUI() {
     } else {
         var uiPosition;
         var uiBufferedPos;
-        if (ended) {
-            if (progressBarContext.mousedown) {
-                uiPosition = progressBarContext.movePos;
-            } else {
-                // when the playback is ended, the position should be equal to the duration.
-                uiPosition = position;
-            }
+        if (progressBarContext.mousedown) {
+            uiPosition = progressBarContext.movePos;
         } else {
-            if (progressBarContext.mousedown) {
-                uiPosition = progressBarContext.movePos;
-            } else {
-                uiPosition = position;
-            }
+            uiPosition = position;
         }
 
         // part - output, update ui
@@ -659,7 +652,7 @@ function onPlayButtonClick() {
     }
 }
 
-function onPlayButtonMousemove(e) {
+function onControlMousemove(e) {
     e.stopPropagation();
     removeAutohideAction();
 }
@@ -692,11 +685,6 @@ function onMuteButtonClick() {
         }
     }
     updateContentVolumeBarUI(muted, volume);
-}
-
-function onMuteButtonMousemove(e) {
-    e.stopPropagation();
-    removeAutohideAction();
 }
 
 function onBtnAddA() {
@@ -1014,15 +1002,6 @@ function onVolumeSliderMousedown(e) {
     flagVolumeSliderMousedown = true;
 
     docVolumeSliderMousemove(e);
-}
-
-function onVolumeSliderMousemove() {
-    // if mouse down, just return
-    if (flagVolumeSliderMousedown) {
-        return;
-    }
-
-    // process normal mouse move logic
 }
 
 
