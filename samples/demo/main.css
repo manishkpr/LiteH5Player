@@ -317,7 +317,7 @@ body {
 .vop-giant-button {
   background-color: orange;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 15px;
 }
 
 /************ Begin vop popup menu ************/

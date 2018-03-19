@@ -1123,7 +1123,11 @@ function onAdStarted(e) {
     printLog('onAdStarted, linear: ' + e.isLinearAd);
     flagAdStarted = true;
     flagIsLinearAd = e.isLinearAd;
-    if (!flagIsLinearAd) {
+    // update control bar ui
+    if (flagIsLinearAd) {
+        vopProgressBar.style.display = 'none';
+        vopSettingsBtn.style.display = 'none';
+    } else {
         var v = document.querySelector('.vop-ads-container');
         v.style.marginTop = '-' + (vopControlBar.clientHeight + 10).toString() + 'px';
     }
@@ -1132,6 +1136,10 @@ function onAdStarted(e) {
 function onAdComplete() {
     printLog('onAdComplete, linear: ' + flagIsLinearAd);
     flagAdStarted = false;
+
+    // update control bar ui
+    vopProgressBar.style.display = 'block';
+    vopSettingsBtn.style.display = 'block';
 }
 
 function onAdTimeUpdate() {
