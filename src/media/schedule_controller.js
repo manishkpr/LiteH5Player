@@ -14,9 +14,8 @@ function ScheduleController() {
     let manualMode_ = true;
 
     function setup() {
-        
     }
-    
+
     function schedule() {
         if (isFragmentProcessing_) {
             startScheduleTimer(500);

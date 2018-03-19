@@ -28,10 +28,6 @@ function Player(containerId) {
     let uiEngine_;
     let media_;
 
-    let audioHeaderAdded_ = false;
-    let audioIndex_ = 0;
-    let videoHeaderAdded_ = false;
-    let videoIndex_ = 0;
     let streamInfo_ = null;
 
     let eventBus_;
@@ -76,8 +72,9 @@ function Player(containerId) {
         if (streamInfo_.url) {
             parser_ = manifestParser_.getParser(streamInfo_.url);
             streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
+            return;
         }
-        
+
         // BD, use .src for PD
         // if it is pd, so we don't need to create mediasource
         if (streamInfo_.activeStream.pdRep) {
@@ -165,68 +162,6 @@ function Player(containerId) {
 
     function dellAll() {
         mseEngine_.removeBuffer();
-    }
-
-    function addA() {
-        if (audioIndex_ >= streamInfo_.activeStream.aRep.media.length) {
-            debug_.log('There don\'t have more content to add.');
-            return;
-        }
-
-        let url = null;
-        if (audioHeaderAdded_ === false) {
-            url = streamInfo_.activeStream.aRep.initialization;
-        } else {
-            url = streamInfo_.activeStream.aRep.media[audioIndex_];
-        }
-
-        let self = this;
-        function cbSuccess(bytes) {
-            mseEngine_.appendBuffer({type: streamInfo_.activeStream.aRep.type, buffer: bytes});
-
-            if (audioHeaderAdded_) {
-                audioIndex_++;
-            } else {
-                audioHeaderAdded_ = true;
-            }
-        }
-
-        let request = {
-            url: url,
-            cbSuccess: cbSuccess.bind(self)
-        };
-        xhrLoader_.load(request);
-    }
-
-    function addV() {
-        if (videoIndex_ >= streamInfo_.activeStream.vRep.media.length) {
-            debug_.log('There don\'t have more content to add.');
-            return;
-        }
-
-        let url = null;
-        if (videoHeaderAdded_ === false) {
-            url = streamInfo_.activeStream.vRep.initialization;
-        } else {
-            url = streamInfo_.activeStream.vRep.media[videoIndex_];
-        }
-
-        let self = this;
-        function cbSuccess(bytes) {
-            mseEngine_.appendBuffer({type: streamInfo_.activeStream.vRep.type, buffer: bytes});
-
-            if (videoHeaderAdded_) {
-                videoIndex_++;
-            } else {
-                videoHeaderAdded_ = true;
-            }
-        }
-
-        let request = {
-            url: url,
-            cbSuccess: cbSuccess.bind(self)
-        };
-        xhrLoader_.load(request);
     }
 
     function addPD() {
@@ -444,8 +379,6 @@ function Player(containerId) {
     }
 
     function initData() {
-        audioIndex_ = 0;
-        videoIndex_ = 0;
         streamInfo_ = null;
     }
 
@@ -536,8 +469,6 @@ function Player(containerId) {
         init: init,
         open: open,
         close: close,
-        addA: addA,
-        addV: addV,
         on: on,
         off: off,
         play: play,

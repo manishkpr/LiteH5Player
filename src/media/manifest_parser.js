@@ -5,16 +5,17 @@ import HlsParser from '../hls/hls_parser';
 import PDParser from '../pd/pd_parser';
 
 function ManifestParser() {
+    let context_ = this.context;
     
     function getParser(url) {
         let parser = null;
         let extension = url.split('.').pop();
         if (extension === 'mpd') {
-            parser = DashParser(oldmtn).getInstance();
+            parser = DashParser(context_).getInstance();
         } else if (extension === 'm3u8') {
-            parser = HlsParser(oldmtn).getInstance();
+            parser = HlsParser(context_).getInstance();
         } else if (extension === 'mp4') {
-            parser = PDParser(oldmtn).getInstance();
+            parser = PDParser(context_).getInstance();
         }
 
         return parser;

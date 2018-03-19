@@ -1,9 +1,20 @@
 import FactoryMaker from '../core/FactoryMaker';
 import XHRLoader from '../utils/xhr_loader';
+import X2JS from '../externals/xml2json';
+import StringUtils from '../utils/string_utils';
+import StringMatcher from './matchers/StringMatcher';
+import DurationMatcher from './matchers/DurationMatcher';
+import DateTimeMatcher from './matchers/DateTimeMatcher';
+import NumericMatcher from './matchers/NumericMatcher';
 
 function DashParser() {
-    let instance,
-    activeStream_;
+    let context_ = this.context;
+
+    let instance;
+    let activeStream_;
+    let xhrLoader_ = XHRLoader(context_).getInstance();
+    let matchers_;
+    let converter_;
 
     // flag
     let videoHeaderAdded_ = false;
@@ -11,6 +22,45 @@ function DashParser() {
 
     let audioHeaderAdded_ = false;
     let audioIndex_ = 0;
+
+    function setup() {
+        matchers_ = [
+            new DurationMatcher(),
+            new DateTimeMatcher(),
+            new NumericMatcher(),
+            new StringMatcher()   // last in list to take precedence over NumericMatcher
+        ];
+
+        converter_ = new X2JS({
+            escapeMode:         false,
+            attributePrefix:    '',
+            arrayAccessForm:    'property',
+            emptyNodeForm:      'object',
+            stripWhitespaces:   false,
+            enableToStringFunc: false,
+            ignoreRoot:         true,
+            matchers:           matchers_
+        });
+    }
+
+    function testMPD() {
+        function cbSuccess(bytes) {
+            let content = StringUtils.ab2str_v1(bytes);
+            console.log('content: ' + content);
+
+            var manifest = converter_.xml_str2json(content);
+            
+            let a = 2;
+            let b = a;
+        }
+
+        let request = {
+            url: 'http://localhost/2/dash/common/h5-test.mpd',
+            cbSuccess: cbSuccess
+        };
+
+        xhrLoader_.load(request);
+    }
 
     function audio_only_case01() {
         let aRep = null;
@@ -194,7 +244,9 @@ function DashParser() {
         audioHeaderAdded_ = false;
         audioIndex_ = 0;
 
-        if (url.indexOf('audio_only_case01') !== -1) {
+        if (url === 'test.mpd') {
+            testMPD();
+        } else if (url.indexOf('audio_only_case01') !== -1) {
             return audio_only_case01();
         } else if (url.indexOf('video_only_case01') !== -1) {
             return video_only_case01();
@@ -298,6 +350,7 @@ function DashParser() {
         loadManifest: loadManifest,
         getNextFragment: getNextFragment
     };
+    setup();
     return instance;
 }
 

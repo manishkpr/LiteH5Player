@@ -8,7 +8,8 @@ function UIEngine() {
 
     function initUI(playerContainer) {
         playerContainer_ = document.getElementById(playerContainer);
-        initUIElement();
+        initElements();
+        initEventListeners();
     }
 
     function initUIStyle() {
@@ -19,7 +20,7 @@ function UIEngine() {
         document.getElementsByTagName('HEAD').item(0).appendChild(style);
     }
 
-    function initUIElement() {
+    function initElements() {
         // create video element here
         video_ = document.createElement('video');
         video_.setAttribute('class', 'vop-video');
@@ -50,6 +51,9 @@ function UIEngine() {
         }
     }
 
+    function initEventListeners() {
+    }
+
     function getVideo() {
         return video_;
     }
@@ -65,6 +69,7 @@ function UIEngine() {
     let instance = {
         initUI: initUI,
         getVideo: getVideo,
+        getVideoContainer: getVideoContainer,
         getAdContainer: getAdContainer
     };
 

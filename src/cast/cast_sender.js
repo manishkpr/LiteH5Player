@@ -94,7 +94,7 @@ function CastSender(receiverAppId) {
         // ORIGIN_SCOPED - Auto connect from same appId and page origin
         // TAB_AND_ORIGIN_SCOPED - Auto connect from same appId, page origin, and tab
         // PAGE_SCOPED - No auto connect
-        options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+        //options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
         castContext_ = cast.framework.CastContext.getInstance();
         castContext_.setOptions(options);
 
@@ -136,6 +136,9 @@ function CastSender(receiverAppId) {
 
         session_ = cast.framework.CastContext.getInstance().getCurrentSession();
         if (session_) {
+            // BD
+            let castDev = session_.getCastDevice();
+            // ED
             session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
                 onMessageReceived_);
         } else {
