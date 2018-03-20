@@ -28,14 +28,13 @@ function DashParser() {
 
     // Begin dash manifest info
     let mediaPresentationDuration_;
-    let segmentDuration_;
     // End dash manifest info
 
     let manifestUrl_;
 
     // flag
     let videoHeaderAdded_ = false;
-    let videoIndex_ = 0;
+    let vSegmentNumber_ = 0;
 
     let audioHeaderAdded_ = false;
     let audioIndex_ = 0;
@@ -61,6 +60,15 @@ function DashParser() {
     }
 
     function getRepresentation(manifest) {
+        function getSegmentDuration(segmentTemplate) {
+            let duration = segmentTemplate.duration;
+            if (segmentTemplate.timescale) {
+                duration = segmentTemplate.duration / segmentTemplate.timescale;
+            }
+
+            return duration;
+        }
+
         let period = manifest.Period_asArray[0];
         let adaptationSet = period.AdaptationSet_asArray[0];
         let representation = adaptationSet.Representation_asArray[0];
@@ -68,13 +76,14 @@ function DashParser() {
 
         //
         mediaPresentationDuration_ = manifest.mediaPresentationDuration;
-        segmentDuration_ = segmentTemplate.duration / segmentTemplate.timescale;
 
         representation.type = 'video';
         representation.codecs = 'video/mp4; ' + 'codecs=\"' + representation.codecs + '\"';
         representation.duration = manifest.mediaPresentationDuration;
         representation.segmentTemplate = segmentTemplate;
-        representation.segmentCnt = mediaPresentationDuration_ / segmentDuration_;
+        representation.segmentCnt = mediaPresentationDuration_ / getSegmentDuration(segmentTemplate);
+
+        vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
 // For reference
 // Representation
 // bandwidth:3134488
@@ -280,7 +289,7 @@ function DashParser() {
         manifestUrl_ = url;
 
         videoHeaderAdded_ = false;
-        videoIndex_ = 0;
+        vSegmentNumber_ = 0;
         audioHeaderAdded_ = false;
         audioIndex_ = 0;
 
@@ -355,30 +364,30 @@ function DashParser() {
                 }
 
                 // BD
-                if (videoIndex_ < 1) {
+                if (vSegmentNumber_ < 1) {
                     ret.type = activeStream_.vRep.type;
-                    ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
-                    videoIndex_++;
+                    ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
+                    vSegmentNumber_++;
                     break;
                 }
                 // ED
 
                 // media segments
-                if (videoIndex_ >= activeStream_.vRep.media.length ||
+                if (vSegmentNumber_ >= activeStream_.vRep.media.length ||
                     audioIndex_ >= activeStream_.aRep.media.length) {
                     ret = null;
                 } else {
-                    if (videoIndex_ > audioIndex_) {
+                    if (vSegmentNumber_ > audioIndex_) {
                         if (audioIndex_ < activeStream_.aRep.segmentCnt) {
                             ret.type = activeStream_.aRep.type;
                             ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
                             audioIndex_++;
                         }
                     } else {
-                        if (videoIndex_ < activeStream_.vRep.segmentCnt) {
+                        if (vSegmentNumber_ < activeStream_.vRep.segmentCnt) {
                             ret.type = activeStream_.vRep.type;
-                            ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
-                            videoIndex_++;
+                            ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
+                            vSegmentNumber_++;
                         }
                     }
                 }
@@ -391,9 +400,9 @@ function DashParser() {
                     ret.url = getFragmentInitialization(activeStream_.vRep);
                     videoHeaderAdded_ = true;
                 } else {
-                    if (videoIndex_ < activeStream_.vRep.segmentCnt) {
-                        ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
-                        videoIndex_++;
+                    if (vSegmentNumber_ < activeStream_.vRep.segmentCnt) {
+                        ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
+                        vSegmentNumber_++;
                     } else {
                         ret = null;
                     }

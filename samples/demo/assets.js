@@ -136,7 +136,8 @@ function getMediaInfo()
     //--Item: Live
     //url: 'live01.mpd',
     //--Item: True mpd path
-    url: 'http://localhost/2/dash/common/h5-test.mpd',
+    //url: 'http://localhost/2/dash/common/video.mpd',
+    url: 'http://localhost/2/dash/features/av_nonmuxed/video.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
