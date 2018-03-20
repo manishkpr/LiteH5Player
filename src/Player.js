@@ -23,7 +23,7 @@ import CommonUtils from './utils/common_utils';
 function Player(containerId) {
     let containerId_ = containerId;
     let cfg_;
-    let context_ = {};
+    let context_ = { flag: 'player' };
 
     let uiEngine_;
     let media_;
@@ -50,7 +50,7 @@ function Player(containerId) {
     let autoplayRequiresMuted_;
 
     function setup() {
-        uiEngine_ = UIEngine(oldmtn).getInstance();
+        uiEngine_ = UIEngine(context_).getInstance();
         uiEngine_.initUI(containerId_);
         media_ = uiEngine_.getVideo();
     }
@@ -296,21 +296,21 @@ function Player(containerId) {
     // private functions
     function initComponent() {
         // enging component
-        eventBus_ = EventBus(oldmtn).getInstance();
-        debug_ = Debug(oldmtn).getInstance();
-        xhrLoader_ = XHRLoader(oldmtn).getInstance();
-        mediaEngine_ = MediaEngine(oldmtn).getInstance(media_, cfg_);
+        eventBus_ = EventBus(context_).getInstance();
+        debug_ = Debug(context_).getInstance();
+        xhrLoader_ = XHRLoader(context_).getInstance();
+        mediaEngine_ = MediaEngine(context_).getInstance(media_, cfg_);
         textEngine_ = new TextEngine(media_);
-        mseEngine_ = new MediaSourceEngine();
-        drmEngine_ = new DRMEngine(media_);
-        manifestParser_ = ManifestParser(oldmtn).getInstance();
+        mseEngine_ = MediaSourceEngine(context_).getInstance();
+        drmEngine_ = DRMEngine(context_).getInstance(media_);
+        manifestParser_ = ManifestParser(context_).getInstance();
 
         if (cfg_.poster) {
             media_.poster = cfg_.poster;
         }
         if (cfg_.advertising) {
             let adContainer = uiEngine_.getAdContainer();
-            adsEngine_ = new AdsEngine(adContainer, media_, cfg_.advertising);
+            adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, cfg_.advertising);
         }
     }
 
@@ -339,7 +339,7 @@ function Player(containerId) {
 
     function onFullScreenChange() {
         // we should not rely on clientWidth or clientHeight to set ad metrics when fullscreen change event triggered.
-        eventBus_.trigger(oldmtn.Events.FULLSCREEN_CHANGE);
+        eventBus_.trigger(context_.Events.FULLSCREEN_CHANGE);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -417,7 +417,7 @@ function Player(containerId) {
         //mediaEngine_.detectAutoplay();
 
         //
-        scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
+        scheduleCtrl_ = ScheduleController(context_).getInstance();
         scheduleCtrl_.start(parser_);
     }
 
@@ -440,7 +440,7 @@ function Player(containerId) {
     ///////////////////////////////////////////////////////////////////////////
     // Title: debug function here
     function manualSchedule() {
-        scheduleCtrl_ = ScheduleController(oldmtn).getInstance();
+        scheduleCtrl_ = ScheduleController(context_).getInstance();
         scheduleCtrl_.manualSchedule();
     }
 

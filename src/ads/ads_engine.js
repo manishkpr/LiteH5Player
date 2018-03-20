@@ -1,3 +1,4 @@
+import FactoryMaker from '../core/FactoryMaker';
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
 import Debug from '../core/Debug';
@@ -22,8 +23,10 @@ function getVMAPItem(breakId, offset, tag) {
 }
 
 function AdsEngine(adContainer, media, advertising) {
-    let eventBus_ = EventBus(oldmtn).getInstance();
-    let debug_ = Debug(oldmtn).getInstance();
+    let context_ = this.context;
+
+    let eventBus_ = EventBus(context_).getInstance();
+    let debug_ = Debug(context_).getInstance();
     let adContainer_ = adContainer;
     let media_ = media;
     let advertising_ = advertising;
@@ -534,4 +537,6 @@ function AdsEngine(adContainer, media, advertising) {
     return instance;
 }
 
-export default AdsEngine;
+AdsEngine.__h5player_factory_name = 'AdsEngine';
+export default FactoryMaker.getSingletonFactory(AdsEngine);
+

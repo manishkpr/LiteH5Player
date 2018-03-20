@@ -5,12 +5,14 @@ import Debug from './core/Debug';
 import TimeRanges from './utils/timeRanges';
 
 function SourceBufferWrapper(rep) {
+  let context_ = this.context;
+  
   let rep_ = rep;
   let media_ = null;
   let mediaSrc_ = null;
   let srcBuffer_ = null;
-  let eventBus_ = EventBus(oldmtn).getInstance();
-  let debug_ = Debug(oldmtn).getInstance();
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   function setup() {
   }

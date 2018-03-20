@@ -1,11 +1,14 @@
-﻿import EventBus from './core/EventBus';
+﻿import FactoryMaker from './core/FactoryMaker';
+import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 import Debug from './core/Debug';
 import SourceBufferWrapper from './SourceBufferWrapper';
 
 function MediaSourceEngine() {
-    let eventBus_ = EventBus(oldmtn).getInstance();
-    let debug_ = Debug(oldmtn).getInstance();
+    let context_ = this.context;
+
+    let eventBus_ = EventBus(context_).getInstance();
+    let debug_ = Debug(context_).getInstance();
     let mediaSrc_ = null;
     let activeStream_ = null;
     let aSourceBuffer_ = null;
@@ -158,4 +161,6 @@ function MediaSourceEngine() {
     return instance;
 };
 
-export default MediaSourceEngine;
+MediaSourceEngine.__h5player_factory_name = 'MediaSourceEngine';
+export default FactoryMaker.getSingletonFactory(MediaSourceEngine);
+

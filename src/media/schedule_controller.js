@@ -4,14 +4,16 @@ import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
 
 function ScheduleController() {
+    let context_ = this.context;
+    
     let parser_;
     let scheduleTimeout_;
-    let xhrLoader_ = XHRLoader(oldmtn).getInstance();
-    let eventBus_ = EventBus(oldmtn).getInstance();
+    let xhrLoader_ = XHRLoader(context_).getInstance();
+    let eventBus_ = EventBus(context_).getInstance();
 
     // flag
     let isFragmentProcessing_ = false;
-    let manualMode_ = false;
+    let manualMode_ = true;
 
     function setup() {
     }

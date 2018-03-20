@@ -6,17 +6,18 @@ import ProtectionModel_21Jan2015 from './protection/models/ProtectionModel_21Jan
 import ProtectionModel_3Feb2014 from './protection/models/ProtectionModel_3Feb2014';
 
 //
-var DRMEngine = function (media) {
-    this.media_ = media;
-    this.protectionModel_ = null;
+function DRMEngine(media) {
+    let context_ = this.context;
 
-    this.protectionKeyController_ = ProtectionKeyController(this).getInstance();
+    let media_ = media;
+    let protectionModel_ = null;
 
-    this.protectionModel_ = this.getProtectionModel(this.media_);
-    this.protectionModel_.attachMedia(this.media_);
-};
+    let protectionKeyController_ = ProtectionKeyController(context_).getInstance();
 
-DRMEngine.prototype.getProtectionModel = function (media) {
+    protectionModel_ = getProtectionModel(media_);
+    protectionModel_.attachMedia(media_);
+
+function getProtectionModel(media) {
     if (media.onencrypted !== undefined &&
         media.mediaKeys !== undefined &&
         navigator.requestMediaKeySystemAccess !== undefined &&
@@ -27,15 +28,24 @@ DRMEngine.prototype.getProtectionModel = function (media) {
         console.log('User Agent support ProtectionModel_3Feb2014');
         return new ProtectionModel_3Feb2014();
     }
-};
+}
 
-DRMEngine.prototype.setDrmInfo = function (info) {
+function setDrmInfo (info) {
     if (!info.drm || !info.drm.type) { return; }
 
-    let keySystem = this.protectionKeyController_.getKeySystemBySystemString(info.drm.type);
+    let keySystem = protectionKeyController_.getKeySystemBySystemString(info.drm.type);
     console.log('H5Player, request systemString: ' + keySystem.systemString);
-    this.protectionModel_.setKeySystem(keySystem);
-    this.protectionModel_.setDrmInfo(info);
+    protectionModel_.setKeySystem(keySystem);
+    protectionModel_.setDrmInfo(info);
+}
+
+    let instance_ = {
+        setDrmInfo: setDrmInfo
+    };
+
+    return instance_;
 };
 
-export default DRMEngine;
+DRMEngine.__h5player_factory_name = 'DRMEngine';
+export default FactoryMaker.getSingletonFactory(DRMEngine);
+

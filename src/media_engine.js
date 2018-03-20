@@ -16,10 +16,12 @@ canplaythrough
  */
 
 function MediaEngine(media, cfg) {
+    let context_ = this.context;
+    
     let media_ = media;
     let cfg_ = cfg;
-    let eventBus_ = EventBus(oldmtn).getInstance();
-    let debug_ = Debug(oldmtn).getInstance();
+    let eventBus_ = EventBus(context_).getInstance();
+    let debug_ = Debug(context_).getInstance();
 
     // flag
     let autoplayAllowed_;
