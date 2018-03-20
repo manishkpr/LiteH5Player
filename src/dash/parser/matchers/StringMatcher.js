@@ -32,7 +32,7 @@
  * @classdesc Matches and converts xs:string to string, but only for specific attributes on specific nodes
  */
 import BaseMatcher from './BaseMatcher';
-import DashConstants from '../DashConstants';
+import DashConstants from '../../constants/DashConstants';
 
 class StringMatcher extends BaseMatcher {
     constructor() {

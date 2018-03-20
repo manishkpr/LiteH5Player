@@ -1,3 +1,4 @@
+
 export function replaceIDForTemplate(url, value) {
     if (!value || !url || url.indexOf('$RepresentationID$') === -1) { return url; }
     let v = value.toString();

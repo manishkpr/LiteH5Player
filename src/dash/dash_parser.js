@@ -5,14 +5,14 @@ import Debug from '../core/Debug';
 import XHRLoader from '../utils/xhr_loader';
 import X2JS from '../externals/xml2json';
 import StringUtils from '../utils/string_utils';
-import StringMatcher from './matchers/StringMatcher';
-import DurationMatcher from './matchers/DurationMatcher';
-import DateTimeMatcher from './matchers/DateTimeMatcher';
-import NumericMatcher from './matchers/NumericMatcher';
 import {
     replaceIDForTemplate,
     replaceTokenForTemplate
 } from './utils/SegmentsUtils';
+import StringMatcher from './parser/matchers/StringMatcher';
+import DurationMatcher from './parser/matchers/DurationMatcher';
+import DateTimeMatcher from './parser/matchers/DateTimeMatcher';
+import NumericMatcher from './parser/matchers/NumericMatcher';
 
 function DashParser() {
     let context_ = this.context;
@@ -340,48 +340,48 @@ function DashParser() {
 
         if (activeStream_.vRep && activeStream_.aRep) {
             do {
-            // init segments
-            if (videoHeaderAdded_ === false) {
-                ret.type = activeStream_.vRep.type;
-                ret.url = getFragmentInitialization(activeStream_.vRep);
-                videoHeaderAdded_ = true;
-                break;
-            }
-            if (audioHeaderAdded_ === false) {
-                ret.type = activeStream_.aRep.type;
-                ret.url = getFragmentInitialization(activeStream_.aRep);
-                audioHeaderAdded_ = true;
-                break;
-            }
+                // init segments
+                if (videoHeaderAdded_ === false) {
+                    ret.type = activeStream_.vRep.type;
+                    ret.url = getFragmentInitialization(activeStream_.vRep);
+                    videoHeaderAdded_ = true;
+                    break;
+                }
+                if (audioHeaderAdded_ === false) {
+                    ret.type = activeStream_.aRep.type;
+                    ret.url = getFragmentInitialization(activeStream_.aRep);
+                    audioHeaderAdded_ = true;
+                    break;
+                }
 
-            // BD
-            if (videoIndex_ < 1) {
-                ret.type = activeStream_.vRep.type;
-                ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
-                videoIndex_++;
-                break;
-            }
-            // ED
+                // BD
+                if (videoIndex_ < 1) {
+                    ret.type = activeStream_.vRep.type;
+                    ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
+                    videoIndex_++;
+                    break;
+                }
+                // ED
 
-            // media segments
-            if (videoIndex_ >= activeStream_.vRep.media.length ||
-                audioIndex_ >= activeStream_.aRep.media.length) {
-                ret = null;
-            } else {
-                if (videoIndex_ > audioIndex_) {
-                    if (audioIndex_ < activeStream_.aRep.segmentCnt) {
-                        ret.type = activeStream_.aRep.type;
-                        ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
-                        audioIndex_++;
-                    }
+                // media segments
+                if (videoIndex_ >= activeStream_.vRep.media.length ||
+                    audioIndex_ >= activeStream_.aRep.media.length) {
+                    ret = null;
                 } else {
-                    if (videoIndex_ < activeStream_.vRep.segmentCnt) {
-                        ret.type = activeStream_.vRep.type;
-                        ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
-                        videoIndex_++;
+                    if (videoIndex_ > audioIndex_) {
+                        if (audioIndex_ < activeStream_.aRep.segmentCnt) {
+                            ret.type = activeStream_.aRep.type;
+                            ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
+                            audioIndex_++;
+                        }
+                    } else {
+                        if (videoIndex_ < activeStream_.vRep.segmentCnt) {
+                            ret.type = activeStream_.vRep.type;
+                            ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
+                            videoIndex_++;
+                        }
                     }
                 }
-            }
             } while (false);
         } else {
             if (activeStream_.vRep) {
