@@ -78,9 +78,9 @@ function getInitConfig()
       //tag: ad68010,
       //tag: ad68010_local,
       //tag: yun_test_ad01,
-      tag: Single_Inline_Linear,
+      //tag: Single_Inline_Linear,
       //tag: Single_Skippable_Inline,
-      //tag: Single_Non_linear_Inline,
+      tag: Single_Non_linear_Inline,
       //tag: Single_Non_linear_Inline2,
       //tag: VMAP_Pre_roll_Bumper,
       //tag: VMAP_Post_roll_Bumper,
@@ -135,10 +135,12 @@ function getMediaInfo()
     //url: 'case03.mpd', // video + audio
     //--Item: Live
     //url: 'live01.mpd',
+    //--Item: True mpd path
+    url: 'http://localhost/2/dash/common/h5-test.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
-    url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://10.2.68.64/2/pd/fmp4/pure_audio_01.mp4',
 
     // internal test

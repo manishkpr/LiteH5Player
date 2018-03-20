@@ -29,6 +29,14 @@ body {
   height: 100%;
 }
 
+.vop-caption-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+
 .vop-ads-container {
   position: absolute;
   width: 100%;

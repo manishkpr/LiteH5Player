@@ -45,6 +45,7 @@ class CoreEvents {
         this.FULLSCREEN_CHANGE = 'fullscreenChange';
 
         // controller events
+        this.MANIFEST_PARSED = 'manifestParsed';
         this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
         this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
 

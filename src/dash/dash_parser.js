@@ -1,4 +1,7 @@
 import FactoryMaker from '../core/FactoryMaker';
+import Events from '../core/CoreEvents';
+import EventBus from '../core/EventBus';
+import Debug from '../core/Debug';
 import XHRLoader from '../utils/xhr_loader';
 import X2JS from '../externals/xml2json';
 import StringUtils from '../utils/string_utils';
@@ -6,15 +9,29 @@ import StringMatcher from './matchers/StringMatcher';
 import DurationMatcher from './matchers/DurationMatcher';
 import DateTimeMatcher from './matchers/DateTimeMatcher';
 import NumericMatcher from './matchers/NumericMatcher';
+import {
+    replaceIDForTemplate,
+    replaceTokenForTemplate
+} from './utils/SegmentsUtils';
 
 function DashParser() {
     let context_ = this.context;
 
     let instance;
     let activeStream_;
+    let debug_ = Debug(context_).getInstance();
+    let eventBus_ = EventBus(context_).getInstance();
     let xhrLoader_ = XHRLoader(context_).getInstance();
+    // parser reference variable
     let matchers_;
     let converter_;
+
+    // Begin dash manifest info
+    let mediaPresentationDuration_;
+    let segmentDuration_;
+    // End dash manifest info
+
+    let manifestUrl_;
 
     // flag
     let videoHeaderAdded_ = false;
@@ -43,23 +60,44 @@ function DashParser() {
         });
     }
 
-    function testMPD() {
-        function cbSuccess(bytes) {
-            let content = StringUtils.ab2str_v1(bytes);
-            console.log('content: ' + content);
+    function getRepresentation(manifest) {
+        let period = manifest.Period_asArray[0];
+        let adaptationSet = period.AdaptationSet_asArray[0];
+        let representation = adaptationSet.Representation_asArray[0];
+        let segmentTemplate = adaptationSet.SegmentTemplate;
 
-            var manifest = converter_.xml_str2json(content);
-            
-            let a = 2;
-            let b = a;
-        }
+        //
+        mediaPresentationDuration_ = manifest.mediaPresentationDuration;
+        segmentDuration_ = segmentTemplate.duration / segmentTemplate.timescale;
 
-        let request = {
-            url: 'http://localhost/2/dash/common/h5-test.mpd',
-            cbSuccess: cbSuccess
+        representation.type = 'video';
+        representation.codecs = 'video/mp4; ' + 'codecs=\"' + representation.codecs + '\"';
+        representation.duration = manifest.mediaPresentationDuration;
+        representation.segmentTemplate = segmentTemplate;
+        representation.segmentCnt = mediaPresentationDuration_ / segmentDuration_;
+// For reference
+// Representation
+// bandwidth:3134488
+// codecs:"avc1.64001f"
+// frameRate:30
+// height:576
+// id:"bbb_30fps_1024x576_2500k"
+// sar:"1:1"
+// scanType:"progressive"
+// width:1024
+
+// SegmentTemplate
+// duration:120
+// initialization:"$RepresentationID$/$RepresentationID$_0.m4v"
+// media:"$RepresentationID$/$RepresentationID$_$Number$.m4v"
+// startNumber:1
+// timescale:30
+        activeStream_ = {
+            aRep: null,
+            vRep: representation
         };
 
-        xhrLoader_.load(request);
+        eventBus_.trigger(Events.MANIFEST_PARSED, activeStream_);
     }
 
     function audio_only_case01() {
@@ -239,14 +277,33 @@ function DashParser() {
     }
 
     function loadManifest(url) {
+        manifestUrl_ = url;
+
         videoHeaderAdded_ = false;
         videoIndex_ = 0;
         audioHeaderAdded_ = false;
         audioIndex_ = 0;
 
-        if (url === 'test.mpd') {
-            testMPD();
-        } else if (url.indexOf('audio_only_case01') !== -1) {
+        // new
+        function cbSuccess(bytes) {
+            let content = StringUtils.ab2str_v1(bytes);
+            debug_.log('content: ' + content);
+
+            let manifest = converter_.xml_str2json(content);
+            getRepresentation(manifest);
+        }
+
+        let request = {
+            url: manifestUrl_, // 'http://localhost/2/dash/common/h5-test.mpd'
+            cbSuccess: cbSuccess
+        };
+
+        xhrLoader_.load(request);
+
+        return;
+
+        // old
+        if (url.indexOf('audio_only_case01') !== -1) {
             return audio_only_case01();
         } else if (url.indexOf('video_only_case01') !== -1) {
             return video_only_case01();
@@ -263,6 +320,21 @@ function DashParser() {
         }
     }
 
+    function getFragmentInitialization(rep) {
+        let initialization = replaceIDForTemplate(rep.segmentTemplate.initialization, rep.id);
+
+        let url = require('url');
+        return url.resolve(manifestUrl_, initialization);
+    }
+
+    function getFragmentMedia(rep, number) {
+        let media = replaceTokenForTemplate(rep.segmentTemplate.media, 'Number', number);
+        media = replaceIDForTemplate(media, rep.id);
+
+        let url = require('url');
+        return url.resolve(manifestUrl_, media);
+    }
+
     function getNextFragment() {
         let ret = {};
 
@@ -271,13 +343,13 @@ function DashParser() {
             // init segments
             if (videoHeaderAdded_ === false) {
                 ret.type = activeStream_.vRep.type;
-                ret.url = activeStream_.vRep.initialization;
+                ret.url = getFragmentInitialization(activeStream_.vRep);
                 videoHeaderAdded_ = true;
                 break;
             }
             if (audioHeaderAdded_ === false) {
                 ret.type = activeStream_.aRep.type;
-                ret.url = activeStream_.aRep.initialization;
+                ret.url = getFragmentInitialization(activeStream_.aRep);
                 audioHeaderAdded_ = true;
                 break;
             }
@@ -285,7 +357,7 @@ function DashParser() {
             // BD
             if (videoIndex_ < 1) {
                 ret.type = activeStream_.vRep.type;
-                ret.url = activeStream_.vRep.media[videoIndex_];
+                ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
                 videoIndex_++;
                 break;
             }
@@ -297,15 +369,15 @@ function DashParser() {
                 ret = null;
             } else {
                 if (videoIndex_ > audioIndex_) {
-                    if (audioIndex_ < activeStream_.aRep.media.length) {
+                    if (audioIndex_ < activeStream_.aRep.segmentCnt) {
                         ret.type = activeStream_.aRep.type;
-                        ret.url = activeStream_.aRep.media[audioIndex_];
+                        ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
                         audioIndex_++;
                     }
                 } else {
-                    if (videoIndex_ < activeStream_.vRep.media.length) {
+                    if (videoIndex_ < activeStream_.vRep.segmentCnt) {
                         ret.type = activeStream_.vRep.type;
-                        ret.url = activeStream_.vRep.media[videoIndex_];
+                        ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
                         videoIndex_++;
                     }
                 }
@@ -316,11 +388,11 @@ function DashParser() {
                 ret.type = activeStream_.vRep.type;
 
                 if (videoHeaderAdded_ === false) {
-                    ret.url = activeStream_.vRep.initialization;
+                    ret.url = getFragmentInitialization(activeStream_.vRep);
                     videoHeaderAdded_ = true;
                 } else {
-                    if (videoIndex_ < activeStream_.vRep.media.length) {
-                        ret.url = activeStream_.vRep.media[videoIndex_];
+                    if (videoIndex_ < activeStream_.vRep.segmentCnt) {
+                        ret.url = getFragmentMedia(activeStream_.vRep, videoIndex_);
                         videoIndex_++;
                     } else {
                         ret = null;
@@ -330,11 +402,11 @@ function DashParser() {
                 ret.type = activeStream_.aRep.type;
 
                 if (audioHeaderAdded_ === false) {
-                    ret.url = activeStream_.aRep.initialization;
+                    ret.url = getFragmentInitialization(activeStream_.aRep);
                     audioHeaderAdded_ = true;
                 } else {
-                    if (audioIndex_ < activeStream_.aRep.media.length) {
-                        ret.url = activeStream_.aRep.media[audioIndex_];
+                    if (audioIndex_ < activeStream_.aRep.segmentCnt) {
+                        ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
                         audioIndex_++;
                     } else {
                         ret = null;

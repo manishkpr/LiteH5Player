@@ -71,71 +71,7 @@ function Player(containerId) {
         // fetch dash content
         if (streamInfo_.url) {
             parser_ = manifestParser_.getParser(streamInfo_.url);
-            streamInfo_.activeStream = parser_.loadManifest(streamInfo_.url);
-            return;
-        }
-
-        // BD, use .src for PD
-        // if it is pd, so we don't need to create mediasource
-        if (streamInfo_.activeStream.pdRep) {
-            addPD();
-            return;
-        }
-        // ED
-
-        //
-        if (!window.MediaSource) {
-            debug_.log('Don\'t support MediaSource in this platform');
-            return;
-        }
-
-        if (streamInfo_.activeStream.aRep) {
-            if (streamInfo_.activeStream.aRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.aRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.aRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.aRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
-                return;
-            }
-        }
-
-        if (streamInfo_.activeStream.vRep) {
-            if (streamInfo_.activeStream.vRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.vRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
-                return;
-            }
-        }
-
-        if (streamInfo_.activeStream.pdRep) {
-            if (streamInfo_.activeStream.pdRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.pdRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
-                return;
-            }
-        }
-
-        mseEngine_.open(streamInfo_.activeStream);
-
-        let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
-        mediaEngine_.setSrc(objURL);
-        drmEngine_.setDrmInfo(streamInfo_);
-
-        if (adsEngine_) {
-            adsEngine_.requestAds();
+            parser_.loadManifest(streamInfo_.url);
         }
 
         debug_.log('Player, -open');
@@ -383,12 +319,13 @@ function Player(containerId) {
     }
 
     function addEventListeners() {
-        eventBus_.on(oldmtn.Events.MSE_OPENED, onMSEOpened, {});
+        eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
+        eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
-        eventBus_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
-        eventBus_.on(oldmtn.Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
-        eventBus_.on(oldmtn.Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
-        eventBus_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
+        eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
+        eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
+        eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
+        eventBus_.on(Events.AD_STARTED, onAdStarted, {});
     }
 
     function addResizeListener() {
@@ -407,6 +344,72 @@ function Player(containerId) {
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Begin -- internal events listener functions
+    function onManifestParsed(activeStream) {
+        streamInfo_.activeStream = activeStream;
+        // BD, use .src for PD
+        // if it is pd, so we don't need to create mediasource
+        if (streamInfo_.activeStream.pdRep) {
+            addPD();
+            return;
+        }
+        // ED
+
+        //
+        if (!window.MediaSource) {
+            debug_.log('Don\'t support MediaSource in this platform');
+            return;
+        }
+
+        if (streamInfo_.activeStream.aRep) {
+            if (streamInfo_.activeStream.aRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.aRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.aRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.aRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
+                return;
+            }
+        }
+
+        if (streamInfo_.activeStream.vRep) {
+            if (streamInfo_.activeStream.vRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.vRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
+                return;
+            }
+        }
+
+        if (streamInfo_.activeStream.pdRep) {
+            if (streamInfo_.activeStream.pdRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.pdRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
+                return;
+            }
+        }
+
+        mseEngine_.open(streamInfo_.activeStream);
+
+        let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
+        mediaEngine_.setSrc(objURL);
+        drmEngine_.setDrmInfo(streamInfo_);
+
+        if (adsEngine_) {
+            adsEngine_.requestAds();
+        }
+    }
+
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
 

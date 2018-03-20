@@ -202,14 +202,14 @@ function X2JS(config) {
             return true;
     }
 
-    function parseDOMChildren( node, path ) {
-        if(node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
+    function parseDOMChildren(node, path) {
+        if (node.nodeType == DOMNodeTypes.DOCUMENT_NODE) {
             var result = new Object;
             var nodeChildren = node.childNodes;
             // Alternative for firstElementChild which is not supported in some environments
-            for(var cidx=0; cidx <nodeChildren.length; cidx++) {
+            for (var cidx = 0; cidx < nodeChildren.length; cidx ++) {
                 var child = nodeChildren[cidx];
-                if(child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
+                if (child.nodeType == DOMNodeTypes.ELEMENT_NODE) {
                     if (config.ignoreRoot) {
                         result = parseDOMChildren(child);
                     } else {
@@ -220,9 +220,7 @@ function X2JS(config) {
                 }
             }
             return result;
-        }
-        else
-        if(node.nodeType == DOMNodeTypes.ELEMENT_NODE) {
+        } else if(node.nodeType == DOMNodeTypes.ELEMENT_NODE) {
             var result = new Object;
             result.__cnt=0;
 
@@ -230,15 +228,15 @@ function X2JS(config) {
             var nodeChildren = node.childNodes;
 
             // Children nodes
-            for(var cidx=0; cidx <nodeChildren.length; cidx++) {
+            for (var cidx = 0; cidx < nodeChildren.length; cidx++) {
                 var child = nodeChildren[cidx];
                 var childName = getNodeLocalName(child);
 
-                if(child.nodeType!= DOMNodeTypes.COMMENT_NODE) {
+                if (child.nodeType!= DOMNodeTypes.COMMENT_NODE) {
                     var childPath = path+"."+childName;
-                    if (checkXmlElementsFilter(result,child.nodeType,childName,childPath)) {
+                    if (checkXmlElementsFilter(result, child.nodeType, childName, childPath)) {
                         result.__cnt++;
-                        if(result[childName] == null) {
+                        if (result[childName] == null) {
                             var c = parseDOMChildren(child, childPath);
                             if (childName != "#text" || /[^\s]/.test(c)) {
                                 var o = {};
@@ -247,10 +245,9 @@ function X2JS(config) {
                             }
                             result[childName] = c;
                             toArrayAccessForm(result, childName, childPath);
-                        }
-                        else {
-                            if(result[childName] != null) {
-                                if( !(result[childName] instanceof Array)) {
+                        } else {
+                            if (result[childName] != null) {
+                                if (!(result[childName] instanceof Array)) {
                                     result[childName] = [result[childName]];
                                     toArrayAccessForm(result, childName, childPath);
                                 }
@@ -272,15 +269,16 @@ function X2JS(config) {
 
             // Attributes
             var nodeLocalName = getNodeLocalName(node)
-            for(var aidx=0; aidx <node.attributes.length; aidx++) {
+            for (var aidx = 0; aidx < node.attributes.length; aidx ++) {
                 var attr = node.attributes[aidx];
                 result.__cnt++;
 
                 var value2 = attr.value;
-                for(var m=0, ml=config.matchers.length; m < ml; m++) {
+                for (var m = 0, ml = config.matchers.length; m < ml; m ++) {
                     var matchobj = config.matchers[m];
-                    if (matchobj.test(attr, nodeLocalName))
+                    if (matchobj.test(attr, nodeLocalName)) {
                         value2 = matchobj.converter(attr.value);
+                    }
                 }
 
                 result[config.attributePrefix+attr.name]=value2;
@@ -288,61 +286,57 @@ function X2JS(config) {
 
             // Node namespace prefix
             var nodePrefix = getNodePrefix(node);
-            if(nodePrefix!=null && nodePrefix!="") {
+            if (nodePrefix != null && nodePrefix != "") {
                 result.__cnt++;
                 result.__prefix=nodePrefix;
             }
 
-            if(result["#text"]!=null) {
+            if (result["#text"] != null) {
                 result.__text = result["#text"];
-                if(result.__text instanceof Array) {
+                if (result.__text instanceof Array) {
                     result.__text = result.__text.join("\n");
                 }
                 //if(config.escapeMode)
                 //	result.__text = unescapeXmlChars(result.__text);
-                if(config.stripWhitespaces)
+                if (config.stripWhitespaces) {
                     result.__text = result.__text.trim();
+                }
                 delete result["#text"];
-                if(config.arrayAccessForm=="property")
+                if (config.arrayAccessForm == "property") {
                     delete result["#text_asArray"];
+                }
                 result.__text = checkFromXmlDateTimePaths(result.__text, childName, path+"."+childName);
             }
-            if(result["#cdata-section"]!=null) {
+
+            if (result["#cdata-section"] != null) {
                 result.__cdata = result["#cdata-section"];
                 delete result["#cdata-section"];
-                if(config.arrayAccessForm=="property")
+                if (config.arrayAccessForm == "property") {
                     delete result["#cdata-section_asArray"];
+                }
             }
 
             if( result.__cnt == 0 && config.emptyNodeForm=="text" ) {
                 result = '';
-            }
-            else
-            if( result.__cnt == 1 && result.__text!=null  ) {
+            } else if( result.__cnt == 1 && result.__text!=null  ) {
                 result = result.__text;
-            }
-            else
-            if( result.__cnt == 1 && result.__cdata!=null && !config.keepCData  ) {
+            } else if (result.__cnt == 1 && result.__cdata!=null && !config.keepCData) {
                 result = result.__cdata;
-            }
-            else
-            if ( result.__cnt > 1 && result.__text!=null && config.skipEmptyTextNodesForObj) {
-                if( (config.stripWhitespaces && result.__text=="") || (result.__text.trim()=="")) {
+            } else if (result.__cnt > 1 && result.__text!=null && config.skipEmptyTextNodesForObj) {
+                if ((config.stripWhitespaces && result.__text == "") || (result.__text.trim() == "")) {
                     delete result.__text;
                 }
             }
             delete result.__cnt;
 
-            if( config.enableToStringFunc && (result.__text!=null || result.__cdata!=null )) {
+            if (config.enableToStringFunc && (result.__text != null || result.__cdata != null)) {
                 result.toString = function() {
                     return (this.__text!=null? this.__text:'')+( this.__cdata!=null ? this.__cdata:'');
                 };
             }
 
             return result;
-        }
-        else
-        if(node.nodeType == DOMNodeTypes.TEXT_NODE || node.nodeType == DOMNodeTypes.CDATA_SECTION_NODE) {
+        } else if(node.nodeType == DOMNodeTypes.TEXT_NODE || node.nodeType == DOMNodeTypes.CDATA_SECTION_NODE) {
             return node.nodeValue;
         }
     }
@@ -533,24 +527,22 @@ function X2JS(config) {
         }
         var xmlDoc;
         if (window.DOMParser) {
-            var parser=new window.DOMParser();
+            var parser = new window.DOMParser();
             var parsererrorNS = null;
             try {
-                xmlDoc = parser.parseFromString( xmlDocStr, "text/xml" );
-                if(xmlDoc.getElementsByTagNameNS("*", "parsererror").length > 0) {
+                xmlDoc = parser.parseFromString(xmlDocStr, "text/xml");
+                if (xmlDoc.getElementsByTagNameNS("*", "parsererror").length > 0) {
                     xmlDoc = null;
                 }
-            }
-            catch(err) {
+            } catch (err) {
                 xmlDoc = null;
             }
-        }
-        else {
+        } else {
             // IE :(
-            if(xmlDocStr.indexOf("<?")==0) {
-                xmlDocStr = xmlDocStr.substr( xmlDocStr.indexOf("?>") + 2 );
+            if (xmlDocStr.indexOf("<?") == 0) {
+                xmlDocStr = xmlDocStr.substr(xmlDocStr.indexOf("?>") + 2);
             }
-            xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
             xmlDoc.async="false";
             xmlDoc.loadXML(xmlDocStr);
         }
@@ -580,29 +572,30 @@ function X2JS(config) {
     this.asDateTime = function(prop) {
         if(typeof(prop) == "string") {
             return fromXmlDateTime(prop);
-        }
-        else
+        } else {
             return prop;
+        }
     };
 
     this.xml2json = function (xmlDoc) {
-        return parseDOMChildren ( xmlDoc );
+        return parseDOMChildren(xmlDoc);
     };
 
     this.xml_str2json = function (xmlDocStr) {
         var xmlDoc = this.parseXmlString(xmlDocStr);
-        if(xmlDoc!=null)
+        if (xmlDoc != null) {
             return this.xml2json(xmlDoc);
-        else
+        } else {
             return null;
+        }
     };
 
     this.json2xml_str = function (jsonObj) {
-        return parseJSONObject ( jsonObj, "" );
+        return parseJSONObject(jsonObj, "");
     };
 
     this.json2xml = function (jsonObj) {
-        var xmlDocStr = this.json2xml_str (jsonObj);
+        var xmlDocStr = this.json2xml_str(jsonObj);
         return this.parseXmlString(xmlDocStr);
     };
 

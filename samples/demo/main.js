@@ -697,10 +697,6 @@ function onMuteButtonClick() {
     updateContentVolumeBarUI(muted, volume);
 }
 
-function onBtnAddA() {
-    player_.addA();
-}
-
 function onBtnManualSchedule() {
     player_.manualSchedule();
 }
