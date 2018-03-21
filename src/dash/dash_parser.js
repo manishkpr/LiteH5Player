@@ -17,8 +17,6 @@ import NumericMatcher from './parser/matchers/NumericMatcher';
 function DashParser() {
     let context_ = this.context;
 
-    let instance;
-    let activeStream_;
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
     let xhrLoader_ = XHRLoader(context_).getInstance();
@@ -28,6 +26,7 @@ function DashParser() {
 
     // Begin dash manifest info
     let mediaPresentationDuration_;
+    let activeStream_;
     // End dash manifest info
 
     let manifestUrl_;
@@ -427,12 +426,12 @@ function DashParser() {
         return ret;
     }
 
-    instance = {
+    let instance_ = {
         loadManifest: loadManifest,
         getNextFragment: getNextFragment
     };
     setup();
-    return instance;
+    return instance_;
 }
 
 DashParser.__h5player_factory_name = 'DashParser';

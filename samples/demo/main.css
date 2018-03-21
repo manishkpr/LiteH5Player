@@ -398,9 +398,41 @@ body {
   text-align: right;
 }
 
-.vop-menu-content-text {
+.vop-menuitem-content-text {
   font-size: 80%;
   color: #ccc;
+}
+
+.vop-menuitem-toggle-checkbox {
+  height: 14px;
+  width: 36px;
+  float: right;
+  position: relative;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.3);
+  -moz-transition: all .08s cubic-bezier(0.4,0.0,1,1);
+  -webkit-transition: all .08s cubic-bezier(0.4,0.0,1,1);
+  transition: all .08s cubic-bezier(0.4,0.0,1,1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -webkit-transform: scale(1);
+  transform: scale(1)
+}
+
+.vop-menuitem-toggle-checkbox:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  margin-top: -3px;
+  background-color: #bdbdbd;
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.6);
+  -moz-transition: all .08s cubic-bezier(0.4,0.0,1,1);
+  -webkit-transition: all .08s cubic-bezier(0.4,0.0,1,1);
+  transition: all .08s cubic-bezier(0.4,0.0,1,1)
 }
 
 .vop-menuitem[role=menuitemradio]
@@ -430,6 +462,21 @@ body {
   padding-right: 38px;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJtIDEyLjU5LDIwLjM0IDQuNTgsLTQuNTkgLTQuNTgsLTQuNTkgMS40MSwtMS40MSA2LDYgLTYsNiB6IiBmaWxsPSIjZmZmIiAvPjwvc3ZnPg==);
 }
+
+.vop-menuitem[aria-checked="true"]
+  .vop-menuitem-toggle-checkbox {
+  background: #f00
+}
+
+.vop-menuitem[aria-checked="true"]
+  .vop-menuitem-toggle-checkbox:after {
+  background-color: #fff;
+  -moz-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  -webkit-transform: translateX(16px);
+  transform: translateX(16px)
+}
+
 /************ End vop popup menu ************/
 
 /************ Begin bottom bar auto hide ************/

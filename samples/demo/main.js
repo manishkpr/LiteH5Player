@@ -26,6 +26,7 @@ var vopMuteButton = null;
 var vopVolumeSlider = null;
 var vopVolumeSliderHandle = null;
 
+var vopSubtitlesBtn;
 var vopSettingsBtn;
 var vopSettingsMenu;
 var vopSettingsMenuPanel;
@@ -65,7 +66,19 @@ var flagVolumeSliderMousedown = false;
 var valueVolumeMovePosition = 0;
 
 // menu context
-var settingContext = {
+var subtitlesMenuContext = {
+    currMenu: 'none',
+    
+    subtitleTracks: [
+    {id: 1, lang: 'English'},
+    {id: 2, lang: 'France'},
+    {id: 3, lang: 'Chinese'}
+    ],
+
+    currSubtitleId: -1
+};
+
+var settingMenuContext = {
     currMenu: 'none',
 
     qualityList: [
@@ -109,8 +122,8 @@ function initUI() {
 
     uiConsole = document.getElementById('idConsole');
 
+    vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
     vopSettingsBtn = document.querySelector('.vop-settings-button');
-
     vopFullscreen = document.querySelector('.vop-fullscreen-button');
 
     // setting panel
@@ -138,11 +151,13 @@ function initUIEventListeners() {
     vopPlayButton.addEventListener('click', onPlayButtonClick);
     vopMuteButton.addEventListener('click', onMuteButtonClick);
     vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
+    vopSubtitlesBtn.addEventListener('click', onSubtitlesClick);
     vopSettingsBtn.addEventListener('click', onSettingClick);
     vopFullscreen.addEventListener('click', onFullscreenClick);
 
     vopPlayButton.addEventListener('mousemove', onControlMousemove);
     vopMuteButton.addEventListener('mousemove', onControlMousemove);
+    vopSubtitlesBtn.addEventListener('mousemove', onControlMousemove);
     vopSettingsBtn.addEventListener('mousemove', onControlMousemove);
     vopFullscreen.addEventListener('mousemove', onControlMousemove);
     vopVolumeSlider.addEventListener('mousemove', onControlMousemove);
@@ -673,24 +688,40 @@ function onPlayButtonClickAd() {
     }
 }
 
-function onSettingClick() {
-    printLog('+onBtnSetting, currMenu: ' + settingContext.currMenu);
-
-    if (settingContext.currMenu === 'none') {
-        createMainMenu();
-        settingContext.currMenu = 'main_menu';
-    } else if (settingContext.currMenu === 'main_menu') {
+function onSubtitlesClick() {
+    printLog('+onSubtitlesClick, currMenu: ' + subtitlesMenuContext.currSubtitleId);
+    if (subtitlesMenuContext.currMenu === 'none') {
+        createSubtitlesMenu();
+        subtitlesMenuContext.currMenu = 'main_menu';
+    } else if (subtitlesMenuContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
-            var elem_child = vopSettingsMenuPanelMenu.childNodes;
-            elem_child[1].focus();
+            var elem_child = vopSettingsMenuPanelMenu.children;
+            elem_child[0].focus();
         } else {
             vopSettingsMenu.style.display = 'none';
         }
-    } else if (settingContext.currMenu === 'quality_menu' ||
-        settingContext.currMenu === 'audioTrack_menu') {
-        destroyMenu();
-        settingContext.currMenu = 'none';
+    }
+}
+
+function onSettingClick() {
+    printLog('+onSettingClick, currMenu: ' + settingMenuContext.currMenu);
+
+    if (settingMenuContext.currMenu === 'none') {
+        createMainMenu();
+        settingMenuContext.currMenu = 'main_menu';
+    } else if (settingMenuContext.currMenu === 'main_menu') {
+        if (vopSettingsMenu.style.display === 'none') {
+            vopSettingsMenu.style.display = 'block';
+            var elem_child = vopSettingsMenuPanelMenu.children;
+            elem_child[0].focus();
+        } else {
+            vopSettingsMenu.style.display = 'none';
+        }
+    } else if (settingMenuContext.currMenu === 'quality_menu' ||
+        settingMenuContext.currMenu === 'audioTrack_menu') {
+        destroySettingsMenu();
+        settingMenuContext.currMenu = 'none';
     }
 }
 
@@ -819,12 +850,6 @@ function onUICmdCastPlayAd() {
 
 function onUICmdCastTest() {
   castSender.new_test();
-}
-
-function onVideoShadeClick(e) {
-}
-
-function onVideoControlBarClick() {
 }
 
 function doEnterThumbnailMode() {
@@ -1110,7 +1135,84 @@ function onFullscreenChanged() {
 
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
-function destroyMenu() {
+function createSubtitlesMenu() {
+// The subtitle menu html:
+// <div class="vop-panel-menu">
+//     <div class="vop-menuitem" role="menuitem" aria-checked="true">
+//         <div class="vop-menuitem-label">
+//             English
+//         </div>
+//         <div class="vop-menuitem-content">
+//             <div class="vop-menuitem-toggle-checkbox">
+//             </div>
+//         </div>
+//     </div>
+//     <div class="vop-menuitem" role="menuitem" aria-checked="true">
+//         <div class="vop-menuitem-label">
+//             Svenska
+//         </div>
+//         <div class="vop-menuitem-content">
+//             <div class="vop-menuitem-toggle-checkbox">
+//             </div>
+//         </div>
+//     </div>
+// </div>
+
+    var firstMenuitem = null;
+    for (var i = 0; i < subtitlesMenuContext.subtitleTracks.length; i ++) {
+        var subtitleTrack = subtitlesMenuContext.subtitleTracks[i];
+
+        var menuitem = document.createElement('div');
+        menuitem.setAttribute('class', 'vop-menuitem');
+        menuitem.setAttribute('role', 'menuitem');
+        if (subtitleTrack.id === subtitlesMenuContext.currSubtitleId) {
+            menuitem.setAttribute('aria-checked', 'true');
+        }
+
+        var label = document.createElement('div');
+        label.setAttribute('class', 'vop-menuitem-label');
+        label.innerText = subtitleTrack.lang;
+
+        var content = document.createElement('div');
+        content.setAttribute('class', 'vop-menuitem-content');
+
+        var checkBox = document.createElement('div');
+        checkBox.setAttribute('class', 'vop-menuitem-toggle-checkbox');
+        content.appendChild(checkBox);
+
+        menuitem.appendChild(label);
+        menuitem.appendChild(content);
+
+        menuitem.dataset.id = subtitleTrack.id;
+        menuitem.addEventListener('click', onSubtitleItemClick);
+        menuitem.addEventListener('blur', onSubtitleItemBlur);
+
+        if (firstMenuitem === null) {
+            firstMenuitem = menuitem;
+        }
+        vopSettingsMenuPanelMenu.appendChild(menuitem);
+    }
+
+    //
+    vopSettingsMenu.style.display = 'block';
+    firstMenuitem.focus();
+}
+
+function updateSubtitlesMenuUI() {
+    var children = vopSettingsMenuPanelMenu.children;
+    for (var i = 0; i < children.length; i ++) {
+        var menuitem = children[i];
+
+        var label = menuitem.querySelector('.vop-menuitem-label');
+        if (menuitem.dataset.id === subtitlesMenuContext.currSubtitleId) {
+            menuitem.setAttribute('aria-checked', 'true');
+        } else {
+            menuitem.removeAttribute('aria-checked');
+        }
+    }
+}
+
+function destroySettingsMenu() {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
         vopSettingsMenuPanel.removeChild(v);
@@ -1128,7 +1230,7 @@ function createMainMenu() {
 //             Quality
 //         </div>
 //         <div class="vop-menuitem-content">
-//             <span class="vop-menu-content-text">360p</span>
+//             <span class="vop-menuitem-content-text">360p</span>
 //         </div>
 //     </div>
 //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
@@ -1137,7 +1239,7 @@ function createMainMenu() {
 //         </div>
 //         <div class="vop-menuitem-content">
 //             <span>Auto</span>
-//             <span class="vop-menu-content-text">Bipbop1</span>
+//             <span class="vop-menuitem-content-text">Bipbop1</span>
 //         </div>
 //     </div>
 // </div>
@@ -1163,7 +1265,7 @@ function createMainMenu() {
     var content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
-    if (settingContext.isQualityAuto) {
+    if (settingMenuContext.isQualityAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
 
@@ -1171,8 +1273,8 @@ function createMainMenu() {
     }
 
     var contentText = document.createElement('span');
-    contentText.setAttribute('class', 'vop-menu-content-text');
-    contentText.innerText = settingContext.currQuality;
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
+    contentText.innerText = settingMenuContext.currQuality;
     content.appendChild(contentText);
 
     qualityMenuitem.appendChild(label);
@@ -1197,7 +1299,7 @@ function createMainMenu() {
     content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
-    if (settingContext.isAudioTrackAuto) {
+    if (settingMenuContext.isAudioTrackAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
 
@@ -1205,8 +1307,8 @@ function createMainMenu() {
     }
 
     contentText = document.createElement('span');
-    contentText.setAttribute('class', 'vop-menu-content-text');
-    contentText.innerText = settingContext.currAudioTrack;
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
+    contentText.innerText = settingMenuContext.currAudioTrack;
     content.appendChild(contentText);
 
     audioMenuitem.appendChild(label);
@@ -1264,18 +1366,18 @@ function createQualityMenu() {
 
     // add quality menuitem
     var focusItem = null;
-    for (var i = 0; i < settingContext.qualityList.length; i ++) {
-        var quality = settingContext.qualityList[i].bitrate;
+    for (var i = 0; i < settingMenuContext.qualityList.length; i ++) {
+        var quality = settingMenuContext.qualityList[i].bitrate;
 
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('role', 'menuitemradio');
-        if (quality == settingContext.currQuality) {
+        if (quality == settingMenuContext.currQuality) {
             menuitem.setAttribute('aria-checked', 'true');
         }
         menuitem.setAttribute('tabindex', '0');
         menuitem.addEventListener('blur', onMainMenuBlur);
-        if (quality == settingContext.currQuality) {
+        if (quality == settingMenuContext.currQuality) {
             focusItem = menuitem;
         }
         menuitem.addEventListener('click', onQualityItemClick);
@@ -1300,7 +1402,7 @@ function updateQualityMenuUI() {
         var menuitem = elem_child[i];
 
         var label = menuitem.querySelector('.vop-menuitem-label');
-        if (label.innerText === settingContext.currQuality) {
+        if (label.innerText === settingMenuContext.currQuality) {
             menuitem.setAttribute('aria-checked', 'true');
         } else {
             menuitem.setAttribute('aria-checked', 'false');
@@ -1344,13 +1446,13 @@ function createAudioTrackMenu() {
 
     // add quality menuitem
     var focusItem = null;
-    for (var i = 0; i < settingContext.audioTrackList.length; i ++) {
-        var audioTrack = settingContext.audioTrackList[i];
+    for (var i = 0; i < settingMenuContext.audioTrackList.length; i ++) {
+        var audioTrack = settingMenuContext.audioTrackList[i];
 
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('role', 'menuitemradio');
-        if (audioTrack == settingContext.currAudioTrack) {
+        if (audioTrack == settingMenuContext.currAudioTrack) {
             menuitem.setAttribute('aria-checked', 'true');
         }
         menuitem.setAttribute('tabindex', '0');
@@ -1380,7 +1482,7 @@ function updateAudioTrackMenuUI() {
         var menuitem = elem_child[i];
 
         var label = menuitem.querySelector('.vop-menuitem-label');
-        if (label.innerText === settingContext.currAudioTrack) {
+        if (label.innerText === settingMenuContext.currAudioTrack) {
             menuitem.setAttribute('aria-checked', 'true');
         } else {
             menuitem.setAttribute('aria-checked', 'false');
@@ -1392,17 +1494,17 @@ function onQualityMenuClick(e) {
     e.stopPropagation();
     printLog('+onQualityMenuClick: ' + e.target.innerText);
 
-    destroyMenu();
+    destroySettingsMenu();
     createQualityMenu();
-    settingContext.currMenu = 'quality_menu';
+    settingMenuContext.currMenu = 'quality_menu';
 }
 
 function onAudioTrackMenuClick(e) {
     e.stopPropagation();
 
-    destroyMenu();
+    destroySettingsMenu();
     createAudioTrackMenu();
-    settingContext.currMenu = 'audioTrack_menu';
+    settingMenuContext.currMenu = 'audioTrack_menu';
 }
 
 function onMainMenuBlur(e) {
@@ -1411,13 +1513,13 @@ function onMainMenuBlur(e) {
         text = ', text: ' + e.relatedTarget.innerText;
     }
     
-    printLog('+onMainMenuBlur, settingContext.currMenu: ' + settingContext.currMenu + text);
+    printLog('+onMainMenuBlur, settingMenuContext.currMenu: ' + settingMenuContext.currMenu + text);
 
     if (e.relatedTarget) {
         if (e.relatedTarget === vopSettingsBtn) {
-            if (settingContext.currMenu === 'main_menu' ||
-                settingContext.currMenu === 'quality_menu' ||
-                settingContext.currMenu === 'audioTrack_menu') {
+            if (settingMenuContext.currMenu === 'main_menu' ||
+                settingMenuContext.currMenu === 'quality_menu' ||
+                settingMenuContext.currMenu === 'audioTrack_menu') {
                 // do nothing
             }
         } else if (e.relatedTarget.getAttribute('tabindex') === '0') {
@@ -1431,36 +1533,54 @@ function onMainMenuBlur(e) {
     }
 }
 
+function onSubtitleItemClick(e) {
+    e.stopPropagation();
+
+    var id = e.currentTarget.dataset.id;
+    if (subtitlesMenuContext.currSubtitleId === id) {
+        subtitlesMenuContext.currSubtitleId = -1;
+    } else {
+        subtitlesMenuContext.currSubtitleId = id;
+    }
+
+    console.log('id: ' + id);
+    updateSubtitlesMenuUI();
+}
+
+function onSubtitleItemBlur(e) {
+    onSubtitlesClick();
+}
+
 function onQualityBack(e) {
     e.stopPropagation();
 
-    destroyMenu();
+    destroySettingsMenu();
     createMainMenu();
-    settingContext.currMenu = 'main_menu';
+    settingMenuContext.currMenu = 'main_menu';
 }
 
 function onQualityItemClick(e) {
-    printLog('onQualityItemClick, settingContext.currMenu: ' + settingContext.currMenu
+    printLog('onQualityItemClick, settingMenuContext.currMenu: ' + settingMenuContext.currMenu
         + ', text: ' + e.target.innerText);
     e.stopPropagation();
 
-    settingContext.currQuality = e.target.innerText;
+    settingMenuContext.currQuality = e.target.innerText;
     updateQualityMenuUI();
-}
-
-function onAudioTrackItemClick(e) {
-    e.stopPropagation();
-
-    settingContext.currAudioTrack = e.target.innerText;
-    updateAudioTrackMenuUI();
 }
 
 function onAudioTrackBack(e) {
     e.stopPropagation();
 
-    destroyMenu();
+    destroySettingsMenu();
     createMainMenu();
-    settingContext.currMenu = 'main_menu';
+    settingMenuContext.currMenu = 'main_menu';
+}
+
+function onAudioTrackItemClick(e) {
+    e.stopPropagation();
+
+    settingMenuContext.currAudioTrack = e.target.innerText;
+    updateAudioTrackMenuUI();
 }
 
 /////////////////////////////////////////////////////////////////////////

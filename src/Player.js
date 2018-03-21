@@ -339,7 +339,7 @@ function Player(containerId) {
 
     function onFullScreenChange() {
         // we should not rely on clientWidth or clientHeight to set ad metrics when fullscreen change event triggered.
-        eventBus_.trigger(context_.Events.FULLSCREEN_CHANGE);
+        eventBus_.trigger(Events.FULLSCREEN_CHANGE);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////
