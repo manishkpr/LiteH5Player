@@ -221,36 +221,23 @@ body {
 }
 
 /******** Begin custom button ********/
+/* for Google material-icons styles */
 .vop-button {
   width: 36px;
-  height: 100%;
-  border:none;
-  color:inherit;
-  background-color:transparent;
-  padding:0;
-  text-align:inherit;
-  font-size:100%;
-  font-family:inherit;
-  line-height:inherit;
+  height: 36px;
+  border: 0;
+  background-color: transparent;
+  color: white;
   cursor: pointer;
 }
 .vop-button:focus,
 .vop-button {outline:0}
 .vop-button::-moz-focus-inner {padding:0;border:0}
 
-/* */
-.vop-svg-shadow {
-  stroke: #000;
-  stroke-opacity: .15;
-  stroke-width: 2px;
-  fill: none;
-}
-
-.vop-svg-fill {
-  fill: #fff;
-}
-
-.vop-play-button {
+.vop-play-button,
+.vop-mute-button,
+.vop-volume-panel,
+.vop-time-display {
   float: left;
 }
 
@@ -266,11 +253,9 @@ body {
 
 /* time unit */
 .vop-time-display {
-  float: left;
+  padding-left: 6px;
   width: auto;
   height: 100%;
-  padding-left: 6px;
-  padding-top: 3px;
   display: table;
 }
 
@@ -279,20 +264,10 @@ body {
   display: table-cell;
   vertical-align: middle;
 }
-
-.vop-mute-button {
-  float: left;
-}
-
-.vop-settings-button {
-  float: left;
-}
 /******** End custom button ********/
-
 
 /************ Begin volume bar ************/
 .vop-volume-panel {
-  float: left;
   width: 52px;
   height: 100%;
   cursor: pointer;

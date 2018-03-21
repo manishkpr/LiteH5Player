@@ -26,18 +26,11 @@ var vopMuteButton = null;
 var vopVolumeSlider = null;
 var vopVolumeSliderHandle = null;
 
-var vopPlaySvg;
-var vopMuteSvg;
 var vopSettingsBtn;
-var vopSettingsBtnSvg;
 var vopSettingsMenu;
 var vopSettingsMenuPanel;
 var vopSettingsMenuPanelMenu;
 var vopFullscreen;
-var vopFullScreenCorner0;
-var vopFullScreenCorner1;
-var vopFullScreenCorner2;
-var vopFullScreenCorner3;
 var vopSpinner;
 var uiGiantBtnContainer;
 
@@ -51,22 +44,6 @@ var colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
 var colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
 var colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 
-// UI Matrial Icon
-var icon_play = 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z';
-var icon_pause = 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z';
-var icon_replay = 'M 18,11 V 7 l -5,5 5,5 v -4 c 3.3,0 6,2.7 6,6 0,3.3 -2.7,6 -6,6 -3.3,0 -6,-2.7 -6,-6 h -2 c 0,4.4 3.6,8 8,8 4.4,0 8,-3.6 8,-8 0,-4.4 -3.6,-8 -8,-8 z';
-var icon_volume_muted = 'm 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z';
-var icon_volume_low = 'M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 Z';
-var icon_volume_high = 'M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z';
-var icon_setting = 'm 23.94,18.78 c .03,-0.25 .05,-0.51 .05,-0.78 0,-0.27 -0.02,-0.52 -0.05,-0.78 l 1.68,-1.32 c .15,-0.12 .19,-0.33 .09,-0.51 l -1.6,-2.76 c -0.09,-0.17 -0.31,-0.24 -0.48,-0.17 l -1.99,.8 c -0.41,-0.32 -0.86,-0.58 -1.35,-0.78 l -0.30,-2.12 c -0.02,-0.19 -0.19,-0.33 -0.39,-0.33 l -3.2,0 c -0.2,0 -0.36,.14 -0.39,.33 l -0.30,2.12 c -0.48,.2 -0.93,.47 -1.35,.78 l -1.99,-0.8 c -0.18,-0.07 -0.39,0 -0.48,.17 l -1.6,2.76 c -0.10,.17 -0.05,.39 .09,.51 l 1.68,1.32 c -0.03,.25 -0.05,.52 -0.05,.78 0,.26 .02,.52 .05,.78 l -1.68,1.32 c -0.15,.12 -0.19,.33 -0.09,.51 l 1.6,2.76 c .09,.17 .31,.24 .48,.17 l 1.99,-0.8 c .41,.32 .86,.58 1.35,.78 l .30,2.12 c .02,.19 .19,.33 .39,.33 l 3.2,0 c .2,0 .36,-0.14 .39,-0.33 l .30,-2.12 c .48,-0.2 .93,-0.47 1.35,-0.78 l 1.99,.8 c .18,.07 .39,0 .48,-0.17 l 1.6,-2.76 c .09,-0.17 .05,-0.39 -0.09,-0.51 l -1.68,-1.32 0,0 z m -5.94,2.01 c -1.54,0 -2.8,-1.25 -2.8,-2.8 0,-1.54 1.25,-2.8 2.8,-2.8 1.54,0 2.8,1.25 2.8,2.8 0,1.54 -1.25,2.8 -2.8,2.8 l 0,0 z';
-var fullscreen_no_corner_0 = 'm 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z';
-var fullscreen_no_corner_1 = 'm 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z';
-var fullscreen_no_corner_2 = 'm 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z';
-var fullscreen_no_corner_3 = 'M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z';
-var fullscreen_yes_corner_0 = 'm 14,14 -4,0 0,2 6,0 0,-6 -2,0 0,4 0,0 z';
-var fullscreen_yes_corner_1 = 'm 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z';
-var fullscreen_yes_corner_2 = 'm 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z';
-var fullscreen_yes_corner_3 = 'm 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z';
 
 // flag
 var timerHideControlBar;
@@ -132,33 +109,9 @@ function initUI() {
 
     uiConsole = document.getElementById('idConsole');
 
-    var v = document.querySelector('.vop-play-button');
-    vopPlaySvg = v.querySelector('.vop-svg-fill');
-
-    vopMuteSvg = vopMuteButton.querySelector('.vop-svg-fill');
-
     vopSettingsBtn = document.querySelector('.vop-settings-button');
-    vopSettingsBtnSvg = vopSettingsBtn.querySelector('.vop-svg-fill');
 
     vopFullscreen = document.querySelector('.vop-fullscreen-button');
-
-    var v = document.querySelector('.vop-fullscreen-button-corner-0');
-    vopFullScreenCorner0 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-1');
-    vopFullScreenCorner1 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-2');
-    vopFullScreenCorner2 = v.querySelector('.vop-svg-fill');
-    var v = document.querySelector('.vop-fullscreen-button-corner-3');
-    vopFullScreenCorner3 = v.querySelector('.vop-svg-fill');
-
-    vopPlaySvg.setAttribute('d', icon_play);
-    vopMuteSvg.setAttribute('d', icon_volume_high);
-    vopSettingsBtnSvg.setAttribute('d', icon_setting);
-
-    vopFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
-    vopFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
-    vopFullScreenCorner2.setAttribute('d', fullscreen_no_corner_2);
-    vopFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
 
     // setting panel
     vopSettingsMenu = document.querySelector('.vop-settings-menu');
@@ -453,12 +406,12 @@ function updateAdProgressUI() {
 
 function updatePlayBtnUI(paused, ended) {
     if (ended) {
-        vopPlaySvg.setAttribute('d', icon_replay);
+        vopPlayButton.innerText = 'replay';
     } else {
         if (paused) {
-            vopPlaySvg.setAttribute('d', icon_play);
+            vopPlayButton.innerText = 'play_arrow';
         } else {
-            vopPlaySvg.setAttribute('d', icon_pause);
+            vopPlayButton.innerText = 'pause';
         }
     }
 }
@@ -468,14 +421,14 @@ function updateContentVolumeBarUI(muted, volume) {
     var uiVolumeList;
     var uiVolumeHandleLeft;
     if (volume === 0 || muted) {
-        uiMutedIcon = icon_volume_muted;
+        uiMutedIcon = 'volume_off';
         uiVolumeList = [0, 1];
         uiVolumeHandleLeft = '0px';
     } else {
         if (volume >= 0.5) {
-            uiMutedIcon = icon_volume_high;
+            uiMutedIcon = 'volume_up';
         } else {
-            uiMutedIcon = icon_volume_low;
+            uiMutedIcon = 'volume_down';
         }
 
         uiVolumeList = [volume, 1];
@@ -489,7 +442,7 @@ function updateContentVolumeBarUI(muted, volume) {
     }
 
     // update muted button
-    vopMuteSvg.setAttribute('d', uiMutedIcon);
+    vopMuteButton.innerText = uiMutedIcon;
     // update volume slider background
     vopVolumeSlider.style.background = genGradientColor(uiVolumeList, colorList_volume);
     // update volume slider handle
@@ -1135,7 +1088,7 @@ function onAdComplete() {
 
     // update control bar ui
     vopProgressBar.style.display = 'block';
-    vopSettingsBtn.style.display = 'block';
+    vopSettingsBtn.style.display = 'inline-block';
 }
 
 function onAdTimeUpdate() {
@@ -1149,15 +1102,9 @@ function onFullscreenChanged() {
     var v = player_.isFullscreen();
     printLog('fullscreen changed, ret: ' + v);
     if (v) {
-        vopFullScreenCorner0.setAttribute('d', fullscreen_yes_corner_0);
-        vopFullScreenCorner1.setAttribute('d', fullscreen_yes_corner_1);
-        vopFullScreenCorner2.setAttribute('d', fullscreen_yes_corner_2);
-        vopFullScreenCorner3.setAttribute('d', fullscreen_yes_corner_3);
+        vopFullscreen.innerText = 'fullscreen_exit';
     } else {
-        vopFullScreenCorner0.setAttribute('d', fullscreen_no_corner_0);
-        vopFullScreenCorner1.setAttribute('d', fullscreen_no_corner_1);
-        vopFullScreenCorner2.setAttribute('d', fullscreen_no_corner_2);
-        vopFullScreenCorner3.setAttribute('d', fullscreen_no_corner_3);
+        vopFullscreen.innerText = 'fullscreen';
     }
 }
 

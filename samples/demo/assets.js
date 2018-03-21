@@ -64,6 +64,7 @@ function getInitConfig()
   var ad67966 = 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525';
   var ad68010 = 'https://googleads.g.doubleclick.net/pagead/ads?sdkv=h.3.193.1&sdki=3c0d&video_product_type=0&correlator=3883587295669830&client=ca-video-pub-1256482085642647&url=https%3A%2F%2Fdemos.flowplayer.com%2Fads%2Fimage_text.html&adk=3577526078&num_ads=3&channel&output=xml_vast3&sz=982x409.15625&adsafe=high&hl=en&slotname=9152678419&ea=0&image_size=200x200%2C250x250%2C300x250%2C336x280%2C450x50%2C468x60%2C480x70%2C728x90&ad_type=image_text&eid=324123021&u_tz=480&u_his=1&u_java=false&u_h=1080&u_w=1920&u_ah=1040&u_aw=1920&u_cd=24&u_nplug=4&u_nmime=5&dt=1519957339350&unviewed_position_start=1&videoad_start_delay=1&u_so=l&osd=2&frm=0&sdr=1&is_amp=0&t_pyv=allow&min_ad_duration=0&max_ad_duration=110000&ca_type=image&description_url=https%3A%2F%2Fdemos.flowplayer.com%2Fads%2Fimage_text.html&mpt=Flowplayer&mpv=7.2.4&ref=https%3A%2F%2Fflowplayer.com%2Fdemos&ged=ve4_td36_tt33_pd36_la3000_er0.0.0.0_vi0.0.929.1511_vp0_eb16491';
   var ad68010_local = 'http://10.2.68.64/2/ads/ad68010.xml';
+  var VPAID_LINK01 = 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525';
 
   var cfg = {
     // Media
@@ -71,33 +72,34 @@ function getInitConfig()
     autoplay: true,
     mutedAutoplay: true,
 
-    advertising: {
-      //tag: ad67741,
-      //tag: ad67720,
-      //tag: ad67966,
-      //tag: ad68010,
-      //tag: ad68010_local,
-      //tag: yun_test_ad01,
-      //tag: Single_Inline_Linear,
-      //tag: Single_Skippable_Inline,
-      tag: Single_Non_linear_Inline,
-      //tag: Single_Non_linear_Inline2,
-      //tag: VMAP_Pre_roll_Bumper,
-      //tag: VMAP_Post_roll_Bumper,
-      //tag: VMAP_Post_roll,
-      //tag: VMAP_Pre_Mid_Post,
-      //tag: VMAP_Pre_3Mid_Post,
-      //tag: VMAP_5Ads_Every_10_Secs,
-      //tag: VMAP_Pre_10_20_Post,
-      //tag: VMAP_Pre_10_20Skip_Post,
-      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      enablePreloading: true,
-      //autoplayadsmuted: true,
-      vpaidmode: 'insecure',
-      //forceNonLinearFullSlot: false,
-      locale: 'fr',
-      companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
-    }
+    // advertising: {
+    //   //tag: ad67741,
+    //   //tag: ad67720,
+    //   //tag: ad67966,
+    //   //tag: ad68010,
+    //   //tag: ad68010_local,
+    //   //tag: yun_test_ad01,
+    //   tag: VPAID_LINK01,
+    //   //tag: Single_Inline_Linear,
+    //   //tag: Single_Skippable_Inline,
+    //   //tag: Single_Non_linear_Inline,
+    //   //tag: Single_Non_linear_Inline2,
+    //   //tag: VMAP_Pre_roll_Bumper,
+    //   //tag: VMAP_Post_roll_Bumper,
+    //   //tag: VMAP_Post_roll,
+    //   //tag: VMAP_Pre_Mid_Post,
+    //   //tag: VMAP_Pre_3Mid_Post,
+    //   //tag: VMAP_5Ads_Every_10_Secs,
+    //   //tag: VMAP_Pre_10_20_Post,
+    //   //tag: VMAP_Pre_10_20Skip_Post,
+    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+    //   enablePreloading: true,
+    //   //autoplayadsmuted: true,
+    //   vpaidmode: 'insecure',
+    //   //forceNonLinearFullSlot: false,
+    //   locale: 'fr',
+    //   companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
+    // }
   };
 
   return cfg;
@@ -125,7 +127,7 @@ function getMediaInfo()
   //initTestTmp();
   //init1080i();
 
-  //pdContent = 'http://10.2.68.64/2/myhls/features/av_muxed/test.m3u8';
+  //pdContent = 'http://10.2.68.64/2/hls/features/av_muxed/test.m3u8';
   var info = {
     //--Item: standard url
     //url: 'audio_only_case01.mpd',
@@ -137,7 +139,8 @@ function getMediaInfo()
     //url: 'live01.mpd',
     //--Item: True mpd path
     //url: 'http://localhost/2/dash/common/video.mpd',
-    url: 'http://localhost/2/dash/features/av_nonmuxed/video.mpd',
+    //url: 'http://localhost/2/dash/features/av_nonmuxed/video.mpd',
+    url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
