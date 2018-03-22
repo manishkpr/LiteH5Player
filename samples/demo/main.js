@@ -29,8 +29,8 @@ var vopVolumeSliderHandle = null;
 var vopSubtitlesBtn;
 var vopSettingsBtn;
 var vopSettingsMenu;
-var vopSettingsMenuPanel;
-var vopSettingsMenuPanelMenu;
+var vopPanel;
+var vopPanelMenu;
 var vopFullscreen;
 var vopSpinner;
 var uiGiantBtnContainer;
@@ -70,12 +70,16 @@ var subtitlesMenuContext = {
     currMenu: 'none',
     
     subtitleTracks: [
-    {id: 1, lang: 'English'},
-    {id: 2, lang: 'France'},
-    {id: 3, lang: 'Chinese'}
+    {id: '1', lang: 'English'},
+    {id: '2', lang: 'France'},
+    {id: '3', lang: 'Chinese'},
+    {id: '4', lang: '444'},
+    {id: '5', lang: '5555'},
+    {id: '6', lang: '666'},
+    {id: '7', lang: '777'}
     ],
 
-    currSubtitleId: -1
+    currSubtitleId: ''
 };
 
 var settingMenuContext = {
@@ -128,8 +132,8 @@ function initUI() {
 
     // setting panel
     vopSettingsMenu = document.querySelector('.vop-settings-menu');
-    vopSettingsMenuPanel = vopSettingsMenu.querySelector('.vop-panel');
-    vopSettingsMenuPanelMenu = vopSettingsMenu.querySelector('.vop-panel-menu');
+    vopPanel = vopSettingsMenu.querySelector('.vop-panel');
+    vopPanelMenu = vopSettingsMenu.querySelector('.vop-panel-menu');
 
     vopSpinner = document.querySelector('.vop-spinner');
 
@@ -163,7 +167,7 @@ function initUIEventListeners() {
     vopVolumeSlider.addEventListener('mousemove', onControlMousemove);
 
     // don't route 'click' event from panel to its parent div
-    vopSettingsMenuPanel.addEventListener('click', function(e) {
+    vopPanel.addEventListener('click', function(e) {
         e.stopPropagation();
     });
 
@@ -562,12 +566,12 @@ function onPlayerMouseenter() {
     if (!flagPlayerInited) {
         return;
     }
-    
+
     $('.html5-video-player').removeClass('vop-autohide');
 }
 
 function onPlayerMousemove(e) {
-    printLog('+onPlayerMousemove');
+    //printLog('+onPlayerMousemove');
     // don't show control bar if the stream is not initialized.
     if (!flagPlayerInited) {
         return;
@@ -690,13 +694,20 @@ function onPlayButtonClickAd() {
 
 function onSubtitlesClick() {
     printLog('+onSubtitlesClick, currMenu: ' + subtitlesMenuContext.currSubtitleId);
+
+    // Part - process
+    if (settingMenuContext.currMenu !== 'none') {
+        destroySettingsMenu();
+        settingMenuContext.currMenu = 'none';
+    }
+
     if (subtitlesMenuContext.currMenu === 'none') {
         createSubtitlesMenu();
         subtitlesMenuContext.currMenu = 'main_menu';
     } else if (subtitlesMenuContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
-            var elem_child = vopSettingsMenuPanelMenu.children;
+            var elem_child = vopPanelMenu.children;
             elem_child[0].focus();
         } else {
             vopSettingsMenu.style.display = 'none';
@@ -707,13 +718,20 @@ function onSubtitlesClick() {
 function onSettingClick() {
     printLog('+onSettingClick, currMenu: ' + settingMenuContext.currMenu);
 
+    // Part - process
+    if (subtitlesMenuContext.currMenu !== 'none') {
+        destroySettingsMenu();
+        subtitlesMenuContext.currMenu = 'none';
+    }
+
+    //
     if (settingMenuContext.currMenu === 'none') {
         createMainMenu();
         settingMenuContext.currMenu = 'main_menu';
     } else if (settingMenuContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
-            var elem_child = vopSettingsMenuPanelMenu.children;
+            var elem_child = vopPanelMenu.children;
             elem_child[0].focus();
         } else {
             vopSettingsMenu.style.display = 'none';
@@ -1137,6 +1155,9 @@ function onFullscreenChanged() {
 // Title: Dynamic create UI
 function createSubtitlesMenu() {
 // The subtitle menu html:
+// <div class="vop-panel-header">
+//     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
+// </div>
 // <div class="vop-panel-menu">
 //     <div class="vop-menuitem" role="menuitem" aria-checked="true">
 //         <div class="vop-menuitem-label">
@@ -1158,6 +1179,22 @@ function createSubtitlesMenu() {
 //     </div>
 // </div>
 
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
+
+    // Part - input
+    var header = document.createElement('div');
+    header.setAttribute('class', 'vop-panel-header');
+
+    var panelTitle = document.createElement('button');
+    panelTitle.setAttribute('class', 'vop-panel-title');
+    panelTitle.innerText = 'Subtitles';
+    panelTitle.addEventListener('click', onSubitlesBack);
+    panelTitle.setAttribute('role', 'plain');
+
+    header.appendChild(panelTitle);
+
+    // Part - input
     var firstMenuitem = null;
     for (var i = 0; i < subtitlesMenuContext.subtitleTracks.length; i ++) {
         var subtitleTrack = subtitlesMenuContext.subtitleTracks[i];
@@ -1165,6 +1202,7 @@ function createSubtitlesMenu() {
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('role', 'menuitem');
+        menuitem.setAttribute('tabindex', '0');
         if (subtitleTrack.id === subtitlesMenuContext.currSubtitleId) {
             menuitem.setAttribute('aria-checked', 'true');
         }
@@ -1190,16 +1228,17 @@ function createSubtitlesMenu() {
         if (firstMenuitem === null) {
             firstMenuitem = menuitem;
         }
-        vopSettingsMenuPanelMenu.appendChild(menuitem);
+        vopPanelMenu.appendChild(menuitem);
     }
 
     //
+    vopPanel.insertBefore(header, vopPanelMenu);
     vopSettingsMenu.style.display = 'block';
     firstMenuitem.focus();
 }
 
 function updateSubtitlesMenuUI() {
-    var children = vopSettingsMenuPanelMenu.children;
+    var children = vopPanelMenu.children;
     for (var i = 0; i < children.length; i ++) {
         var menuitem = children[i];
 
@@ -1215,10 +1254,11 @@ function updateSubtitlesMenuUI() {
 function destroySettingsMenu() {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
-        vopSettingsMenuPanel.removeChild(v);
+        vopPanel.removeChild(v);
     }
-    while (vopSettingsMenuPanelMenu.firstChild) {
-        vopSettingsMenuPanelMenu.removeChild(vopSettingsMenuPanelMenu.firstChild);
+
+    while (vopPanelMenu.firstChild) {
+        vopPanelMenu.removeChild(vopPanelMenu.firstChild);
     }
 }
 
@@ -1243,6 +1283,9 @@ function createMainMenu() {
 //         </div>
 //     </div>
 // </div>
+
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
 
     // Part - input: current quality, current audio track, etc.
     var qualityCnt = 3;
@@ -1317,8 +1360,8 @@ function createMainMenu() {
     audioMenuitem.addEventListener('click', onAudioTrackMenuClick);
 
     // Part post process
-    vopSettingsMenuPanelMenu.appendChild(qualityMenuitem);
-    vopSettingsMenuPanelMenu.appendChild(audioMenuitem);
+    vopPanelMenu.appendChild(qualityMenuitem);
+    vopPanelMenu.appendChild(audioMenuitem);
 
     //
     vopSettingsMenu.style.display = 'block';
@@ -1352,6 +1395,9 @@ function createQualityMenu() {
 //         </div>
 //     </div>
 // </div>
+
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
 
     // add quality back menu
     var header = document.createElement('div');
@@ -1387,17 +1433,16 @@ function createQualityMenu() {
         label.innerText = quality;
 
         menuitem.appendChild(label);
-        vopSettingsMenuPanelMenu.appendChild(menuitem);
+        vopPanelMenu.appendChild(menuitem);
     }
 
-    vopSettingsMenuPanel.insertBefore(header, vopSettingsMenuPanelMenu);
-    //
+    vopPanel.insertBefore(header, vopPanelMenu);
     vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
 function updateQualityMenuUI() {
-    var elem_child = vopSettingsMenuPanelMenu.childNodes;
+    var elem_child = vopPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i ++) {
         var menuitem = elem_child[i];
 
@@ -1433,6 +1478,9 @@ function createAudioTrackMenu() {
 //     </div>
 // </div>
 
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
+
     // add quality back menu
     var header = document.createElement('div');
     header.setAttribute('class', 'vop-panel-header');
@@ -1467,17 +1515,17 @@ function createAudioTrackMenu() {
         label.innerText = audioTrack;
         
         menuitem.appendChild(label);
-        vopSettingsMenuPanelMenu.appendChild(menuitem);
+        vopPanelMenu.appendChild(menuitem);
     }
 
-    vopSettingsMenuPanel.insertBefore(header, vopSettingsMenuPanelMenu);
+    vopPanel.insertBefore(header, vopPanelMenu);
     //
     vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 }
 
 function updateAudioTrackMenuUI() {
-    var elem_child = vopSettingsMenuPanelMenu.childNodes;
+    var elem_child = vopPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i ++) {
         var menuitem = elem_child[i];
 
@@ -1548,7 +1596,19 @@ function onSubtitleItemClick(e) {
 }
 
 function onSubtitleItemBlur(e) {
-    onSubtitlesClick();
+    if (e.relatedTarget) {
+        if (e.relatedTarget === vopSubtitlesBtn) {
+            if (subtitlesMenuContext.currMenu === 'main_menu') {
+                // do nothing
+            }
+        }
+    } else {
+        onSubtitlesClick();
+    }
+}
+
+function onSubitlesBack(e) {
+    printLog('+onSubitlesBack');
 }
 
 function onQualityBack(e) {
@@ -1593,6 +1653,7 @@ window.onload = function () {
     initUI();
     initUIEventListeners();
     initPlayer();
+
 
     // BD
     //onBtnOpen();

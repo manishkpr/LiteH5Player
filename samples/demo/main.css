@@ -306,7 +306,8 @@ body {
 /************ Begin vop popup menu ************/
 .vop-popup {
   position: absolute;
-  overflow: hidden;
+  overflow-x: auto;
+  max-height: 240px;
   border-radius: 2px;
   background: rgba(28,28,28,0.9);
   text-shadow: 0 0 2px rgba(0,0,0,.5);
@@ -356,6 +357,13 @@ body {
   color:inherit;
   cursor: pointer;
   outline: 0px;
+}
+
+.vop-panel-title[role=plain] {
+  background-image: none;
+  padding: 0;
+  width: 100%;
+  font-size: 18px;
 }
 
 .vop-panel-menu {
