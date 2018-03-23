@@ -344,6 +344,7 @@ body {
 .vop-panel-title {
   font-weight: 500;
   padding: 0 10px 0 35px;
+  width: 100%;
   height: 100%;
   background-repeat: no-repeat;
   background-position: left 3px center;
@@ -362,17 +363,14 @@ body {
 .vop-panel-title[role=plain] {
   background-image: none;
   padding: 0;
-  width: 100%;
   font-size: 18px;
 }
 
 .vop-panel-menu {
   padding: 6px 0;
   box-sizing: border-box;
-
   color: #eee;
   width: 100%;
-
   display: table;
 }
 
@@ -393,7 +391,6 @@ body {
   vertical-align: middle;
   padding: 0 15px;
 
-  text-align: right;
   font-size: 90%;
   font-weight: 500;
 }

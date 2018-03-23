@@ -45,7 +45,6 @@ var colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
 var colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
 var colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 
-
 // flag
 var timerHideControlBar;
 
@@ -68,36 +67,147 @@ var valueVolumeMovePosition = 0;
 // menu context
 var subtitlesMenuContext = {
     currMenu: 'none',
-    
-    subtitleTracks: [
-    {id: '1', lang: 'English'},
-    {id: '2', lang: 'France'},
-    {id: '3', lang: 'Chinese'},
-    {id: '4', lang: '444'},
-    {id: '5', lang: '5555'},
-    {id: '6', lang: '666'},
-    {id: '7', lang: '777'}
+
+    subtitleTracks: [{
+            id: '1',
+            lang: 'English'
+        }, {
+            id: '2',
+            lang: 'France'
+        }, {
+            id: '3',
+            lang: 'Chinese'
+        }, {
+            id: '4',
+            lang: '444'
+        }, {
+            id: '5',
+            lang: '5555'
+        }, {
+            id: '6',
+            lang: '666'
+        }, {
+            id: '7',
+            lang: '777'
+        }
     ],
 
     currSubtitleId: ''
 };
 
 var settingMenuContext = {
-    currMenu: 'none',
+    currMenu: 'none',   // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu
 
-    qualityList: [
-    {id: 5, bitrate: '1080p'}, {id: 4, bitrate: '720p'},
-    {id: 3, bitrate: '480p'}, {id: 2, bitrate: '360p'},
-    {id: 1, bitrate: '240p'}, {id: 0, bitrate: '144p'},
-    {id: null, bitrate: 'Auto'}
+    // quality settings
+    qualityList: [{
+            id: 5,
+            bitrate: '1080p'
+        }, {
+            id: 4,
+            bitrate: '720p'
+        }, {
+            id: 3,
+            bitrate: '480p'
+        }, {
+            id: 2,
+            bitrate: '360p'
+        }, {
+            id: 1,
+            bitrate: '240p'
+        }, {
+            id: 0,
+            bitrate: '144p'
+        }, {
+            id: null,
+            bitrate: 'Auto'
+        }
     ],
-
     isQualityAuto: true,
     currQuality: '360p',
 
+    // audio track settings
     audioTrackList: ['Bipbop1', 'Bipbop2'],
     isAudioTrackAuto: true,
-    currAudioTrack: 'Bipbop1'
+    currAudioTrack: 'Bipbop1',
+
+    // FCC settings
+    isEnableFCC: true,
+    fccProperties: [{
+            // white/black(default)/red/green/blue/yellow/magenta/cyan
+            name: 'background_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'background_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            // white/black(default)/red/green/blue/yellow/magenta/cyan
+            name: 'font_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'font_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            // Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic
+            name: 'font_family',
+            values: ['Arial', 'Courier', 'Times New Roman', 'Helvetica', 'Dom', 'Coronet', 'Gothic'],
+            currValue: 'Arial'
+        }, {
+            // none/dropshadow/raised(default)/depressed/uniform
+            name: 'font_edge_type',
+            values: ['none', 'leftDropShadow', 'rightDropShadow', 'raised', 'depressed', 'uniform'],
+            currValue: 'none'
+        }, {
+            // white/black/red/green/blue(default)/yellow/magenta/cyan
+            name: 'font_edge_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'font_edge_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            name: 'font_size',
+            values: ['50%', '75%', '100%', '150%', '200%', '300%', '400%'],
+            currValue: '100%'
+        }, {
+            name: 'font_bold',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            name: 'font_underline',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            name: 'font_italic',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            // white/black/red/green/blue(default)/yellow/magenta/cyan
+            name: 'window_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'green'
+        }, {
+            name: 'window_color_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '50%'
+        }, {
+            name: 'bounding_box',
+            values: ['Left', 'Top', 'Right', 'Bottom'],
+            currValue: 'Left'
+        }, {
+            name: 'horizontal_position',
+            values: ['left', 'center', 'right'],
+            currValue: 'left'
+        }, {
+            name: 'vertical_position',
+            values: ['top', 'middle', 'bottom'],
+            currValue: 'top'
+        }
+    ]
 };
 
 // reference variable of ad
@@ -167,11 +277,11 @@ function initUIEventListeners() {
     vopVolumeSlider.addEventListener('mousemove', onControlMousemove);
 
     // don't route 'click' event from panel to its parent div
-    vopPanel.addEventListener('click', function(e) {
+    vopPanel.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
-    uiGiantBtnContainer.addEventListener('click', function(e) {
+    uiGiantBtnContainer.addEventListener('click', function (e) {
         e.stopPropagation();
         onPlayFromGiantButton();
     });
@@ -180,7 +290,7 @@ function initUIEventListeners() {
     //if (window.ResizeObserver) {
     if (false) {
         function onPlayerSize(entries) {
-            for (var i = 0; i < entries.length; i ++) {
+            for (var i = 0; i < entries.length; i++) {
                 var entry = entries[i];
                 const cr = entry.contentRect;
                 const cWidth = entry.target.clientWidth;
@@ -203,7 +313,6 @@ function initUIEventListeners() {
         });
     }
 }
-
 
 function initPlayer() {
     cfg_ = getInitConfig();
@@ -336,8 +445,8 @@ function updateProgressBarUI() {
         // part - output, update ui
         // update time progress bar
         uiBufferedPos = player_.getValidBufferPosition(uiPosition);
-        vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos/duration + ')';
-        vopPlayProgress.style.transform = 'scaleX(' + uiPosition/duration + ')';
+        vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos / duration + ')';
+        vopPlayProgress.style.transform = 'scaleX(' + uiPosition / duration + ')';
 
         // update time progress scrubber button
         vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
@@ -359,9 +468,9 @@ function updateProgressBarHoverUI() {
         vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
         var rect = vopProgressBar.getBoundingClientRect();
-        var offsetX = (position/duration)*rect.width;
+        var offsetX = (position / duration) * rect.width;
         vopHoverProgress.style.left = offsetX + 'px';
-        vopHoverProgress.style.transform = 'scaleX(' + (progressBarContext.movePos - position)/duration + ')';
+        vopHoverProgress.style.transform = 'scaleX(' + (progressBarContext.movePos - position) / duration + ')';
     }
 }
 
@@ -379,8 +488,8 @@ function updateTooltipUI(e) {
         var offsetToProgressBar = (e.clientX - rect.left);
         var offsetToVideo = offsetToProgressBar + 12;
 
-        var tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth/2;
-        var tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth/2;
+        var tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth / 2;
+        var tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth / 2;
 
         if (tooltipLeft_RelativeToVideo < leftMin) {
             tooltipLeft_RelativeToVideo = leftMin;
@@ -412,7 +521,7 @@ function updateAdProgressUI() {
     var duration = player_.getDuration();
 
     // update time progress bar
-    vopPlayProgress.style.transform = 'scaleX(' + position/duration + ')';
+    vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(position);
@@ -489,14 +598,14 @@ function h5EnterFullscreen() {
 
     // Try to enter fullscreen mode in the browser
     var requestFullscreen =
-    v.requestFullscreen ||
-    v.requestFullScreen ||
-    v.webkitRequestFullscreen ||
-    v.webkitRequestFullScreen ||
-    v.mozRequestFullscreen ||
-    v.mozRequestFullScreen ||
-    v.msRequestFullscreen ||
-    v.msRequestFullScreen;
+        v.requestFullscreen ||
+        v.requestFullScreen ||
+        v.webkitRequestFullscreen ||
+        v.webkitRequestFullScreen ||
+        v.mozRequestFullscreen ||
+        v.mozRequestFullScreen ||
+        v.msRequestFullscreen ||
+        v.msRequestFullScreen;
 
     requestFullscreen.call(v);
 }
@@ -505,12 +614,12 @@ function h5LeaveFullscreen() {
     printLog('+h5LeaveFullscreen');
 
     var cancelFullscreen =
-    document.exitFullscreen ||
-    document.exitFullScreen ||
-    document.webkitCancelFullScreen ||
-    document.mozCancelFullScreen ||
-    document.msExitFullscreen ||
-    document.msExitFullscreen;
+        document.exitFullscreen ||
+        document.exitFullScreen ||
+        document.webkitCancelFullScreen ||
+        document.mozCancelFullScreen ||
+        document.msExitFullscreen ||
+        document.msExitFullscreen;
     if (cancelFullscreen) {
         cancelFullscreen.call(document);
     }
@@ -518,19 +627,18 @@ function h5LeaveFullscreen() {
 
 function docVolumeSliderMousemove(e) {
     updateVolumeMovePosition(e);
-    
+
     var muted = player_.isMuted();
     var volume = valueVolumeMovePosition;
-    if (volume === 0) {
-        
-    } else {
+    if (volume === 0) {}
+    else {
         if (muted === true) {
             player_.unmute();
         }
 
         muted = false;
     }
-    
+
     player_.setVolume(valueVolumeMovePosition);
 
     updateContentVolumeBarUI(muted, volume);
@@ -544,7 +652,10 @@ function docVolumeSliderMouseup(e) {
     flagVolumeSliderMousedown = false;
 
     // if mouse up out of 'vop-shade', hide control bar directly
-    var pt = { x: e.clientX, y: e.clientY };
+    var pt = {
+        x: e.clientX,
+        y: e.clientY
+    };
     if (!isPtInElement(pt, vopH5Player)) {
         onPlayerMouseleave();
     }
@@ -556,8 +667,8 @@ function captureVolumeSliderMouseEvents() {
 }
 
 function releaseVolumeSliderMouseEvents() {
-    document.removeEventListener ('mousemove', docVolumeSliderMousemove, true);
-    document.removeEventListener ('mouseup', docVolumeSliderMouseup, true);
+    document.removeEventListener('mousemove', docVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', docVolumeSliderMouseup, true);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -579,8 +690,8 @@ function onPlayerMousemove(e) {
 
     removeAutohideAction();
     timerHideControlBar = setTimeout(function () {
-        onPlayerMouseleave();
-    }, 3000);
+            onPlayerMouseleave();
+        }, 3000);
 }
 
 function onPlayerMouseleave() {
@@ -592,7 +703,9 @@ function onPlayerMouseleave() {
 }
 
 function onPlayerClick() {
-    if (flagAdStarted && flagIsLinearAd) { return; }
+    if (flagAdStarted && flagIsLinearAd) {
+        return;
+    }
 
     onPlayButtonClick();
 }
@@ -698,12 +811,10 @@ function onSubtitlesClick() {
     // Part - process
     if (settingMenuContext.currMenu !== 'none') {
         destroySettingsMenu();
-        settingMenuContext.currMenu = 'none';
     }
 
     if (subtitlesMenuContext.currMenu === 'none') {
         createSubtitlesMenu();
-        subtitlesMenuContext.currMenu = 'main_menu';
     } else if (subtitlesMenuContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
@@ -721,13 +832,11 @@ function onSettingClick() {
     // Part - process
     if (subtitlesMenuContext.currMenu !== 'none') {
         destroySettingsMenu();
-        subtitlesMenuContext.currMenu = 'none';
     }
 
-    //
+    // Part - process setting event
     if (settingMenuContext.currMenu === 'none') {
         createMainMenu();
-        settingMenuContext.currMenu = 'main_menu';
     } else if (settingMenuContext.currMenu === 'main_menu') {
         if (vopSettingsMenu.style.display === 'none') {
             vopSettingsMenu.style.display = 'block';
@@ -737,9 +846,10 @@ function onSettingClick() {
             vopSettingsMenu.style.display = 'none';
         }
     } else if (settingMenuContext.currMenu === 'quality_menu' ||
-        settingMenuContext.currMenu === 'audioTrack_menu') {
+        settingMenuContext.currMenu === 'audio_track_menu' ||
+        settingMenuContext.currMenu === 'fcc_menu' ||
+        settingMenuContext.currMenu === 'fcc_property_menu') {
         destroySettingsMenu();
-        settingMenuContext.currMenu = 'none';
     }
 }
 
@@ -837,37 +947,37 @@ function onBtnAttribute() {
 
 //
 function onUICmdCastInit() {
-  var cfg = getInitConfig();
-  castSender.new_init(cfg);
+    var cfg = getInitConfig();
+    castSender.new_init(cfg);
 }
 
 function onUICmdCastOpen() {
-  var info = getMediaInfo();
-  castSender.new_open(info);
+    var info = getMediaInfo();
+    castSender.new_open(info);
 }
 
 function onUICmdCastAddV() {
-  castSender.new_addV();
+    castSender.new_addV();
 }
 
 function onUICmdCastAddPD() {
-  castSender.new_addPD();
+    castSender.new_addPD();
 }
 
 function onUICmdCastPlay() {
-  castSender.new_play();
+    castSender.new_play();
 }
 
 function onUICmdCastPause() {
-  castSender.new_pause();
+    castSender.new_pause();
 }
 
 function onUICmdCastPlayAd() {
-  castSender.new_playAd();
+    castSender.new_playAd();
 }
 
 function onUICmdCastTest() {
-  castSender.new_test();
+    castSender.new_test();
 }
 
 function doEnterThumbnailMode() {
@@ -906,9 +1016,9 @@ function onProgressBarMousedown(e) {
     progressBarContext.endedBeforeMousedown = player_.isEnded();
     progressBarContext.posBeforeMousedown = player_.getPosition();
     flagThumbnailMode = false;
-    progressBarContext.timer = setTimeout(function() {
-        doEnterThumbnailMode();
-    }, 200);
+    progressBarContext.timer = setTimeout(function () {
+            doEnterThumbnailMode();
+        }, 200);
 
     // update progress bar ui
     progressBarContext.movePos = getProgressMovePosition(e);
@@ -917,7 +1027,7 @@ function onProgressBarMousedown(e) {
 }
 
 function onProgressBarMousemove(e) {
-    printLog('+onProgressBarMousemove');
+    //printLog('+onProgressBarMousemove');
     e.stopPropagation();
     removeAutohideAction();
 
@@ -943,8 +1053,8 @@ function captureProgressBarMouseEvents() {
 }
 
 function releaseProgressBarMouseEvents() {
-    document.removeEventListener ('mousemove', docProgressBarMousemove, true);
-    document.removeEventListener ('mouseup', docProgressBarMouseup, true);
+    document.removeEventListener('mousemove', docProgressBarMousemove, true);
+    document.removeEventListener('mouseup', docProgressBarMouseup, true);
 }
 
 function docProgressBarMousemove(e) {
@@ -1057,8 +1167,7 @@ function onMediaLoadedMetaData(e) {
     player_.resize(vp.clientWidth, vp.clientHeight);
 }
 
-function onMediaPaused() {
-}
+function onMediaPaused() {}
 
 function onMediaPlaying() {
     var paused = player_.isPaused();
@@ -1089,8 +1198,8 @@ function onMediaTimeupdated() {
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
-    if (progressBarContext.mousedown) {
-    } else {
+    if (progressBarContext.mousedown) {}
+    else {
         //progressBarContext.movePos = player_.getPosition();
         updateProgressBarUI();
         updateProgressBarHoverUI();
@@ -1154,30 +1263,30 @@ function onFullscreenChanged() {
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
 function createSubtitlesMenu() {
-// The subtitle menu html:
-// <div class="vop-panel-header">
-//     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
-// </div>
-// <div class="vop-panel-menu">
-//     <div class="vop-menuitem" role="menuitem" aria-checked="true">
-//         <div class="vop-menuitem-label">
-//             English
-//         </div>
-//         <div class="vop-menuitem-content">
-//             <div class="vop-menuitem-toggle-checkbox">
-//             </div>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitem" aria-checked="true">
-//         <div class="vop-menuitem-label">
-//             Svenska
-//         </div>
-//         <div class="vop-menuitem-content">
-//             <div class="vop-menuitem-toggle-checkbox">
-//             </div>
-//         </div>
-//     </div>
-// </div>
+    // The subtitle menu html:
+    // <div class="vop-panel-header">
+    //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
+    // </div>
+    // <div class="vop-panel-menu">
+    //     <div class="vop-menuitem" role="menuitem" aria-checked="true">
+    //         <div class="vop-menuitem-label">
+    //             English
+    //         </div>
+    //         <div class="vop-menuitem-content">
+    //             <div class="vop-menuitem-toggle-checkbox">
+    //             </div>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitem" aria-checked="true">
+    //         <div class="vop-menuitem-label">
+    //             Svenska
+    //         </div>
+    //         <div class="vop-menuitem-content">
+    //             <div class="vop-menuitem-toggle-checkbox">
+    //             </div>
+    //         </div>
+    //     </div>
+    // </div>
 
     // Part - process, remove all children of vopPanelMenu
     destroySettingsMenu();
@@ -1196,13 +1305,14 @@ function createSubtitlesMenu() {
 
     // Part - input
     var firstMenuitem = null;
-    for (var i = 0; i < subtitlesMenuContext.subtitleTracks.length; i ++) {
+    for (var i = 0; i < subtitlesMenuContext.subtitleTracks.length; i++) {
         var subtitleTrack = subtitlesMenuContext.subtitleTracks[i];
 
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('role', 'menuitem');
         menuitem.setAttribute('tabindex', '0');
+        menuitem.addEventListener('blur', onSubtitleItemBlur);
         if (subtitleTrack.id === subtitlesMenuContext.currSubtitleId) {
             menuitem.setAttribute('aria-checked', 'true');
         }
@@ -1223,7 +1333,6 @@ function createSubtitlesMenu() {
 
         menuitem.dataset.id = subtitleTrack.id;
         menuitem.addEventListener('click', onSubtitleItemClick);
-        menuitem.addEventListener('blur', onSubtitleItemBlur);
 
         if (firstMenuitem === null) {
             firstMenuitem = menuitem;
@@ -1235,20 +1344,8 @@ function createSubtitlesMenu() {
     vopPanel.insertBefore(header, vopPanelMenu);
     vopSettingsMenu.style.display = 'block';
     firstMenuitem.focus();
-}
 
-function updateSubtitlesMenuUI() {
-    var children = vopPanelMenu.children;
-    for (var i = 0; i < children.length; i ++) {
-        var menuitem = children[i];
-
-        var label = menuitem.querySelector('.vop-menuitem-label');
-        if (menuitem.dataset.id === subtitlesMenuContext.currSubtitleId) {
-            menuitem.setAttribute('aria-checked', 'true');
-        } else {
-            menuitem.removeAttribute('aria-checked');
-        }
-    }
+    subtitlesMenuContext.currMenu = 'main_menu';
 }
 
 function destroySettingsMenu() {
@@ -1256,33 +1353,66 @@ function destroySettingsMenu() {
     if (v) {
         vopPanel.removeChild(v);
     }
-
     while (vopPanelMenu.firstChild) {
+        vopPanelMenu.firstChild.removeEventListener('blur', onMainMenuBlur);
         vopPanelMenu.removeChild(vopPanelMenu.firstChild);
     }
+
+    settingMenuContext.currMenu = 'none';
+    subtitlesMenuContext.currMenu = 'none';
+}
+
+function createHeaderItemUI(text, cb) {
+    var header = document.createElement('div');
+    header.setAttribute('class', 'vop-panel-header');
+
+    var title = document.createElement('button');
+    title.setAttribute('class', 'vop-panel-title');
+    title.innerText = text;
+
+    header.appendChild(title);
+    header.addEventListener('click', cb);
+    vopPanel.insertBefore(header, vopPanelMenu);
+}
+
+function createRadioMenuItem(text, cbBlur, cbClick) {
+    var menuitem = document.createElement('div');
+    menuitem.setAttribute('class', 'vop-menuitem');
+    menuitem.setAttribute('role', 'menuitemradio');
+
+    menuitem.setAttribute('tabindex', '0');
+    menuitem.addEventListener('blur', cbBlur);
+    menuitem.addEventListener('click', cbClick);
+
+    var label = document.createElement('div');
+    label.setAttribute('class', 'vop-menuitem-label');
+    label.innerText = text;
+
+    menuitem.appendChild(label);
+    return menuitem;
 }
 
 function createMainMenu() {
-// The main menu html:
-// <div class="vop-panel-menu">
-//     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
-//         <div class="vop-menuitem-label">
-//             Quality
-//         </div>
-//         <div class="vop-menuitem-content">
-//             <span class="vop-menuitem-content-text">360p</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
-//         <div class="vop-menuitem-label">
-//             Language
-//         </div>
-//         <div class="vop-menuitem-content">
-//             <span>Auto</span>
-//             <span class="vop-menuitem-content-text">Bipbop1</span>
-//         </div>
-//     </div>
-// </div>
+    // The main menu html:
+    // <div class="vop-panel-menu">
+    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
+    //        <div class="vop-menuitem-label">
+    //            Quality
+    //        </div>
+    //        <div class="vop-menuitem-content">
+    //            <span class="vop-menuitem-content-text">360p</span>
+    //        </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
+    //         <div class="vop-menuitem-label">
+    //             Language
+    //         </div>
+    //         <div class="vop-menuitem-content">
+    //             <span>Auto</span>
+    //             <span class="vop-menuitem-content-text">Bipbop1</span>
+    //         </div>
+    //     </div>
+    // </div>
 
     // Part - process, remove all children of vopPanelMenu
     destroySettingsMenu();
@@ -1311,6 +1441,7 @@ function createMainMenu() {
     if (settingMenuContext.isQualityAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
+        spanAuto.style.paddingRight = '6px';
 
         content.appendChild(spanAuto);
     }
@@ -1345,6 +1476,7 @@ function createMainMenu() {
     if (settingMenuContext.isAudioTrackAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
+        spanAuto.style.paddingRight = '6px';
 
         content.appendChild(spanAuto);
     }
@@ -1356,184 +1488,256 @@ function createMainMenu() {
 
     audioMenuitem.appendChild(label);
     audioMenuitem.appendChild(content);
-
     audioMenuitem.addEventListener('click', onAudioTrackMenuClick);
+
+    // create fcc menuitem
+    var fccMenuitem = document.createElement('div');
+    fccMenuitem.setAttribute('class', 'vop-menuitem');
+    fccMenuitem.setAttribute('role', 'menuitem');
+    fccMenuitem.setAttribute('aria-haspopup', 'true');
+    fccMenuitem.setAttribute('tabindex', '0');
+
+    label = document.createElement('div');
+    label.setAttribute('class', 'vop-menuitem-label');
+    label.innerText = 'Subtitle';
+
+    content = document.createElement('div');
+    content.setAttribute('class', 'vop-menuitem-content');
+    contentText = document.createElement('span');
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
+    contentText.innerText = 'Options';
+    content.appendChild(contentText);
+
+    fccMenuitem.appendChild(label);
+    fccMenuitem.appendChild(content);
+    fccMenuitem.addEventListener('click', onFccMenuClick);
 
     // Part post process
     vopPanelMenu.appendChild(qualityMenuitem);
     vopPanelMenu.appendChild(audioMenuitem);
+    vopPanelMenu.appendChild(fccMenuitem);
 
     //
     vopSettingsMenu.style.display = 'block';
     qualityMenuitem.focus();
+
+    settingMenuContext.currMenu = 'main_menu';
 }
 
 function createQualityMenu() {
-// The quality menu html:
-// <div class="vop-panel-header">
-//     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
-// </div>
-// <div class="vop-panel-menu">
-//     <div class="vop-menuitem" role="menuitemradio">
-//         <div class="vop-menuitem-label">
-//             <span>720p</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitemradio">
-//         <div class="vop-menuitem-label">
-//             <span>480p</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitemradio">
-//         <div class="vop-menuitem-label">
-//             <span>360p</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
-//         <div class="vop-menuitem-label">
-//             <span>Auto</span>
-//         </div>
-//     </div>
-// </div>
+    // The quality menu html:
+    // <div class="vop-panel-header">
+    //     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
+    // </div>
+    // <div class="vop-panel-menu">
+    //     <div class="vop-menuitem" role="menuitemradio">
+    //         <div class="vop-menuitem-label">
+    //             <span>720p</span>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitemradio">
+    //         <div class="vop-menuitem-label">
+    //             <span>480p</span>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitemradio">
+    //         <div class="vop-menuitem-label">
+    //             <span>360p</span>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
+    //         <div class="vop-menuitem-label">
+    //             <span>Auto</span>
+    //         </div>
+    //     </div>
+    // </div>
 
     // Part - process, remove all children of vopPanelMenu
     destroySettingsMenu();
 
     // add quality back menu
-    var header = document.createElement('div');
-    header.setAttribute('class', 'vop-panel-header');
-
-    var button = document.createElement('button');
-    button.setAttribute('class', 'vop-panel-title');
-    button.innerText = 'Quality';
-    button.addEventListener('click', onQualityBack);
-
-    header.appendChild(button);
+    createHeaderItemUI('Quality', onQualityBack);
 
     // add quality menuitem
     var focusItem = null;
-    for (var i = 0; i < settingMenuContext.qualityList.length; i ++) {
+    for (var i = 0; i < settingMenuContext.qualityList.length; i++) {
         var quality = settingMenuContext.qualityList[i].bitrate;
 
-        var menuitem = document.createElement('div');
-        menuitem.setAttribute('class', 'vop-menuitem');
-        menuitem.setAttribute('role', 'menuitemradio');
+        var menuitem = createRadioMenuItem(quality, onMainMenuBlur, onQualityItemClick);
         if (quality == settingMenuContext.currQuality) {
             menuitem.setAttribute('aria-checked', 'true');
         }
-        menuitem.setAttribute('tabindex', '0');
-        menuitem.addEventListener('blur', onMainMenuBlur);
         if (quality == settingMenuContext.currQuality) {
             focusItem = menuitem;
         }
-        menuitem.addEventListener('click', onQualityItemClick);
 
-        var label = document.createElement('div');
-        label.setAttribute('class', 'vop-menuitem-label');
-        label.innerText = quality;
-
-        menuitem.appendChild(label);
         vopPanelMenu.appendChild(menuitem);
     }
 
-    vopPanel.insertBefore(header, vopPanelMenu);
-    vopSettingsMenu.style.display = 'block';
-    focusItem.focus();
-}
-
-function updateQualityMenuUI() {
-    var elem_child = vopPanelMenu.childNodes;
-    for (var i = 0; i < elem_child.length; i ++) {
-        var menuitem = elem_child[i];
-
-        var label = menuitem.querySelector('.vop-menuitem-label');
-        if (label.innerText === settingMenuContext.currQuality) {
-            menuitem.setAttribute('aria-checked', 'true');
-        } else {
-            menuitem.setAttribute('aria-checked', 'false');
-        }
-    }
-}
-
-function createAudioTrackMenu() {
-// The audio track menu html:
-// <div class="vop-panel-header">
-//     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
-// </div>
-// <div class="vop-panel-menu">
-//     <div class="vop-menuitem" role="menuitemradio">
-//         <div class="vop-menuitem-label">
-//             <span>Bipbop1</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitemradio">
-//         <div class="vop-menuitem-label">
-//             <span>Bipbop2</span>
-//         </div>
-//     </div>
-//     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
-//         <div class="vop-menuitem-label">
-//             <span>Auto</span>
-//         </div>
-//     </div>
-// </div>
-
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
-
-    // add quality back menu
-    var header = document.createElement('div');
-    header.setAttribute('class', 'vop-panel-header');
-
-    var button = document.createElement('button');
-    button.setAttribute('class', 'vop-panel-title');
-    button.innerText = 'Audio';
-    button.addEventListener('click', onQualityBack);
-
-    header.appendChild(button);
-
-    // add quality menuitem
-    var focusItem = null;
-    for (var i = 0; i < settingMenuContext.audioTrackList.length; i ++) {
-        var audioTrack = settingMenuContext.audioTrackList[i];
-
-        var menuitem = document.createElement('div');
-        menuitem.setAttribute('class', 'vop-menuitem');
-        menuitem.setAttribute('role', 'menuitemradio');
-        if (audioTrack == settingMenuContext.currAudioTrack) {
-            menuitem.setAttribute('aria-checked', 'true');
-        }
-        menuitem.setAttribute('tabindex', '0');
-        menuitem.addEventListener('blur', onMainMenuBlur);
-        if (i === 0) {
-            focusItem = menuitem;
-        }
-        menuitem.addEventListener('click', onAudioTrackItemClick);
-
-        var label = document.createElement('div');
-        label.setAttribute('class', 'vop-menuitem-label');
-        label.innerText = audioTrack;
-        
-        menuitem.appendChild(label);
-        vopPanelMenu.appendChild(menuitem);
-    }
-
-    vopPanel.insertBefore(header, vopPanelMenu);
     //
     vopSettingsMenu.style.display = 'block';
     focusItem.focus();
+
+    settingMenuContext.currMenu = 'quality_menu';
 }
 
-function updateAudioTrackMenuUI() {
+function createAudioTrackMenu() {
+    // The audio track menu html:
+    // <div class="vop-panel-header">
+    //     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
+    // </div>
+    // <div class="vop-panel-menu">
+    //     <div class="vop-menuitem" role="menuitemradio">
+    //         <div class="vop-menuitem-label">
+    //             <span>Bipbop1</span>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitemradio">
+    //         <div class="vop-menuitem-label">
+    //             <span>Bipbop2</span>
+    //         </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
+    //         <div class="vop-menuitem-label">
+    //             <span>Auto</span>
+    //         </div>
+    //     </div>
+    // </div>
+
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
+
+    // add quality back menu
+    createHeaderItemUI('Audio', onAudioTrackBack);
+
+    // add quality menuitem
+    var firstItem = null;
+    for (var i = 0; i < settingMenuContext.audioTrackList.length; i++) {
+        var audioTrack = settingMenuContext.audioTrackList[i];
+
+        var menuitem = createRadioMenuItem(audioTrack, onMainMenuBlur, onAudioTrackItemClick);
+        if (audioTrack == settingMenuContext.currAudioTrack) {
+            menuitem.setAttribute('aria-checked', 'true');
+        }
+        if (!firstItem) {
+            firstItem = menuitem;
+        }
+
+        vopPanelMenu.appendChild(menuitem);
+    }
+
+    //
+    vopSettingsMenu.style.display = 'block';
+    firstItem.focus();
+
+    settingMenuContext.currMenu = 'audio_track_menu';
+}
+
+function createFccMenu() {
+    // The fcc menu html:
+    // <div class="vop-panel-menu">
+    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
+    //        <div class="vop-menuitem-label">
+    //            Font Family
+    //        </div>
+    //        <div class="vop-menuitem-content">
+    //           Default
+    //        </div>
+    //     </div>
+    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
+    //         <div class="vop-menuitem-label">
+    //             Font Color
+    //         </div>
+    //         <div class="vop-menuitem-content">
+    //           Yellow
+    //         </div>
+    //     </div>
+    // </div>
+
+    // Part - process, remove all children of vopPanelMenu
+    destroySettingsMenu();
+
+    // Part - fcc property title
+    createHeaderItemUI('Subtitles Optoins', onFccBack);
+
+    // Part - fcc property item
+    var firstItem = null;
+    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
+        var fcc = settingMenuContext.fccProperties[i];
+
+        var menuitem = document.createElement('div');
+        menuitem.setAttribute('class', 'vop-menuitem');
+        menuitem.setAttribute('aria-haspopup', 'true');
+        menuitem.setAttribute('tabindex', '0');
+        menuitem.addEventListener('blur', onMainMenuBlur);
+
+        var label = document.createElement('div');
+        label.setAttribute('class', 'vop-menuitem-label');
+        label.innerText = fcc.name;
+
+        var content = document.createElement('div');
+        content.setAttribute('class', 'vop-menuitem-content');
+        content.innerText = fcc.currValue;
+
+        menuitem.appendChild(label);
+        menuitem.appendChild(content);
+        menuitem.dataset.name = fcc.name;
+        menuitem.addEventListener('click', onFccItemClick);
+
+        if (!firstItem) {
+            firstItem = menuitem;
+        }
+
+        vopPanelMenu.appendChild(menuitem);
+    }
+
+    vopSettingsMenu.style.display = 'block';
+    settingMenuContext.currMenu = 'fcc_menu';
+    firstItem.focus();
+}
+
+function createFccItemMenu(name) {
+    // Part - fcc property title
+    createHeaderItemUI(name, onFccPropertyItemBack);
+
+    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
+        var fccProperty = settingMenuContext.fccProperties[i];
+        if (fccProperty.name === name) {
+            var firstItem = null;
+            for (var j = 0; j < fccProperty.values.length; j++) {
+                var propertyValue = fccProperty.values[j];
+
+                var menuitem = createRadioMenuItem(propertyValue, onFccPropertyItemBlur, onFccPropertyItemClick);
+                menuitem.dataset.id = propertyValue;
+                if (propertyValue == fccProperty.currValue) {
+                    menuitem.setAttribute('aria-checked', 'true');
+                }
+
+                if (!firstItem) {
+                    firstItem = menuitem;
+                }
+
+                vopPanelMenu.dataset.fccProperty = name;
+                vopPanelMenu.appendChild(menuitem);
+
+                settingMenuContext.currMenu = 'fcc_property_menu';
+                firstItem.focus();
+            }
+            break;
+        }
+    }
+}
+
+function updatePanelMenuUI(currValue) {
     var elem_child = vopPanelMenu.childNodes;
-    for (var i = 0; i < elem_child.length; i ++) {
+    for (var i = 0; i < elem_child.length; i++) {
         var menuitem = elem_child[i];
 
         var label = menuitem.querySelector('.vop-menuitem-label');
-        if (label.innerText === settingMenuContext.currAudioTrack) {
+        if (label.innerText === currValue) {
             menuitem.setAttribute('aria-checked', 'true');
         } else {
-            menuitem.setAttribute('aria-checked', 'false');
+            menuitem.removeAttribute('aria-checked');
         }
     }
 }
@@ -1544,7 +1748,6 @@ function onQualityMenuClick(e) {
 
     destroySettingsMenu();
     createQualityMenu();
-    settingMenuContext.currMenu = 'quality_menu';
 }
 
 function onAudioTrackMenuClick(e) {
@@ -1552,7 +1755,13 @@ function onAudioTrackMenuClick(e) {
 
     destroySettingsMenu();
     createAudioTrackMenu();
-    settingMenuContext.currMenu = 'audioTrack_menu';
+}
+
+function onFccMenuClick(e) {
+    e.stopPropagation();
+
+    destroySettingsMenu();
+    createFccMenu();
 }
 
 function onMainMenuBlur(e) {
@@ -1560,24 +1769,26 @@ function onMainMenuBlur(e) {
     if (e.relatedTarget) {
         text = ', text: ' + e.relatedTarget.innerText;
     }
-    
+
     printLog('+onMainMenuBlur, settingMenuContext.currMenu: ' + settingMenuContext.currMenu + text);
 
-    if (e.relatedTarget) {
-        if (e.relatedTarget === vopSettingsBtn) {
-            if (settingMenuContext.currMenu === 'main_menu' ||
-                settingMenuContext.currMenu === 'quality_menu' ||
-                settingMenuContext.currMenu === 'audioTrack_menu') {
-                // do nothing
+    var prevFocus = e.target;
+    var nextFocus = e.relatedTarget;
+
+    if (nextFocus) {
+        if (nextFocus === vopSettingsBtn) {
+            // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
+        } else {
+            if (prevFocus) {
+                if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
+                    // means click another item, do nothing here, on***ItemClick will handle for us.
+                } else {
+                }
+            } else {
             }
-        } else if (e.relatedTarget.getAttribute('tabindex') === '0') {
-            // do nothing
-            var a1 = e.relatedTarget.getAttribute('tabindex');
-            console.log('a1: ' + a1 + ', innerText: ' + e.relatedTarget.innerText);
         }
     } else {
-        printLog('+onMainMenuBlur, before onSettingClick');
-        onSettingClick();
+        destroySettingsMenu();
     }
 }
 
@@ -1591,8 +1802,7 @@ function onSubtitleItemClick(e) {
         subtitlesMenuContext.currSubtitleId = id;
     }
 
-    console.log('id: ' + id);
-    updateSubtitlesMenuUI();
+    updatePanelMenuUI(subtitlesMenuContext.currSubtitleId);
 }
 
 function onSubtitleItemBlur(e) {
@@ -1612,20 +1822,20 @@ function onSubitlesBack(e) {
 }
 
 function onQualityBack(e) {
+    printLog('+onQualityBack');
     e.stopPropagation();
 
     destroySettingsMenu();
     createMainMenu();
-    settingMenuContext.currMenu = 'main_menu';
 }
 
 function onQualityItemClick(e) {
     printLog('onQualityItemClick, settingMenuContext.currMenu: ' + settingMenuContext.currMenu
-        + ', text: ' + e.target.innerText);
+         + ', text: ' + e.target.innerText);
     e.stopPropagation();
 
     settingMenuContext.currQuality = e.target.innerText;
-    updateQualityMenuUI();
+    updatePanelMenuUI(settingMenuContext.currQuality);
 }
 
 function onAudioTrackBack(e) {
@@ -1633,14 +1843,78 @@ function onAudioTrackBack(e) {
 
     destroySettingsMenu();
     createMainMenu();
-    settingMenuContext.currMenu = 'main_menu';
 }
 
 function onAudioTrackItemClick(e) {
     e.stopPropagation();
 
     settingMenuContext.currAudioTrack = e.target.innerText;
-    updateAudioTrackMenuUI();
+    updatePanelMenuUI(settingMenuContext.currAudioTrack);
+}
+
+function onFccBack(e) {
+    e.stopPropagation();
+
+    destroySettingsMenu();
+    createMainMenu();
+}
+
+function onFccItemClick(e) {
+    e.stopPropagation();
+    printLog('+onFccItemClick, e.currentTarget.dataset.name: ' + e.currentTarget.dataset.name);
+
+    // Part - destroy old ui
+    destroySettingsMenu();
+
+    // Part - fcc item ui
+    createFccItemMenu(e.currentTarget.dataset.name);
+}
+
+function onFccPropertyItemBack(e) {
+    e.stopPropagation();
+
+    destroySettingsMenu();
+    createFccMenu();
+}
+
+function onFccPropertyItemClick(e) {
+    e.stopPropagation();
+
+    printLog('+onFccPropertyItemClick');
+    printLog('vopPanelMenu.dataset.fccProperty: ' + vopPanelMenu.dataset.fccProperty);
+    printLog('new value: ' + e.currentTarget.dataset.id);
+
+    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
+        var fccProperty = settingMenuContext.fccProperties[i];
+        if (fccProperty.name === vopPanelMenu.dataset.fccProperty) {
+            fccProperty.currValue = e.currentTarget.dataset.id;
+            updatePanelMenuUI(fccProperty.currValue);
+            break;
+        }
+    }
+}
+
+function onFccPropertyItemBlur(e) {
+    e.stopPropagation();
+
+    var prevFocus = e.target;
+    var nextFocus = e.relatedTarget;
+
+    if (nextFocus) {
+        if (nextFocus === vopSettingsBtn) {
+            // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
+        } else {
+            if (prevFocus) {
+                if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
+                    // means click another item, do nothing here, on***ItemClick will handle for us.
+                } else {
+                }
+            } else {
+            }
+        }
+    } else {
+        destroySettingsMenu();
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -1654,7 +1928,6 @@ window.onload = function () {
     initUIEventListeners();
     initPlayer();
 
-
     // BD
     //onBtnOpen();
     // ED
@@ -1663,14 +1936,3 @@ window.onload = function () {
 window.onunload = function () {
     //onBtnStop();
 };
-
-
-
-
-
-
-
-
-
-
-
