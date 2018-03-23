@@ -1,55 +1,59 @@
 //
 var browserInfo;
 
-// player reference
-var cfg_;
-var mediaCfg_;
-var player_ = null;
-var castSender = null;
+var cfg_ = getInitConfig();
+var mediaCfg_ = getMediaInfo();
+//
 
-// flag
-var flagPlayerInited = false;
+var PlayerUI = {};
+
+PlayerUI.initVariable = function () {
+
+this.player_ = null;
+this.castSender = null;
+
+this.flagPlayerInited = false;
 
 // UI Controls
-var vopH5Player = null;
-var vopTooltip = null;
-var vopTooltipBg = null;
-var vopTooltipText = null;
-var vopControlBar = null;
-var vopProgressBar = null;
-var vopLoadProgress = null;
-var vopPlayProgress = null;
-var vopHoverProgress = null;
-var vopScrubberContainer = null;
-var vopPlayButton = null;
-var vopMuteButton = null;
-var vopVolumeSlider = null;
-var vopVolumeSliderHandle = null;
+this.vopH5Player = null;
+this.vopTooltip = null;
+this.vopTooltipBg = null;
+this.vopTooltipText = null;
+this.vopControlBar = null;
+this.vopProgressBar = null;
+this.vopLoadProgress = null;
+this.vopPlayProgress = null;
+this.vopHoverProgress = null;
+this.vopScrubberContainer = null;
+this.vopPlayButton = null;
+this.vopMuteButton = null;
+this.vopVolumeSlider = null;
+this.vopVolumeSliderHandle = null;
 
-var vopSubtitlesBtn;
-var vopSettingsBtn;
-var vopSettingsMenu;
-var vopPanel;
-var vopPanelMenu;
-var vopFullscreen;
-var vopSpinner;
-var uiGiantBtnContainer;
+this.vopSubtitlesBtn;
+this.vopSettingsBtn;
+this.vopSettingsMenu;
+this.vopPanel;
+this.vopPanelMenu;
+this.vopFullscreen;
+this.vopSpinner;
+this.uiGiantBtnContainer;
 
-var uiConsole = null;
+this.uiConsole = null;
 
 // UI Data
-var metaWidth;
-var metaHeight;
+this.metaWidth;
+this.metaHeight;
 
-var colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
-var colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
-var colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
+this.colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
+this.colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
+this.colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 
 // flag
-var timerHideControlBar;
+this.timerHideControlBar;
 
 // flags reference variable of progress bar
-var progressBarContext = {
+this.progressBarContext = {
     mousedown: false,
     pausedBeforeMousedown: false,
     endedBeforeMousedown: false,
@@ -58,14 +62,14 @@ var progressBarContext = {
     //
     movePos: 0
 };
-var flagThumbnailMode = false;
+this.flagThumbnailMode = false;
 
 // flags reference variable of volume bar
-var flagVolumeSliderMousedown = false;
-var valueVolumeMovePosition = 0;
+this.flagVolumeSliderMousedown = false;
+this.valueVolumeMovePosition = 0;
 
 // menu context
-var subtitlesMenuContext = {
+this.subtitlesMenuContext = {
     currMenu: 'none',
 
     subtitleTracks: [{
@@ -95,7 +99,7 @@ var subtitlesMenuContext = {
     currSubtitleId: ''
 };
 
-var settingMenuContext = {
+this.settingMenuContext = {
     currMenu: 'none',   // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu
 
     // quality settings
@@ -211,80 +215,81 @@ var settingMenuContext = {
 };
 
 // reference variable of ad
-var flagAdStarted = false;
-var flagIsLinearAd = false;
-
-// Title: init part
-function initUI() {
-    vopH5Player = document.querySelector('.html5-video-player');
-
-    vopTooltip = document.querySelector('.vop-tooltip');
-    vopTooltipBg = document.querySelector('.vop-tooltip-bg');
-    vopTooltipText = document.querySelector('.vop-tooltip-text');
-
-    vopControlBar = document.querySelector('.vop-control-bar');
-    vopProgressBar = document.querySelector('.vop-progress-bar');
-    vopLoadProgress = document.querySelector('.vop-load-progress');
-    vopPlayProgress = document.querySelector('.vop-play-progress');
-    vopHoverProgress = document.querySelector('.vop-hover-progress');
-
-    vopScrubberContainer = document.querySelector('.vop-scrubber-container');
-    vopPlayButton = document.querySelector('.vop-play-button');
-    vopMuteButton = document.querySelector('.vop-mute-button');
-    vopVolumeSlider = document.querySelector('.vop-volume-slider');
-    vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
-
-    uiConsole = document.getElementById('idConsole');
-
-    vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
-    vopSettingsBtn = document.querySelector('.vop-settings-button');
-    vopFullscreen = document.querySelector('.vop-fullscreen-button');
-
-    // setting panel
-    vopSettingsMenu = document.querySelector('.vop-settings-menu');
-    vopPanel = vopSettingsMenu.querySelector('.vop-panel');
-    vopPanelMenu = vopSettingsMenu.querySelector('.vop-panel-menu');
-
-    vopSpinner = document.querySelector('.vop-spinner');
-
-    uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
+this.flagAdStarted = false;
+this.flagIsLinearAd = false;
 }
 
-function initUIEventListeners() {
-    vopH5Player.addEventListener('mouseenter', onPlayerMouseenter);
-    vopH5Player.addEventListener('mousemove', onPlayerMousemove);
-    vopH5Player.addEventListener('mouseleave', onPlayerMouseleave);
+// Title: init part
+PlayerUI.initUI = function () {
+    this.vopH5Player = document.querySelector('.html5-video-player');
 
-    vopH5Player.addEventListener('click', onPlayerClick);
+    this.vopTooltip = document.querySelector('.vop-tooltip');
+    this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
+    this.vopTooltipText = document.querySelector('.vop-tooltip-text');
 
-    vopProgressBar.addEventListener('mousedown', onProgressBarMousedown);
-    vopProgressBar.addEventListener('mousemove', onProgressBarMousemove);
-    vopProgressBar.addEventListener('mouseleave', onProgressBarMouseleave);
+    this.vopControlBar = document.querySelector('.vop-control-bar');
+    this.vopProgressBar = document.querySelector('.vop-progress-bar');
+    this.vopLoadProgress = document.querySelector('.vop-load-progress');
+    this.vopPlayProgress = document.querySelector('.vop-play-progress');
+    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
 
-    vopControlBar.addEventListener('click', onChromeBottomClick);
-    vopPlayButton.addEventListener('click', onPlayButtonClick);
-    vopMuteButton.addEventListener('click', onMuteButtonClick);
-    vopVolumeSlider.addEventListener('mousedown', onVolumeSliderMousedown);
-    vopSubtitlesBtn.addEventListener('click', onSubtitlesClick);
-    vopSettingsBtn.addEventListener('click', onSettingClick);
-    vopFullscreen.addEventListener('click', onFullscreenClick);
+    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
+    this.vopPlayButton = document.querySelector('.vop-play-button');
+    this.vopMuteButton = document.querySelector('.vop-mute-button');
+    this.vopVolumeSlider = document.querySelector('.vop-volume-slider');
+    this.vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
 
-    vopPlayButton.addEventListener('mousemove', onControlMousemove);
-    vopMuteButton.addEventListener('mousemove', onControlMousemove);
-    vopSubtitlesBtn.addEventListener('mousemove', onControlMousemove);
-    vopSettingsBtn.addEventListener('mousemove', onControlMousemove);
-    vopFullscreen.addEventListener('mousemove', onControlMousemove);
-    vopVolumeSlider.addEventListener('mousemove', onControlMousemove);
+    this.uiConsole = document.getElementById('idConsole');
+
+    this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
+    this.vopSettingsBtn = document.querySelector('.vop-settings-button');
+    this.vopFullscreen = document.querySelector('.vop-fullscreen-button');
+
+    // setting panel
+    this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
+    this.vopPanel = this.vopSettingsMenu.querySelector('.vop-panel');
+    this.vopPanelMenu = this.vopSettingsMenu.querySelector('.vop-panel-menu');
+
+    this.vopSpinner = document.querySelector('.vop-spinner');
+
+    this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
+};
+
+PlayerUI.initUIEventListeners = function () {
+    this.vopH5Player.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
+    this.vopH5Player.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
+    this.vopH5Player.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
+
+    this.vopH5Player.addEventListener('click', this.onPlayerClick.bind(this));
+
+    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMousedown.bind(this));
+    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMousemove.bind(this));
+    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseleave.bind(this));
+
+    this.vopControlBar.addEventListener('click', this.onChromeBottomClick.bind(this));
+    this.vopPlayButton.addEventListener('click', this.onBtnPlay.bind(this));
+    this.vopMuteButton.addEventListener('click', this.onBtnMute.bind(this));
+    this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMousedown.bind(this));
+    this.vopSubtitlesBtn.addEventListener('click', this.onSubtitlesClick.bind(this));
+    this.vopSettingsBtn.addEventListener('click', this.onSettingClick.bind(this));
+    this.vopFullscreen.addEventListener('click', this.onFullscreenClick.bind(this));
+
+    this.vopPlayButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    this.vopMuteButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    this.vopSubtitlesBtn.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    this.vopSettingsBtn.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    this.vopFullscreen.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    this.vopVolumeSlider.addEventListener('mousemove', this.onControlMousemove.bind(this));
 
     // don't route 'click' event from panel to its parent div
-    vopPanel.addEventListener('click', function (e) {
+    this.vopPanel.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
-    uiGiantBtnContainer.addEventListener('click', function (e) {
+    this.uiGiantBtnContainer.addEventListener('click', function (e) {
         e.stopPropagation();
-        onPlayFromGiantButton();
-    });
+        this.onPlayFromGiantButton();
+    }.bind(this));
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -296,10 +301,10 @@ function initUIEventListeners() {
                 const cWidth = entry.target.clientWidth;
                 const cHeight = entry.target.clientHeight;
 
-                player_.resize(cWidth, cHeight);
+                this.player_.resize(cWidth, cHeight);
             }
         }
-        var ro = new ResizeObserver(onPlayerSize);
+        var ro = new ResizeObserver(onPlayerSize.bind(this));
 
         // Observer one or multiple elements
         var v = document.querySelector('.html5-video-player');
@@ -308,39 +313,38 @@ function initUIEventListeners() {
         var v = document.querySelector('.html5-video-player');
         new ResizeSensor(v, function () {
             printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
-            updateProgressBarUI();
-            player_.resize(v.clientWidth, v.clientHeight);
-        });
+            this.updateProgressBarUI();
+            this.player_.resize(v.clientWidth, v.clientHeight);
+        }.bind(this));
     }
-}
+};
 
-function initPlayer() {
-    cfg_ = getInitConfig();
-    player_ = new oldmtn.Player('player-container');
-    player_.init(cfg_);
+PlayerUI.initPlayer = function () {
+    this.player_ = new oldmtn.Player('player-container');
+    this.player_.init(cfg_);
 
-    player_.on(oldmtn.Events.MEDIA_CANPLAY, onMediaCanPlay, {});
-    player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, onMediaDurationChanged, {});
-    player_.on(oldmtn.Events.MEDIA_ENDED, onMediaEnded, {});
-    player_.on(oldmtn.Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
-    player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, onMediaLoadedMetaData, {});
-    player_.on(oldmtn.Events.MEDIA_PAUSED, onMediaPaused, {});
-    player_.on(oldmtn.Events.MEDIA_PLAYING, onMediaPlaying, {});
-    player_.on(oldmtn.Events.MEDIA_SEEKING, onMediaSeeking, {});
-    player_.on(oldmtn.Events.MEDIA_SEEKED, onMediaSeeked, {});
-    player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, onMediaTimeupdated, {});
-    player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, onMediaVolumeChanged, {});
-    player_.on(oldmtn.Events.MEDIA_WAITING, onMediaWaiting, {});
+    this.player_.on(oldmtn.Events.MEDIA_CANPLAY, this.onMediaCanPlay.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_LOADEDDATA, this.onMediaLoadedData.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting.bind(this), {});
 
-    player_.on(oldmtn.Events.LOG, onLog, {});
+    this.player_.on(oldmtn.Events.LOG, this.onLog.bind(this), {});
 
     // ad callback event
-    player_.on(oldmtn.Events.AD_STARTED, onAdStarted, {});
-    player_.on(oldmtn.Events.AD_COMPLETE, onAdComplete, {});
-    player_.on(oldmtn.Events.AD_TIMEUPDATE, onAdTimeUpdate, {});
+    this.player_.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
+    this.player_.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete.bind(this), {});
+    this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate.bind(this), {});
 
     //
-    player_.on(oldmtn.Events.FULLSCREEN_CHANGE, onFullscreenChanged, {});
+    this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged.bind(this), {});
 
     // chrome cast part
     var receiverAppId = 'E19ACDB8'; // joseph test app1
@@ -348,59 +352,39 @@ function initPlayer() {
     //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
 
     // init chromecast sender
-    //castSender = new oldmtn.CastSender(receiverAppId);
-}
+    //this.castSender = new oldmtn.CastSender(receiverAppId);
+};
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
-function startWaitingUI() {
-    vopSpinner.style.display = 'block';
+PlayerUI.startWaitingUI = function () {
+    this.vopSpinner.style.display = 'block';
 }
 
-function stopWaitingUI() {
-    vopSpinner.style.display = 'none';
+PlayerUI.stopWaitingUI = function () {
+    this.vopSpinner.style.display = 'none';
 }
 
 // begin progress bar
-function genGradientColor(posList, colorList) {
-    var totalRange = posList[posList.length - 1];
-
-    var gradient = ['to right'];
-    for (var i = 0; i < posList.length; ++i) {
-        var range = posList[i] * 100 / totalRange;
-
-        if (i === 0) {
-            gradient.push(colorList[0] + ' 0%');
-            gradient.push(colorList[0] + ' ' + range + '%');
-        } else {
-            var lastRange = posList[i - 1] * 100 / totalRange;
-            gradient.push(colorList[i] + ' ' + lastRange + '%');
-            gradient.push(colorList[i] + ' ' + range + '%');
-        }
-    }
-
-    return 'linear-gradient(' + gradient.join(',') + ')';
-}
-
-function updateVolumeMovePosition(e) {
+PlayerUI.updateVolumeMovePosition = function (e) {
     // part - input
-    var rect = vopVolumeSlider.getBoundingClientRect();
+    var rect = this.vopVolumeSlider.getBoundingClientRect();
 
     // part - logic process
     var offsetX = e.clientX - rect.left;
     if (offsetX < 0) {
         offsetX = 0;
-    } else if (offsetX + vopVolumeSliderHandle.clientWidth > rect.width) {
+    } else if (offsetX + this.vopVolumeSliderHandle.clientWidth > rect.width) {
         offsetX = rect.width;
     }
 
     // update time progress scrubber button
-    valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
-}
+    this.valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
+};
 
-function getProgressMovePosition(e) {
+PlayerUI.getProgressMovePosition = function (e) {
     // part - input
-    var rect = vopProgressBar.getBoundingClientRect();
+    var rect = this.vopProgressBar.getBoundingClientRect();
 
     // part - logic process
     var offsetX = e.clientX - rect.left;
@@ -411,22 +395,22 @@ function getProgressMovePosition(e) {
     }
 
     // update time progress scrubber button
-    var duration = player_.getDuration();
+    var duration = this.player_.getDuration();
     return (offsetX / rect.width) * duration;
-}
+};
 
-function updateProgressBarUI() {
+PlayerUI.updateProgressBarUI = function () {
     // part - input
-    var position = player_.getPosition();
-    var duration = player_.getDuration();
-    var paused = player_.isPaused();
-    var ended = player_.isEnded();
+    var position = this.player_.getPosition();
+    var duration = this.player_.getDuration();
+    var paused = this.player_.isPaused();
+    var ended = this.player_.isEnded();
 
     // part - logic process
     var isLive = (duration === Infinity) ? true : false;
     if (isLive) {
-        var seekable = player_.getSeekableRange();
-        var buffered = player_.getBufferedRanges();
+        var seekable = this.player_.getSeekableRange();
+        var buffered = this.player_.getBufferedRanges();
         console.log('seekable: ' + TimeRangesToString(seekable));
         console.log('buffered: ' + TimeRangesToString(buffered));
 
@@ -436,20 +420,20 @@ function updateProgressBarUI() {
     } else {
         var uiPosition;
         var uiBufferedPos;
-        if (progressBarContext.mousedown) {
-            uiPosition = progressBarContext.movePos;
+        if (this.progressBarContext.mousedown) {
+            uiPosition = this.progressBarContext.movePos;
         } else {
             uiPosition = position;
         }
 
         // part - output, update ui
         // update time progress bar
-        uiBufferedPos = player_.getValidBufferPosition(uiPosition);
-        vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos / duration + ')';
-        vopPlayProgress.style.transform = 'scaleX(' + uiPosition / duration + ')';
+        uiBufferedPos = this.player_.getValidBufferPosition(uiPosition);
+        this.vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos / duration + ')';
+        this.vopPlayProgress.style.transform = 'scaleX(' + uiPosition / duration + ')';
 
         // update time progress scrubber button
-        vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * vopProgressBar.clientWidth).toString() + 'px)';
+        this.vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * this.vopProgressBar.clientWidth).toString() + 'px)';
 
         // update time display label
         var c = oldmtn.CommonUtils.timeToString(uiPosition);
@@ -458,28 +442,28 @@ function updateProgressBarUI() {
         var tDisplay = document.querySelector('.vop-time-text');
         tDisplay.innerText = fmtTime;
     }
-}
+};
 
-function updateProgressBarHoverUI() {
-    var position = player_.getPosition();
-    var duration = player_.getDuration();
+PlayerUI.updateProgressBarHoverUI = function () {
+    var position = this.player_.getPosition();
+    var duration = this.player_.getDuration();
 
-    if (progressBarContext.movePos <= position || progressBarContext.mousedown) {
-        vopHoverProgress.style.transform = 'scaleX(0)';
+    if (this.progressBarContext.movePos <= position || this.progressBarContext.mousedown) {
+        this.vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
-        var rect = vopProgressBar.getBoundingClientRect();
+        var rect = this.vopProgressBar.getBoundingClientRect();
         var offsetX = (position / duration) * rect.width;
-        vopHoverProgress.style.left = offsetX + 'px';
-        vopHoverProgress.style.transform = 'scaleX(' + (progressBarContext.movePos - position) / duration + ')';
+        this.vopHoverProgress.style.left = offsetX + 'px';
+        this.vopHoverProgress.style.transform = 'scaleX(' + (this.progressBarContext.movePos - position) / duration + ')';
     }
-}
+};
 
-function updateTooltipUI(e) {
+PlayerUI.updateTooltipUI = function (e) {
     var hasVttThumbnail = true;
     function getTooltipOffsetX(e) {
         // part - input
         // bounding client rect can return the progress bar's rect relative to current page.
-        var rect = vopProgressBar.getBoundingClientRect();
+        var rect = this.vopProgressBar.getBoundingClientRect();
         var leftMin = 12;
         var rightMax = 12 + rect.width;
         var tooltipWidth = (hasVttThumbnail === true) ? 162 : 60;
@@ -502,26 +486,26 @@ function updateTooltipUI(e) {
 
     if (hasVttThumbnail) {
         $('.vop-tooltip').addClass('vop-preview');
-        vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
+        this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
     } else {
         $('.vop-tooltip').removeClass('vop-preview');
     }
 
     // update tooltip offset
-    var strTime = timeToString(progressBarContext.movePos);
-    vopTooltipText.innerText = strTime;
+    var strTime = timeToString(this.progressBarContext.movePos);
+    this.vopTooltipText.innerText = strTime;
 
-    var offsetX = getTooltipOffsetX(e);
-    vopTooltip.style.left = offsetX.toString() + 'px';
-    vopTooltip.style.display = 'block';
-}
+    var offsetX = getTooltipOffsetX.call(this, e);
+    this.vopTooltip.style.left = offsetX.toString() + 'px';
+    this.vopTooltip.style.display = 'block';
+};
 
-function updateAdProgressUI() {
-    var position = player_.getPosition();
-    var duration = player_.getDuration();
+PlayerUI.updateAdProgressUI = function () {
+    var position = this.player_.getPosition();
+    var duration = this.player_.getDuration();
 
     // update time progress bar
-    vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
+    this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
 
     // update time display label
     var c = oldmtn.CommonUtils.timeToString(position);
@@ -530,21 +514,21 @@ function updateAdProgressUI() {
 
     var tDisplay = document.querySelector('.vop-time-text');
     tDisplay.innerText = fmtTime;
-}
+};
 
-function updatePlayBtnUI(paused, ended) {
+PlayerUI.updatePlayBtnUI = function (paused, ended) {
     if (ended) {
-        vopPlayButton.innerText = 'replay';
+        this.vopPlayButton.innerText = 'replay';
     } else {
         if (paused) {
-            vopPlayButton.innerText = 'play_arrow';
+            this.vopPlayButton.innerText = 'play_arrow';
         } else {
-            vopPlayButton.innerText = 'pause';
+            this.vopPlayButton.innerText = 'pause';
         }
     }
-}
+};
 
-function updateContentVolumeBarUI(muted, volume) {
+PlayerUI.updateContentVolumeBarUI = function (muted, volume) {
     var uiMutedIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
@@ -561,345 +545,309 @@ function updateContentVolumeBarUI(muted, volume) {
 
         uiVolumeList = [volume, 1];
 
-        var vLeft = (volume / 1) * vopVolumeSlider.clientWidth;
-        if (vLeft + vopVolumeSliderHandle.clientWidth > vopVolumeSlider.clientWidth) {
-            vLeft = vopVolumeSlider.clientWidth - vopVolumeSliderHandle.clientWidth;
+        var vLeft = (volume / 1) * this.vopVolumeSlider.clientWidth;
+        if (vLeft + this.vopVolumeSliderHandle.clientWidth > this.vopVolumeSlider.clientWidth) {
+            vLeft = this.vopVolumeSlider.clientWidth - this.vopVolumeSliderHandle.clientWidth;
         }
 
         uiVolumeHandleLeft = vLeft.toString() + 'px';
     }
 
     // update muted button
-    vopMuteButton.innerText = uiMutedIcon;
+    this.vopMuteButton.innerText = uiMutedIcon;
     // update volume slider background
-    vopVolumeSlider.style.background = genGradientColor(uiVolumeList, colorList_volume);
+    this.vopVolumeSlider.style.background = genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle
-    vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
-}
+    this.vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
+};
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-function removeAutohideAction() {
+PlayerUI.removeAutohideAction = function () {
     $('.html5-video-player').removeClass('vop-autohide');
-    if (timerHideControlBar) {
-        clearTimeout(timerHideControlBar);
-        timerHideControlBar = null;
+    if (this.timerHideControlBar) {
+        clearTimeout(this.timerHideControlBar);
+        this.timerHideControlBar = null;
     }
-}
+};
 
-function h5EnterFullscreen() {
-    printLog('+h5EnterFullscreen');
-    //var v = document.querySelector('.player');
-    //var v = document.querySelector('.vop-video-container');
-    //var v = document.querySelector('.vop-video');
-    //var v = document.querySelector('video');
-    // Refer to youtube player
-    var v = document.querySelector('.html5-video-player');
+PlayerUI.docVolumeSliderMousemove = function (e) {
+    this.updateVolumeMovePosition(e);
 
-    // Try to enter fullscreen mode in the browser
-    var requestFullscreen =
-        v.requestFullscreen ||
-        v.requestFullScreen ||
-        v.webkitRequestFullscreen ||
-        v.webkitRequestFullScreen ||
-        v.mozRequestFullscreen ||
-        v.mozRequestFullScreen ||
-        v.msRequestFullscreen ||
-        v.msRequestFullScreen;
-
-    requestFullscreen.call(v);
-}
-
-function h5LeaveFullscreen() {
-    printLog('+h5LeaveFullscreen');
-
-    var cancelFullscreen =
-        document.exitFullscreen ||
-        document.exitFullScreen ||
-        document.webkitCancelFullScreen ||
-        document.mozCancelFullScreen ||
-        document.msExitFullscreen ||
-        document.msExitFullscreen;
-    if (cancelFullscreen) {
-        cancelFullscreen.call(document);
-    }
-}
-
-function docVolumeSliderMousemove(e) {
-    updateVolumeMovePosition(e);
-
-    var muted = player_.isMuted();
-    var volume = valueVolumeMovePosition;
+    var muted = this.player_.isMuted();
+    var volume = this.valueVolumeMovePosition;
     if (volume === 0) {}
     else {
         if (muted === true) {
-            player_.unmute();
+            this.player_.unmute();
         }
 
         muted = false;
     }
 
-    player_.setVolume(valueVolumeMovePosition);
+    this.player_.setVolume(this.valueVolumeMovePosition);
 
-    updateContentVolumeBarUI(muted, volume);
-}
+    this.updateContentVolumeBarUI(muted, volume);
+};
 
-function docVolumeSliderMouseup(e) {
+PlayerUI.docVolumeSliderMouseup = function (e) {
     printLog('+docVolumeSliderMouseup');
-    releaseVolumeSliderMouseEvents();
+    this.releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
-    flagVolumeSliderMousedown = false;
+    this.flagVolumeSliderMousedown = false;
 
     // if mouse up out of 'vop-shade', hide control bar directly
     var pt = {
         x: e.clientX,
         y: e.clientY
     };
-    if (!isPtInElement(pt, vopH5Player)) {
-        onPlayerMouseleave();
+    if (!isPtInElement(pt, this.vopH5Player)) {
+        this.onPlayerMouseleave();
     }
-}
+};
 
-function captureVolumeSliderMouseEvents() {
-    document.addEventListener('mousemove', docVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', docVolumeSliderMouseup, true);
-}
+PlayerUI.captureVolumeSliderMouseEvents = function () {
+    PlayerUI.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
+    PlayerUI.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
 
-function releaseVolumeSliderMouseEvents() {
-    document.removeEventListener('mousemove', docVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', docVolumeSliderMouseup, true);
-}
+    document.addEventListener('mousemove', PlayerUI.newVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', PlayerUI.newVolumeSliderMouseup, true);
+};
+
+PlayerUI.releaseVolumeSliderMouseEvents = function () {
+    document.removeEventListener('mousemove', PlayerUI.newVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', PlayerUI.newVolumeSliderMouseup, true);
+};
 
 ///////////////////////////////////////////////////////////////////
-function onPlayerMouseenter() {
+PlayerUI.onPlayerMouseenter = function () {
     // don't show control bar if the stream is not initialized.
-    if (!flagPlayerInited) {
+    if (!this.flagPlayerInited) {
         return;
     }
 
     $('.html5-video-player').removeClass('vop-autohide');
-}
+};
 
-function onPlayerMousemove(e) {
+PlayerUI.onPlayerMousemove = function (e) {
     //printLog('+onPlayerMousemove');
     // don't show control bar if the stream is not initialized.
-    if (!flagPlayerInited) {
+    if (!this.flagPlayerInited) {
         return;
     }
 
-    removeAutohideAction();
-    timerHideControlBar = setTimeout(function () {
-            onPlayerMouseleave();
-        }, 3000);
-}
+    this.removeAutohideAction();
+    this.timerHideControlBar = setTimeout(function () {
+        this.onPlayerMouseleave();
+    }.bind(this), 3000);
+};
 
-function onPlayerMouseleave() {
-    var paused = player_.isPaused();
+PlayerUI.onPlayerMouseleave = function () {
+    var paused = this.player_.isPaused();
     var fullscreen = isFullscreen();
-    if (!paused && !progressBarContext.mousedown && !flagVolumeSliderMousedown && !fullscreen) {
+    if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
         $('.html5-video-player').addClass('vop-autohide');
     }
-}
+};
 
-function onPlayerClick() {
-    if (flagAdStarted && flagIsLinearAd) {
+PlayerUI.onPlayerClick = function () {
+    if (this.flagAdStarted && this.flagIsLinearAd) {
         return;
     }
 
-    onPlayButtonClick();
-}
+    this.onBtnPlay();
+};
 
 // browser & UI callback functions
-function onBtnOpen() {
-    mediaCfg_ = getMediaInfo();
-    player_.open(mediaCfg_);
-}
+PlayerUI.onBtnOpen = function () {
+    this.player_.open(mediaCfg_);
+};
 
-function onBtnClose() {
+PlayerUI.onBtnClose = function () {
     printLog('+onBtnClose');
-    player_.close();
+    this.player_.close();
     printLog('-onBtnClose');
-}
+};
 
-function onPlayButtonClick() {
-    var currPaused = player_.isPaused();
-    var currEnded = player_.isEnded();
+PlayerUI.onBtnPlay = function () {
+    var currPaused = this.player_.isPaused();
+    var currEnded = this.player_.isEnded();
     if (currEnded) {
-        progressBarContext.pausedBeforeMousedown = true;
-        progressBarContext.endedBeforeMousedown = true;
-        player_.setPosition(0);
+        this.progressBarContext.pausedBeforeMousedown = true;
+        this.progressBarContext.endedBeforeMousedown = true;
+        this.player_.setPosition(0);
     } else {
         var newPaused;
         // execute ui cmd
         if (currPaused) {
-            player_.play();
+            this.player_.play();
 
             newPaused = false;
         } else {
-            player_.pause();
+            this.player_.pause();
 
             newPaused = true;
         }
 
         // update ui
-        updatePlayBtnUI(newPaused, currEnded);
+        this.updatePlayBtnUI(newPaused, currEnded);
     }
-}
+};
 
-function onControlMousemove(e) {
+PlayerUI.onControlMousemove = function (e) {
     e.stopPropagation();
-    removeAutohideAction();
-}
+    this.removeAutohideAction();
+};
 
-function onChromeBottomClick(e) {
+PlayerUI.onChromeBottomClick = function (e) {
     e.stopPropagation();
-}
+};
 
-function onMuteButtonClick() {
-    var muted = player_.isMuted();
-    var volume = player_.getVolume();
+PlayerUI.onBtnMute = function () {
+    var muted = this.player_.isMuted();
+    var volume = this.player_.getVolume();
 
     if (volume === 0) {
         if (muted) {
-            player_.unmute();
+            this.player_.unmute();
             muted = false;
         }
 
-        // If the player_ is muted, and volume is 0,
+        // If the this.player_ is muted, and volume is 0,
         // in this situation, we will restore volume to 0.2
         volume = 0.1;
-        player_.setVolume(volume);
+        this.player_.setVolume(volume);
     } else {
         if (muted) {
-            player_.unmute();
+            this.player_.unmute();
             muted = false;
         } else {
-            player_.mute();
+            this.player_.mute();
             muted = true;
         }
     }
-    updateContentVolumeBarUI(muted, volume);
+    this.updateContentVolumeBarUI(muted, volume);
+};
+
+PlayerUI.onBtnManualSchedule = function () {
+    this.player_.manualSchedule();
+};
+
+PlayerUI.onBtnInitAD = function () {
+    this.player_.test();
+};
+
+PlayerUI.onBtnDelAll = function () {
+    this.player_.dellAll();
+};
+
+PlayerUI.onBtnStop = function () {
+    this.player_.close();
+    this.player_ = null;
 }
 
-function onBtnManualSchedule() {
-    player_.manualSchedule();
-}
-
-function onBtnInitAD() {
-    player_.test();
-}
-
-function onBtnDelAll() {
-    player_.dellAll();
-}
-
-function onBtnStop() {
-    player_.close();
-    player_ = null;
-}
-
-function onPlayButtonClickAd() {
-    if (player_) {
-        player_.playAd();
+PlayerUI.onPlayButtonClickAd = function () {
+    if (this.player_) {
+        this.player_.playAd();
     }
 }
 
-function onSubtitlesClick() {
-    printLog('+onSubtitlesClick, currMenu: ' + subtitlesMenuContext.currSubtitleId);
+PlayerUI.onSubtitlesClick = function () {
+    printLog('+onSubtitlesClick, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
 
     // Part - process
-    if (settingMenuContext.currMenu !== 'none') {
-        destroySettingsMenu();
+    if (this.settingMenuContext.currMenu !== 'none') {
+        this.destroySettingsMenu();
     }
 
-    if (subtitlesMenuContext.currMenu === 'none') {
-        createSubtitlesMenu();
-    } else if (subtitlesMenuContext.currMenu === 'main_menu') {
-        if (vopSettingsMenu.style.display === 'none') {
-            vopSettingsMenu.style.display = 'block';
-            var elem_child = vopPanelMenu.children;
+    if (this.subtitlesMenuContext.currMenu === 'none') {
+        this.createSubtitlesMenu();
+    } else if (this.subtitlesMenuContext.currMenu === 'main_menu') {
+        if (this.vopSettingsMenu.style.display === 'none') {
+            this.vopSettingsMenu.style.display = 'block';
+            var elem_child = this.vopPanelMenu.children;
             elem_child[0].focus();
         } else {
-            vopSettingsMenu.style.display = 'none';
+            this.vopSettingsMenu.style.display = 'none';
         }
     }
-}
+};
 
-function onSettingClick() {
-    printLog('+onSettingClick, currMenu: ' + settingMenuContext.currMenu);
+PlayerUI.onSettingClick = function () {
+    printLog('+onSettingClick, currMenu: ' + this.settingMenuContext.currMenu);
 
     // Part - process
-    if (subtitlesMenuContext.currMenu !== 'none') {
-        destroySettingsMenu();
+    if (this.subtitlesMenuContext.currMenu !== 'none') {
+        this.destroySettingsMenu();
     }
 
     // Part - process setting event
-    if (settingMenuContext.currMenu === 'none') {
-        createMainMenu();
-    } else if (settingMenuContext.currMenu === 'main_menu') {
-        if (vopSettingsMenu.style.display === 'none') {
-            vopSettingsMenu.style.display = 'block';
-            var elem_child = vopPanelMenu.children;
+    if (this.settingMenuContext.currMenu === 'none') {
+        this.createMainMenu();
+    } else if (this.settingMenuContext.currMenu === 'main_menu') {
+        if (this.vopSettingsMenu.style.display === 'none') {
+            this.vopSettingsMenu.style.display = 'block';
+            var elem_child = this.vopPanelMenu.children;
             elem_child[0].focus();
         } else {
-            vopSettingsMenu.style.display = 'none';
+            this.vopSettingsMenu.style.display = 'none';
         }
-    } else if (settingMenuContext.currMenu === 'quality_menu' ||
-        settingMenuContext.currMenu === 'audio_track_menu' ||
-        settingMenuContext.currMenu === 'fcc_menu' ||
-        settingMenuContext.currMenu === 'fcc_property_menu') {
-        destroySettingsMenu();
+    } else if (this.settingMenuContext.currMenu === 'quality_menu' ||
+        this.settingMenuContext.currMenu === 'audio_track_menu' ||
+        this.settingMenuContext.currMenu === 'fcc_menu' ||
+        this.settingMenuContext.currMenu === 'fcc_property_menu') {
+        this.destroySettingsMenu();
     }
-}
+};
 
-function onFullscreenClick() {
+PlayerUI.onFullscreenClick = function () {
     printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
     } else {
         h5EnterFullscreen();
     }
-}
+};
 
-function onPlayFromGiantButton() {
-    onPlayButtonClick();
-    uiGiantBtnContainer.style.display = 'none';
-}
+PlayerUI.onPlayFromGiantButton = function () {
+    this.onBtnPlay();
+    this.uiGiantBtnContainer.style.display = 'none';
+};
 
-function onBtnSeek() {
+PlayerUI.onBtnSeek = function () {
     var time = document.getElementById('seekedTime').value;
-    player_.setPosition(time);
-}
+    this.player_.setPosition(time);
+};
 
-function onBtnAddTextTrack() {
-    if (player_) {
-        player_.addTextTrack();
+PlayerUI.onBtnAddTextTrack = function () {
+    if (this.player_) {
+        this.player_.addTextTrack();
     }
-}
+};
 
-function onBtnRemoveTextTrack() {
-    player_.removeTextTrack();
-}
+PlayerUI.onBtnRemoveTextTrack = function () {
+    this.player_.removeTextTrack();
+};
 
-function setTextTrackHidden() {
-    player_.setTextTrackHidden();
-}
+PlayerUI.setTextTrackHidden = function () {
+    this.player_.setTextTrackHidden();
+};
 
-function setCueAlign(align) {
-    player_.setCueAlign(align);
-}
+PlayerUI.setCueAlign = function (align) {
+    this.player_.setCueAlign(align);
+};
 
-function onFruitClick() {
+PlayerUI.onFruitClick = function () {
     alert('aaaa');
-}
+};
 
-function onBtnTest() {
-    // if (player_) {
-    //   //player_.signalEndOfStream();
+PlayerUI.onBtnTest = function () {
+    // if (this.player_) {
+    //   //this.player_.signalEndOfStream();
     // }
-    // if (player_) {
-    player_.test();
+    // if (this.player_) {
+    this.player_.test();
     // }
 
     //startWaitingUI();
@@ -911,18 +859,18 @@ function onBtnTest() {
     // v1.setAttribute('d', 'M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z');
 
 
-    // if (player_) {
-    //   player_.mute();
+    // if (this.player_) {
+    //   this.player_.mute();
     // }
 
-    //player_.test();
-}
+    //this.player_.test();
+};
 
-function onBtnTest2() {
+PlayerUI.onBtnTest2 = function () {
     printLog('--onBtnTest2--');
-    player_.test2();
+    this.player_.test2();
 
-    //player_.resize(1024, 768);
+    //this.player_.resize(1024, 768);
     //stopWaitingUI();
 
     // var v = document.querySelector('.ytp-play-button');
@@ -939,330 +887,333 @@ function onBtnTest2() {
     // v.webkitEnterFullScreen();
 
     //v.setAttribute('aria-hidden', true);
-}
+};
 
-function onBtnAttribute() {
-    //player_.attribute();
-}
+PlayerUI.onBtnAttribute = function () {
+    //this.player_.attribute();
+};
 
 //
-function onUICmdCastInit() {
+PlayerUI.onUICmdCastInit = function () {
     var cfg = getInitConfig();
-    castSender.new_init(cfg);
+    this.castSender.new_init(cfg);
 }
 
-function onUICmdCastOpen() {
+PlayerUI.onUICmdCastOpen = function () {
     var info = getMediaInfo();
-    castSender.new_open(info);
+    this.castSender.new_open(info);
 }
 
-function onUICmdCastAddV() {
-    castSender.new_addV();
+PlayerUI.onUICmdCastAddV = function () {
+    this.castSender.new_addV();
 }
 
-function onUICmdCastAddPD() {
-    castSender.new_addPD();
+PlayerUI.onUICmdCastAddPD = function () {
+    this.castSender.new_addPD();
 }
 
-function onUICmdCastPlay() {
-    castSender.new_play();
+PlayerUI.onUICmdCastPlay = function () {
+    this.castSender.new_play();
 }
 
-function onUICmdCastPause() {
-    castSender.new_pause();
+PlayerUI.onUICmdCastPause = function () {
+    this.castSender.new_pause();
 }
 
-function onUICmdCastPlayAd() {
-    castSender.new_playAd();
+PlayerUI.onUICmdCastPlayAd = function () {
+    this.castSender.new_playAd();
 }
 
-function onUICmdCastTest() {
-    castSender.new_test();
+PlayerUI.onUICmdCastTest = function () {
+    this.castSender.new_test();
 }
 
-function doEnterThumbnailMode() {
+PlayerUI.doEnterThumbnailMode = function () {
     printLog('+doEnterThumbnailMode');
-    if (!flagThumbnailMode) {
+    if (!this.flagThumbnailMode) {
         // need to pause content first before starting a seek operation.
-        if (!progressBarContext.pausedBeforeMousedown) {
-            player_.pause();
+        if (!this.progressBarContext.pausedBeforeMousedown) {
+            this.player_.pause();
 
             var paused = true;
-            var ended = player_.isEnded();
-            updatePlayBtnUI(paused, ended);
+            var ended = this.player_.isEnded();
+            this.updatePlayBtnUI(paused, ended);
         }
 
-        progressBarContext.timer = null;
-        flagThumbnailMode = true;
+        this.progressBarContext.timer = null;
+        this.flagThumbnailMode = true;
     }
 }
 
-function doProcessThumbnailMove() {
+PlayerUI.doProcessThumbnailMove = function () {
     // for further action, you can add thumbnail popup here.
 }
 
-function doProcessThumbnailUp() {
+PlayerUI.doProcessThumbnailUp = function () {
     // for further action, you can add thumbnail ended event here.
 }
 
-function onProgressBarMousedown(e) {
+PlayerUI.onProgressBarMousedown = function (e) {
     printLog('+onProgressBarMousedown');
-    captureProgressBarMouseEvents();
+    this.captureProgressBarMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
-    progressBarContext.mousedown = true;
-    progressBarContext.pausedBeforeMousedown = player_.isPaused();
-    progressBarContext.endedBeforeMousedown = player_.isEnded();
-    progressBarContext.posBeforeMousedown = player_.getPosition();
-    flagThumbnailMode = false;
-    progressBarContext.timer = setTimeout(function () {
-            doEnterThumbnailMode();
-        }, 200);
+    this.progressBarContext.mousedown = true;
+    this.progressBarContext.pausedBeforeMousedown = this.player_.isPaused();
+    this.progressBarContext.endedBeforeMousedown = this.player_.isEnded();
+    this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
+    this.flagThumbnailMode = false;
+    this.progressBarContext.timer = setTimeout(function () {
+            this.doEnterThumbnailMode();
+        }.bind(this), 200);
 
     // update progress bar ui
-    progressBarContext.movePos = getProgressMovePosition(e);
-    updateProgressBarUI();
-    updateProgressBarHoverUI();
+    this.progressBarContext.movePos = this.getProgressMovePosition(e);
+    this.updateProgressBarUI();
+    this.updateProgressBarHoverUI();
 }
 
-function onProgressBarMousemove(e) {
+PlayerUI.onProgressBarMousemove = function (e) {
     //printLog('+onProgressBarMousemove');
     e.stopPropagation();
-    removeAutohideAction();
+    this.removeAutohideAction();
 
     // if mouse down, just return
-    if (progressBarContext.mousedown) {
+    if (this.progressBarContext.mousedown) {
         return;
     }
 
     // update progress bar ui
-    progressBarContext.movePos = getProgressMovePosition(e);
-    updateProgressBarHoverUI();
-    updateTooltipUI(e);
+    this.progressBarContext.movePos = this.getProgressMovePosition(e);
+    this.updateProgressBarHoverUI();
+    this.updateTooltipUI(e);
 }
 
-function onProgressBarMouseleave() {
+PlayerUI.onProgressBarMouseleave = function () {
     printLog('+onProgressBarMouseleave');
-    vopTooltip.style.display = 'none';
+    this.vopTooltip.style.display = 'none';
 }
 
-function captureProgressBarMouseEvents() {
-    document.addEventListener('mousemove', docProgressBarMousemove, true);
-    document.addEventListener('mouseup', docProgressBarMouseup, true);
+PlayerUI.captureProgressBarMouseEvents = function () {
+    PlayerUI.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
+    PlayerUI.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
+
+    document.addEventListener('mousemove', PlayerUI.newProgressBarMousemove, true);
+    document.addEventListener('mouseup', PlayerUI.newProgressBarMouseup, true);
 }
 
-function releaseProgressBarMouseEvents() {
-    document.removeEventListener('mousemove', docProgressBarMousemove, true);
-    document.removeEventListener('mouseup', docProgressBarMouseup, true);
+PlayerUI.releaseProgressBarMouseEvents = function () {
+    document.removeEventListener('mousemove', PlayerUI.newProgressBarMousemove, true);
+    document.removeEventListener('mouseup', PlayerUI.newProgressBarMouseup, true);
 }
 
-function docProgressBarMousemove(e) {
+PlayerUI.docProgressBarMousemove = function (e) {
     printLog('+docProgressBarMousemove');
 
-    var movePos = getProgressMovePosition(e);
-    if (progressBarContext.movePos === movePos) {
+    var movePos = this.getProgressMovePosition(e);
+    if (this.progressBarContext.movePos === movePos) {
         return;
     }
 
-    doEnterThumbnailMode();
-    doProcessThumbnailMove();
+    this.doEnterThumbnailMode();
+    this.doProcessThumbnailMove();
 
-    progressBarContext.movePos = movePos;
-    updateProgressBarUI();
-    updateProgressBarHoverUI();
+    this.progressBarContext.movePos = movePos;
+    this.updateProgressBarUI();
+    this.updateProgressBarHoverUI();
 }
 
-function docProgressBarMouseup(e) {
+PlayerUI.docProgressBarMouseup = function (e) {
     printLog('+docProgressBarMouseup');
     e.preventDefault();
-    releaseProgressBarMouseEvents();
+    this.releaseProgressBarMouseEvents();
 
-    if (flagThumbnailMode) {
+    if (this.flagThumbnailMode) {
         // thumbnail mode click event
-        doProcessThumbnailUp();
+        this.doProcessThumbnailUp();
     } else {
         // plain click event
-        if (progressBarContext.timer) {
+        if (this.progressBarContext.timer) {
             // it's quick click, don't need to pause
-            clearTimeout(progressBarContext.timer);
-            progressBarContext.timer = null;
+            clearTimeout(this.progressBarContext.timer);
+            this.progressBarContext.timer = null;
         }
     }
 
     // update ui first
-    progressBarContext.movePos = getProgressMovePosition(e);
-    updateProgressBarUI();
-    updateProgressBarHoverUI();
+    this.progressBarContext.movePos = this.getProgressMovePosition(e);
+    this.updateProgressBarUI();
+    this.updateProgressBarHoverUI();
 
-    if (progressBarContext.posBeforeMousedown != progressBarContext.movePos) {
-        player_.setPosition(progressBarContext.movePos);
+    if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
+        this.player_.setPosition(this.progressBarContext.movePos);
     }
 
-    progressBarContext.mousedown = false;
+    this.progressBarContext.mousedown = false;
 }
 
-function onVolumeSliderMousedown(e) {
+PlayerUI.onVolumeSliderMousedown = function (e) {
     printLog('+onVolumeSliderMousedown');
-    captureVolumeSliderMouseEvents();
+    this.captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
 
-    flagVolumeSliderMousedown = true;
+    this.flagVolumeSliderMousedown = true;
 
-    docVolumeSliderMousemove(e);
+    this.docVolumeSliderMousemove(e);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
-// player_ event callback
-function onMediaCanPlay() {
-    if (!flagPlayerInited) {
-        flagPlayerInited = true;
+// this.player_ event callback
+PlayerUI.onMediaCanPlay = function () {
+    if (!this.flagPlayerInited) {
+        this.flagPlayerInited = true;
 
-        updateProgressBarUI();
-        vopControlBar.style.display = 'block';
+        this.updateProgressBarUI();
+        this.vopControlBar.style.display = 'block';
 
         // process config parameter
         if (cfg_.autoplay) {
-            onPlayFromGiantButton();
+            this.onPlayFromGiantButton();
         }
     }
 }
 
-function onMediaDurationChanged() {
-    updateProgressBarUI();
+PlayerUI.onMediaDurationChanged = function () {
+    this.updateProgressBarUI();
 }
 
-function onMediaEnded() {
-    var paused = player_.isPaused();
-    var ended = player_.isEnded();
-    updatePlayBtnUI(paused, ended);
+PlayerUI.onMediaEnded = function () {
+    var paused = this.player_.isPaused();
+    var ended = this.player_.isEnded();
+    this.updatePlayBtnUI(paused, ended);
 
     //
-    progressBarContext.movePos = player_.getPosition();
-    updateProgressBarUI();
+    this.progressBarContext.movePos = this.player_.getPosition();
+    this.updateProgressBarUI();
 
     //
     $('.html5-video-player').removeClass('vop-autohide');
 }
 
-function onMediaLoadedData() {
+PlayerUI.onMediaLoadedData = function () {
     // update volume here
-    var muted = player_.isMuted();
-    var volume = player_.getVolume();
+    var muted = this.player_.isMuted();
+    var volume = this.player_.getVolume();
 
-    updateContentVolumeBarUI(muted, volume);
+    this.updateContentVolumeBarUI(muted, volume);
 }
 
-function onMediaLoadedMetaData(e) {
+PlayerUI.onMediaLoadedMetaData = function (e) {
     // update external div's dimensions
-    metaWidth = e.width;
-    metaHeight = e.height;
+    this.metaWidth = e.width;
+    this.metaHeight = e.height;
 
     var vp = document.querySelector('.player');
-    vp.style.paddingBottom = ((metaHeight / metaWidth) * 100).toString() + '%';
+    vp.style.paddingBottom = ((this.metaHeight / this.metaWidth) * 100).toString() + '%';
 
     printLog('vp.clientWidth: ' + vp.clientWidth);
     printLog('vp.clientHeight: ' + vp.clientHeight);
-    player_.resize(vp.clientWidth, vp.clientHeight);
+    this.player_.resize(vp.clientWidth, vp.clientHeight);
 }
 
-function onMediaPaused() {}
+PlayerUI.onMediaPaused = function () {}
 
-function onMediaPlaying() {
-    var paused = player_.isPaused();
-    var ended = player_.isEnded();
-    updatePlayBtnUI(paused, ended);
+PlayerUI.onMediaPlaying = function () {
+    var paused = this.player_.isPaused();
+    var ended = this.player_.isEnded();
+    this.updatePlayBtnUI(paused, ended);
 
-    stopWaitingUI();
+    this.stopWaitingUI();
 }
 
-function onMediaSeeking() {
-    printLog('+onMediaSeeking, pos: ' + player_.getPosition());
+PlayerUI.onMediaSeeking = function () {
+    printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
 }
 
-function onMediaSeeked() {
-    printLog('+onMediaSeeked, pos: ' + player_.getPosition());
+PlayerUI.onMediaSeeked = function () {
+    printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
 
-    if (!progressBarContext.pausedBeforeMousedown || progressBarContext.endedBeforeMousedown) {
-        player_.play();
+    if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
+        this.player_.play();
         // update ui
         var paused = false;
-        var ended = player_.isEnded();
-        updatePlayBtnUI(paused, ended);
+        var ended = this.player_.isEnded();
+        this.updatePlayBtnUI(paused, ended);
     }
 }
 
-function onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + player_.getPosition() + ', duration: ' + player_.getDuration());
+PlayerUI.onMediaTimeupdated = function () {
+    //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
-    if (progressBarContext.mousedown) {}
+    if (this.progressBarContext.mousedown) {}
     else {
-        //progressBarContext.movePos = player_.getPosition();
-        updateProgressBarUI();
-        updateProgressBarHoverUI();
+        //this.progressBarContext.movePos = this.player_.getPosition();
+        this.updateProgressBarUI();
+        this.updateProgressBarHoverUI();
     }
 }
 
-function onMediaVolumeChanged() {
-    var muted = player_.isMuted();
-    var volume = player_.getVolume();
-    updateContentVolumeBarUI(muted, volume);
+PlayerUI.onMediaVolumeChanged = function () {
+    var muted = this.player_.isMuted();
+    var volume = this.player_.getVolume();
+    this.updateContentVolumeBarUI(muted, volume);
 }
 
-function onMediaWaiting() {
-    startWaitingUI();
+PlayerUI.onMediaWaiting = function () {
+    this.startWaitingUI();
 }
 
-function onLog(e) {
-    uiConsole.innerHTML = (uiConsole.innerHTML + '<br/>' + e.message);
+PlayerUI.onLog = function (e) {
+    this.uiConsole.innerHTML = (this.uiConsole.innerHTML + '<br/>' + e.message);
 }
 
-function onAdStarted(e) {
+PlayerUI.onAdStarted = function (e) {
     printLog('onAdStarted, linear: ' + e.isLinearAd);
-    flagAdStarted = true;
-    flagIsLinearAd = e.isLinearAd;
+    this.flagAdStarted = true;
+    this.flagIsLinearAd = e.isLinearAd;
     // update control bar ui
-    if (flagIsLinearAd) {
-        vopProgressBar.style.display = 'none';
-        vopSettingsBtn.style.display = 'none';
+    if (this.flagIsLinearAd) {
+        this.vopProgressBar.style.display = 'none';
+        this.vopSettingsBtn.style.display = 'none';
     } else {
         var v = document.querySelector('.vop-ads-container');
-        v.style.marginTop = '-' + (vopControlBar.clientHeight + 10).toString() + 'px';
+        v.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
     }
 }
 
-function onAdComplete() {
-    printLog('onAdComplete, linear: ' + flagIsLinearAd);
-    flagAdStarted = false;
+PlayerUI.onAdComplete = function () {
+    printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
+    this.flagAdStarted = false;
 
     // update control bar ui
-    vopProgressBar.style.display = 'block';
-    vopSettingsBtn.style.display = 'inline-block';
+    this.vopProgressBar.style.display = 'block';
+    this.vopSettingsBtn.style.display = 'inline-block';
 }
 
-function onAdTimeUpdate() {
-    var position = player_.getPosition();
-    var duration = player_.getDuration();
+PlayerUI.onAdTimeUpdate = function () {
+    var position = this.player_.getPosition();
+    var duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
-    updateAdProgressUI();
+    this.updateAdProgressUI();
 }
 
-function onFullscreenChanged() {
-    var v = player_.isFullscreen();
+PlayerUI.onFullscreenChanged = function () {
+    var v = this.player_.isFullscreen();
     printLog('fullscreen changed, ret: ' + v);
     if (v) {
-        vopFullscreen.innerText = 'fullscreen_exit';
+        this.vopFullscreen.innerText = 'fullscreen_exit';
     } else {
-        vopFullscreen.innerText = 'fullscreen';
+        this.vopFullscreen.innerText = 'fullscreen';
     }
 }
 
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
-function createSubtitlesMenu() {
+PlayerUI.createSubtitlesMenu = function () {
     // The subtitle menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
@@ -1288,8 +1239,8 @@ function createSubtitlesMenu() {
     //     </div>
     // </div>
 
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
+    // Part - process, remove all children of this.vopPanelMenu
+    this.destroySettingsMenu();
 
     // Part - input
     var header = document.createElement('div');
@@ -1298,22 +1249,22 @@ function createSubtitlesMenu() {
     var panelTitle = document.createElement('button');
     panelTitle.setAttribute('class', 'vop-panel-title');
     panelTitle.innerText = 'Subtitles';
-    panelTitle.addEventListener('click', onSubitlesBack);
+    panelTitle.addEventListener('click', this.onSubitlesBack.bind(this));
     panelTitle.setAttribute('role', 'plain');
 
     header.appendChild(panelTitle);
 
     // Part - input
     var firstMenuitem = null;
-    for (var i = 0; i < subtitlesMenuContext.subtitleTracks.length; i++) {
-        var subtitleTrack = subtitlesMenuContext.subtitleTracks[i];
+    for (var i = 0; i < this.subtitlesMenuContext.subtitleTracks.length; i++) {
+        var subtitleTrack = this.subtitlesMenuContext.subtitleTracks[i];
 
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('role', 'menuitem');
         menuitem.setAttribute('tabindex', '0');
-        menuitem.addEventListener('blur', onSubtitleItemBlur);
-        if (subtitleTrack.id === subtitlesMenuContext.currSubtitleId) {
+        menuitem.addEventListener('blur', this.onSubtitleItemBlur.bind(this));
+        if (subtitleTrack.id === this.subtitlesMenuContext.currSubtitleId) {
             menuitem.setAttribute('aria-checked', 'true');
         }
 
@@ -1332,37 +1283,37 @@ function createSubtitlesMenu() {
         menuitem.appendChild(content);
 
         menuitem.dataset.id = subtitleTrack.id;
-        menuitem.addEventListener('click', onSubtitleItemClick);
+        menuitem.addEventListener('click', this.onSubtitleItemClick.bind(this));
 
         if (firstMenuitem === null) {
             firstMenuitem = menuitem;
         }
-        vopPanelMenu.appendChild(menuitem);
+        this.vopPanelMenu.appendChild(menuitem);
     }
 
     //
-    vopPanel.insertBefore(header, vopPanelMenu);
-    vopSettingsMenu.style.display = 'block';
+    this.vopPanel.insertBefore(header, this.vopPanelMenu);
+    this.vopSettingsMenu.style.display = 'block';
     firstMenuitem.focus();
 
-    subtitlesMenuContext.currMenu = 'main_menu';
+    this.subtitlesMenuContext.currMenu = 'main_menu';
 }
 
-function destroySettingsMenu() {
+PlayerUI.destroySettingsMenu = function () {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
-        vopPanel.removeChild(v);
+        this.vopPanel.removeChild(v);
     }
-    while (vopPanelMenu.firstChild) {
-        vopPanelMenu.firstChild.removeEventListener('blur', onMainMenuBlur);
-        vopPanelMenu.removeChild(vopPanelMenu.firstChild);
+    while (this.vopPanelMenu.firstChild) {
+        this.vopPanelMenu.firstChild.removeEventListener('blur', PlayerUI.onMainMenuBlur);
+        this.vopPanelMenu.removeChild(this.vopPanelMenu.firstChild);
     }
 
-    settingMenuContext.currMenu = 'none';
-    subtitlesMenuContext.currMenu = 'none';
+    this.settingMenuContext.currMenu = 'none';
+    this.subtitlesMenuContext.currMenu = 'none';
 }
 
-function createHeaderItemUI(text, cb) {
+PlayerUI.createHeaderItemUI = function (text, cb) {
     var header = document.createElement('div');
     header.setAttribute('class', 'vop-panel-header');
 
@@ -1372,10 +1323,10 @@ function createHeaderItemUI(text, cb) {
 
     header.appendChild(title);
     header.addEventListener('click', cb);
-    vopPanel.insertBefore(header, vopPanelMenu);
+    this.vopPanel.insertBefore(header, this.vopPanelMenu);
 }
 
-function createRadioMenuItem(text, cbBlur, cbClick) {
+PlayerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
     var menuitem = document.createElement('div');
     menuitem.setAttribute('class', 'vop-menuitem');
     menuitem.setAttribute('role', 'menuitemradio');
@@ -1392,7 +1343,7 @@ function createRadioMenuItem(text, cbBlur, cbClick) {
     return menuitem;
 }
 
-function createMainMenu() {
+PlayerUI.createMainMenu = function () {
     // The main menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
@@ -1414,8 +1365,8 @@ function createMainMenu() {
     //     </div>
     // </div>
 
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
+    // Part - process, remove all children of this.vopPanelMenu
+    this.destroySettingsMenu();
 
     // Part - input: current quality, current audio track, etc.
     var qualityCnt = 3;
@@ -1429,7 +1380,7 @@ function createMainMenu() {
         qualityMenuitem.setAttribute('aria-haspopup', 'true');
     }
     qualityMenuitem.setAttribute('tabindex', '0');
-    qualityMenuitem.addEventListener('blur', onMainMenuBlur);
+    qualityMenuitem.addEventListener('blur', this.onMainMenuBlur.bind(this));
 
     var label = document.createElement('div');
     label.setAttribute('class', 'vop-menuitem-label');
@@ -1438,7 +1389,7 @@ function createMainMenu() {
     var content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
-    if (settingMenuContext.isQualityAuto) {
+    if (this.settingMenuContext.isQualityAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
         spanAuto.style.paddingRight = '6px';
@@ -1448,13 +1399,13 @@ function createMainMenu() {
 
     var contentText = document.createElement('span');
     contentText.setAttribute('class', 'vop-menuitem-content-text');
-    contentText.innerText = settingMenuContext.currQuality;
+    contentText.innerText = this.settingMenuContext.currQuality;
     content.appendChild(contentText);
 
     qualityMenuitem.appendChild(label);
     qualityMenuitem.appendChild(content);
 
-    qualityMenuitem.addEventListener('click', onQualityMenuClick);
+    qualityMenuitem.addEventListener('click', this.onQualityMenuClick.bind(this));
 
     // create audio track menu item
     var audioMenuitem = document.createElement('div');
@@ -1464,7 +1415,7 @@ function createMainMenu() {
         audioMenuitem.setAttribute('aria-haspopup', 'true');
     }
     audioMenuitem.setAttribute('tabindex', '0');
-    audioMenuitem.addEventListener('blur', onMainMenuBlur);
+    audioMenuitem.addEventListener('blur', this.onMainMenuBlur.bind(this));
 
     label = document.createElement('div');
     label.setAttribute('class', 'vop-menuitem-label');
@@ -1473,7 +1424,7 @@ function createMainMenu() {
     content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
-    if (settingMenuContext.isAudioTrackAuto) {
+    if (this.settingMenuContext.isAudioTrackAuto) {
         var spanAuto = document.createElement('span');
         spanAuto.innerText = 'Auto';
         spanAuto.style.paddingRight = '6px';
@@ -1483,12 +1434,12 @@ function createMainMenu() {
 
     contentText = document.createElement('span');
     contentText.setAttribute('class', 'vop-menuitem-content-text');
-    contentText.innerText = settingMenuContext.currAudioTrack;
+    contentText.innerText = this.settingMenuContext.currAudioTrack;
     content.appendChild(contentText);
 
     audioMenuitem.appendChild(label);
     audioMenuitem.appendChild(content);
-    audioMenuitem.addEventListener('click', onAudioTrackMenuClick);
+    audioMenuitem.addEventListener('click', this.onAudioTrackMenuClick.bind(this));
 
     // create fcc menuitem
     var fccMenuitem = document.createElement('div');
@@ -1510,21 +1461,21 @@ function createMainMenu() {
 
     fccMenuitem.appendChild(label);
     fccMenuitem.appendChild(content);
-    fccMenuitem.addEventListener('click', onFccMenuClick);
+    fccMenuitem.addEventListener('click', this.onFccMenuClick.bind(this));
 
     // Part post process
-    vopPanelMenu.appendChild(qualityMenuitem);
-    vopPanelMenu.appendChild(audioMenuitem);
-    vopPanelMenu.appendChild(fccMenuitem);
+    this.vopPanelMenu.appendChild(qualityMenuitem);
+    this.vopPanelMenu.appendChild(audioMenuitem);
+    this.vopPanelMenu.appendChild(fccMenuitem);
 
     //
-    vopSettingsMenu.style.display = 'block';
+    this.vopSettingsMenu.style.display = 'block';
     qualityMenuitem.focus();
 
-    settingMenuContext.currMenu = 'main_menu';
+    this.settingMenuContext.currMenu = 'main_menu';
 }
 
-function createQualityMenu() {
+PlayerUI.createQualityMenu = function () {
     // The quality menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
@@ -1552,36 +1503,36 @@ function createQualityMenu() {
     //     </div>
     // </div>
 
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
+    // Part - process, remove all children of this.vopPanelMenu
+    this.destroySettingsMenu();
 
     // add quality back menu
-    createHeaderItemUI('Quality', onQualityBack);
+    this.createHeaderItemUI('Quality', this.onQualityBack.bind(this));
 
     // add quality menuitem
     var focusItem = null;
-    for (var i = 0; i < settingMenuContext.qualityList.length; i++) {
-        var quality = settingMenuContext.qualityList[i].bitrate;
+    for (var i = 0; i < this.settingMenuContext.qualityList.length; i++) {
+        var quality = this.settingMenuContext.qualityList[i].bitrate;
 
-        var menuitem = createRadioMenuItem(quality, onMainMenuBlur, onQualityItemClick);
-        if (quality == settingMenuContext.currQuality) {
+        var menuitem = this.createRadioMenuItem(quality, PlayerUI.onMainMenuBlur, this.onQualityItemClick.bind(this));
+        if (quality == this.settingMenuContext.currQuality) {
             menuitem.setAttribute('aria-checked', 'true');
         }
-        if (quality == settingMenuContext.currQuality) {
+        if (quality == this.settingMenuContext.currQuality) {
             focusItem = menuitem;
         }
 
-        vopPanelMenu.appendChild(menuitem);
+        this.vopPanelMenu.appendChild(menuitem);
     }
 
     //
-    vopSettingsMenu.style.display = 'block';
+    this.vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 
-    settingMenuContext.currMenu = 'quality_menu';
+    this.settingMenuContext.currMenu = 'quality_menu';
 }
 
-function createAudioTrackMenu() {
+PlayerUI.createAudioTrackMenu = function () {
     // The audio track menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
@@ -1604,36 +1555,36 @@ function createAudioTrackMenu() {
     //     </div>
     // </div>
 
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
+    // Part - process, remove all children of this.vopPanelMenu
+    this.destroySettingsMenu();
 
     // add quality back menu
-    createHeaderItemUI('Audio', onAudioTrackBack);
+    this.createHeaderItemUI('Audio', this.onAudioTrackBack.bind(this));
 
     // add quality menuitem
     var firstItem = null;
-    for (var i = 0; i < settingMenuContext.audioTrackList.length; i++) {
-        var audioTrack = settingMenuContext.audioTrackList[i];
+    for (var i = 0; i < this.settingMenuContext.audioTrackList.length; i++) {
+        var audioTrack = this.settingMenuContext.audioTrackList[i];
 
-        var menuitem = createRadioMenuItem(audioTrack, onMainMenuBlur, onAudioTrackItemClick);
-        if (audioTrack == settingMenuContext.currAudioTrack) {
+        var menuitem = this.createRadioMenuItem(audioTrack, this.onMainMenuBlur.bind(this), this.onAudioTrackItemClick.bind(this));
+        if (audioTrack == this.settingMenuContext.currAudioTrack) {
             menuitem.setAttribute('aria-checked', 'true');
         }
         if (!firstItem) {
             firstItem = menuitem;
         }
 
-        vopPanelMenu.appendChild(menuitem);
+        this.vopPanelMenu.appendChild(menuitem);
     }
 
     //
-    vopSettingsMenu.style.display = 'block';
+    this.vopSettingsMenu.style.display = 'block';
     firstItem.focus();
 
-    settingMenuContext.currMenu = 'audio_track_menu';
+    this.settingMenuContext.currMenu = 'audio_track_menu';
 }
 
-function createFccMenu() {
+PlayerUI.createFccMenu = function () {
     // The fcc menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
@@ -1654,22 +1605,22 @@ function createFccMenu() {
     //     </div>
     // </div>
 
-    // Part - process, remove all children of vopPanelMenu
-    destroySettingsMenu();
+    // Part - process, remove all children of this.vopPanelMenu
+    this.destroySettingsMenu();
 
     // Part - fcc property title
-    createHeaderItemUI('Subtitles Optoins', onFccBack);
+    this.createHeaderItemUI('Subtitles Optoins', onFccBack);
 
     // Part - fcc property item
     var firstItem = null;
-    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
-        var fcc = settingMenuContext.fccProperties[i];
+    for (var i = 0; i < this.settingMenuContext.fccProperties.length; i ++) {
+        var fcc = this.settingMenuContext.fccProperties[i];
 
         var menuitem = document.createElement('div');
         menuitem.setAttribute('class', 'vop-menuitem');
         menuitem.setAttribute('aria-haspopup', 'true');
         menuitem.setAttribute('tabindex', '0');
-        menuitem.addEventListener('blur', onMainMenuBlur);
+        menuitem.addEventListener('blur', this.onMainMenuBlur.bind(this));
 
         var label = document.createElement('div');
         label.setAttribute('class', 'vop-menuitem-label');
@@ -1682,32 +1633,32 @@ function createFccMenu() {
         menuitem.appendChild(label);
         menuitem.appendChild(content);
         menuitem.dataset.name = fcc.name;
-        menuitem.addEventListener('click', onFccItemClick);
+        menuitem.addEventListener('click', this.onFccItemClick.bind(this));
 
         if (!firstItem) {
             firstItem = menuitem;
         }
 
-        vopPanelMenu.appendChild(menuitem);
+        this.vopPanelMenu.appendChild(menuitem);
     }
 
-    vopSettingsMenu.style.display = 'block';
-    settingMenuContext.currMenu = 'fcc_menu';
+    this.vopSettingsMenu.style.display = 'block';
+    this.settingMenuContext.currMenu = 'fcc_menu';
     firstItem.focus();
 }
 
-function createFccItemMenu(name) {
+PlayerUI.createFccItemMenu = function (name) {
     // Part - fcc property title
-    createHeaderItemUI(name, onFccPropertyItemBack);
+    this.createHeaderItemUI(name, this.onFccPropertyItemBack.bind(this));
 
-    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
-        var fccProperty = settingMenuContext.fccProperties[i];
+    for (var i = 0; i < this.settingMenuContext.fccProperties.length; i ++) {
+        var fccProperty = this.settingMenuContext.fccProperties[i];
         if (fccProperty.name === name) {
             var firstItem = null;
             for (var j = 0; j < fccProperty.values.length; j++) {
                 var propertyValue = fccProperty.values[j];
 
-                var menuitem = createRadioMenuItem(propertyValue, onFccPropertyItemBlur, onFccPropertyItemClick);
+                var menuitem = this.createRadioMenuItem(propertyValue, this.onFccPropertyItemBlur.bind(this), this.onFccPropertyItemClick.bind(this));
                 menuitem.dataset.id = propertyValue;
                 if (propertyValue == fccProperty.currValue) {
                     menuitem.setAttribute('aria-checked', 'true');
@@ -1717,10 +1668,10 @@ function createFccItemMenu(name) {
                     firstItem = menuitem;
                 }
 
-                vopPanelMenu.dataset.fccProperty = name;
-                vopPanelMenu.appendChild(menuitem);
+                this.vopPanelMenu.dataset.fccProperty = name;
+                this.vopPanelMenu.appendChild(menuitem);
 
-                settingMenuContext.currMenu = 'fcc_property_menu';
+                this.settingMenuContext.currMenu = 'fcc_property_menu';
                 firstItem.focus();
             }
             break;
@@ -1728,8 +1679,8 @@ function createFccItemMenu(name) {
     }
 }
 
-function updatePanelMenuUI(currValue) {
-    var elem_child = vopPanelMenu.childNodes;
+PlayerUI.updatePanelMenuUI = function (currValue) {
+    var elem_child = this.vopPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i++) {
         var menuitem = elem_child[i];
 
@@ -1742,41 +1693,41 @@ function updatePanelMenuUI(currValue) {
     }
 }
 
-function onQualityMenuClick(e) {
+PlayerUI.onQualityMenuClick = function (e) {
     e.stopPropagation();
     printLog('+onQualityMenuClick: ' + e.target.innerText);
 
-    destroySettingsMenu();
-    createQualityMenu();
+    this.destroySettingsMenu();
+    this.createQualityMenu();
 }
 
-function onAudioTrackMenuClick(e) {
+PlayerUI.onAudioTrackMenuClick = function (e) {
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createAudioTrackMenu();
+    this.destroySettingsMenu();
+    this.createAudioTrackMenu();
 }
 
-function onFccMenuClick(e) {
+PlayerUI.onFccMenuClick = function (e) {
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createFccMenu();
+    this.destroySettingsMenu();
+    this.createFccMenu();
 }
 
-function onMainMenuBlur(e) {
+PlayerUI.onMainMenuBlur = function (e) {
     var text = '';
     if (e.relatedTarget) {
         text = ', text: ' + e.relatedTarget.innerText;
     }
 
-    printLog('+onMainMenuBlur, settingMenuContext.currMenu: ' + settingMenuContext.currMenu + text);
+    printLog('+onMainMenuBlur, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu + text);
 
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
 
     if (nextFocus) {
-        if (nextFocus === vopSettingsBtn) {
+        if (nextFocus === this.vopSettingsBtn) {
             // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
         } else {
             if (prevFocus) {
@@ -1788,120 +1739,120 @@ function onMainMenuBlur(e) {
             }
         }
     } else {
-        destroySettingsMenu();
+        this.destroySettingsMenu();
     }
 }
 
-function onSubtitleItemClick(e) {
+PlayerUI.onSubtitleItemClick = function (e) {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
-    if (subtitlesMenuContext.currSubtitleId === id) {
-        subtitlesMenuContext.currSubtitleId = -1;
+    if (this.subtitlesMenuContext.currSubtitleId === id) {
+        this.subtitlesMenuContext.currSubtitleId = '';
     } else {
-        subtitlesMenuContext.currSubtitleId = id;
+        this.subtitlesMenuContext.currSubtitleId = id;
     }
 
-    updatePanelMenuUI(subtitlesMenuContext.currSubtitleId);
+    this.updatePanelMenuUI(this.subtitlesMenuContext.currSubtitleId);
 }
 
-function onSubtitleItemBlur(e) {
+PlayerUI.onSubtitleItemBlur = function (e) {
     if (e.relatedTarget) {
-        if (e.relatedTarget === vopSubtitlesBtn) {
-            if (subtitlesMenuContext.currMenu === 'main_menu') {
+        if (e.relatedTarget === this.vopSubtitlesBtn) {
+            if (this.subtitlesMenuContext.currMenu === 'main_menu') {
                 // do nothing
             }
         }
     } else {
-        onSubtitlesClick();
+        this.destroySettingsMenu();
     }
 }
 
-function onSubitlesBack(e) {
+PlayerUI.onSubitlesBack = function (e) {
     printLog('+onSubitlesBack');
 }
 
-function onQualityBack(e) {
+PlayerUI.onQualityBack = function (e) {
     printLog('+onQualityBack');
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createMainMenu();
+    this.destroySettingsMenu();
+    this.createMainMenu();
 }
 
-function onQualityItemClick(e) {
-    printLog('onQualityItemClick, settingMenuContext.currMenu: ' + settingMenuContext.currMenu
+PlayerUI.onQualityItemClick = function (e) {
+    printLog('onQualityItemClick, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu
          + ', text: ' + e.target.innerText);
     e.stopPropagation();
 
-    settingMenuContext.currQuality = e.target.innerText;
-    updatePanelMenuUI(settingMenuContext.currQuality);
+    this.settingMenuContext.currQuality = e.target.innerText;
+    this.updatePanelMenuUI(this.settingMenuContext.currQuality);
 }
 
-function onAudioTrackBack(e) {
+PlayerUI.onAudioTrackBack = function (e) {
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createMainMenu();
+    this.destroySettingsMenu();
+    this.createMainMenu();
 }
 
-function onAudioTrackItemClick(e) {
+PlayerUI.onAudioTrackItemClick = function (e) {
     e.stopPropagation();
 
-    settingMenuContext.currAudioTrack = e.target.innerText;
-    updatePanelMenuUI(settingMenuContext.currAudioTrack);
-}
+    this.settingMenuContext.currAudioTrack = e.target.innerText;
+    this.updatePanelMenuUI(this.settingMenuContext.currAudioTrack);
+};
 
-function onFccBack(e) {
+PlayerUI.onFccBack = function (e) {
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createMainMenu();
-}
+    this.destroySettingsMenu();
+    this.createMainMenu();
+};
 
-function onFccItemClick(e) {
+PlayerUI.onFccItemClick = function (e) {
     e.stopPropagation();
     printLog('+onFccItemClick, e.currentTarget.dataset.name: ' + e.currentTarget.dataset.name);
 
     // Part - destroy old ui
-    destroySettingsMenu();
+    this.destroySettingsMenu();
 
     // Part - fcc item ui
-    createFccItemMenu(e.currentTarget.dataset.name);
-}
+    this.createFccItemMenu(e.currentTarget.dataset.name);
+};
 
-function onFccPropertyItemBack(e) {
+PlayerUI.onFccPropertyItemBack = function (e) {
     e.stopPropagation();
 
-    destroySettingsMenu();
-    createFccMenu();
-}
+    this.destroySettingsMenu();
+    this.createFccMenu();
+};
 
-function onFccPropertyItemClick(e) {
+PlayerUI.onFccPropertyItemClick = function (e) {
     e.stopPropagation();
 
     printLog('+onFccPropertyItemClick');
-    printLog('vopPanelMenu.dataset.fccProperty: ' + vopPanelMenu.dataset.fccProperty);
+    printLog('this.vopPanelMenu.dataset.fccProperty: ' + this.vopPanelMenu.dataset.fccProperty);
     printLog('new value: ' + e.currentTarget.dataset.id);
 
-    for (var i = 0; i < settingMenuContext.fccProperties.length; i ++) {
-        var fccProperty = settingMenuContext.fccProperties[i];
-        if (fccProperty.name === vopPanelMenu.dataset.fccProperty) {
+    for (var i = 0; i < this.settingMenuContext.fccProperties.length; i ++) {
+        var fccProperty = this.settingMenuContext.fccProperties[i];
+        if (fccProperty.name === this.vopPanelMenu.dataset.fccProperty) {
             fccProperty.currValue = e.currentTarget.dataset.id;
-            updatePanelMenuUI(fccProperty.currValue);
+            this.updatePanelMenuUI(fccProperty.currValue);
             break;
         }
     }
-}
+};
 
-function onFccPropertyItemBlur(e) {
+PlayerUI.onFccPropertyItemBlur = function (e) {
     e.stopPropagation();
 
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
 
     if (nextFocus) {
-        if (nextFocus === vopSettingsBtn) {
+        if (nextFocus === this.vopSettingsBtn) {
             // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
         } else {
             if (prevFocus) {
@@ -1913,9 +1864,40 @@ function onFccPropertyItemBlur(e) {
             }
         }
     } else {
-        destroySettingsMenu();
+        this.destroySettingsMenu();
     }
+};
+
+/////////////////////////////////////////////////////////////////////////
+// Title: UI Command
+
+function onBtnOpen()
+{
+    PlayerUI.onBtnOpen();
 }
+
+function onBtnClose()
+{}
+
+function onBtnPlay()
+{}
+
+function onBtnManualSchedule()
+{
+    PlayerUI.onBtnManualSchedule();
+}
+
+function onBtnInitAD()
+{}
+
+function onBtnDelAll()
+{}
+
+function onBtnStop()
+{}
+
+function onBtnPlayAd()
+{}
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
@@ -1924,9 +1906,10 @@ window.onload = function () {
     browserInfo = oldmtn.CommonUtils.getBrowserInfo();
     console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
-    initUI();
-    initUIEventListeners();
-    initPlayer();
+    PlayerUI.initVariable();
+    PlayerUI.initUI();
+    PlayerUI.initUIEventListeners();
+    PlayerUI.initPlayer();
 
     // BD
     //onBtnOpen();
