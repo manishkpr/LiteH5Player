@@ -5,9 +5,9 @@ var cfg_ = getInitConfig();
 var mediaCfg_ = getMediaInfo();
 //
 
-var PlayerUI = {};
+var playerUI = {};
 
-PlayerUI.initVariable = function () {
+playerUI.initVariable = function () {
 
 this.player_ = null;
 this.castSender = null;
@@ -220,7 +220,7 @@ this.flagIsLinearAd = false;
 }
 
 // Title: init part
-PlayerUI.initUI = function () {
+playerUI.initUI = function () {
     this.vopH5Player = document.querySelector('.html5-video-player');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
@@ -255,7 +255,7 @@ PlayerUI.initUI = function () {
     this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
 };
 
-PlayerUI.initUIEventListeners = function () {
+playerUI.initUIEventListeners = function () {
     this.vopH5Player.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
     this.vopH5Player.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
     this.vopH5Player.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
@@ -319,7 +319,7 @@ PlayerUI.initUIEventListeners = function () {
     }
 };
 
-PlayerUI.initPlayer = function () {
+playerUI.initPlayer = function () {
     this.player_ = new oldmtn.Player('player-container');
     this.player_.init(cfg_);
 
@@ -355,22 +355,22 @@ PlayerUI.initPlayer = function () {
     //this.castSender = new oldmtn.CastSender(receiverAppId);
 };
 
-PlayerUI.loadThumbnail = function (url) {
+playerUI.loadThumbnail = function (url) {
     this.player_.loadThumbnail(url);
 };
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
-PlayerUI.startWaitingUI = function () {
+playerUI.startWaitingUI = function () {
     this.vopSpinner.style.display = 'block';
 }
 
-PlayerUI.stopWaitingUI = function () {
+playerUI.stopWaitingUI = function () {
     this.vopSpinner.style.display = 'none';
 }
 
 // begin progress bar
-PlayerUI.updateVolumeMovePosition = function (e) {
+playerUI.updateVolumeMovePosition = function (e) {
     // part - input
     var rect = this.vopVolumeSlider.getBoundingClientRect();
 
@@ -386,7 +386,7 @@ PlayerUI.updateVolumeMovePosition = function (e) {
     this.valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
 };
 
-PlayerUI.getProgressMovePosition = function (e) {
+playerUI.getProgressMovePosition = function (e) {
     // part - input
     var rect = this.vopProgressBar.getBoundingClientRect();
 
@@ -403,7 +403,7 @@ PlayerUI.getProgressMovePosition = function (e) {
     return (offsetX / rect.width) * duration;
 };
 
-PlayerUI.updateProgressBarUI = function () {
+playerUI.updateProgressBarUI = function () {
     // part - input
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
@@ -448,7 +448,7 @@ PlayerUI.updateProgressBarUI = function () {
     }
 };
 
-PlayerUI.updateProgressBarHoverUI = function () {
+playerUI.updateProgressBarHoverUI = function () {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
 
@@ -462,7 +462,7 @@ PlayerUI.updateProgressBarHoverUI = function () {
     }
 };
 
-PlayerUI.updateTooltipUI = function (e) {
+playerUI.updateTooltipUI = function (e) {
     let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
     var tooltipWidth = 0;
     function getTooltipOffsetX(e) {
@@ -492,11 +492,18 @@ PlayerUI.updateTooltipUI = function (e) {
         $('.vop-tooltip').addClass('vop-preview');
         if (thumbnail) {
             printLog('thumbnail info: ', thumbnail);
+            var isSprite = (thumbnail.data.w && thumbnail.data.h);
+            if (isSprite) {
             this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
             this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
             this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')'
                 + ' -' + thumbnail.data.x.toString() + 'px'
                 + ' -' + thumbnail.data.y.toString() + 'px';
+            } else {
+                this.vopTooltipBg.style.width = '158px';
+                this.vopTooltipBg.style.height = '90px';
+                this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')';
+            }
         } else {
             this.vopTooltipBg.style.width = '158px';
             this.vopTooltipBg.style.height = '90px';
@@ -518,7 +525,7 @@ PlayerUI.updateTooltipUI = function (e) {
     this.vopTooltip.style.display = 'block';
 };
 
-PlayerUI.updateAdProgressUI = function () {
+playerUI.updateAdProgressUI = function () {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
 
@@ -534,7 +541,7 @@ PlayerUI.updateAdProgressUI = function () {
     tDisplay.innerText = fmtTime;
 };
 
-PlayerUI.updatePlayBtnUI = function (paused, ended) {
+playerUI.updatePlayBtnUI = function (paused, ended) {
     if (ended) {
         this.vopPlayButton.innerText = 'replay';
     } else {
@@ -546,7 +553,7 @@ PlayerUI.updatePlayBtnUI = function (paused, ended) {
     }
 };
 
-PlayerUI.updateContentVolumeBarUI = function (muted, volume) {
+playerUI.updateContentVolumeBarUI = function (muted, volume) {
     var uiMutedIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
@@ -581,7 +588,7 @@ PlayerUI.updateContentVolumeBarUI = function (muted, volume) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-PlayerUI.removeAutohideAction = function () {
+playerUI.removeAutohideAction = function () {
     $('.html5-video-player').removeClass('vop-autohide');
     if (this.timerHideControlBar) {
         clearTimeout(this.timerHideControlBar);
@@ -589,7 +596,7 @@ PlayerUI.removeAutohideAction = function () {
     }
 };
 
-PlayerUI.docVolumeSliderMousemove = function (e) {
+playerUI.docVolumeSliderMousemove = function (e) {
     this.updateVolumeMovePosition(e);
 
     var muted = this.player_.isMuted();
@@ -608,7 +615,7 @@ PlayerUI.docVolumeSliderMousemove = function (e) {
     this.updateContentVolumeBarUI(muted, volume);
 };
 
-PlayerUI.docVolumeSliderMouseup = function (e) {
+playerUI.docVolumeSliderMouseup = function (e) {
     printLog('+docVolumeSliderMouseup');
     this.releaseVolumeSliderMouseEvents();
     e.preventDefault();
@@ -625,21 +632,21 @@ PlayerUI.docVolumeSliderMouseup = function (e) {
     }
 };
 
-PlayerUI.captureVolumeSliderMouseEvents = function () {
-    PlayerUI.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
-    PlayerUI.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
+playerUI.captureVolumeSliderMouseEvents = function () {
+    playerUI.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
+    playerUI.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
 
-    document.addEventListener('mousemove', PlayerUI.newVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', PlayerUI.newVolumeSliderMouseup, true);
+    document.addEventListener('mousemove', playerUI.newVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', playerUI.newVolumeSliderMouseup, true);
 };
 
-PlayerUI.releaseVolumeSliderMouseEvents = function () {
-    document.removeEventListener('mousemove', PlayerUI.newVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', PlayerUI.newVolumeSliderMouseup, true);
+playerUI.releaseVolumeSliderMouseEvents = function () {
+    document.removeEventListener('mousemove', playerUI.newVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', playerUI.newVolumeSliderMouseup, true);
 };
 
 ///////////////////////////////////////////////////////////////////
-PlayerUI.onPlayerMouseenter = function () {
+playerUI.onPlayerMouseenter = function () {
     // don't show control bar if the stream is not initialized.
     if (!this.flagPlayerInited) {
         return;
@@ -648,7 +655,7 @@ PlayerUI.onPlayerMouseenter = function () {
     $('.html5-video-player').removeClass('vop-autohide');
 };
 
-PlayerUI.onPlayerMousemove = function (e) {
+playerUI.onPlayerMousemove = function (e) {
     //printLog('+onPlayerMousemove');
     // don't show control bar if the stream is not initialized.
     if (!this.flagPlayerInited) {
@@ -661,7 +668,7 @@ PlayerUI.onPlayerMousemove = function (e) {
     }.bind(this), 3000);
 };
 
-PlayerUI.onPlayerMouseleave = function () {
+playerUI.onPlayerMouseleave = function () {
     var paused = this.player_.isPaused();
     var fullscreen = isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
@@ -669,7 +676,7 @@ PlayerUI.onPlayerMouseleave = function () {
     }
 };
 
-PlayerUI.onPlayerClick = function () {
+playerUI.onPlayerClick = function () {
     if (this.flagAdStarted && this.flagIsLinearAd) {
         return;
     }
@@ -678,17 +685,17 @@ PlayerUI.onPlayerClick = function () {
 };
 
 // browser & UI callback functions
-PlayerUI.onBtnOpen = function () {
+playerUI.onBtnOpen = function () {
     this.player_.open(mediaCfg_);
 };
 
-PlayerUI.onBtnClose = function () {
+playerUI.onBtnClose = function () {
     printLog('+onBtnClose');
     this.player_.close();
     printLog('-onBtnClose');
 };
 
-PlayerUI.onBtnPlay = function () {
+playerUI.onBtnPlay = function () {
     var currPaused = this.player_.isPaused();
     var currEnded = this.player_.isEnded();
     if (currEnded) {
@@ -713,16 +720,16 @@ PlayerUI.onBtnPlay = function () {
     }
 };
 
-PlayerUI.onControlMousemove = function (e) {
+playerUI.onControlMousemove = function (e) {
     e.stopPropagation();
     this.removeAutohideAction();
 };
 
-PlayerUI.onChromeBottomClick = function (e) {
+playerUI.onChromeBottomClick = function (e) {
     e.stopPropagation();
 };
 
-PlayerUI.onBtnMute = function () {
+playerUI.onBtnMute = function () {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
 
@@ -748,30 +755,30 @@ PlayerUI.onBtnMute = function () {
     this.updateContentVolumeBarUI(muted, volume);
 };
 
-PlayerUI.onBtnManualSchedule = function () {
+playerUI.onBtnManualSchedule = function () {
     this.player_.manualSchedule();
 };
 
-PlayerUI.onBtnInitAD = function () {
+playerUI.onBtnInitAD = function () {
     this.player_.test();
 };
 
-PlayerUI.onBtnDelAll = function () {
+playerUI.onBtnDelAll = function () {
     this.player_.dellAll();
 };
 
-PlayerUI.onBtnStop = function () {
+playerUI.onBtnStop = function () {
     this.player_.close();
     this.player_ = null;
 }
 
-PlayerUI.onPlayButtonClickAd = function () {
+playerUI.onPlayButtonClickAd = function () {
     if (this.player_) {
         this.player_.playAd();
     }
 }
 
-PlayerUI.onSubtitlesClick = function () {
+playerUI.onSubtitlesClick = function () {
     printLog('+onSubtitlesClick, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
 
     // Part - process
@@ -792,7 +799,7 @@ PlayerUI.onSubtitlesClick = function () {
     }
 };
 
-PlayerUI.onSettingClick = function () {
+playerUI.onSettingClick = function () {
     printLog('+onSettingClick, currMenu: ' + this.settingMenuContext.currMenu);
 
     // Part - process
@@ -819,7 +826,7 @@ PlayerUI.onSettingClick = function () {
     }
 };
 
-PlayerUI.onFullscreenClick = function () {
+playerUI.onFullscreenClick = function () {
     printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
@@ -828,39 +835,39 @@ PlayerUI.onFullscreenClick = function () {
     }
 };
 
-PlayerUI.onPlayFromGiantButton = function () {
+playerUI.onPlayFromGiantButton = function () {
     this.onBtnPlay();
     this.uiGiantBtnContainer.style.display = 'none';
 };
 
-PlayerUI.onBtnSeek = function () {
+playerUI.onBtnSeek = function () {
     var time = document.getElementById('seekedTime').value;
     this.player_.setPosition(time);
 };
 
-PlayerUI.onBtnAddTextTrack = function () {
+playerUI.onBtnAddTextTrack = function () {
     if (this.player_) {
         this.player_.addTextTrack();
     }
 };
 
-PlayerUI.onBtnRemoveTextTrack = function () {
+playerUI.onBtnRemoveTextTrack = function () {
     this.player_.removeTextTrack();
 };
 
-PlayerUI.setTextTrackHidden = function () {
+playerUI.setTextTrackHidden = function () {
     this.player_.setTextTrackHidden();
 };
 
-PlayerUI.setCueAlign = function (align) {
+playerUI.setCueAlign = function (align) {
     this.player_.setCueAlign(align);
 };
 
-PlayerUI.onFruitClick = function () {
+playerUI.onFruitClick = function () {
     alert('aaaa');
 };
 
-PlayerUI.onBtnTest = function () {
+playerUI.onBtnTest = function () {
     // if (this.player_) {
     //   //this.player_.signalEndOfStream();
     // }
@@ -884,7 +891,7 @@ PlayerUI.onBtnTest = function () {
     //this.player_.test();
 };
 
-PlayerUI.onBtnTest2 = function () {
+playerUI.onBtnTest2 = function () {
     printLog('--onBtnTest2--');
     this.player_.test2();
 
@@ -907,46 +914,46 @@ PlayerUI.onBtnTest2 = function () {
     //v.setAttribute('aria-hidden', true);
 };
 
-PlayerUI.onBtnAttribute = function () {
+playerUI.onBtnAttribute = function () {
     //this.player_.attribute();
 };
 
 //
-PlayerUI.onUICmdCastInit = function () {
+playerUI.onUICmdCastInit = function () {
     var cfg = getInitConfig();
     this.castSender.new_init(cfg);
 }
 
-PlayerUI.onUICmdCastOpen = function () {
+playerUI.onUICmdCastOpen = function () {
     var info = getMediaInfo();
     this.castSender.new_open(info);
 }
 
-PlayerUI.onUICmdCastAddV = function () {
+playerUI.onUICmdCastAddV = function () {
     this.castSender.new_addV();
 }
 
-PlayerUI.onUICmdCastAddPD = function () {
+playerUI.onUICmdCastAddPD = function () {
     this.castSender.new_addPD();
 }
 
-PlayerUI.onUICmdCastPlay = function () {
+playerUI.onUICmdCastPlay = function () {
     this.castSender.new_play();
 }
 
-PlayerUI.onUICmdCastPause = function () {
+playerUI.onUICmdCastPause = function () {
     this.castSender.new_pause();
 }
 
-PlayerUI.onUICmdCastPlayAd = function () {
+playerUI.onUICmdCastPlayAd = function () {
     this.castSender.new_playAd();
 }
 
-PlayerUI.onUICmdCastTest = function () {
+playerUI.onUICmdCastTest = function () {
     this.castSender.new_test();
 }
 
-PlayerUI.doEnterThumbnailMode = function () {
+playerUI.doEnterThumbnailMode = function () {
     printLog('+doEnterThumbnailMode');
     if (!this.flagThumbnailMode) {
         // need to pause content first before starting a seek operation.
@@ -963,15 +970,15 @@ PlayerUI.doEnterThumbnailMode = function () {
     }
 }
 
-PlayerUI.doProcessThumbnailMove = function () {
+playerUI.doProcessThumbnailMove = function () {
     // for further action, you can add thumbnail popup here.
 }
 
-PlayerUI.doProcessThumbnailUp = function () {
+playerUI.doProcessThumbnailUp = function () {
     // for further action, you can add thumbnail ended event here.
 }
 
-PlayerUI.onProgressBarMousedown = function (e) {
+playerUI.onProgressBarMousedown = function (e) {
     printLog('+onProgressBarMousedown');
     this.captureProgressBarMouseEvents();
     e.preventDefault();
@@ -992,7 +999,7 @@ PlayerUI.onProgressBarMousedown = function (e) {
     this.updateProgressBarHoverUI();
 }
 
-PlayerUI.onProgressBarMousemove = function (e) {
+playerUI.onProgressBarMousemove = function (e) {
     //printLog('+onProgressBarMousemove');
     e.stopPropagation();
     this.removeAutohideAction();
@@ -1008,25 +1015,25 @@ PlayerUI.onProgressBarMousemove = function (e) {
     this.updateTooltipUI(e);
 }
 
-PlayerUI.onProgressBarMouseleave = function () {
+playerUI.onProgressBarMouseleave = function () {
     printLog('+onProgressBarMouseleave');
     this.vopTooltip.style.display = 'none';
 }
 
-PlayerUI.captureProgressBarMouseEvents = function () {
-    PlayerUI.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
-    PlayerUI.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
+playerUI.captureProgressBarMouseEvents = function () {
+    playerUI.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
+    playerUI.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
 
-    document.addEventListener('mousemove', PlayerUI.newProgressBarMousemove, true);
-    document.addEventListener('mouseup', PlayerUI.newProgressBarMouseup, true);
+    document.addEventListener('mousemove', playerUI.newProgressBarMousemove, true);
+    document.addEventListener('mouseup', playerUI.newProgressBarMouseup, true);
 }
 
-PlayerUI.releaseProgressBarMouseEvents = function () {
-    document.removeEventListener('mousemove', PlayerUI.newProgressBarMousemove, true);
-    document.removeEventListener('mouseup', PlayerUI.newProgressBarMouseup, true);
+playerUI.releaseProgressBarMouseEvents = function () {
+    document.removeEventListener('mousemove', playerUI.newProgressBarMousemove, true);
+    document.removeEventListener('mouseup', playerUI.newProgressBarMouseup, true);
 }
 
-PlayerUI.docProgressBarMousemove = function (e) {
+playerUI.docProgressBarMousemove = function (e) {
     printLog('+docProgressBarMousemove');
 
     var movePos = this.getProgressMovePosition(e);
@@ -1042,7 +1049,7 @@ PlayerUI.docProgressBarMousemove = function (e) {
     this.updateProgressBarHoverUI();
 }
 
-PlayerUI.docProgressBarMouseup = function (e) {
+playerUI.docProgressBarMouseup = function (e) {
     printLog('+docProgressBarMouseup');
     e.preventDefault();
     this.releaseProgressBarMouseEvents();
@@ -1071,7 +1078,7 @@ PlayerUI.docProgressBarMouseup = function (e) {
     this.progressBarContext.mousedown = false;
 }
 
-PlayerUI.onVolumeSliderMousedown = function (e) {
+playerUI.onVolumeSliderMousedown = function (e) {
     printLog('+onVolumeSliderMousedown');
     this.captureVolumeSliderMouseEvents();
     e.preventDefault();
@@ -1084,7 +1091,7 @@ PlayerUI.onVolumeSliderMousedown = function (e) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // this.player_ event callback
-PlayerUI.onMediaCanPlay = function () {
+playerUI.onMediaCanPlay = function () {
     if (!this.flagPlayerInited) {
         this.flagPlayerInited = true;
 
@@ -1098,11 +1105,11 @@ PlayerUI.onMediaCanPlay = function () {
     }
 }
 
-PlayerUI.onMediaDurationChanged = function () {
+playerUI.onMediaDurationChanged = function () {
     this.updateProgressBarUI();
 }
 
-PlayerUI.onMediaEnded = function () {
+playerUI.onMediaEnded = function () {
     var paused = this.player_.isPaused();
     var ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
@@ -1115,7 +1122,7 @@ PlayerUI.onMediaEnded = function () {
     $('.html5-video-player').removeClass('vop-autohide');
 }
 
-PlayerUI.onMediaLoadedData = function () {
+playerUI.onMediaLoadedData = function () {
     // update volume here
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
@@ -1123,7 +1130,7 @@ PlayerUI.onMediaLoadedData = function () {
     this.updateContentVolumeBarUI(muted, volume);
 }
 
-PlayerUI.onMediaLoadedMetaData = function (e) {
+playerUI.onMediaLoadedMetaData = function (e) {
     // update external div's dimensions
     this.metaWidth = e.width;
     this.metaHeight = e.height;
@@ -1136,9 +1143,9 @@ PlayerUI.onMediaLoadedMetaData = function (e) {
     this.player_.resize(vp.clientWidth, vp.clientHeight);
 }
 
-PlayerUI.onMediaPaused = function () {}
+playerUI.onMediaPaused = function () {}
 
-PlayerUI.onMediaPlaying = function () {
+playerUI.onMediaPlaying = function () {
     var paused = this.player_.isPaused();
     var ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
@@ -1146,11 +1153,11 @@ PlayerUI.onMediaPlaying = function () {
     this.stopWaitingUI();
 }
 
-PlayerUI.onMediaSeeking = function () {
+playerUI.onMediaSeeking = function () {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
 }
 
-PlayerUI.onMediaSeeked = function () {
+playerUI.onMediaSeeked = function () {
     printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
 
     if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
@@ -1162,7 +1169,7 @@ PlayerUI.onMediaSeeked = function () {
     }
 }
 
-PlayerUI.onMediaTimeupdated = function () {
+playerUI.onMediaTimeupdated = function () {
     //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
@@ -1175,21 +1182,21 @@ PlayerUI.onMediaTimeupdated = function () {
     }
 }
 
-PlayerUI.onMediaVolumeChanged = function () {
+playerUI.onMediaVolumeChanged = function () {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
 }
 
-PlayerUI.onMediaWaiting = function () {
+playerUI.onMediaWaiting = function () {
     this.startWaitingUI();
 }
 
-PlayerUI.onLog = function (e) {
+playerUI.onLog = function (e) {
     this.uiConsole.innerHTML = (this.uiConsole.innerHTML + '<br/>' + e.message);
 }
 
-PlayerUI.onAdStarted = function (e) {
+playerUI.onAdStarted = function (e) {
     printLog('onAdStarted, linear: ' + e.isLinearAd);
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.isLinearAd;
@@ -1203,7 +1210,7 @@ PlayerUI.onAdStarted = function (e) {
     }
 }
 
-PlayerUI.onAdComplete = function () {
+playerUI.onAdComplete = function () {
     printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
     this.flagAdStarted = false;
 
@@ -1212,14 +1219,14 @@ PlayerUI.onAdComplete = function () {
     this.vopSettingsBtn.style.display = 'inline-block';
 }
 
-PlayerUI.onAdTimeUpdate = function () {
+playerUI.onAdTimeUpdate = function () {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
 }
 
-PlayerUI.onFullscreenChanged = function () {
+playerUI.onFullscreenChanged = function () {
     var v = this.player_.isFullscreen();
     printLog('fullscreen changed, ret: ' + v);
     if (v) {
@@ -1231,7 +1238,7 @@ PlayerUI.onFullscreenChanged = function () {
 
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
-PlayerUI.createSubtitlesMenu = function () {
+playerUI.createSubtitlesMenu = function () {
     // The subtitle menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
@@ -1317,13 +1324,13 @@ PlayerUI.createSubtitlesMenu = function () {
     this.subtitlesMenuContext.currMenu = 'main_menu';
 }
 
-PlayerUI.destroySettingsMenu = function () {
+playerUI.destroySettingsMenu = function () {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
         this.vopPanel.removeChild(v);
     }
     while (this.vopPanelMenu.firstChild) {
-        this.vopPanelMenu.firstChild.removeEventListener('blur', PlayerUI.onMainMenuBlur);
+        this.vopPanelMenu.firstChild.removeEventListener('blur', playerUI.onMainMenuBlur);
         this.vopPanelMenu.removeChild(this.vopPanelMenu.firstChild);
     }
 
@@ -1331,7 +1338,7 @@ PlayerUI.destroySettingsMenu = function () {
     this.subtitlesMenuContext.currMenu = 'none';
 }
 
-PlayerUI.createHeaderItemUI = function (text, cb) {
+playerUI.createHeaderItemUI = function (text, cb) {
     var header = document.createElement('div');
     header.setAttribute('class', 'vop-panel-header');
 
@@ -1344,7 +1351,7 @@ PlayerUI.createHeaderItemUI = function (text, cb) {
     this.vopPanel.insertBefore(header, this.vopPanelMenu);
 }
 
-PlayerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
+playerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
     var menuitem = document.createElement('div');
     menuitem.setAttribute('class', 'vop-menuitem');
     menuitem.setAttribute('role', 'menuitemradio');
@@ -1361,7 +1368,7 @@ PlayerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
     return menuitem;
 }
 
-PlayerUI.createMainMenu = function () {
+playerUI.createMainMenu = function () {
     // The main menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
@@ -1493,7 +1500,7 @@ PlayerUI.createMainMenu = function () {
     this.settingMenuContext.currMenu = 'main_menu';
 }
 
-PlayerUI.createQualityMenu = function () {
+playerUI.createQualityMenu = function () {
     // The quality menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
@@ -1532,7 +1539,7 @@ PlayerUI.createQualityMenu = function () {
     for (var i = 0; i < this.settingMenuContext.qualityList.length; i++) {
         var quality = this.settingMenuContext.qualityList[i].bitrate;
 
-        var menuitem = this.createRadioMenuItem(quality, PlayerUI.onMainMenuBlur, this.onQualityItemClick.bind(this));
+        var menuitem = this.createRadioMenuItem(quality, playerUI.onMainMenuBlur, this.onQualityItemClick.bind(this));
         if (quality == this.settingMenuContext.currQuality) {
             menuitem.setAttribute('aria-checked', 'true');
         }
@@ -1550,7 +1557,7 @@ PlayerUI.createQualityMenu = function () {
     this.settingMenuContext.currMenu = 'quality_menu';
 }
 
-PlayerUI.createAudioTrackMenu = function () {
+playerUI.createAudioTrackMenu = function () {
     // The audio track menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
@@ -1602,7 +1609,7 @@ PlayerUI.createAudioTrackMenu = function () {
     this.settingMenuContext.currMenu = 'audio_track_menu';
 }
 
-PlayerUI.createFccMenu = function () {
+playerUI.createFccMenu = function () {
     // The fcc menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
@@ -1665,7 +1672,7 @@ PlayerUI.createFccMenu = function () {
     firstItem.focus();
 }
 
-PlayerUI.createFccItemMenu = function (name) {
+playerUI.createFccItemMenu = function (name) {
     // Part - fcc property title
     this.createHeaderItemUI(name, this.onFccPropertyItemBack.bind(this));
 
@@ -1697,7 +1704,7 @@ PlayerUI.createFccItemMenu = function (name) {
     }
 }
 
-PlayerUI.updatePanelMenuUI = function (currValue) {
+playerUI.updatePanelMenuUI = function (currValue) {
     var elem_child = this.vopPanelMenu.childNodes;
     for (var i = 0; i < elem_child.length; i++) {
         var menuitem = elem_child[i];
@@ -1711,7 +1718,7 @@ PlayerUI.updatePanelMenuUI = function (currValue) {
     }
 }
 
-PlayerUI.onQualityMenuClick = function (e) {
+playerUI.onQualityMenuClick = function (e) {
     e.stopPropagation();
     printLog('+onQualityMenuClick: ' + e.target.innerText);
 
@@ -1719,21 +1726,21 @@ PlayerUI.onQualityMenuClick = function (e) {
     this.createQualityMenu();
 }
 
-PlayerUI.onAudioTrackMenuClick = function (e) {
+playerUI.onAudioTrackMenuClick = function (e) {
     e.stopPropagation();
 
     this.destroySettingsMenu();
     this.createAudioTrackMenu();
 }
 
-PlayerUI.onFccMenuClick = function (e) {
+playerUI.onFccMenuClick = function (e) {
     e.stopPropagation();
 
     this.destroySettingsMenu();
     this.createFccMenu();
 }
 
-PlayerUI.onMainMenuBlur = function (e) {
+playerUI.onMainMenuBlur = function (e) {
     var text = '';
     if (e.relatedTarget) {
         text = ', text: ' + e.relatedTarget.innerText;
@@ -1761,7 +1768,7 @@ PlayerUI.onMainMenuBlur = function (e) {
     }
 }
 
-PlayerUI.onSubtitleItemClick = function (e) {
+playerUI.onSubtitleItemClick = function (e) {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
@@ -1774,7 +1781,7 @@ PlayerUI.onSubtitleItemClick = function (e) {
     this.updatePanelMenuUI(this.subtitlesMenuContext.currSubtitleId);
 }
 
-PlayerUI.onSubtitleItemBlur = function (e) {
+playerUI.onSubtitleItemBlur = function (e) {
     if (e.relatedTarget) {
         if (e.relatedTarget === this.vopSubtitlesBtn) {
             if (this.subtitlesMenuContext.currMenu === 'main_menu') {
@@ -1786,11 +1793,11 @@ PlayerUI.onSubtitleItemBlur = function (e) {
     }
 }
 
-PlayerUI.onSubitlesBack = function (e) {
+playerUI.onSubitlesBack = function (e) {
     printLog('+onSubitlesBack');
 }
 
-PlayerUI.onQualityBack = function (e) {
+playerUI.onQualityBack = function (e) {
     printLog('+onQualityBack');
     e.stopPropagation();
 
@@ -1798,7 +1805,7 @@ PlayerUI.onQualityBack = function (e) {
     this.createMainMenu();
 }
 
-PlayerUI.onQualityItemClick = function (e) {
+playerUI.onQualityItemClick = function (e) {
     printLog('onQualityItemClick, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu
          + ', text: ' + e.target.innerText);
     e.stopPropagation();
@@ -1807,28 +1814,28 @@ PlayerUI.onQualityItemClick = function (e) {
     this.updatePanelMenuUI(this.settingMenuContext.currQuality);
 }
 
-PlayerUI.onAudioTrackBack = function (e) {
+playerUI.onAudioTrackBack = function (e) {
     e.stopPropagation();
 
     this.destroySettingsMenu();
     this.createMainMenu();
 }
 
-PlayerUI.onAudioTrackItemClick = function (e) {
+playerUI.onAudioTrackItemClick = function (e) {
     e.stopPropagation();
 
     this.settingMenuContext.currAudioTrack = e.target.innerText;
     this.updatePanelMenuUI(this.settingMenuContext.currAudioTrack);
 };
 
-PlayerUI.onFccBack = function (e) {
+playerUI.onFccBack = function (e) {
     e.stopPropagation();
 
     this.destroySettingsMenu();
     this.createMainMenu();
 };
 
-PlayerUI.onFccItemClick = function (e) {
+playerUI.onFccItemClick = function (e) {
     e.stopPropagation();
     printLog('+onFccItemClick, e.currentTarget.dataset.name: ' + e.currentTarget.dataset.name);
 
@@ -1839,14 +1846,14 @@ PlayerUI.onFccItemClick = function (e) {
     this.createFccItemMenu(e.currentTarget.dataset.name);
 };
 
-PlayerUI.onFccPropertyItemBack = function (e) {
+playerUI.onFccPropertyItemBack = function (e) {
     e.stopPropagation();
 
     this.destroySettingsMenu();
     this.createFccMenu();
 };
 
-PlayerUI.onFccPropertyItemClick = function (e) {
+playerUI.onFccPropertyItemClick = function (e) {
     e.stopPropagation();
 
     printLog('+onFccPropertyItemClick');
@@ -1863,7 +1870,7 @@ PlayerUI.onFccPropertyItemClick = function (e) {
     }
 };
 
-PlayerUI.onFccPropertyItemBlur = function (e) {
+playerUI.onFccPropertyItemBlur = function (e) {
     e.stopPropagation();
 
     var prevFocus = e.target;
@@ -1891,7 +1898,7 @@ PlayerUI.onFccPropertyItemBlur = function (e) {
 
 function onBtnOpen()
 {
-    PlayerUI.onBtnOpen();
+    playerUI.onBtnOpen();
 }
 
 function onBtnClose()
@@ -1902,7 +1909,7 @@ function onBtnPlay()
 
 function onBtnManualSchedule()
 {
-    PlayerUI.onBtnManualSchedule();
+    playerUI.onBtnManualSchedule();
 }
 
 function onBtnInitAD()
@@ -1918,7 +1925,10 @@ function onBtnPlayAd()
 {}
 
 function onBtnLoadThumbnail() {
-    PlayerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/case01/thumbnails.vtt');
+    //playerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/case01/thumbnails.vtt');
+
+    playerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt');
+    
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -1928,10 +1938,10 @@ window.onload = function () {
     browserInfo = oldmtn.CommonUtils.getBrowserInfo();
     console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
-    PlayerUI.initVariable();
-    PlayerUI.initUI();
-    PlayerUI.initUIEventListeners();
-    PlayerUI.initPlayer();
+    playerUI.initVariable();
+    playerUI.initUI();
+    playerUI.initUIEventListeners();
+    playerUI.initPlayer();
 
     // BD
     //onBtnOpen();
