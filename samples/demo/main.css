@@ -58,21 +58,17 @@ body {
   background-color: #000;
   background-repeat: no-repeat;
   display: none;
-
-  width: 158px;
-  height: 90px;
-  /*  background: url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw")
-  -180px -0px / 800px 450px;*/
 }
 
 .vop-tooltip-text-wrapper {
+  /*background-color: orange;*/
+  background-color: rgba(28,28,28,0.9);
   border-radius: 3px;
 }
 
 .vop-tooltip-text {
   display: block;
   color: white;
-  background-color: rgba(28,28,28,0.9);
   border-radius: 2px;
   padding: 5px 9px;
 }

@@ -463,14 +463,14 @@ PlayerUI.updateProgressBarHoverUI = function () {
 };
 
 PlayerUI.updateTooltipUI = function (e) {
-    var hasVttThumbnail = true;
+    let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+    var tooltipWidth = 0;
     function getTooltipOffsetX(e) {
         // part - input
         // bounding client rect can return the progress bar's rect relative to current page.
         var rect = this.vopProgressBar.getBoundingClientRect();
         var leftMin = 12;
         var rightMax = 12 + rect.width;
-        var tooltipWidth = (hasVttThumbnail === true) ? 162 : 60;
 
         // part - logic process
         var offsetToProgressBar = (e.clientX - rect.left);
@@ -488,9 +488,8 @@ PlayerUI.updateTooltipUI = function (e) {
         return tooltipLeft_RelativeToVideo;
     }
 
-    if (hasVttThumbnail) {
+    if (thumbnail) {
         $('.vop-tooltip').addClass('vop-preview');
-        let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
         if (thumbnail) {
             printLog('thumbnail info: ', thumbnail);
             this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
@@ -499,10 +498,15 @@ PlayerUI.updateTooltipUI = function (e) {
                 + ' -' + thumbnail.data.x.toString() + 'px'
                 + ' -' + thumbnail.data.y.toString() + 'px';
         } else {
+            this.vopTooltipBg.style.width = '158px';
+            this.vopTooltipBg.style.height = '90px';
             this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
         }
+
+        tooltipWidth = $('.vop-preview').innerWidth();
     } else {
         $('.vop-tooltip').removeClass('vop-preview');
+        tooltipWidth = 60;
     }
 
     // update tooltip offset
