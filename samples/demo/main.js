@@ -355,6 +355,10 @@ PlayerUI.initPlayer = function () {
     //this.castSender = new oldmtn.CastSender(receiverAppId);
 };
 
+PlayerUI.loadThumbnail = function (url) {
+    this.player_.loadThumbnail(url);
+};
+
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
 PlayerUI.startWaitingUI = function () {
@@ -486,7 +490,17 @@ PlayerUI.updateTooltipUI = function (e) {
 
     if (hasVttThumbnail) {
         $('.vop-tooltip').addClass('vop-preview');
-        this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
+        let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+        if (thumbnail) {
+            printLog('thumbnail info: ', thumbnail);
+            this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
+            this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
+            this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')'
+                + ' -' + thumbnail.data.x.toString() + 'px'
+                + ' -' + thumbnail.data.y.toString() + 'px';
+        } else {
+            this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
+        }
     } else {
         $('.vop-tooltip').removeClass('vop-preview');
     }
@@ -1898,6 +1912,10 @@ function onBtnStop()
 
 function onBtnPlayAd()
 {}
+
+function onBtnLoadThumbnail() {
+    PlayerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/case01/thumbnails.vtt');
+}
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file

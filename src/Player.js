@@ -16,8 +16,9 @@ import ManifestParser from './media/manifest_parser';
 import ScheduleController from './media/schedule_controller';
 
 import TimeRanges from './utils/timeRanges';
-import XHRLoader from './utils/xhr_loader';
 import CommonUtils from './utils/common_utils';
+
+import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
@@ -32,7 +33,6 @@ function Player(containerId) {
 
     let eventBus_;
     let debug_;
-    let xhrLoader_;
     let mediaEngine_;
     let textEngine_;
     let mseEngine_;
@@ -256,6 +256,16 @@ function Player(containerId) {
         }
     }
 
+    function loadThumbnail(url) {
+        let vttThumbnail = WebvttThumbnails(context_).getInstance();
+        vttThumbnail.init(url);
+    }
+
+    function getThumbnail(time) {
+        let vttThumbnail = WebvttThumbnails(context_).getInstance();
+        return vttThumbnail.getThumbnail(time);
+    }
+
     function isFullscreen() {
         return document.fullscreenElement ||
         document.msFullscreenElement ||
@@ -298,7 +308,6 @@ function Player(containerId) {
         // enging component
         eventBus_ = EventBus(context_).getInstance();
         debug_ = Debug(context_).getInstance();
-        xhrLoader_ = XHRLoader(context_).getInstance();
         mediaEngine_ = MediaEngine(context_).getInstance(media_, cfg_);
         textEngine_ = new TextEngine(media_);
         mseEngine_ = MediaSourceEngine(context_).getInstance();
@@ -445,12 +454,18 @@ function Player(containerId) {
     }
 
     function test() {
-        let a1 = getBufferedRanges();
-        let b1 = getSeekableRange();
-        let a1Str = TimeRanges.toString(a1);
-        let b1Str = TimeRanges.toString(b1);
-        console.log('buffered: ' + a1Str);
-        console.log('seekable: ' + b1Str);
+        let test_asArray = [1, 2, 3, 4, 5];
+        test_asArray.abc = 'abc_string';
+        for (let test of test_asArray) {
+            console.log('test: ' + test);
+        }
+
+        // let a1 = getBufferedRanges();
+        // let b1 = getSeekableRange();
+        // let a1Str = TimeRanges.toString(a1);
+        // let b1Str = TimeRanges.toString(b1);
+        // console.log('buffered: ' + a1Str);
+        // console.log('seekable: ' + b1Str);
     }
 
     function test2() {
@@ -497,6 +512,9 @@ function Player(containerId) {
         getValidBufferPosition: getValidBufferPosition,
         // Ads
         playAd: playAd,
+        // thumbnail
+        loadThumbnail: loadThumbnail,
+        getThumbnail: getThumbnail,
         // debug
         manualSchedule: manualSchedule,
         test: test,
