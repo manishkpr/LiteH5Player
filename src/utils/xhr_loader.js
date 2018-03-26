@@ -43,7 +43,8 @@ function XHRLoader(config)
     };
 
     const onload = function(ev) {
-      printlog(`--onload--, status:${xhr_.status}, length: ${xhr_.response.byteLength}, readyState:${xhr_.readyState}`);
+      //printlog(`--onload--, status:${xhr_.status}, length: ${xhr_.response.byteLength}, readyState:${xhr_.readyState}`);
+      printlog(`--onload--, status:${xhr_.status}, readyState:${xhr_.readyState}`);
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
         request_.cbSuccess(xhr_.response);
@@ -114,6 +115,6 @@ function XHRLoader(config)
 }
 
 XHRLoader.__h5player_factory_name = 'XHRLoader';
-export default FactoryMaker.getSingletonFactory(XHRLoader);
+export default FactoryMaker.getClassFactory(XHRLoader);
 
 

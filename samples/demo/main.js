@@ -1925,12 +1925,6 @@ function onBtnStop()
 function onBtnPlayAd()
 {}
 
-function onBtnLoadThumbnail() {
-    //playerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/case01/thumbnails.vtt');
-
-    playerUI.loadThumbnail('http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt');
-    
-}
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file

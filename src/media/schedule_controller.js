@@ -8,7 +8,7 @@ function ScheduleController() {
     
     let parser_;
     let scheduleTimeout_;
-    let xhrLoader_ = XHRLoader(context_).getInstance();
+    let xhrLoader_ = XHRLoader(context_).create();
     let eventBus_ = EventBus(context_).getInstance();
 
     // flag

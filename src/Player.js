@@ -74,6 +74,10 @@ function Player(containerId) {
             parser_.loadManifest(streamInfo_.url);
         }
 
+        //
+        let vttThumbnail = WebvttThumbnails(context_).getInstance();
+        vttThumbnail.open(streamInfo_.thumbnail);
+
         debug_.log('Player, -open');
     }
 
@@ -254,11 +258,6 @@ function Player(containerId) {
         } else {
 
         }
-    }
-
-    function loadThumbnail(url) {
-        let vttThumbnail = WebvttThumbnails(context_).getInstance();
-        vttThumbnail.init(url);
     }
 
     function getThumbnail(time) {
@@ -513,7 +512,6 @@ function Player(containerId) {
         // Ads
         playAd: playAd,
         // thumbnail
-        loadThumbnail: loadThumbnail,
         getThumbnail: getThumbnail,
         // debug
         manualSchedule: manualSchedule,

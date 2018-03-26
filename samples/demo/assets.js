@@ -163,7 +163,11 @@ function getMediaInfo()
       key: key, // only for clearkey
       drmInitDataType: drmInitDataType,
       drmInitData: drmInitData
-    }
+    },
+
+    // 
+    thumbnail: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
+    //thumbnail: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt'
   };
 
   return info;

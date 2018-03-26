@@ -6,23 +6,23 @@ import StringUtils from '../utils/string_utils';
 
 function WebvttThumbnails() {
     let context_ = this.context;
-    let xhrLoader_ = XHRLoader(context_).getInstance();
+    let xhrLoader_ = XHRLoader(context_).create();
     let vttParser_ = VTTParser(context_).getInstance();
 
     let vttUrl_;
     let thumbnails_;
 
-    function init(url) {
+    function open(url) {
         vttUrl_ = url;
         let request = {
             url: vttUrl_,
-            cbSuccess: onRequestVttSuccess
+            cbSuccess: onRequestThumbnailSuccess
         };
         xhrLoader_.load(request);
     }
 
-    function onRequestVttSuccess(buffer) {
-        function getThumbnailInfo(text, baseUrl) {
+    function onRequestThumbnailSuccess(buffer) {
+        function parseVttText(text, baseUrl) {
             let thumbnailInfo = {};
             let subText = null;
             let index = text.indexOf('#');
@@ -57,7 +57,7 @@ function WebvttThumbnails() {
         let lastSlash = vttUrl_.lastIndexOf('/');
         let baseUrl = vttUrl_.substring(0, lastSlash);
         for (let i = 0; i < thumbnails_.length; i ++) {
-            thumbnails_[i].data = getThumbnailInfo(thumbnails_[i].data, baseUrl);
+            thumbnails_[i].data = parseVttText(thumbnails_[i].data, baseUrl);
         }
     }
 
@@ -77,7 +77,7 @@ function WebvttThumbnails() {
     }
 
     let instance_ = {
-        init: init,
+        open: open,
         getThumbnail: getThumbnail
     };
 

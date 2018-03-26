@@ -19,7 +19,7 @@ function DashParser() {
 
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
-    let xhrLoader_ = XHRLoader(context_).getInstance();
+    let xhrLoader_ = XHRLoader(context_).create();
     // parser reference variable
     let matchers_;
     let converter_;
