@@ -502,7 +502,8 @@ playerUI.updateTooltipUI = function (e) {
             } else {
                 this.vopTooltipBg.style.width = '158px';
                 this.vopTooltipBg.style.height = '90px';
-                this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')';
+                this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ') no-repeat';
+                this.vopTooltipBg.style.backgroundSize = '100% 100%';
             }
         } else {
             this.vopTooltipBg.style.width = '158px';

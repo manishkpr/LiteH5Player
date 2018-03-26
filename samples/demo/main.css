@@ -56,7 +56,6 @@ body {
 .vop-tooltip-bg {
   position: relative;
   background-color: #000;
-  background-repeat: no-repeat;
   display: none;
 }
 
