@@ -8,7 +8,11 @@ function UIEngine() {
 
     function initUI(playerContainer) {
         playerContainer_ = document.getElementById(playerContainer);
-        initElements();
+        
+        // remove internal container if it's exist
+        removeInternalContainer();
+        
+        createInternalContainer();
         initEventListeners();
     }
 
@@ -20,7 +24,19 @@ function UIEngine() {
         document.getElementsByTagName('HEAD').item(0).appendChild(style);
     }
 
-    function initElements() {
+    function removeInternalContainer() {
+        let a1 = playerContainer_.querySelector('.vop-video-container');
+        let a2 = playerContainer_.querySelector('.vop-ads-container');
+
+        if (a1) {
+            playerContainer_.removeChild(a1);
+        }
+        if (a2) {
+            playerContainer_.removeChild(a2);
+        }
+    }
+
+    function createInternalContainer() {
         // create video element here
         video_ = document.createElement('video');
         video_.setAttribute('class', 'vop-video');
@@ -36,7 +52,7 @@ function UIEngine() {
         adContainer_ = document.createElement('div');
         adContainer_.setAttribute('class', 'vop-ads-container');
 
-        //
+        // insert video container
         let firstChild = playerContainer_.firstChild;
         if (firstChild) {
             playerContainer_.insertBefore(videoContainer_, firstChild);
@@ -44,6 +60,7 @@ function UIEngine() {
             playerContainer_.appendChild(videoContainer_);
         }
 
+        // insert ad container
         if (firstChild) {
             playerContainer_.insertBefore(adContainer_, firstChild);
         } else {

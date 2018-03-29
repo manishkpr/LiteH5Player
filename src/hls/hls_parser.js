@@ -11,10 +11,6 @@ function HlsParser() {
 
     function init() {
         demuxer_ = new Demuxer();
-        setTimeout(function() {
-            demuxer_.push('abcd');
-        }, 1000)
-        
     }
 
     let instance_ = {

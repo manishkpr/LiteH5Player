@@ -79,8 +79,8 @@ function getInitConfig()
     //   //tag: ad68010,
     //   //tag: ad68010_local,
     //   //tag: yun_test_ad01,
-    //   tag: VPAID_LINK01,
-    //   //tag: Single_Inline_Linear,
+    //   //tag: VPAID_LINK01,
+    //   tag: Single_Inline_Linear,
     //   //tag: Single_Skippable_Inline,
     //   //tag: Single_Non_linear_Inline,
     //   //tag: Single_Non_linear_Inline2,
@@ -137,15 +137,17 @@ function getMediaInfo()
     //url: 'case03.mpd', // video + audio
     //--Item: Live
     //url: 'live01.mpd',
-    //--Item: True mpd path
+    //--Item: dash part(True mpd path)
     //url: 'http://localhost/2/dash/common/video.mpd',
     //url: 'http://localhost/2/dash/features/av_nonmuxed/video.mpd',
-    url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
+    //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
-    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
+    url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://10.2.68.64/2/pd/fmp4/pure_audio_01.mp4',
+    //--Item: hls part
+    //url: 'http://10.2.68.64/2/hls/common/test.m3u8',
 
     // internal test
     audioCodec: audioCodec,
@@ -180,34 +182,34 @@ function initAudioContent() {
 
   //
   aContents = [];
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/all.mp4');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/all.mp4');
   return;
 
   aContents = [];
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/init.mp4');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/1.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/2.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/3.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/4.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/5.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/6.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/7.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/8.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/9.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/10.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/11.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/12.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/13.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/14.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/15.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/16.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/17.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/18.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/19.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/20.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/21.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/22.m4s');
-  aContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/A48/23.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/init.mp4');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/1.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/2.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/3.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/4.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/5.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/6.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/7.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/8.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/9.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/10.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/11.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/12.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/13.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/14.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/15.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/16.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/17.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/18.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/19.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/20.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/21.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/22.m4s');
+  aContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/A48/23.m4s');
 }
 
 function initVideoContent() {
@@ -215,14 +217,14 @@ function initVideoContent() {
 
   // case 1
   //vContents = [];
-  //vContents.push('http://10.2.72.19/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4');
-  //vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/all.mp4');
+  //vContents.push('http://10.2.72.19/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4');
+  //vContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/all.mp4');
   //return;
 
   vContents = [];
-  vContents.push('http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4');
+  vContents.push('http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4');
   for (var i = 1; i <= 180; i ++) {
-    var content = 'http://10.2.68.64/2/mydash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
+    var content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
     vContents.push(content);
   }
 
@@ -233,13 +235,13 @@ function initVideoContent() {
   //vContents.push('http://10.2.68.64/2/dash_example/mulitmpd/mp4-main-multi-aaclc_high-3.m4s');
 
   //// case 3
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_0.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_1.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_2.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_3.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_4.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_5.m4v');
-  //vContents.push('http://10.2.68.64/2/mydash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_6.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_0.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_1.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_2.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_3.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_4.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_5.m4v');
+  //vContents.push('http://10.2.68.64/2/dash/common/bbb_30fps_320x180_200k/bbb_30fps_320x180_200k_6.m4v');
 }
 
 function initMseCase01()

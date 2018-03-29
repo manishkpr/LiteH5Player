@@ -104,8 +104,6 @@ function DashParser() {
             aRep: null,
             vRep: representation
         };
-
-        eventBus_.trigger(Events.MANIFEST_PARSED, activeStream_);
     }
 
     function audio_only_case01() {
@@ -299,6 +297,8 @@ function DashParser() {
 
             let manifest = converter_.xml_str2json(content);
             getRepresentation(manifest);
+
+            eventBus_.trigger(Events.MANIFEST_PARSED, activeStream_);
         }
 
         let request = {

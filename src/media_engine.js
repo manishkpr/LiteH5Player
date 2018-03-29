@@ -13,7 +13,7 @@ loadeddata
 progress
 canplay
 canplaythrough
- */
+*/
 
 function MediaEngine(media, cfg) {
     let context_ = this.context;

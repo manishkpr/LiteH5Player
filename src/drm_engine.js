@@ -17,27 +17,29 @@ function DRMEngine(media) {
     protectionModel_ = getProtectionModel(media_);
     protectionModel_.attachMedia(media_);
 
-function getProtectionModel(media) {
-    if (media.onencrypted !== undefined &&
-        media.mediaKeys !== undefined &&
-        navigator.requestMediaKeySystemAccess !== undefined &&
-        typeof navigator.requestMediaKeySystemAccess === 'function') {
-        console.log('User Agent support ProtectionModel_21Jan2015');
-        return new ProtectionModel_21Jan2015();
-    } else {
-        console.log('User Agent support ProtectionModel_3Feb2014');
-        return new ProtectionModel_3Feb2014();
+    function getProtectionModel(media) {
+        if (media.onencrypted !== undefined &&
+            media.mediaKeys !== undefined &&
+            navigator.requestMediaKeySystemAccess !== undefined &&
+            typeof navigator.requestMediaKeySystemAccess === 'function') {
+            console.log('User Agent support ProtectionModel_21Jan2015');
+            return new ProtectionModel_21Jan2015();
+        } else {
+            console.log('User Agent support ProtectionModel_3Feb2014');
+            return new ProtectionModel_3Feb2014();
+        }
     }
-}
 
-function setDrmInfo (info) {
-    if (!info.drm || !info.drm.type) { return; }
+    function setDrmInfo(info) {
+        if (!info.drm || !info.drm.type) {
+            return;
+        }
 
-    let keySystem = protectionKeyController_.getKeySystemBySystemString(info.drm.type);
-    console.log('H5Player, request systemString: ' + keySystem.systemString);
-    protectionModel_.setKeySystem(keySystem);
-    protectionModel_.setDrmInfo(info);
-}
+        let keySystem = protectionKeyController_.getKeySystemBySystemString(info.drm.type);
+        console.log('H5Player, request systemString: ' + keySystem.systemString);
+        protectionModel_.setKeySystem(keySystem);
+        protectionModel_.setDrmInfo(info);
+    }
 
     let instance_ = {
         setDrmInfo: setDrmInfo
@@ -47,5 +49,4 @@ function setDrmInfo (info) {
 };
 
 DRMEngine.__h5player_factory_name = 'DRMEngine';
-export default FactoryMaker.getSingletonFactory(DRMEngine);
-
+export defaultFactoryMaker.getSingletonFactory(DRMEngine);

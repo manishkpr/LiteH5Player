@@ -1,7 +1,15 @@
 import FactoryMaker from '../core/FactoryMaker';
+import Events from '../core/CoreEvents';
+import EventBus from '../core/EventBus';
+import Debug from '../core/Debug';
+import XHRLoader from '../utils/xhr_loader';
 
 function PDParser() {
+    let context_ = this.context;
+    
     let activeStream_;
+    let eventBus_ = EventBus(context_).getInstance();
+
     // flag
     let pdDownloaded_;
     function loadManifest(url) {
@@ -23,7 +31,8 @@ function PDParser() {
         activeStream_ = {
             pdRep: pdRep
         };
-        return activeStream_;
+
+        eventBus_.trigger(Events.MANIFEST_PARSED, activeStream_);
     }
 
     function getNextFragment() {

@@ -77,9 +77,27 @@
               <div class="vop-time-display"><span class="vop-time-text">00:00/00:00</span></div>
             </div>
             <div class="vop-right-controls">
-              <button class="vop-button material-icons vop-subtitles-button" title="subtitles">subtitles</button>
+              <div style="width:36px;height:36px;background-color: orange;
+              display:flex;justify-content: center;align-items: center;float:left;">
+                <div class="material-icons vop-subtitles-button" title="subtitles">subtitles</div>
+              </div>
+              <div style="width:36px;height:36px;background-color: orange;
+              display:flex;justify-content: center;align-items: center;float:left;">
+                <div class="material-icons vop-settings-button" title="settings">settings</div>
+              </div>
+              <div style="width:36px;height:36px;background-color: orange;
+              display:flex;justify-content: center;align-items: center;float:left;">
+                <div class="material-icons vop-fullscreen-button" title="fullscreen">fullscreen</div>
+              </div>
+<!--
+              <div style="width:36px;height:36px;background-color: white;float: left;">
+                <div style="width:24px;height: 24px;background-color: green;margin: auto;"></div>
+              </div>
+-->
+<!--          <button class="vop-button material-icons vop-subtitles-button" title="subtitles">subtitles</button>
               <button class="vop-button material-icons vop-settings-button" title="settings">settings</button>
               <button class="vop-button material-icons vop-fullscreen-button" title="fullscreen">fullscreen</button>
+-->
             </div>
           </div>
         </div>
@@ -117,6 +135,8 @@
 
   <br/>
   <div id="idBtnController">
+    <button type="button" onclick="onBtnInit()">init</button>
+    <button type="button" onclick="onBtnUninit()">uninit</button>
     <button type="button" onclick="onBtnOpen()">open</button>
     <button type="button" onclick="onBtnClose()">close</button>
     <button type="button" onclick="onBtnPlay()">play</button>
@@ -125,7 +145,9 @@
     <button type="button" onclick="onBtnDelAll()">del all</button>
     <button type="button" onclick="onBtnStop()" style="display:none">stop</button>
     <button type="button" onclick="onBtnPlayAd()">play ad</button>
-
+    <br/>
+    <button type="button" onclick="onBtnTest()">test</button>
+    <button type="button" onclick="onBtnTest2()">test2</button>
     <div>
       <label>seek to: </label>
       <input type="text" id="seekedTime"/>
@@ -153,8 +175,6 @@
 
     <br />
     <button type="button" onclick="onBtnAttribute()">attribute</button>
-    <button type="button" onclick="onBtnTest()">test</button>
-    <button type="button" onclick="onBtnTest2()">test2</button>
   </div>
 
   <div>
@@ -174,7 +194,7 @@
 
   <div>
     <h3>Log Window</h3>
-    <div id="idConsole">
+    <div id="idLog">
     </div>
   </div>
 

@@ -13,7 +13,7 @@ class Demuxer {
 
     this.onwmsg = this.onWorkerMessage.bind(this);
     w.addEventListener('message', this.onwmsg);
-
+    w.postMessage({ cmd: 'init' });
   }
 
   destroy() {
@@ -21,7 +21,7 @@ class Demuxer {
 
   push (data) {
     const w = this.w;
-    w.postMessage({ cmd: 'demux', data });
+
   }
 
   onWorkerMessage (ev) {
@@ -29,6 +29,7 @@ class Demuxer {
     hls = this.hls;
     switch (data.event) {
       case 'init': {
+        console.log('ui recv: init');
       } break;
       default:
       break;
