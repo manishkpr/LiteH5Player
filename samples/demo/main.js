@@ -466,9 +466,8 @@ playerUI.updateProgressBarHoverUI = function () {
 };
 
 playerUI.updateTooltipUI = function (e) {
-    let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
-    var tooltipWidth = 0;
-    function getTooltipOffsetX(e) {
+    var thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+    function getTooltipOffsetX(e, tooltipWidth) {
         // part - input
         // bounding client rect can return the progress bar's rect relative to current page.
         var rect = this.vopProgressBar.getBoundingClientRect();
@@ -513,20 +512,21 @@ playerUI.updateTooltipUI = function (e) {
             this.vopTooltipBg.style.height = '90px';
             this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
         }
-
-        tooltipWidth = $('.vop-preview').innerWidth();
     } else {
         $('.vop-tooltip').removeClass('vop-preview');
-        tooltipWidth = 60;
     }
 
     // update tooltip offset
     var strTime = timeToString(this.progressBarContext.movePos);
     this.vopTooltipText.innerText = strTime;
 
-    var offsetX = getTooltipOffsetX.call(this, e);
-    this.vopTooltip.style.left = offsetX.toString() + 'px';
+    // calculate metrics first
+    this.vopTooltip.style.left = '10000px';
     this.vopTooltip.style.display = 'block';
+    tooltipWidth = this.vopTooltip.clientWidth;
+    // set the correct offset of tooltip.
+    var offsetX = getTooltipOffsetX.call(this, e, tooltipWidth);
+    this.vopTooltip.style.left = offsetX.toString() + 'px';
 };
 
 playerUI.updateAdProgressUI = function () {
