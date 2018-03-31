@@ -1176,7 +1176,6 @@ playerUI.onAdStarted = function (e) {
     this.flagIsLinearAd = e.isLinearAd;
     // update control bar ui
     if (this.flagIsLinearAd) {
-        this.vopProgressBar.style.display = 'none';
         this.vopSettingsBtn.style.display = 'none';
     } else {
         var v = document.querySelector('.vop-ads-container');
