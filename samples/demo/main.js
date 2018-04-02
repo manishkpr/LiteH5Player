@@ -313,12 +313,28 @@ playerUI.initUIEventListeners = function () {
         var v = document.querySelector('.html5-video-player');
         ro.observe(v);
     } else {
-        var v = document.querySelector('.html5-video-player');
-        new ResizeSensor(v, function () {
+        // new
+        var v = document.querySelector('.player');
+        new ResizeSensor(v, function (e) {
             printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
+
+            var dstWidth = v.clientWidth;
+            var dstHeight = dstWidth * 0.5625;
+            var h5Player = document.querySelector('.html5-video-player');
+            h5Player.style.width = v.clientWidth.toString() + 'px';
+            h5Player.style.height = dstHeight.toString() + 'px';
+            this.player_.resize(dstWidth, dstHeight);
+
             this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-            this.player_.resize(v.clientWidth, v.clientHeight);
         }.bind(this));
+
+        // old
+        // var v = document.querySelector('.html5-video-player');
+        // new ResizeSensor(v, function () {
+        //     printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
+        //     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+        //     this.player_.resize(v.clientWidth, v.clientHeight);
+        // }.bind(this));
     }
 };
 
@@ -1109,12 +1125,15 @@ playerUI.onMediaLoadedMetaData = function (e) {
     this.metaWidth = e.width;
     this.metaHeight = e.height;
 
-    var vp = document.querySelector('.player');
-    vp.style.paddingBottom = ((this.metaHeight / this.metaWidth) * 100).toString() + '%';
+    var ratio = (this.metaHeight / this.metaWidth);
 
-    printLog('vp.clientWidth: ' + vp.clientWidth);
-    printLog('vp.clientHeight: ' + vp.clientHeight);
-    this.player_.resize(vp.clientWidth, vp.clientHeight);
+    var v = document.querySelector('.player');
+    var dstWidth = v.clientWidth;
+    var dstHeight = dstWidth * ratio;
+    var h5Player = document.querySelector('.html5-video-player');
+    h5Player.style.width = v.clientWidth.toString() + 'px';
+    h5Player.style.height = dstHeight.toString() + 'px';
+    this.player_.resize(dstWidth, dstHeight);
 }
 
 playerUI.onMediaPaused = function () {}
