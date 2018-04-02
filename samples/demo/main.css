@@ -4,11 +4,13 @@ body {
 }
 
 .player {
-  position: relative;
   /*padding-bottom: 56.25%;*/
 }
 
 .html5-video-player {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
   width: 640px;
   height: 360px;
   font-size: 11px; /* set the font-size of html5 player*/
@@ -199,6 +201,7 @@ body {
   width: 100%;
   height: 36px;
   top: 5px;
+  overflow: hidden; /*Hide controls if the rectangle is too small.*/
 }
 
 .vop-left-controls {

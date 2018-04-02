@@ -316,14 +316,29 @@ playerUI.initUIEventListeners = function () {
         // new
         var v = document.querySelector('.player');
         new ResizeSensor(v, function (e) {
-            printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
+            printLog(('ResizeSensor, Player, width: ' + v.clientWidth + ', height: ' + v.clientHeight));
 
-            var dstWidth = v.clientWidth;
-            var dstHeight = dstWidth * 0.5625;
-            var h5Player = document.querySelector('.html5-video-player');
-            h5Player.style.width = v.clientWidth.toString() + 'px';
-            h5Player.style.height = dstHeight.toString() + 'px';
+            var dstWidth = 0;
+            var dstHeight = 0;
+            if (isFullscreen()) {
+                dstWidth = window.screen.width;
+                dstHeight = window.screen.height;
+            } else {
+                if (v.clientWidth > 720) {
+                    dstWidth = 720;
+                    dstHeight = dstWidth * 0.5625;
+                } else {
+                    dstWidth = v.clientWidth;
+                    dstHeight = dstWidth * 0.5625;
+                }
+            }
+            
+            this.vopH5Player.style.width = dstWidth.toString() + 'px';
+            this.vopH5Player.style.height = dstHeight.toString() + 'px';
+            //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
             this.player_.resize(dstWidth, dstHeight);
+
+            printLog(('ResizeSensor, Width: ' + dstWidth + ', Height: ' + dstHeight));
 
             this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
         }.bind(this));
@@ -1131,7 +1146,7 @@ playerUI.onMediaLoadedMetaData = function (e) {
     var dstWidth = v.clientWidth;
     var dstHeight = dstWidth * ratio;
     var h5Player = document.querySelector('.html5-video-player');
-    h5Player.style.width = v.clientWidth.toString() + 'px';
+    h5Player.style.width = dstWidth.toString() + 'px';
     h5Player.style.height = dstHeight.toString() + 'px';
     this.player_.resize(dstWidth, dstHeight);
 }
@@ -1220,7 +1235,9 @@ playerUI.onAdTimeUpdate = function () {
 
 playerUI.onFullscreenChanged = function () {
     var v = this.player_.isFullscreen();
-    printLog('fullscreen changed, ret: ' + v);
+    var v1 = document.querySelector('.player');
+    printLog('fullscreen changed, ret: ' + v + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
+    printLog('player, width: ' + v1.clientWidth + ', height: ' + v1.clientHeight);
     if (v) {
         this.vopFullscreen.innerText = 'fullscreen_exit';
     } else {

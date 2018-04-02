@@ -63,12 +63,12 @@ function genGradientColor(posList, colorList) {
 
 function h5EnterFullscreen() {
     printLog('+h5EnterFullscreen');
-    //var v = document.querySelector('.player');
+    var v = document.querySelector('.player');
     //var v = document.querySelector('.vop-video-container');
     //var v = document.querySelector('.vop-video');
     //var v = document.querySelector('video');
     // Refer to youtube player
-    var v = document.querySelector('.html5-video-player');
+    //var v = document.querySelector('.html5-video-player');
 
     // Try to enter fullscreen mode in the browser
     var requestFullscreen =
