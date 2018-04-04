@@ -1,5 +1,4 @@
 body {
-  margin: 16px;
   background-color: lightgray;
 }
 
@@ -133,15 +132,13 @@ body {
 }
 
 .vop-progress-bar {
-  position: absolute;
-  width: 100%;
+  position: relative;
   height: 5px;
   cursor: pointer;
   outline: none;
 }
 
 .vop-progress-list {
-  position: absolute;
   background: rgba(255,255,255,.2);
   height: 100%;
   width: 100%;
@@ -197,22 +194,18 @@ body {
 }
 
 .vop-controls {
-  position: absolute;
-  width: 100%;
+  position: relative;
   height: 36px;
-  top: 5px;
   overflow: hidden; /*Hide controls if the rectangle is too small.*/
 }
 
 .vop-left-controls {
   height: 100%;
-  width: auto;
   float: left;
 }
 
 .vop-right-controls {
   height: 100%;
-  width: auto;
   float: right;
 }
 
@@ -234,6 +227,12 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+.vop-small-mode .vop-button {
+  width: 24px;
+  height: 24px;
+}
+
 .vop-button:focus,
 .vop-button {outline:0}
 .vop-button::-moz-focus-inner {padding:0;border:0}

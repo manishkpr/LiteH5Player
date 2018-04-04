@@ -69,7 +69,7 @@ function getInitConfig()
   var cfg = {
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
-    autoplay: true,
+    autoplay: false,
     mutedAutoplay: true,
 
     // advertising: {
@@ -127,7 +127,7 @@ function getMediaInfo()
   //initTestTmp();
   //init1080i();
 
-  //pdContent = 'http://10.2.68.64/2/hls/features/av_muxed/test.m3u8';
+  //pdContent = 'http://10.2.68.64/2/hls/av_muxed/test.m3u8';
   var info = {
     //--Item: standard url
     //url: 'audio_only_case01.mpd',
@@ -139,12 +139,12 @@ function getMediaInfo()
     //url: 'live01.mpd',
     //--Item: dash part(True mpd path)
     //url: 'http://localhost/2/dash/common/video.mpd',
-    //url: 'http://localhost/2/dash/features/av_nonmuxed/video.mpd',
+    //url: 'http://localhost/2/dash/testpic_2s/video.mpd',
     //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
-    //url: 'http://10.2.68.64/2/pd/mp4/trailer.mp4',
-    url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
+    url: 'http://10.2.68.64/2/pd/mp4/trailer/test.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://10.2.68.64/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
     //url: 'http://10.2.68.64/2/hls/common/test.m3u8',

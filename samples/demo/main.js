@@ -7,6 +7,26 @@ var mediaCfg_ = getMediaInfo();
 
 var playerUI = {};
 
+const LOG_DEBUG = undefined;
+const LOG_INFO = 1;
+const LOG_WARN = 2;
+const LOG_ERROR = 3;
+
+function printLog(msg, level) {
+    if (!level || level === LOG_DEBUG) {
+        console.log('UI: ' + msg);
+    }
+    if (level === LOG_INFO) {
+        console.log('UI: ' + msg);
+    }
+    printLogUI(msg);
+}
+
+function printLogUI(msg) {
+    var v = document.getElementById('idLog');
+    v.innerHTML = (v.innerHTML + '<br/>' + msg);
+}
+
 playerUI.initVariable = function () {
     this.player_ = null;
     this.castSender = null;
@@ -54,7 +74,7 @@ playerUI.initVariable = function () {
     // flags reference variable of progress bar
     this.progressBarContext = {
         mousedown: false,
-        pausedBeforeMousedown: false,
+        pausedBeforeMousedown: true,
         endedBeforeMousedown: false,
         posBeforeMousedown: 0,
         timer: null,
@@ -342,15 +362,15 @@ playerUI.initUIEventListeners = function () {
 
             this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
         }.bind(this));
-
-        // old
-        // var v = document.querySelector('.html5-video-player');
-        // new ResizeSensor(v, function () {
-        //     printLog(('ResizeSensor, Width: ' + v.clientWidth + ', Height: ' + v.clientHeight));
-        //     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-        //     this.player_.resize(v.clientWidth, v.clientHeight);
-        // }.bind(this));
     }
+};
+
+playerUI.adjustMobilePlatform = function () {
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    printLog('adjustMobilePlatform, width: ' + width);
+    //if (width < 720) {
+        //$('.html5-video-player').addClass('vop-small-mode');
+    //}
 };
 
 playerUI.initPlayer = function () {
@@ -974,11 +994,11 @@ playerUI.doEnterThumbnailMode = function () {
 
 playerUI.doProcessThumbnailMove = function () {
     // for further action, you can add thumbnail popup here.
-}
+};
 
 playerUI.doProcessThumbnailUp = function () {
     // for further action, you can add thumbnail ended event here.
-}
+};
 
 playerUI.onProgressBarMousedown = function (e) {
     printLog('+onProgressBarMousedown');
@@ -992,9 +1012,8 @@ playerUI.onProgressBarMousedown = function (e) {
     this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
     this.flagThumbnailMode = false;
     this.progressBarContext.timer = setTimeout(function () {
-            this.doEnterThumbnailMode();
-        }
-            .bind(this), 200);
+        this.doEnterThumbnailMode();
+    }.bind(this), 200);
 
     // update progress bar ui
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
@@ -1103,6 +1122,9 @@ playerUI.onMediaCanPlay = function () {
         this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
         this.vopControlBar.style.display = 'block';
 
+        // BD
+        this.player_.setPosition(0.5);
+        // ED
         // process config parameter
         if (cfg_.autoplay) {
             this.onPlayFromGiantButton();
@@ -1201,7 +1223,7 @@ playerUI.onMediaWaiting = function () {
 }
 
 playerUI.onLog = function (e) {
-    this.uiLog.innerHTML = (this.uiLog.innerHTML + '<br/>' + e.message);
+    printLogUI(e.message);
 }
 
 playerUI.onAdStarted = function (e) {
@@ -1932,6 +1954,10 @@ playerUI.onFccPropertyItemBlur = function (e) {
 };
 
 playerUI.onTest = function () {
+    var v = document.querySelector('.vop-video');
+    var d = v.duration;
+    var a = 2;
+    var b = a;
     // this.uninitPlayer();
 
     // this.initVariable();
@@ -1998,6 +2024,25 @@ function onBtnTest2() {
 }
 
 /////////////////////////////////////////////////////////////////////////
+// Title: experience functions
+function onBtnTmp1() {
+// visual viewport 可见视口 屏幕宽度
+// layout viewport 布局视口 DOM宽度
+// ideal viewport 理想适口：使布局视口就是可见视口
+// 设备宽度(visual viewport)与DOM宽度(layout viewport), scale的关系为：
+
+// （visual viewport）= （layout viewport）* scale
+// 获取屏幕宽度(visual viewport)的尺寸：window. innerWidth/Height。
+// 获取DOM宽度(layout viewport)的尺寸：document. documentElement. clientWidth/Height。
+
+    printLog('visual viewport, width: ' + window.width + ', height: ' + window.height);
+    printLog('layout viewport, width: ' + document.width + ', height: ' + document.height);
+
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    printLog('screen, width: ' + width);
+}
+
+/////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
 window.onload = function () {
     // print browser version info
@@ -2007,13 +2052,19 @@ window.onload = function () {
     playerUI.initVariable();
     playerUI.initUIElements();
     playerUI.initUIEventListeners();
+
+    playerUI.adjustMobilePlatform();
+
     playerUI.initPlayer();
 
     // BD
-    //onBtnOpen();
+    //onBtnTmp1();
     // ED
 };
 
 window.onunload = function () {
     //onBtnStop();
 };
+
+
+

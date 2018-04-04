@@ -100,18 +100,6 @@ function h5LeaveFullscreen() {
 }
 
 ///////////////////////////////////////////////////////////////////
-const LOG_DEBUG = undefined;
-const LOG_INFO = 1;
-const LOG_WARN = 2;
-const LOG_ERROR = 3;
 
-function printLog(msg, level) {
-    if (level === LOG_DEBUG) {
-        console.log('UI: ' + msg);
-    }
-    if (level === LOG_INFO) {
-        console.log('UI: ' + msg);
-    }
-}
 
 
