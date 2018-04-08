@@ -99,7 +99,6 @@ function Debug() {
      * @instance
      */
     function log() {
-
         let message = '';
         let logTime = null;
 

@@ -60,7 +60,6 @@ body {
 
 .vop-tooltip-text-wrapper {
   /*background-color: orange;*/
-  background-color: rgba(28,28,28,0.9);
   border-radius: 3px;
 }
 
@@ -69,6 +68,7 @@ body {
   color: white;
   border-radius: 2px;
   padding: 5px 9px;
+  background-color: rgba(28,28,28,0.9);
 }
 
 .vop-preview {
