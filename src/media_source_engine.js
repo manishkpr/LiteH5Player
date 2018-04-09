@@ -144,6 +144,7 @@ function MediaSourceEngine() {
     }
 
     function onFragmentDownloadedEnded() {
+        debug_.log('+onFragmentDownloadedEnded');
         signalEndOfStream();
     }
 

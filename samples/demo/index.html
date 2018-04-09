@@ -166,7 +166,7 @@
     <button is="google-cast-button" id="castbutton" style="width: 48px;height: 48px;"></button>
     <button type="button" onclick="onUICmdCastInit()">init</button>
     <button type="button" onclick="onUICmdCastOpen()">open</button>
-    <button type="button" onclick="onUICmdCastAddV()">addV</button>
+    <button type="button" onclick="onUICmdCastAdd()">add</button>
     <button type="button" onclick="onUICmdCastAddPD()">addPD</button>
     <button type="button" onclick="onUICmdCastPlay()">play</button>
     <button type="button" onclick="onUICmdCastPause()">pause</button>
@@ -174,6 +174,12 @@
     <button type="button" onclick="onUICmdCastPlayAd()">playAd</button>
 
     <button type="button" onclick="onUICmdCastTest()">test</button>
+    <br/>
+    <div>
+      <label>seek to: </label>
+      <input type="text" id="castSeekedTime"/>
+      <button type="button" onclick="onUICmdCastSeek()">OK</button>
+    </div>
   </div>
 
   <div>

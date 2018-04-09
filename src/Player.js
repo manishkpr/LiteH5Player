@@ -448,7 +448,9 @@ function onMSEOpened() {
     ///////////////////////////////////////////////////////////////////////////
     // Title: debug function here
     function manualSchedule() {
-        scheduleCtrl_ = ScheduleController(context_).getInstance();
+        if (!scheduleCtrl_) {
+            scheduleCtrl_ = ScheduleController(context_).getInstance();
+        }
         scheduleCtrl_.manualSchedule();
     }
 

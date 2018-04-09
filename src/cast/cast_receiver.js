@@ -205,8 +205,8 @@ function CastReceiver(elementId) {
             omPlayer_.init(message);
         } else if (message.cmdType === 'open') {
             omPlayer_.open(message);
-        } else if (message.cmdType === 'addV') {
-            omPlayer_.addV();
+        } else if (message.cmdType === 'add') {
+            omPlayer_.manualSchedule();
         } else if (message.cmdType === 'addPD') {
             omPlayer_.addPD();
         } else if (message.cmdType === 'play') {
@@ -215,14 +215,19 @@ function CastReceiver(elementId) {
             omPlayer_.pause();
         } else if (message.cmdType === 'playAd') {
             omPlayer_.playAd();
+        } else if (message.cmdType === 'setPosition') {
+            omPlayer_.setPosition(message.time);
+        } else if (message.cmdType === 'test') {
+            omPlayer_.test();
         }
         //oldmtnBus_.broadcast("abcd1234");
     }
 
     function sendMessage_(message, bus, opt_senderId) {
         // Cuts log spam when debugging the receiver UI in Chrome.
-        if (!isConnected_)
+        if (!isConnected_) {
             return;
+        }
 
         var serialized = CastUtils.serialize(message);
         if (opt_senderId) {

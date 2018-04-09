@@ -100,7 +100,7 @@ function CastSender(receiverAppId) {
 
         castContext_.addEventListener(cast.framework.CastContextEventType.CAST_STATE_CHANGED,
             function (e) {
-            console.log('cast, cast state: ', e);
+            //console.log('cast, cast state: ', e);
         });
 
         castContext_.addEventListener(
@@ -168,8 +168,8 @@ function CastSender(receiverAppId) {
         sendMessage_(message);
     }
 
-    function new_addV() {
-        let msg = {'cmdType': 'addV'};
+    function new_add() {
+        let msg = {'cmdType': 'add'};
         sendMessage_(msg);
     }
 
@@ -193,13 +193,19 @@ function CastSender(receiverAppId) {
         sendMessage_(msg);
     }
 
+    function new_setPosition(time) {
+        let msg = {'cmdType': 'setPosition'};
+        msg.time = time;
+        sendMessage_(msg);
+    }
+
     function new_test() {
-        var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+        // var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+        // let msg = 'requestAd';
+        // msg += (',' + Single_Inline_Linear);
+        // msg += (',' + '4');
 
-        let msg = 'requestAd';
-        msg += (',' + Single_Inline_Linear);
-        msg += (',' + '4');
-
+        msg = {'cmdType': 'test'};
         session_.sendMessage(
             CastUtils.OLDMTN_MESSAGE_NAMESPACE,
             msg,
@@ -346,11 +352,12 @@ function CastSender(receiverAppId) {
         // 
         new_init: new_init,
         new_open: new_open,
-        new_addV: new_addV,
+        new_add: new_add,
         new_addPD: new_addPD,
         new_play: new_play,
         new_pause: new_pause,
         new_playAd: new_playAd,
+        new_setPosition: new_setPosition,
         new_test: new_test,
         // old left
         requestSession: requestSession,

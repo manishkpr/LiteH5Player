@@ -43,6 +43,9 @@ function ScheduleController() {
             cbSuccess: cbSuccess
         };
         isFragmentProcessing_ = true;
+
+        // log
+        printLog('request url: ' + request.url);
         xhrLoader_.load(request);
     }
 

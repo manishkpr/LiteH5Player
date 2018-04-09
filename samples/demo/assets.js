@@ -138,9 +138,11 @@ function getMediaInfo()
     //--Item: Live
     //url: 'live01.mpd',
     //--Item: dash part(True mpd path)
-    url: 'http://localhost/2/dash/bbb_30fps/video.mpd',
-    //url: 'http://localhost/2/dash/testpic_2s/video.mpd',
-    //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
+    //url: 'http://10.2.68.64/2/dash/voweb/test_video180_template_tmp.mpd',
+    url: 'http://10.2.68.64/2/pd/mp4/trailer/test_segment_template.mpd',
+    //url: 'http://10.2.68.64/2/dash/bbb_30fps/video.mpd',
+    //url: 'http://10.2.68.64/2/dash/testpic_2s/video.mpd',
+    //url: 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     //url: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/trailer/test.mp4',
@@ -168,8 +170,8 @@ function getMediaInfo()
     },
 
     // 
-    thumbnail: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
-    //thumbnail: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt'
+    thumbnail: 'http://10.2.68.64/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
+    //thumbnail: 'http://10.2.68.64/2/webvtt_thumbnail/single01/thumbnails.vtt'
   };
 
   return info;

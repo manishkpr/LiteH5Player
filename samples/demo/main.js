@@ -29,7 +29,7 @@ function printLogUI(msg) {
 
 playerUI.initVariable = function () {
     this.player_ = null;
-    this.castSender = null;
+    this.castSender_ = null;
 
     this.flagPlayerInited = false;
 
@@ -292,13 +292,14 @@ playerUI.initUIEventListeners = function () {
     this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMousemove.bind(this));
     this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseleave.bind(this));
 
-    this.vopControlBar.addEventListener('click', this.onChromeBottomClick.bind(this));
-    this.vopPlayButton.addEventListener('click', this.onBtnPlay.bind(this));
-    this.vopMuteButton.addEventListener('click', this.onBtnMute.bind(this));
+    this.vopControlBar.addEventListener('click', this.onUICmdControlBarClick.bind(this));
+    this.vopPlayButton.addEventListener('click', this.onUICmdPlay.bind(this));
+    this.vopMuteButton.addEventListener('click', this.onUICmdMute.bind(this));
+    this.vopSubtitlesBtn.addEventListener('click', this.onUICmdSwitchSubtitle.bind(this));
+    this.vopSettingsBtn.addEventListener('click', this.onUICmdSetting.bind(this));
+    this.vopFullscreen.addEventListener('click', this.onUICmdFullscreen.bind(this));
+
     this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMousedown.bind(this));
-    this.vopSubtitlesBtn.addEventListener('click', this.onSubtitlesClick.bind(this));
-    this.vopSettingsBtn.addEventListener('click', this.onSettingClick.bind(this));
-    this.vopFullscreen.addEventListener('click', this.onFullscreenClick.bind(this));
 
     this.vopPlayButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
     this.vopMuteButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
@@ -406,7 +407,7 @@ playerUI.initPlayer = function () {
     //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
 
     // init chromecast sender
-    //this.castSender = new oldmtn.CastSender(receiverAppId);
+    this.castSender_ = new oldmtn.CastSender(receiverAppId);
 };
 
 playerUI.uninitPlayer = function () {
@@ -737,7 +738,7 @@ playerUI.onPlayerClick = function () {
         return;
     }
 
-    this.onBtnPlay();
+    this.onUICmdPlay();
 };
 
 // browser & UI callback functions
@@ -759,7 +760,7 @@ playerUI.onBtnClose = function () {
     printLog('-onBtnClose');
 };
 
-playerUI.onBtnPlay = function () {
+playerUI.onUICmdPlay = function () {
     var currPaused = this.player_.isPaused();
     var currEnded = this.player_.isEnded();
     if (currEnded) {
@@ -794,11 +795,11 @@ playerUI.onSettingsMenuClick = function (e) {
     e.stopPropagation();
 };
 
-playerUI.onChromeBottomClick = function (e) {
+playerUI.onUICmdControlBarClick = function (e) {
     e.stopPropagation();
 };
 
-playerUI.onBtnMute = function () {
+playerUI.onUICmdMute = function () {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
 
@@ -847,8 +848,8 @@ playerUI.onPlayButtonClickAd = function () {
     }
 }
 
-playerUI.onSubtitlesClick = function () {
-    printLog('+onSubtitlesClick, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
+playerUI.onUICmdSwitchSubtitle = function () {
+    printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
 
     // Part - process
     if (this.settingMenuContext.currMenu !== 'none') {
@@ -868,8 +869,8 @@ playerUI.onSubtitlesClick = function () {
     }
 };
 
-playerUI.onSettingClick = function () {
-    printLog('+onSettingClick, currMenu: ' + this.settingMenuContext.currMenu);
+playerUI.onUICmdSetting = function (e) {
+    printLog('+onUICmdSetting, currMenu: ' + this.settingMenuContext.currMenu);
 
     // Part - destroy subtitle menu first if it's visible
     if (this.subtitlesMenuContext.currMenu !== 'none') {
@@ -895,7 +896,7 @@ playerUI.onSettingClick = function () {
     }
 };
 
-playerUI.onFullscreenClick = function () {
+playerUI.onUICmdFullscreen = function () {
     printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
@@ -905,7 +906,7 @@ playerUI.onFullscreenClick = function () {
 };
 
 playerUI.onPlayFromGiantButton = function () {
-    this.onBtnPlay();
+    this.onUICmdPlay();
     this.uiGiantBtnContainer.style.display = 'none';
 };
 
@@ -1802,7 +1803,7 @@ playerUI.onMainMenuBlur = function (e) {
 
     if (nextFocus) {
         if (nextFocus === this.vopSettingsBtn) {
-            // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
+            // means we click 'setting' button, do nothing here, onUICmdSetting will handle for us.
         } else {
             if (prevFocus) {
                 if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
@@ -1940,7 +1941,7 @@ playerUI.onFccPropertyItemBlur = function (e) {
 
     if (nextFocus) {
         if (nextFocus === this.vopSettingsBtn) {
-            // means we click 'setting' button, do nothing here, onSettingClick will handle for us.
+            // means we click 'setting' button, do nothing here, onUICmdSetting will handle for us.
         } else {
             if (prevFocus) {
                 if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
@@ -1983,7 +1984,7 @@ function onBtnOpen() {
 
 function onBtnClose() {}
 
-function onBtnPlay() {}
+function onUICmdPlay() {}
 
 function onBtnManualSchedule() {
     playerUI.onBtnManualSchedule();
@@ -2023,6 +2024,11 @@ function onBtnTest2() {
     //v.setAttribute('aria-hidden', true);
 }
 
+function onBtnSeek() {
+    var time = document.getElementById('seekedTime').value;
+    playerUI.player_.setPosition(time);
+}
+
 /////////////////////////////////////////////////////////////////////////
 // Title: experience functions
 function onBtnTmp1() {
@@ -2040,6 +2046,57 @@ function onBtnTmp1() {
 
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     printLog('screen, width: ' + width);
+}
+
+/////////////////////////////////////////////////////////////////////////
+// Title: chromecast cmd part
+var castSender = null;
+function onUICmdCastInit()
+{
+    playerUI.castSender_.new_init(cfg_);
+
+        // new_init: new_init,
+        // new_open: new_open,
+        // new_addV: new_addV,
+        // new_addPD: new_addPD,
+        // new_play: new_play,
+        // new_pause: new_pause,
+        // new_playAd: new_playAd,
+        // new_test: new_test,
+}
+
+function onUICmdCastOpen()
+{
+    playerUI.castSender_.new_open(mediaCfg_);
+}
+
+function onUICmdCastAdd()
+{
+    playerUI.castSender_.new_add();
+}
+
+function onUICmdCastAddPD()
+{}
+
+function onUICmdCastPlay()
+{
+    playerUI.castSender_.new_play();
+}
+
+function onUICmdCastPause()
+{}
+
+function onUICmdCastPlayAd()
+{}
+
+function onUICmdCastTest()
+{
+    playerUI.castSender_.new_test();
+}
+
+function onUICmdCastSeek() {
+    var time = document.getElementById('castSeekedTime').value;
+    playerUI.castSender_.new_setPosition(time);
 }
 
 /////////////////////////////////////////////////////////////////////////

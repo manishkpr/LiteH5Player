@@ -80,7 +80,9 @@ function DashParser() {
         representation.codecs = 'video/mp4; ' + 'codecs=\"' + representation.codecs + '\"';
         representation.duration = manifest.mediaPresentationDuration;
         representation.segmentTemplate = segmentTemplate;
-        representation.segmentCnt = mediaPresentationDuration_ / getSegmentDuration(segmentTemplate);
+        let cnt = mediaPresentationDuration_ / getSegmentDuration(segmentTemplate);
+        let remainder = mediaPresentationDuration_ % getSegmentDuration(segmentTemplate);
+        representation.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
 
         vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
 // For reference
@@ -302,30 +304,11 @@ function DashParser() {
         }
 
         let request = {
-            url: manifestUrl_, // 'http://localhost/2/dash/common/h5-test.mpd'
+            url: manifestUrl_,
             cbSuccess: cbSuccess
         };
 
         xhrLoader_.load(request);
-
-        return;
-
-        // old
-        if (url.indexOf('audio_only_case01') !== -1) {
-            return audio_only_case01();
-        } else if (url.indexOf('video_only_case01') !== -1) {
-            return video_only_case01();
-        } else if (url.indexOf('case01') !== -1) {
-            return case01();
-        } else if (url.indexOf('case02') !== -1) {
-            return case02();
-        } else if (url.indexOf('case03') !== -1) {
-            return case03();
-        }
-        // live samples
-        else if (url.indexOf('live01') !== -1) {
-            return live01();
-        }
     }
 
     function getFragmentInitialization(rep) {
@@ -361,15 +344,6 @@ function DashParser() {
                     audioHeaderAdded_ = true;
                     break;
                 }
-
-                // BD
-                if (vSegmentNumber_ < 1) {
-                    ret.type = activeStream_.vRep.type;
-                    ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
-                    vSegmentNumber_++;
-                    break;
-                }
-                // ED
 
                 // media segments
                 if (vSegmentNumber_ >= activeStream_.vRep.media.length ||

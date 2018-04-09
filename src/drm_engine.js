@@ -49,4 +49,4 @@ function DRMEngine(media) {
 };
 
 DRMEngine.__h5player_factory_name = 'DRMEngine';
-export defaultFactoryMaker.getSingletonFactory(DRMEngine);
+export default FactoryMaker.getSingletonFactory(DRMEngine);
