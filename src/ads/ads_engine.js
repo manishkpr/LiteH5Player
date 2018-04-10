@@ -44,7 +44,7 @@ function AdsEngine(adContainer, media, advertising) {
     let height_;
 
     // flag
-    let isAdTime_ = false;
+    let isPlayingAd_ = false;
     let isLinearAd_ = false;
     let isPaused_ = false;
 
@@ -130,7 +130,7 @@ function AdsEngine(adContainer, media, advertising) {
     function requestAds() {
         width_ = adContainer_.parentNode.clientWidth;
         height_ = adContainer_.parentNode.clientHeight;
-        console.log('width_: ' + width_ + ', height: ' + height_);
+        debug_.log('width_: ' + width_ + ', height: ' + height_);
         // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
         // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
         // console.log('ads: ' + ads);
@@ -147,7 +147,7 @@ function AdsEngine(adContainer, media, advertising) {
 
         // adsRequest.setAdWillAutoPlay(autoplayAllowed_);
         // adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
-        adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
+        //adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*
          * In some circumstances you may want to prevent the SDK from playing ad breaks until you're ready for them.
@@ -183,7 +183,7 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function isPlayingAd() {
-        return isAdTime_;
+        return isPlayingAd_;
     }
 
     function isLinearAd() {
@@ -311,7 +311,7 @@ function AdsEngine(adContainer, media, advertising) {
         debug_.log('--onAdEvent--: ' + adErrorEvent.getError().toString());
         let err = adErrorEvent.getError();
         // deserialize, getErrorCode, getInnerError, getMessage, getType, getVastErrorCode, serialize, toString
-        console.log('ad err: ', err);
+        debug_.log('ad err: ', err);
 
         let errCode = err.getErrorCode();
         let errMsg = err.getMessage();
@@ -328,7 +328,7 @@ function AdsEngine(adContainer, media, advertising) {
 
         switch (adEvent.type) {
         case google.ima.AdEvent.Type.AD_BREAK_READY: {
-                console.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
+                debug_.log('adEvent.o.adBreakTime: ' + adEvent.o.adBreakTime);
             }
             break;
         case google.ima.AdEvent.Type.AD_METADATA: {
@@ -336,7 +336,7 @@ function AdsEngine(adContainer, media, advertising) {
                 //     console.log('AD_METADATA: ' + i);
                 // }
                 cuePoints_ = adEvent.getAdCuePoints();
-                console.log('cue points: ' + cuePoints_.h.join(","));
+                debug_.log('cue points: ' + cuePoints_.h.join(","));
             }
             break;
         case google.ima.AdEvent.Type.CLICK: {
@@ -391,7 +391,7 @@ function AdsEngine(adContainer, media, advertising) {
                 // This event indicates the ad has started - the video player
                 // can adjust the UI, for example display a pause button and
                 // remaining time.
-                isAdTime_ = true;
+                isPlayingAd_ = true;
                 isLinearAd_ = ad.isLinear();
 
                 position_ = 0;
@@ -418,9 +418,19 @@ function AdsEngine(adContainer, media, advertising) {
 
                 // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
                 let companionAds = ad.getCompanionAds(width_, height_, selectionCriteria);
+                let companions = [];
                 for (let i = 0; i < companionAds.length; i ++) {
                     let companionAd = companionAds[i];
-                    console.log(`companion[${i}], type:${companionAd.getContentType()} width:${companionAd.getWidth()}, height:${companionAd.getHeight()}`);
+
+                    let width = companionAd.getWidth();
+                    let height = companionAd.getHeight();
+                    let content = companionAd.getContent();
+                    companions.push({width: width, height: height, content: content});
+
+                    debug_.log(`companion[${i}], type:${companionAd.getContentType()} width:${companionAd.getWidth()}, height:${companionAd.getHeight()}`);
+                }
+                if (companions.length > 0) {
+                    eventBus_.trigger(Events.AD_COMPANIONS, {companions: companions});
                 }
             }
             break;
@@ -431,11 +441,11 @@ function AdsEngine(adContainer, media, advertising) {
             }
             break;
         case google.ima.AdEvent.Type.VOLUME_CHANGED: {
-                console.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
+                debug_.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
             }
             break;
         case google.ima.AdEvent.Type.VOLUME_MUTED: {
-                console.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
+                debug_.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
             }
             break;
         default:
@@ -473,8 +483,8 @@ function AdsEngine(adContainer, media, advertising) {
 
                 position_ = duration_ - timeRemaining;
                 // Update UI with timeRemaining
-                if (isAdTime_ && !isPaused_) {
-                    console.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
+                if (isPlayingAd_ && !isPaused_) {
+                    //debug_.log('test, timeRemaining: ' + timeRemaining + ', position: ' + position_ + ', duration: ' + duration_);
                     eventBus_.trigger(Events.AD_TIMEUPDATE);
                 }
             }, 300);
@@ -488,7 +498,7 @@ function AdsEngine(adContainer, media, advertising) {
     }
 
     function processWhenAdComplete() {
-        isAdTime_ = false;
+        isPlayingAd_ = false;
         stopAdTimer();
         position_ = duration_;
         eventBus_.trigger(Events.AD_TIMEUPDATE);

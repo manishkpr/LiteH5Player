@@ -275,7 +275,11 @@ function Player(containerId) {
     }
 
     function getValidBufferPosition(currentPos) {
-        return mediaEngine_.getValidBufferPosition(currentPos);
+        if (adsEngine_ && adsEngine_.isLinearAd() && adsEngine_.isPlayingAd()) {
+            return 0;
+        } else {
+            return mediaEngine_.getValidBufferPosition(currentPos);
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////

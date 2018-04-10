@@ -292,7 +292,6 @@ function DashParser() {
         audioHeaderAdded_ = false;
         audioIndex_ = 0;
 
-        // new
         function cbSuccess(bytes) {
             let content = StringUtils.ab2str_v1(bytes);
             debug_.log('content: ' + content);

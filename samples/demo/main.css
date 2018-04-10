@@ -292,7 +292,13 @@ body {
 }
 
 .vop-volume-slider-handle {
-  position:absolute;top:50%;width:10px;height:10px;border-radius:5px;margin-top:-5px;background:#fff;
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  margin-top: -5px;
+  background: #fff;
 }
 /************ End volume bar ************/
 
@@ -306,6 +312,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 5;
+  display: none;
 }
 
 .vop-giant-button {

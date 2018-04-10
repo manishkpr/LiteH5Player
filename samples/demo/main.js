@@ -29,9 +29,8 @@ function printLogUI(msg) {
 
 playerUI.initVariable = function () {
     this.player_ = null;
+    this.playerState_ = 'none';// none, inited, opening, opened, failed, ended
     this.castSender_ = null;
-
-    this.flagPlayerInited = false;
 
     // UI Controls
     this.vopH5Player = null;
@@ -310,10 +309,7 @@ playerUI.initUIEventListeners = function () {
 
     this.vopSettingsMenu.addEventListener('click', this.onSettingsMenuClick.bind(this));
 
-    this.uiGiantBtnContainer.addEventListener('click', function (e) {
-        e.stopPropagation();
-        this.onPlayFromGiantButton();
-    }.bind(this));
+    this.uiGiantBtnContainer.addEventListener('click', this.onUICmdGiantButtonClick.bind(this));
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -336,34 +332,35 @@ playerUI.initUIEventListeners = function () {
     } else {
         // new
         var v = document.querySelector('.player');
-        new ResizeSensor(v, function (e) {
-            printLog(('ResizeSensor, Player, width: ' + v.clientWidth + ', height: ' + v.clientHeight));
-
-            var dstWidth = 0;
-            var dstHeight = 0;
-            if (isFullscreen()) {
-                dstWidth = window.screen.width;
-                dstHeight = window.screen.height;
-            } else {
-                if (v.clientWidth > 720) {
-                    dstWidth = 720;
-                    dstHeight = dstWidth * 0.5625;
-                } else {
-                    dstWidth = v.clientWidth;
-                    dstHeight = dstWidth * 0.5625;
-                }
-            }
-            
-            this.vopH5Player.style.width = dstWidth.toString() + 'px';
-            this.vopH5Player.style.height = dstHeight.toString() + 'px';
-            //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
-            this.player_.resize(dstWidth, dstHeight);
-
-            printLog(('ResizeSensor, Width: ' + dstWidth + ', Height: ' + dstHeight));
-
-            this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-        }.bind(this));
+        new ResizeSensor(v, this.doPlayerResizeChange.bind(this));
     }
+};
+
+playerUI.doPlayerResizeChange = function (e) {
+    var v = document.querySelector('.player');
+    
+    var dstWidth = 0;
+    var dstHeight = 0;
+    if (isFullscreen()) {
+        dstWidth = window.screen.width;
+        dstHeight = window.screen.height;
+    } else {
+        if (v.clientWidth > 720) {
+            dstWidth = 720;
+            dstHeight = dstWidth * 0.5625;
+        } else {
+            dstWidth = v.clientWidth;
+            dstHeight = dstWidth * 0.5625;
+        }
+    }
+
+    this.vopH5Player.style.width = dstWidth.toString() + 'px';
+    this.vopH5Player.style.height = dstHeight.toString() + 'px';
+    //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
+    this.player_.resize(dstWidth, dstHeight);
+
+    printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
+    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
 };
 
 playerUI.adjustMobilePlatform = function () {
@@ -374,7 +371,7 @@ playerUI.adjustMobilePlatform = function () {
     //}
 };
 
-playerUI.initPlayer = function () {
+playerUI.playerInit = function () {
     this.player_ = new oldmtn.Player('player-container');
     this.player_.init(cfg_);
 
@@ -397,6 +394,7 @@ playerUI.initPlayer = function () {
     this.player_.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
     this.player_.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete.bind(this), {});
     this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate.bind(this), {});
+    this.player_.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions.bind(this), {});
 
     //
     this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged.bind(this), {});
@@ -408,6 +406,9 @@ playerUI.initPlayer = function () {
 
     // init chromecast sender
     this.castSender_ = new oldmtn.CastSender(receiverAppId);
+
+    // update state machine
+    this.updateUIStateMachine('inited');
 };
 
 playerUI.uninitPlayer = function () {
@@ -417,15 +418,62 @@ playerUI.uninitPlayer = function () {
     }
 };
 
+playerUI.playerOpen = function () {
+    this.player_.open(mediaCfg_);
+    // since open is an async operation, we transition it to opening state.
+    this.updateUIStateMachine('opening');
+};
+
+playerUI.playerClose = function () {
+    printLog('+onBtnClose');
+    this.player_.close();
+    this.updateUIStateMachine('closed');
+};
+
+playerUI.onBtnInit = function () {
+    this.player_.init(cfg_);
+};
+
+playerUI.onBtnUninit = function () {
+    this.player_.uninit(cfg_);
+};
+
 ///////////////////////////////////////////////////////////////////////////
 // Title: UI reference functions
-playerUI.startWaitingUI = function () {
-    this.vopSpinner.style.display = 'block';
-}
+// This function is mainly focus on:
+// 1. Record the player state, and refect it to UI
+playerUI.updateUIStateMachine = function (state) {
+    printLog('oldState: ' + this.playerState_ + ', newState: ' + state);
+    this.playerState_ = state;
+    switch(this.playerState_) {
+        case 'inited': {
+        } break;
+        case 'opening': {
+            this.startBufferingUI();
+        } break;
+        case 'opened': {
+            this.stopBufferingUI();
 
-playerUI.stopWaitingUI = function () {
+            this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+            this.vopControlBar.style.display = 'block';
+        } break;
+        case 'ended': {
+            $('.html5-video-player').removeClass('vop-autohide');
+        } break;
+        case 'closed': {
+            
+        } break;
+        default: break;
+    }
+};
+
+playerUI.startBufferingUI = function () {
+    this.vopSpinner.style.display = 'block';
+};
+
+playerUI.stopBufferingUI = function () {
     this.vopSpinner.style.display = 'none';
-}
+};
 
 // begin progress bar
 playerUI.updateVolumeMovePosition = function (e) {
@@ -703,8 +751,8 @@ playerUI.releaseVolumeSliderMouseEvents = function () {
 
 ///////////////////////////////////////////////////////////////////
 playerUI.onPlayerMouseenter = function () {
-    // don't show control bar if the stream is not initialized.
-    if (!this.flagPlayerInited) {
+    // Don't show control bar if the stream is not initialized.
+    if (this.playerState_ !== 'opened') {
         return;
     }
 
@@ -714,15 +762,14 @@ playerUI.onPlayerMouseenter = function () {
 playerUI.onPlayerMousemove = function (e) {
     //printLog('+onPlayerMousemove');
     // don't show control bar if the stream is not initialized.
-    if (!this.flagPlayerInited) {
+    if (this.playerState_ !== 'opened') {
         return;
     }
 
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function () {
-            this.onPlayerMouseleave();
-        }
-            .bind(this), 3000);
+        this.onPlayerMouseleave();
+    }.bind(this), 3000);
 };
 
 playerUI.onPlayerMouseleave = function () {
@@ -742,24 +789,6 @@ playerUI.onPlayerClick = function () {
 };
 
 // browser & UI callback functions
-playerUI.onBtnInit = function () {
-    this.player_.init(cfg_);
-};
-
-playerUI.onBtnUninit = function () {
-    this.player_.uninit(cfg_);
-};
-
-playerUI.onBtnOpen = function () {
-    this.player_.open(mediaCfg_);
-};
-
-playerUI.onBtnClose = function () {
-    printLog('+onBtnClose');
-    this.player_.close();
-    printLog('-onBtnClose');
-};
-
 playerUI.onUICmdPlay = function () {
     var currPaused = this.player_.isPaused();
     var currEnded = this.player_.isEnded();
@@ -793,6 +822,11 @@ playerUI.onControlMousemove = function (e) {
 playerUI.onSettingsMenuClick = function (e) {
     // Don't route 'click' event from panel to its parent div
     e.stopPropagation();
+};
+
+playerUI.onUICmdGiantButtonClick = function (e) {
+    e.stopPropagation();
+    this.onPlayFromGiantButton();
 };
 
 playerUI.onUICmdControlBarClick = function (e) {
@@ -945,12 +979,12 @@ playerUI.onBtnAttribute = function () {
 playerUI.onUICmdCastInit = function () {
     var cfg = getInitConfig();
     this.castSender.new_init(cfg);
-}
+};
 
 playerUI.onUICmdCastOpen = function () {
     var info = getMediaInfo();
     this.castSender.new_open(info);
-}
+};
 
 playerUI.onUICmdCastAddV = function () {
     this.castSender.new_addV();
@@ -958,23 +992,23 @@ playerUI.onUICmdCastAddV = function () {
 
 playerUI.onUICmdCastAddPD = function () {
     this.castSender.new_addPD();
-}
+};
 
 playerUI.onUICmdCastPlay = function () {
     this.castSender.new_play();
-}
+};
 
 playerUI.onUICmdCastPause = function () {
     this.castSender.new_pause();
-}
+};
 
 playerUI.onUICmdCastPlayAd = function () {
     this.castSender.new_playAd();
-}
+};
 
 playerUI.onUICmdCastTest = function () {
     this.castSender.new_test();
-}
+};
 
 playerUI.doEnterThumbnailMode = function () {
     printLog('+doEnterThumbnailMode');
@@ -991,7 +1025,7 @@ playerUI.doEnterThumbnailMode = function () {
         this.progressBarContext.timer = null;
         this.flagThumbnailMode = true;
     }
-}
+};
 
 playerUI.doProcessThumbnailMove = function () {
     // for further action, you can add thumbnail popup here.
@@ -1020,7 +1054,7 @@ playerUI.onProgressBarMousedown = function (e) {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
-}
+};
 
 playerUI.onProgressBarMousemove = function (e) {
     //printLog('+onProgressBarMousemove');
@@ -1038,12 +1072,12 @@ playerUI.onProgressBarMousemove = function (e) {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarHoverUI();
     this.updateTooltipUI(e);
-}
+};
 
 playerUI.onProgressBarMouseleave = function () {
     //printLog('+onProgressBarMouseleave');
     this.vopTooltip.style.display = 'none';
-}
+};
 
 playerUI.captureProgressBarMouseEvents = function () {
     playerUI.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
@@ -1051,12 +1085,12 @@ playerUI.captureProgressBarMouseEvents = function () {
 
     document.addEventListener('mousemove', playerUI.newProgressBarMousemove, true);
     document.addEventListener('mouseup', playerUI.newProgressBarMouseup, true);
-}
+};
 
 playerUI.releaseProgressBarMouseEvents = function () {
     document.removeEventListener('mousemove', playerUI.newProgressBarMousemove, true);
     document.removeEventListener('mouseup', playerUI.newProgressBarMouseup, true);
-}
+};
 
 playerUI.docProgressBarMousemove = function (e) {
     printLog('+docProgressBarMousemove');
@@ -1072,7 +1106,7 @@ playerUI.docProgressBarMousemove = function (e) {
     this.progressBarContext.movePos = movePos;
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
-}
+};
 
 playerUI.docProgressBarMouseup = function (e) {
     printLog('+docProgressBarMouseup');
@@ -1101,7 +1135,7 @@ playerUI.docProgressBarMouseup = function (e) {
     }
 
     this.progressBarContext.mousedown = false;
-}
+};
 
 playerUI.onVolumeSliderMousedown = function (e) {
     printLog('+onVolumeSliderMousedown');
@@ -1112,16 +1146,13 @@ playerUI.onVolumeSliderMousedown = function (e) {
     this.flagVolumeSliderMousedown = true;
 
     this.docVolumeSliderMousemove(e);
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////
 // this.player_ event callback
 playerUI.onMediaCanPlay = function () {
-    if (!this.flagPlayerInited) {
-        this.flagPlayerInited = true;
-
-        this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-        this.vopControlBar.style.display = 'block';
+    if (this.playerState_ !== 'opened') {
+        this.updateUIStateMachine('opened');
 
         // BD
         this.player_.setPosition(0.5);
@@ -1131,11 +1162,11 @@ playerUI.onMediaCanPlay = function () {
             this.onPlayFromGiantButton();
         }
     }
-}
+};
 
 playerUI.onMediaDurationChanged = function () {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-}
+};
 
 playerUI.onMediaEnded = function () {
     var paused = this.player_.isPaused();
@@ -1147,8 +1178,8 @@ playerUI.onMediaEnded = function () {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
 
     //
-    $('.html5-video-player').removeClass('vop-autohide');
-}
+    this.updateUIStateMachine('ended');
+};
 
 playerUI.onMediaLoadedData = function () {
     // update volume here
@@ -1156,7 +1187,9 @@ playerUI.onMediaLoadedData = function () {
     var volume = this.player_.getVolume();
 
     this.updateContentVolumeBarUI(muted, volume);
-}
+
+    this.updateUIStateMachine('opened');
+};
 
 playerUI.onMediaLoadedMetaData = function (e) {
     // update external div's dimensions
@@ -1172,21 +1205,21 @@ playerUI.onMediaLoadedMetaData = function (e) {
     h5Player.style.width = dstWidth.toString() + 'px';
     h5Player.style.height = dstHeight.toString() + 'px';
     this.player_.resize(dstWidth, dstHeight);
-}
+};
 
-playerUI.onMediaPaused = function () {}
+playerUI.onMediaPaused = function () {};
 
 playerUI.onMediaPlaying = function () {
     var paused = this.player_.isPaused();
     var ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
 
-    this.stopWaitingUI();
-}
+    this.stopBufferingUI();
+};
 
 playerUI.onMediaSeeking = function () {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
-}
+};
 
 playerUI.onMediaSeeked = function () {
     printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
@@ -1198,7 +1231,7 @@ playerUI.onMediaSeeked = function () {
         var ended = this.player_.isEnded();
         this.updatePlayBtnUI(paused, ended);
     }
-}
+};
 
 playerUI.onMediaTimeupdated = function () {
     //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
@@ -1211,21 +1244,21 @@ playerUI.onMediaTimeupdated = function () {
         this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
         this.updateProgressBarHoverUI();
     }
-}
+};
 
 playerUI.onMediaVolumeChanged = function () {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
-}
+};
 
 playerUI.onMediaWaiting = function () {
-    this.startWaitingUI();
-}
+    this.startBufferingUI();
+};
 
 playerUI.onLog = function (e) {
     printLogUI(e.message);
-}
+};
 
 playerUI.onAdStarted = function (e) {
     printLog('onAdStarted, linear: ' + e.isLinearAd);
@@ -1238,7 +1271,7 @@ playerUI.onAdStarted = function (e) {
         var v = document.querySelector('.vop-ads-container');
         v.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
     }
-}
+};
 
 playerUI.onAdComplete = function () {
     printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
@@ -1247,14 +1280,24 @@ playerUI.onAdComplete = function () {
     // update control bar ui
     this.vopProgressBar.style.display = 'block';
     this.vopSettingsBtn.style.display = 'inline-block';
-}
+};
 
 playerUI.onAdTimeUpdate = function () {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
-}
+};
+
+playerUI.onAdCompanions = function (e) {
+    var v = document.getElementById('idCompanionAd');
+    for (var i = 0; i < e.companions.length; i ++) {
+        var companion = e.companions[i];
+        if (v.clientWidth === companion.width && v.clientHeight === companion.height) {
+            v.innerHTML = companion.content;
+        }
+    }
+};
 
 playerUI.onFullscreenChanged = function () {
     var v = this.player_.isFullscreen();
@@ -1266,7 +1309,7 @@ playerUI.onFullscreenChanged = function () {
     } else {
         this.vopFullscreen.innerText = 'fullscreen';
     }
-}
+};
 
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
@@ -1354,7 +1397,7 @@ playerUI.createSubtitlesMenu = function () {
     firstMenuitem.focus();
 
     this.subtitlesMenuContext.currMenu = 'main_menu';
-}
+};
 
 playerUI.destroySettingsMenu = function () {
     var v = document.querySelector('.vop-panel-header');
@@ -1368,7 +1411,7 @@ playerUI.destroySettingsMenu = function () {
 
     this.settingMenuContext.currMenu = 'none';
     this.subtitlesMenuContext.currMenu = 'none';
-}
+};
 
 playerUI.createHeaderItemUI = function (text, cb) {
     var header = document.createElement('div');
@@ -1382,7 +1425,7 @@ playerUI.createHeaderItemUI = function (text, cb) {
     header.addEventListener('click', cb);
     
     return header;
-}
+};
 
 playerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
     var menuitem = document.createElement('div');
@@ -1546,7 +1589,7 @@ playerUI.createSettingsMenu = function () {
     qualityMenuitem.focus();
 
     this.settingMenuContext.currMenu = 'main_menu';
-}
+};
 
 playerUI.createQualityMenu = function () {
     // The quality menu html:
@@ -1979,10 +2022,12 @@ function onBtnUninit() {
 }
 
 function onBtnOpen() {
-    playerUI.onBtnOpen();
+    playerUI.playerOpen();
 }
 
-function onBtnClose() {}
+function onBtnClose() {
+    playerUI.playerClose();
+}
 
 function onUICmdPlay() {}
 
@@ -2007,7 +2052,7 @@ function onBtnTest2() {
     this.player_.test2();
 
     //this.player_.resize(1024, 768);
-    //stopWaitingUI();
+    //stopBufferingUI();
 
     // var v = document.querySelector('.ytp-play-button');
     // var v1 = v.querySelector('.ytp-svg-fill');
@@ -2112,7 +2157,7 @@ window.onload = function () {
 
     playerUI.adjustMobilePlatform();
 
-    playerUI.initPlayer();
+    playerUI.playerInit();
 
     // BD
     //onBtnTmp1();
