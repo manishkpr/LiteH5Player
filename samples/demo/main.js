@@ -378,7 +378,6 @@ playerUI.playerInit = function () {
     this.player_.on(oldmtn.Events.MEDIA_CANPLAY, this.onMediaCanPlay.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_LOADEDDATA, this.onMediaLoadedData.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying.bind(this), {});
@@ -419,7 +418,11 @@ playerUI.uninitPlayer = function () {
 };
 
 playerUI.playerOpen = function () {
-    this.player_.open(mediaCfg_);
+    var p = this.player_.open(mediaCfg_);
+    p.then(function(v) {
+        console.log('open ret: ' + v);
+        this.onOpenComplete();
+    }.bind(this));
     // since open is an async operation, we transition it to opening state.
     this.updateUIStateMachine('opening');
 };
@@ -428,6 +431,10 @@ playerUI.playerClose = function () {
     printLog('+onBtnClose');
     this.player_.close();
     this.updateUIStateMachine('closed');
+};
+
+playerUI.playerRequestAds = function () {
+    this.player_.playAd();
 };
 
 playerUI.onBtnInit = function () {
@@ -876,11 +883,6 @@ playerUI.onBtnStop = function () {
     this.player_ = null;
 }
 
-playerUI.onPlayButtonClickAd = function () {
-    if (this.player_) {
-        this.player_.playAd();
-    }
-}
 
 playerUI.onUICmdSwitchSubtitle = function () {
     printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
@@ -1181,7 +1183,7 @@ playerUI.onMediaEnded = function () {
     this.updateUIStateMachine('ended');
 };
 
-playerUI.onMediaLoadedData = function () {
+playerUI.onOpenComplete = function () {
     // update volume here
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
@@ -1997,11 +1999,12 @@ playerUI.onFccPropertyItemBlur = function (e) {
     }
 };
 
-playerUI.onTest = function () {
-    var v = document.querySelector('.vop-video');
-    var d = v.duration;
-    var a = 2;
-    var b = a;
+playerUI.playerTest = function () {
+    this.player_.test();
+    // var v = document.querySelector('.vop-video');
+    // var d = v.duration;
+    // var a = 2;
+    // var b = a;
     // this.uninitPlayer();
 
     // this.initVariable();
@@ -2035,7 +2038,9 @@ function onBtnManualSchedule() {
     playerUI.onBtnManualSchedule();
 }
 
-function onBtnInitAD() {}
+function onBtnInitAD() {
+    playerUI.playerRequestAds();
+}
 
 function onBtnDelAll() {}
 
@@ -2044,7 +2049,7 @@ function onBtnStop() {}
 function onBtnPlayAd() {}
 
 function onBtnTest() {
-    playerUI.onTest();
+    playerUI.playerTest();
 }
 
 function onBtnTest2() {

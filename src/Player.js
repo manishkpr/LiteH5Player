@@ -49,6 +49,11 @@ function Player(containerId) {
     let autoplayAllowed_;
     let autoplayRequiresMuted_;
 
+    // Promise part
+    let openPromise_;
+    let openPromiseResolve_;
+    let openPromiseReject_;
+
     function setup() {
         uiEngine_ = UIEngine(context_).getInstance();
         uiEngine_.initUI(containerId_);
@@ -69,20 +74,30 @@ function Player(containerId) {
     }
 
     function open(info) {
-        streamInfo_ = info;
         debug_.log('Player, +open');
+        openPromise_ = new Promise((resolve, reject) => {
+            openPromiseResolve_ = resolve;
+            openPromiseReject_ = reject;
 
-        // fetch dash content
-        if (streamInfo_.url) {
+            streamInfo_ = info;
+        
+            if (streamInfo_.url === '') {
+                openPromiseReject_('failed');
+                return;
+            }
+
+            // fetch dash content
             parser_ = manifestParser_.getParser(streamInfo_.url);
             parser_.loadManifest(streamInfo_.url);
-        }
 
-        // load webvtt thumbnail
-        let vttThumbnail = WebvttThumbnails(context_).getInstance();
-        vttThumbnail.open(streamInfo_.thumbnail);
+            // load webvtt thumbnail
+            let vttThumbnail = WebvttThumbnails(context_).getInstance();
+            vttThumbnail.open(streamInfo_.thumbnail);
+        });
 
         debug_.log('Player, -open');
+
+        return openPromise_;
     }
 
     function close() {
@@ -256,10 +271,14 @@ function Player(containerId) {
 
     function playAd() {
         if (adsEngine_) {
-            adsEngine_.playAd();
-        } else {
-
+            adsEngine_.requestAds();
         }
+
+        // if (adsEngine_) {
+        //     adsEngine_.playAd();
+        // } else {
+
+        // }
     }
 
     function getThumbnail(time) {
@@ -333,7 +352,11 @@ function Player(containerId) {
     }
 
     function addEventListeners() {
+        // html5 event
+        eventBus_.on(Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
+
         eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
+
         eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
         eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
@@ -358,6 +381,10 @@ function Player(containerId) {
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Begin -- internal events listener functions
+    function onMediaLoadedData() {
+        openPromiseResolve_('ok');
+    }
+
     function onManifestParsed(activeStream) {
         streamInfo_.activeStream = activeStream;
         // if it is pd, so we don't need to create mediasource
@@ -416,10 +443,6 @@ mseEngine_.open(streamInfo_.activeStream);
 let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
 mediaEngine_.setSrc(objURL);
 drmEngine_.setDrmInfo(streamInfo_);
-
-if (adsEngine_) {
-    adsEngine_.requestAds();
-}
 }
 
 function onMSEOpened() {
@@ -459,11 +482,9 @@ function onMSEOpened() {
     }
 
     function test() {
-        let test_asArray = [1, 2, 3, 4, 5];
-        test_asArray.abc = 'abc_string';
-        for (let test of test_asArray) {
-            console.log('test: ' + test);
-        }
+        var p1 = new Promise(function(resolve, reject) {
+            reject("Oops");
+        });
 
         // let a1 = getBufferedRanges();
         // let b1 = getSeekableRange();

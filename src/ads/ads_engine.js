@@ -410,7 +410,7 @@ function AdsEngine(adContainer, media, advertising) {
                     eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
                 }
 
-                // check companions
+                // report companion
                 let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
                 selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
                 selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
