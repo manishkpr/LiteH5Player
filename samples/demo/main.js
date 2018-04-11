@@ -422,7 +422,10 @@ playerUI.playerOpen = function () {
     p.then(function(v) {
         console.log('open ret: ' + v);
         this.onOpenComplete();
-    }.bind(this));
+    }.bind(this))
+    .catch(function(e) {
+        console.log('e: ' + e);
+    });
     // since open is an async operation, we transition it to opening state.
     this.updateUIStateMachine('opening');
 };
