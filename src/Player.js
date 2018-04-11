@@ -82,31 +82,31 @@ function Player(containerId) {
     function open(info) {
         debug_.log('Player, +open');
         openPromise_ = new Promise((resolve, reject) => {
-                openPromiseResolve_ = resolve;
-                openPromiseReject_ = reject;
+            openPromiseResolve_ = resolve;
+            openPromiseReject_ = reject;
 
-                if (info.url === '') {
-                    openPromiseReject_('failed');
-                    return;
-                }
+            if (info.url === '') {
+                openPromiseReject_('failed');
+                return;
+            }
 
-                streamInfo_ = info;
+            streamInfo_ = info;
 
-                // fetch dash content
-                parser_ = manifestParser_.getParser(streamInfo_.url);
-                parser_.loadManifest(streamInfo_.url);
+            // fetch dash content
+            parser_ = manifestParser_.getParser(streamInfo_.url);
+            parser_.loadManifest(streamInfo_.url);
 
-                // load webvtt thumbnail
-                let vttThumbnail = WebvttThumbnails(context_).getInstance();
-                vttThumbnail.open(streamInfo_.thumbnail);
+            // load webvtt thumbnail
+            let vttThumbnail = WebvttThumbnails(context_).getInstance();
+            vttThumbnail.open(streamInfo_.thumbnail);
 
-                if (adsEngine_) {
-                    adsEngine_.requestAds();
-                } else {
-                    flagAdOpenComplete_ = true;
-                }
-                flagPlayedOnce_ = false;
-            });
+            if (adsEngine_) {
+                adsEngine_.requestAds();
+            } else {
+                flagAdOpenComplete_ = true;
+            }
+            flagPlayedOnce_ = false;
+        });
 
         playerState_ = 'opening';
         return openPromise_;
@@ -131,17 +131,6 @@ function Player(containerId) {
 
     function dellAll() {
         mseEngine_.removeBuffer();
-    }
-
-    function addPD() {
-        debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.pdRep);
-        let url = streamInfo_.activeStream.pdRep.media;
-
-        media_.src = url;
-
-        if (adsEngine_) {
-            adsEngine_.requestAds();
-        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -441,7 +430,9 @@ function Player(containerId) {
         streamInfo_.activeStream = activeStream;
         // if it is pd, so we don't need to create mediasource
         if (streamInfo_.activeStream.pdRep) {
-            addPD();
+            debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.pdRep);
+            let url = streamInfo_.activeStream.pdRep.media;
+            media_.src = url;
             return;
         }
 
