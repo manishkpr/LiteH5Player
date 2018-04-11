@@ -330,45 +330,32 @@ playerUI.initUIEventListeners = function () {
         var v = document.querySelector('.html5-video-player');
         ro.observe(v);
     } else {
-        // new
         var v = document.querySelector('.player');
-        new ResizeSensor(v, this.doPlayerResizeChange.bind(this));
+        new ResizeSensor(v, function(e) {
+            var dstWidth = 0;
+            var dstHeight = 0;
+            if (isFullscreen()) {
+                dstWidth = window.screen.width;
+                dstHeight = window.screen.height;
+            } else {
+                if (v.clientWidth > 720) {
+                    dstWidth = 720;
+                    dstHeight = dstWidth * 0.5625;
+                } else {
+                    dstWidth = v.clientWidth;
+                    dstHeight = dstWidth * 0.5625;
+                }
+            }
+
+            this.vopH5Player.style.width = dstWidth.toString() + 'px';
+            this.vopH5Player.style.height = dstHeight.toString() + 'px';
+            //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
+            this.player_.resize(dstWidth, dstHeight);
+
+            printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
+            this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+        }.bind(this));
     }
-};
-
-playerUI.doPlayerResizeChange = function (e) {
-    var v = document.querySelector('.player');
-    
-    var dstWidth = 0;
-    var dstHeight = 0;
-    if (isFullscreen()) {
-        dstWidth = window.screen.width;
-        dstHeight = window.screen.height;
-    } else {
-        if (v.clientWidth > 720) {
-            dstWidth = 720;
-            dstHeight = dstWidth * 0.5625;
-        } else {
-            dstWidth = v.clientWidth;
-            dstHeight = dstWidth * 0.5625;
-        }
-    }
-
-    this.vopH5Player.style.width = dstWidth.toString() + 'px';
-    this.vopH5Player.style.height = dstHeight.toString() + 'px';
-    //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
-    this.player_.resize(dstWidth, dstHeight);
-
-    printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-};
-
-playerUI.adjustMobilePlatform = function () {
-    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    printLog('adjustMobilePlatform, width: ' + width);
-    //if (width < 720) {
-        //$('.html5-video-player').addClass('vop-small-mode');
-    //}
 };
 
 playerUI.playerInit = function () {
@@ -2162,8 +2149,6 @@ window.onload = function () {
     playerUI.initVariable();
     playerUI.initUIElements();
     playerUI.initUIEventListeners();
-
-    playerUI.adjustMobilePlatform();
 
     playerUI.playerInit();
 
