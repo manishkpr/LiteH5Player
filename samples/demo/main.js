@@ -33,7 +33,7 @@ playerUI.initVariable = function () {
     this.castSender_ = null;
 
     // UI Controls
-    this.vopH5Player = null;
+    this.vopPlayer = null;
     this.vopTooltip = null;
     this.vopTooltipBg = null;
     this.vopTooltipText = null;
@@ -246,7 +246,7 @@ playerUI.initVariable = function () {
 
 // Title: init part
 playerUI.initUIElements = function () {
-    this.vopH5Player = document.querySelector('.html5-video-player');
+    this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
@@ -281,11 +281,11 @@ playerUI.initUIElements = function () {
 };
 
 playerUI.initUIEventListeners = function () {
-    this.vopH5Player.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
-    this.vopH5Player.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
-    this.vopH5Player.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
+    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
+    this.vopPlayer.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
+    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
 
-    this.vopH5Player.addEventListener('click', this.onPlayerClick.bind(this));
+    this.vopPlayer.addEventListener('click', this.onPlayerClick.bind(this));
 
     this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMousedown.bind(this));
     this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMousemove.bind(this));
@@ -335,8 +335,8 @@ playerUI.initUIEventListeners = function () {
             var dstWidth = 0;
             var dstHeight = 0;
             if (isFullscreen()) {
-                dstWidth = window.screen.width;
-                dstHeight = window.screen.height;
+                dstWidth = v.clientWidth;
+                dstHeight = v.clientHeight;
             } else {
                 if (v.clientWidth > 720) {
                     dstWidth = 720;
@@ -347,8 +347,8 @@ playerUI.initUIEventListeners = function () {
                 }
             }
 
-            this.vopH5Player.style.width = dstWidth.toString() + 'px';
-            this.vopH5Player.style.height = dstHeight.toString() + 'px';
+            this.vopPlayer.style.width = dstWidth.toString() + 'px';
+            this.vopPlayer.style.height = dstHeight.toString() + 'px';
             //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
             this.player_.resize(dstWidth, dstHeight);
 
@@ -727,7 +727,7 @@ playerUI.docVolumeSliderMouseup = function (e) {
         x: e.clientX,
         y: e.clientY
     };
-    if (!isPtInElement(pt, this.vopH5Player)) {
+    if (!isPtInElement(pt, this.vopPlayer)) {
         this.onPlayerMouseleave();
     }
 };
