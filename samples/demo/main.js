@@ -375,7 +375,6 @@ playerUI.playerInit = function () {
     this.player_ = new oldmtn.Player('player-container');
     this.player_.init(cfg_);
 
-    this.player_.on(oldmtn.Events.MEDIA_CANPLAY, this.onMediaCanPlay.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData.bind(this), {});
@@ -1155,20 +1154,6 @@ playerUI.onVolumeSliderMousedown = function (e) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // this.player_ event callback
-playerUI.onMediaCanPlay = function () {
-    if (this.playerState_ !== 'opened') {
-        this.updateUIStateMachine('opened');
-
-        // BD
-        this.player_.setPosition(0.5);
-        // ED
-        // process config parameter
-        if (cfg_.autoplay) {
-            this.onPlayFromGiantButton();
-        }
-    }
-};
-
 playerUI.onMediaDurationChanged = function () {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
 };
@@ -1187,13 +1172,26 @@ playerUI.onMediaEnded = function () {
 };
 
 playerUI.onOpenComplete = function () {
-    // update volume here
-    var muted = this.player_.isMuted();
-    var volume = this.player_.getVolume();
+    if (this.playerState_ === 'opening') {
+        printLog('+onOpenComplete');
+        this.updateUIStateMachine('opened');
 
-    this.updateContentVolumeBarUI(muted, volume);
+        // update volume here
+        var muted = this.player_.isMuted();
+        var volume = this.player_.getVolume();
 
-    this.updateUIStateMachine('opened');
+        this.updateContentVolumeBarUI(muted, volume);
+
+        // BD
+        this.uiGiantBtnContainer.style.display = 'flex';
+        // ED
+        // // process config parameter
+        // if (cfg_.autoplay) {
+        //     this.onPlayFromGiantButton();
+        // } else {
+        //     this.uiGiantBtnContainer.style.display = 'flex';
+        // }
+    }
 };
 
 playerUI.onMediaLoadedMetaData = function (e) {
@@ -2035,7 +2033,9 @@ function onBtnClose() {
     playerUI.playerClose();
 }
 
-function onUICmdPlay() {}
+function onBtnPlay() {
+    playerUI.vopPlayButton.click();
+}
 
 function onBtnManualSchedule() {
     playerUI.onBtnManualSchedule();

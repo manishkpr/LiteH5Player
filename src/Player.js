@@ -24,7 +24,7 @@ import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 function Player(containerId) {
     let containerId_ = containerId;
     let cfg_;
-    let context_ = oldmtn;//{ flag: 'player' };
+    let context_ = oldmtn; //{ flag: 'player' };
 
     let uiEngine_;
     let media_;
@@ -49,6 +49,14 @@ function Player(containerId) {
     let autoplayAllowed_;
     let autoplayRequiresMuted_;
 
+    // player state machine
+    let playerState_; // 'none', 'opening', 'opened'
+
+    // open completed flag
+    let flagContentOpenComplete_;
+    let flagAdOpenComplete_;
+    let flagPlayedOnce_;
+
     // Promise part
     let openPromise_;
     let openPromiseResolve_;
@@ -69,34 +77,38 @@ function Player(containerId) {
         addResizeListener();
     }
 
-    function uninit() {
-        
-    }
+    function uninit() {}
 
     function open(info) {
         debug_.log('Player, +open');
         openPromise_ = new Promise((resolve, reject) => {
-            openPromiseResolve_ = resolve;
-            openPromiseReject_ = reject;
+                openPromiseResolve_ = resolve;
+                openPromiseReject_ = reject;
 
-            streamInfo_ = info;
-        
-            if (streamInfo_.url === '') {
-                openPromiseReject_('failed');
-                return;
-            }
+                if (info.url === '') {
+                    openPromiseReject_('failed');
+                    return;
+                }
 
-            // fetch dash content
-            parser_ = manifestParser_.getParser(streamInfo_.url);
-            parser_.loadManifest(streamInfo_.url);
+                streamInfo_ = info;
 
-            // load webvtt thumbnail
-            let vttThumbnail = WebvttThumbnails(context_).getInstance();
-            vttThumbnail.open(streamInfo_.thumbnail);
-        });
+                // fetch dash content
+                parser_ = manifestParser_.getParser(streamInfo_.url);
+                parser_.loadManifest(streamInfo_.url);
 
-        debug_.log('Player, -open');
+                // load webvtt thumbnail
+                let vttThumbnail = WebvttThumbnails(context_).getInstance();
+                vttThumbnail.open(streamInfo_.thumbnail);
 
+                if (adsEngine_) {
+                    adsEngine_.requestAds();
+                } else {
+                    flagAdOpenComplete_ = true;
+                }
+                flagPlayedOnce_ = false;
+            });
+
+        playerState_ = 'opening';
         return openPromise_;
     }
 
@@ -143,13 +155,19 @@ function Player(containerId) {
     }
 
     function play() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-            adsEngine_.play();
-        } else {
-            if (!mediaEngine_) {
-                return;
+        if (!flagPlayedOnce_) {
+            if (adsEngine_) {
+                adsEngine_.playAd();
+            } else {
+                mediaEngine_.play();
             }
-            mediaEngine_.play();
+            flagPlayedOnce_ = true;
+        } else {
+            if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+                adsEngine_.play();
+            } else {
+                mediaEngine_.play();
+            }
         }
     }
 
@@ -157,7 +175,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.pause();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             mediaEngine_.pause();
         }
     }
@@ -166,7 +186,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.isPaused();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             return mediaEngine_.isPaused();
         }
     }
@@ -175,7 +197,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.getPosition();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             return mediaEngine_.getPosition();
         }
     }
@@ -184,27 +208,33 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.getDuration();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             return mediaEngine_.getDuration();
         }
     }
 
     function getSeekableRange() {
-        if (!mediaEngine_) { return; }
+        if (!mediaEngine_) {
+            return;
+        }
         return mediaEngine_.getSeekableRange();
     }
 
     function getBufferedRanges() {
-        if (!mediaEngine_) { return; }
+        if (!mediaEngine_) {
+            return;
+        }
         return mediaEngine_.getBufferedRanges();
     }
-    
-    function isEnded() {
-        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
 
-        }
+    function isEnded() {
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {}
         else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             return mediaEngine_.isEnded();
         }
     }
@@ -213,7 +243,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.mute();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             mediaEngine_.mute();
         }
     }
@@ -222,7 +254,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.unmute();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             mediaEngine_.unmute();
         }
     }
@@ -231,7 +265,9 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             return adsEngine_.isMuted();
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             return mediaEngine_.isMuted();
         }
     }
@@ -240,13 +276,17 @@ function Player(containerId) {
         if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
             adsEngine_.setVolume(volume);
         } else {
-            if (!mediaEngine_) { return; }
+            if (!mediaEngine_) {
+                return;
+            }
             mediaEngine_.setVolume(volume);
         }
     }
 
     function getVolume() {
-        if (!mediaEngine_) { return; }
+        if (!mediaEngine_) {
+            return;
+        }
 
         return mediaEngine_.getVolume();
     }
@@ -271,7 +311,7 @@ function Player(containerId) {
 
     function playAd() {
         if (adsEngine_) {
-            adsEngine_.requestAds();
+            adsEngine_.playAd();
         }
 
         // if (adsEngine_) {
@@ -348,21 +388,27 @@ function Player(containerId) {
     }
 
     function initData() {
+        playerState_ = 'none';
+        flagContentOpenComplete_ = false;
+        flagAdOpenComplete_ = false;
+        flagPlayedOnce_ = false;
         streamInfo_ = null;
     }
 
     function addEventListeners() {
         // html5 event
-        eventBus_.on(Events.MEDIA_LOADEDDATA, onMediaLoadedData, {});
+        eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
 
         eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
 
         eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
+        // ads events
         eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
         eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
         eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
         eventBus_.on(Events.AD_STARTED, onAdStarted, {});
+        eventBus_.on(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
     }
 
     function addResizeListener() {
@@ -381,8 +427,14 @@ function Player(containerId) {
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Begin -- internal events listener functions
-    function onMediaLoadedData() {
-        openPromiseResolve_('ok');
+    function onMediaCanPlay() {
+        if (playerState_ === 'opening') {
+            flagContentOpenComplete_ = true;
+            if (flagAdOpenComplete_) {
+                openPromiseResolve_('ok');
+                playerState_ = 'opened';
+            }
+        }
     }
 
     function onManifestParsed(activeStream) {
@@ -408,45 +460,45 @@ function Player(containerId) {
                 window.MediaSource &&
                 !window.MediaSource.isTypeSupported(streamInfo_.activeStream.aRep.codecs)) {
                 debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
-            return;
-        }
-    }
-
-    if (streamInfo_.activeStream.vRep) {
-        if (streamInfo_.activeStream.vRep.codecs) {
-            debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
+                return;
+            }
         }
 
-        if (streamInfo_.activeStream.vRep.codecs &&
-            window.MediaSource &&
-            !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
-            debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
-        return;
+        if (streamInfo_.activeStream.vRep) {
+            if (streamInfo_.activeStream.vRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.vRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
+                return;
+            }
+        }
+
+        if (streamInfo_.activeStream.pdRep) {
+            if (streamInfo_.activeStream.pdRep.codecs) {
+                debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
+            }
+
+            if (streamInfo_.activeStream.pdRep.codecs &&
+                window.MediaSource &&
+                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
+                debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
+                return;
+            }
+        }
+
+        mseEngine_.open(streamInfo_.activeStream);
+
+        let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
+        mediaEngine_.setSrc(objURL);
+        drmEngine_.setDrmInfo(streamInfo_);
     }
-}
 
-if (streamInfo_.activeStream.pdRep) {
-    if (streamInfo_.activeStream.pdRep.codecs) {
-        debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
-    }
-
-    if (streamInfo_.activeStream.pdRep.codecs &&
-        window.MediaSource &&
-        !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
-        debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
-    return;
-}
-}
-
-mseEngine_.open(streamInfo_.activeStream);
-
-let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
-mediaEngine_.setSrc(objURL);
-drmEngine_.setDrmInfo(streamInfo_);
-}
-
-function onMSEOpened() {
-    mediaEngine_.revokeSrc();
+    function onMSEOpened() {
+        mediaEngine_.revokeSrc();
 
         // Detecting autoplay success or failure
         //mediaEngine_.detectAutoplay();
@@ -466,10 +518,19 @@ function onMSEOpened() {
         }
     }
 
-    function onAdStarted() {
-    }
+    function onAdStarted() {}
 
     function onAdComplete() {}
+    
+    function onAdLoadingComplete() {
+        if (playerState_ === 'opening') {
+            flagAdOpenComplete_ = true;
+            if (flagContentOpenComplete_) {
+                openPromiseResolve_('ok');
+                playerState_ = 'opened';
+            }
+        }
+    }
     // End -- internal events listener functions
 
     ///////////////////////////////////////////////////////////////////////////
@@ -482,9 +543,9 @@ function onMSEOpened() {
     }
 
     function test() {
-        var p1 = new Promise(function(resolve, reject) {
-            reject("Oops");
-        });
+        var p1 = new Promise(function (resolve, reject) {
+                reject("Oops");
+            });
 
         // let a1 = getBufferedRanges();
         // let b1 = getSeekableRange();
@@ -546,12 +607,10 @@ function onMSEOpened() {
         test: test,
         test2: test2
     };
-    
+
     setup();
-    
+
     return instance;
 };
 
 export default Player;
-
-

@@ -57,7 +57,7 @@ function AdsEngine(adContainer, media, advertising) {
     let duration_;
     let position_;
 
-    let isMobilePlatform_ = false; //= CommonUtils.isMobilePlatform();
+    let isMobilePlatform_ = CommonUtils.isMobilePlatform();
 
     function setup() {
         if (advertising_.vpaidmode) {
@@ -299,9 +299,9 @@ function AdsEngine(adContainer, media, advertising) {
         }
 
         adsLoaded_ = true;
-        if (contentInitialized_ && !isMobilePlatform_) {
+        if (contentInitialized_) {
             debug_.log('playAd when contentInitialized_');
-            playAd();
+            eventBus_.trigger(Events.AD_LOADING_COMPLETE);
         }
 
         debug_.log('-onAdsManagerLoaded');
@@ -461,9 +461,10 @@ function AdsEngine(adContainer, media, advertising) {
             'contentInitialized_: ' + contentInitialized_ + ', ' +
             'adsLoaded_: ' + adsLoaded_);
         contentInitialized_ = true;
-        if (adsLoaded_ && !isMobilePlatform_) {
+        if (adsLoaded_) {
             debug_.log('playAd when adsLoaded_');
-            playAd();
+            eventBus_.trigger(Events.AD_LOADING_COMPLETE);
+            //playAd();
         }
         debug_.log('-onMediaLoadedMetadata');
     }

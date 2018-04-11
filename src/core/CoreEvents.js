@@ -38,6 +38,8 @@ class CoreEvents {
         this.AD_ADS_MANAGER_LOADED = 'adAdsManagerLoaded';
         this.AD_TIMEUPDATE = 'adTimeUpdate';
         this.AD_COMPANIONS = 'adCompanions';
+        // ads custom events
+        this.AD_LOADING_COMPLETE = 'adLoadingComplete';
         
         // log event
         this.LOG = 'log';
