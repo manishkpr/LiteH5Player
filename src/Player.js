@@ -20,6 +20,12 @@ import CommonUtils from './utils/common_utils';
 
 import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
+
+// BD
+import { hlsDefaultConfig } from './hls/config';
+import Demuxer from './hls/demux/demuxer';
+// ED
+
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
     let containerId_ = containerId;
@@ -534,9 +540,11 @@ function Player(containerId) {
     }
 
     function test() {
-        var p1 = new Promise(function (resolve, reject) {
-                reject("Oops");
-            });
+        // let hls_ = {};
+        // hls_.config = hlsDefaultConfig;
+        // let demuxer_ = new Demuxer(hls_, 'main');
+
+        parser_.getNextFragment();
 
         // let a1 = getBufferedRanges();
         // let b1 = getSeekableRange();
@@ -547,7 +555,6 @@ function Player(containerId) {
     }
 
     function test2() {
-        mseEngine_.test();
     }
 
     function attribute() {

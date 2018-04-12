@@ -6,6 +6,23 @@
   "scripts": {
     "test": "babel-node spec/run.js"
   },
+  "author": "oldmtn",
+  "license": "BSD",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "url-toolkit": "^2.1.2"
+  },
   "devDependencies": {
     "babel": "^5.3.1",
     "babel-core": "^6.26.0",
@@ -29,22 +46,7 @@
     "load-grunt-tasks": "^3.1.0",
     "time-grunt": "^1.2.0",
     "uglify-js": "~2.4.21",
-    "webworkify": "^1.4.0"
-  },
-  "author": "oldmtn",
-  "license": "BSD",
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
-  },
-  "dependencies": {
+    "webworkify": "^1.4.0",
+    "webworkify-webpack": "^2.0.0"
   }
 }

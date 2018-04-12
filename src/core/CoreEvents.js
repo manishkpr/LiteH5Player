@@ -52,6 +52,12 @@ class CoreEvents {
         this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
         this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
 
+        // Begin hls.js
+        this.HLS_INIT_PTS_FOUND = 'hlsInitPtsFound';
+        this.HLS_FRAG_PARSING_INIT_SEGMENT = 'hlsFragParsingInitSegment';
+        this.HLS_FRAG_PARSING_DATA = 'hlsFragParsingData';
+        // End hls.js
+
         //
         this.TEST_MSG = 'testMsg';
     }

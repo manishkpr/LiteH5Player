@@ -26,7 +26,8 @@ function DashParser() {
 
     // Begin dash manifest info
     let mediaPresentationDuration_;
-    let activeStream_;
+    let vRep_;
+    let aRep_;
     // End dash manifest info
 
     let manifestUrl_;
@@ -70,218 +71,21 @@ function DashParser() {
 
         let period = manifest.Period_asArray[0];
         let adaptationSet = period.AdaptationSet_asArray[0];
-        let representation = adaptationSet.Representation_asArray[0];
+        vRep_ = adaptationSet.Representation_asArray[0];
         let segmentTemplate = adaptationSet.SegmentTemplate;
 
         //
         mediaPresentationDuration_ = manifest.mediaPresentationDuration;
 
-        representation.type = 'video';
-        representation.codecs = 'video/mp4; ' + 'codecs=\"' + representation.codecs + '\"';
-        representation.duration = manifest.mediaPresentationDuration;
-        representation.segmentTemplate = segmentTemplate;
+        vRep_.type = 'video';
+        vRep_.codecs = 'video/mp4; ' + 'codecs=\"' + vRep_.codecs + '\"';
+        vRep_.duration = manifest.mediaPresentationDuration;
+        vRep_.segmentTemplate = segmentTemplate;
         let cnt = mediaPresentationDuration_ / getSegmentDuration(segmentTemplate);
         let remainder = mediaPresentationDuration_ % getSegmentDuration(segmentTemplate);
-        representation.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
+        vRep_.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
 
         vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
-// For reference
-// Representation
-// bandwidth:3134488
-// codecs:"avc1.64001f"
-// frameRate:30
-// height:576
-// id:"bbb_30fps_1024x576_2500k"
-// sar:"1:1"
-// scanType:"progressive"
-// width:1024
-
-// SegmentTemplate
-// duration:120
-// initialization:"$RepresentationID$/$RepresentationID$_0.m4v"
-// media:"$RepresentationID$/$RepresentationID$_$Number$.m4v"
-// startNumber:1
-// timescale:30
-        activeStream_ = {
-            aRep: null,
-            vRep: representation
-        };
-    }
-
-    function audio_only_case01() {
-        let aRep = null;
-
-        // construct dash audio
-        let aContents = [];
-        for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
-            aContents.push(content);
-        }
-
-        aRep = {
-            type: 'audio',
-            codecs: 'audio/mp4; codecs="mp4a.40.2"',
-            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/init.mp4',
-            media: aContents
-        };
-
-        activeStream_ = {
-            aRep: aRep,
-            vRep: null
-        };
-
-        return activeStream_;
-    }
-
-    function video_only_case01() {
-        let vRep = null;
-        let vContents = [];
-        for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
-            vContents.push(content);
-        }
-        vRep = {
-            type: 'video',
-            codecs: 'video/mp4; codecs="avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
-            media: vContents
-        };
-
-        activeStream_ = {
-            aRep: null,
-            vRep: vRep
-        };
-
-        return activeStream_;
-    }
-
-    function case01() {
-        let aRep = null;
-        let vRep = null;
-
-        // construct dash audio
-        let aContents = [];
-        for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/' + i.toString() + '.m4s';
-            aContents.push(content);
-        }
-
-        aRep = {
-            type: 'audio',
-            codecs: 'audio/mp4; codecs="mp4a.40.2"',
-            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/A48/init.mp4',
-            media: aContents
-        };
-
-        // construct dash video
-        let vContents = [];
-        for (let i = 1; i <= 15; i++) {
-            let content = 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/' + i.toString() + '.m4s';
-            vContents.push(content);
-        }
-        vRep = {
-            type: 'video',
-            codecs: 'video/mp4; codecs="avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/init.mp4',
-            media: vContents
-        };
-
-        activeStream_ = {
-            aRep: aRep,
-            vRep: vRep
-        };
-
-        return activeStream_;
-    }
-
-    function case02() {
-        // the video contains audio
-        let aRep = null;
-        let vRep = null;
-        let vContents = [];
-        for (let i = 1; i <= 6; i++) {
-            let content = 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/segment_file' + i.toString() + '.m4s';
-            vContents.push(content);
-        }
-        vRep = {
-            type: 'video',
-            codecs: 'video/mp4; codecs="mp4a.40.2, avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/segment_fileinit.mp4',
-            media: vContents
-        };
-
-        activeStream_ = {
-            vRep: vRep,
-            aRep: null,
-            mediaPresentationDuration: 176
-        };
-
-        return activeStream_;
-    }
-
-    function case03() {
-        let aRep = null;
-        let vRep = null;
-
-        let cnt = 20;
-        
-        // construct dash audio
-        let aContents = [];
-        for (let i = 0; i <= cnt; i++) {
-            let content = 'http://10.2.68.64/2/dash/undoc/test2_main_index/Audio1/' + i.toString() + '.m4s';
-            aContents.push(content);
-        }
-
-        aRep = {
-            type: 'audio',
-            codecs: 'audio/mp4; codecs="mp4a.40.29"',
-            initialization: 'http://10.2.68.64/2/dash/undoc/test2_main_index/Audio1/Header.m4s',
-            media: aContents
-        };
-
-        // construct dash video
-        let vContents = [];
-        for (let i = 0; i <= cnt; i++) {
-            let content = 'http://10.2.68.64/2/dash/undoc/test2_main_index/Video1/' + i.toString() + '.m4s';
-            vContents.push(content);
-        }
-        vRep = {
-            type: 'video',
-            codecs: 'video/mp4; codecs="avc1.4D4029"',
-            initialization: 'http://10.2.68.64/2/dash/undoc/test2_main_index/Video1/Header.m4s',
-            media: vContents
-        };
-
-        activeStream_ = {
-            aRep: aRep,
-            vRep: vRep,
-            mediaPresentationDuration: 290 // manifest max duration
-        };
-
-        return activeStream_;
-    }
-
-    function live01() {
-        let vRep = null;
-        let vContents = [];
-        for (let i = 484; i <= 503; i++) {
-            let content = 'http://10.2.68.64/2/live/01/760507' + i.toString() + '.m4s';
-            vContents.push(content);
-        }
-        vRep = {
-            type: 'video',
-            codecs: 'video/mp4; codecs="avc1.64001e"',
-            initialization: 'http://10.2.68.64/2/live/01/init.mp4',
-            media: vContents
-        };
-
-        activeStream_ = {
-            aRep: null,
-            vRep: vRep,
-            mediaPresentationDuration: 1521014975
-        };
-
-        return activeStream_;
     }
 
     function loadManifest(url) {
@@ -299,7 +103,7 @@ function DashParser() {
             let manifest = converter_.xml_str2json(content);
             getRepresentation(manifest);
 
-            eventBus_.trigger(Events.MANIFEST_PARSED, activeStream_);
+            eventBus_.trigger(Events.MANIFEST_PARSED, {aRep: null, vRep: vRep_});
         }
 
         let request = {
@@ -328,66 +132,66 @@ function DashParser() {
     function getNextFragment() {
         let ret = {};
 
-        if (activeStream_.vRep && activeStream_.aRep) {
+        if (vRep_ && aRep_) {
             do {
                 // init segments
                 if (videoHeaderAdded_ === false) {
-                    ret.type = activeStream_.vRep.type;
-                    ret.url = getFragmentInitialization(activeStream_.vRep);
+                    ret.type = vRep_.type;
+                    ret.url = getFragmentInitialization(vRep_);
                     videoHeaderAdded_ = true;
                     break;
                 }
                 if (audioHeaderAdded_ === false) {
-                    ret.type = activeStream_.aRep.type;
-                    ret.url = getFragmentInitialization(activeStream_.aRep);
+                    ret.type = aRep_.type;
+                    ret.url = getFragmentInitialization(aRep_);
                     audioHeaderAdded_ = true;
                     break;
                 }
 
                 // media segments
-                if (vSegmentNumber_ >= activeStream_.vRep.media.length ||
-                    audioIndex_ >= activeStream_.aRep.media.length) {
+                if (vSegmentNumber_ >= vRep_.media.length ||
+                    audioIndex_ >= aRep_.media.length) {
                     ret = null;
                 } else {
                     if (vSegmentNumber_ > audioIndex_) {
-                        if (audioIndex_ < activeStream_.aRep.segmentCnt) {
-                            ret.type = activeStream_.aRep.type;
-                            ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
+                        if (audioIndex_ < aRep_.segmentCnt) {
+                            ret.type = aRep_.type;
+                            ret.url = getFragmentMedia(aRep_, audioIndex_);
                             audioIndex_++;
                         }
                     } else {
-                        if (vSegmentNumber_ < activeStream_.vRep.segmentCnt) {
-                            ret.type = activeStream_.vRep.type;
-                            ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
+                        if (vSegmentNumber_ < vRep_.segmentCnt) {
+                            ret.type = vRep_.type;
+                            ret.url = getFragmentMedia(vRep_, vSegmentNumber_);
                             vSegmentNumber_++;
                         }
                     }
                 }
             } while (false);
         } else {
-            if (activeStream_.vRep) {
-                ret.type = activeStream_.vRep.type;
+            if (vRep_) {
+                ret.type = vRep_.type;
 
                 if (videoHeaderAdded_ === false) {
-                    ret.url = getFragmentInitialization(activeStream_.vRep);
+                    ret.url = getFragmentInitialization(vRep_);
                     videoHeaderAdded_ = true;
                 } else {
-                    if (vSegmentNumber_ < activeStream_.vRep.segmentCnt) {
-                        ret.url = getFragmentMedia(activeStream_.vRep, vSegmentNumber_);
+                    if (vSegmentNumber_ < vRep_.segmentCnt) {
+                        ret.url = getFragmentMedia(vRep_, vSegmentNumber_);
                         vSegmentNumber_++;
                     } else {
                         ret = null;
                     }
                 }
-            } else if (activeStream_.aRep) {
-                ret.type = activeStream_.aRep.type;
+            } else if (aRep_) {
+                ret.type = aRep_.type;
 
                 if (audioHeaderAdded_ === false) {
-                    ret.url = getFragmentInitialization(activeStream_.aRep);
+                    ret.url = getFragmentInitialization(aRep_);
                     audioHeaderAdded_ = true;
                 } else {
-                    if (audioIndex_ < activeStream_.aRep.segmentCnt) {
-                        ret.url = getFragmentMedia(activeStream_.aRep, audioIndex_);
+                    if (audioIndex_ < aRep_.segmentCnt) {
+                        ret.url = getFragmentMedia(aRep_, audioIndex_);
                         audioIndex_++;
                     } else {
                         ret = null;
