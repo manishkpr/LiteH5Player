@@ -5,3 +5,17 @@ module.exports = {
     filename: "liteH5Player.debug.js"
   }
 }
+
+/*
+// Title: Configure webpack to allow browser debugging?
+see: https://stackoverflow.com/questions/27626764/configure-webpack-to-allow-browser-debugging
+Use below cmd to build debug lib.
+$ webpack --devtool source-map
+
+
+
+
+
+
+
+ */
