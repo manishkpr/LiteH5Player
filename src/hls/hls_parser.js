@@ -1,8 +1,10 @@
 import FactoryMaker from '../core/FactoryMaker';
 import Demuxer from './demux/demuxer';
 
-function HlsParser() {
+import { hlsDefaultConfig } from './config';
 
+function HlsParser() {
+    let hls_;
     let demuxer_;
 
     function loadManifest(url) {
@@ -10,7 +12,9 @@ function HlsParser() {
     }
 
     function init() {
-        demuxer_ = new Demuxer();
+        hls_ = {};
+        hls_.config = hlsDefaultConfig;
+        demuxer_ = new Demuxer(hls_, 'main');
     }
 
     let instance_ = {
