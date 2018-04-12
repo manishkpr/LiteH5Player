@@ -145,8 +145,8 @@ function AdsEngine(adContainer, media, advertising) {
         adsRequest.nonLinearAdSlotWidth = width_;
         adsRequest.nonLinearAdSlotHeight = height_;
 
-        // adsRequest.setAdWillAutoPlay(autoplayAllowed_);
-        // adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
+        //adsRequest.setAdWillAutoPlay(autoplayAllowed_);
+        //adsRequest.setAdWillPlayMuted(autoplayRequiresMuted_);
         //adsRequest.forceNonLinearFullSlot = advertising_.forceNonLinearFullSlot;
 
         /*

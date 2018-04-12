@@ -96,7 +96,7 @@ function getInitConfig()
       //tag: VMAP_Pre_10_20Skip_Post,
       //tag: ad_jwplayer_nonlinear,
       //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-      //enablePreloading: true,
+      enablePreloading: true,
       //autoplayadsmuted: true,
       //vpaidmode: 'insecure',
       //forceNonLinearFullSlot: false,
