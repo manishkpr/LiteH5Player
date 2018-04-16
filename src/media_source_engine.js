@@ -187,6 +187,13 @@ function MediaSourceEngine() {
     // End source buffer event
 
     function updateMediaElementDuration() {
+        // can't set duration while a buffer is updating
+        for (let type in sourceBuffer_) {
+            if (sourceBuffer_[type].updating === true) {
+                return;
+            }
+        }
+
         // set media source duration
         if (mediaSource_.duration !== streamInfo_.duration) {
             mediaSource_.duration = streamInfo_.duration;

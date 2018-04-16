@@ -42,7 +42,7 @@ function ScheduleController() {
         };
 
         // log
-        printLog('request url: ' + request.url);
+        printLog(`request fragment: ${request.url}, [${request.rangeStart}, ${request.rangeEnd}]`);
         xhrLoader_.load(request);
     }
 
