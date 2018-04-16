@@ -36,6 +36,8 @@ function ScheduleController() {
 
         let request = {
             url: frag.url,
+            rangeStart: frag.byteRangeStartOffset,
+            rangeEnd: frag.byteRangeEndOffset,
             cbSuccess: cbSuccess
         };
 

@@ -110,6 +110,8 @@ function HlsParser() {
                     fragCurrent_.url = frag.url;
                     fragCurrent_.content = 'tsContent';
                     fragCurrent_.frag = frag;
+                    fragCurrent_.byteRangeStartOffset = frag.byteRangeStartOffset;
+                    fragCurrent_.byteRangeEndOffset = frag.byteRangeEndOffset;
                 }
 
                 break;

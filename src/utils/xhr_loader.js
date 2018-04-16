@@ -9,7 +9,7 @@ function XHRLoader(config)
     retryInterval: 4000
   };
 
-  let request_ = null;
+  let context_ = null;
   let xhr_ = null;
   let needFailureReport_ = false;
 
@@ -20,11 +20,11 @@ function XHRLoader(config)
 
   }
 
-  function load(request) {
+  function load(context) {
     printlog('begin load time: ' + (new Date().getTime())/1000);
 
-    request_ = request;
-    printlog(request_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
+    context_ = context;
+    printlog(context_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
 
     needFailureReport_ = true;
 
@@ -32,10 +32,10 @@ function XHRLoader(config)
 
     printlog('--before open--, readyState: ' + xhr_.readyState);
 
-    xhr_.open('GET', request_.url);
+    xhr_.open('GET', context_.url);
     xhr_.responseType = 'arraybuffer';
-    if (request_.rangeEnd) {
-      xhr_.setRequestHeader('Range','bytes=' + request_.rangeStart + '-' + (request_.rangeEnd-1));
+    if (context_.rangeEnd) {
+      xhr_.setRequestHeader('Range','bytes=' + context_.rangeStart + '-' + (context_.rangeEnd-1));
     }
 
     xhr_.onloadstart = function() {
@@ -47,7 +47,7 @@ function XHRLoader(config)
       printlog(`--onload--, status:${xhr_.status}, readyState:${xhr_.readyState}`);
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
-        request_.cbSuccess(xhr_.response);
+        context_.cbSuccess(xhr_.response);
         needFailureReport_ = false;
       };
     }
@@ -62,14 +62,14 @@ function XHRLoader(config)
 
           // BD, test retry counts
           // if (config_.remainingAttempts === 0) {
-          //   request_.url = 'http://localhost/1/tmp/test.txt';
+          //   context_.url = 'http://localhost/1/tmp/test.txt';
           // }
           // // ED
 
           printlog('begin load timeout: ' + (new Date().getTime())/1000);
 
           //setTimeout(retryFunc, config_.retryInterval);
-          setTimeout(load.bind(this, request_), config_.retryInterval);
+          setTimeout(load.bind(this, context_), config_.retryInterval);
         }
       }
     };
@@ -96,6 +96,11 @@ function XHRLoader(config)
 
     xhr_.onload = onload.bind(this);
     xhr_.onloadend = onloadend.bind(this);
+
+    // set XMLHttpRequest properties
+    if (context_.rangeEnd) {
+      xhr_.setRequestHeader('Range', 'bytes=' + context_.rangeStart + '-' + (context_.rangeEnd - 1));
+    }
 
     printlog('--before send--, readyState: ' + xhr_.readyState);
     xhr_.send();

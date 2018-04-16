@@ -67,7 +67,6 @@ function MediaSourceEngine() {
     }
 
     function test() {
-
     }
 
     function onMediaSourceOpen() {
@@ -98,6 +97,11 @@ function MediaSourceEngine() {
         if (tracks_.audio) {
             let mimeType = `${tracks_.audio.container};codecs=${tracks_.audio.codec}`;
             let buffer = mediaSource_.addSourceBuffer(mimeType);
+            buffer.addEventListener('updatestart', sourceBuffer_updatestart);
+            buffer.addEventListener('update', sourceBuffer_update);
+            buffer.addEventListener('updateend', sourceBuffer_updateend);
+            buffer.addEventListener('error', sourceBuffer_error);
+            buffer.addEventListener('abort', sourceBuffer_abort);
 
             sourceBuffer_.audio = buffer;
         }
