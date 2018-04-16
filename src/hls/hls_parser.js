@@ -5,32 +5,39 @@ import Debug from '../core/Debug';
 import XHRLoader from '../utils/xhr_loader';
 import StringUtils from '../utils/string_utils';
 
+import {Fragment, TrackInfo, StreamInfo} from '../common/common';
+
 import M3U8Parser from './loader/m3u8-parser';
 import Demuxer from './demux/demuxer';
 import { hlsDefaultConfig } from './config';
 
 function HlsParser() {
     let context_ = this.context;
+
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
     let xhrLoader_ = XHRLoader(context_).create();
     
     let manifestUrl_;
-    let mediaPresentationDuration_;
+    let streamInfo_;
     let vRep_;
-    let activeStream_;
 
     // hls
     let hls_;
     let demuxer_;
     let currentSN_;
     let fragCurrent_;
-    let levelDetails_;
 
     function setup() {
+        eventBus_.on(Events.FRAGMENT_DOWNLOADED, onFragmentDownloaded);
+
         eventBus_.on(Events.HLS_INIT_PTS_FOUND, onHlsInitPtsFound, {});
         eventBus_.on(Events.HLS_FRAG_PARSING_INIT_SEGMENT, onHlsFragParsingInitSegment, {});
         eventBus_.on(Events.HLS_FRAG_PARSING_DATA, onHlsParsingData, {});
+    }
+
+    function onFragmentDownloaded(e) {
+        demuxer_.push(e.data, undefined, undefined, undefined, e.frag, streamInfo_.duration, true, undefined);
     }
 
     function onHlsInitPtsFound(e) {
@@ -39,19 +46,20 @@ function HlsParser() {
     }
 
     function onHlsFragParsingInitSegment(e) {
-        //vRep_.codecs = 'video/mp4; ' + 'codecs=\"' + vRep_.codecs + '\"';
-        // vRep_.type = 'video';
-        // vRep_.codecs = 'video/mp4; ' + 'codecs=\"' + e.tracks.video.codec + '\"';
-        //eventBus_.trigger(Events.MANIFEST_PARSED, { aRep: null, vRep: });
+        eventBus_.trigger(Events.BUFFER_CODEC, e.tracks);
 
-
-        let a = 2;
-        let b = a;
+        for (let trackName in e.tracks) {
+            let track = e.tracks[trackName];
+            let initSegment = track.initSegment;
+            if (initSegment) {
+                eventBus_.trigger(Events.BUFFER_APPENDING, {type: trackName, content: 'initSegment', data: initSegment});
+            }
+        }
     }
 
     function onHlsParsingData(e) {
-        let a = 2;
-        let b = a;
+        eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: 'data', data: e.data1});
+        eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: 'data', data: e.data2});
     }
 
     function loadManifest(url) {
@@ -60,13 +68,22 @@ function HlsParser() {
             debug_.log('content: ' + content);
 
             currentSN_ = 0;
-            levelDetails_ = M3U8Parser.parseLevelPlaylist(content, manifestUrl_, 0, 'main');
 
-            mediaPresentationDuration_ = levelDetails_.duration;
+            let track = new TrackInfo();
+            track.type = 'stream';
+            track.levelDetails = M3U8Parser.parseLevelPlaylist(content, manifestUrl_, 0, 'main');
+            
+            streamInfo_ = new StreamInfo();
+            streamInfo_.duration = track.levelDetails.totalduration;
+            streamInfo_.tracks.push(track);
 
+            //
             hls_ = eventBus_;
             hls_.config = hlsDefaultConfig;
             demuxer_ = new Demuxer(hls_, 'main');
+
+            eventBus_.trigger(Events.MANIFEST_PARSED);
+            eventBus_.trigger(Events.STREAM_LOADED, streamInfo_);
         }
 
         manifestUrl_ = url;
@@ -79,24 +96,27 @@ function HlsParser() {
     }
 
     function getNextFragment() {
-        fragCurrent_ = levelDetails_.fragments[currentSN_];
-        currentSN_ ++;
-        function cbSuccess(bytes) {
-            demuxer_.push(bytes, undefined, undefined, undefined, fragCurrent_, levelDetails_.duration, true, undefined);
+        fragCurrent_ = new Fragment();
 
-            let a = 2;
-            let b = a;
-            // push(data.payload, initSegmentData, audioCodec, currentLevel.videoCodec, fragCurrent, duration, accurateTimeOffset, undefined);
-            // push(data, initSegment, audioCodec, videoCodec, frag, duration, accurateTimeOffset, defaultInitPTS) {
+        for (let i = 0; i < streamInfo_.tracks.length; i ++) {
+            let trackInfo = streamInfo_.tracks[i];
+            if (trackInfo.type === 'stream') {
+                if (currentSN_ === trackInfo.levelDetails.fragments.length) {
+                    fragCurrent_ = null;
+                } else {
+                    let frag = trackInfo.levelDetails.fragments[currentSN_];
+                    currentSN_ ++;
+                    fragCurrent_.type = 'stream';
+                    fragCurrent_.url = frag.url;
+                    fragCurrent_.content = 'tsContent';
+                    fragCurrent_.frag = frag;
+                }
+
+                break;
+            }
         }
 
-        let request = {
-            url: fragCurrent_.url,
-            cbSuccess: cbSuccess
-        };
-        
-        printLog('request url: ' + request.url);
-        xhrLoader_.load(request);
+        return fragCurrent_;
     }
 
     let instance_ = {

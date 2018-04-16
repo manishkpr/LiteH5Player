@@ -5,44 +5,39 @@ import Events from '../core/CoreEvents';
 
 function ScheduleController() {
     let context_ = this.context;
-    
+
     let parser_;
     let scheduleTimeout_;
     let xhrLoader_ = XHRLoader(context_).create();
     let eventBus_ = EventBus(context_).getInstance();
 
     // flag
-    let isFragmentProcessing_ = false;
     let manualMode_ = false;
 
     function setup() {
+        eventBus_.on(Events.SB_UPDATE_ENDED, onSbUpdateEnded);
+    }
+
+    function onSbUpdateEnded() {
+        schedule();
     }
 
     function schedule() {
-        if (isFragmentProcessing_) {
-            startScheduleTimer(500);
-            return;
-        }
-
-        let fragment = parser_.getNextFragment();
-        if (!fragment) {
+        let frag = parser_.getNextFragment();
+        if (!frag) {
             eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
             return;
         }
 
-        function cbSuccess(bytes) {
-            fragment.bytes = bytes;
-            eventBus_.trigger(Events.FRAGMENT_DOWNLOADED, fragment);
-            isFragmentProcessing_ = false;
-
-            startScheduleTimer(100);
+        function cbSuccess(buffer) {
+            frag.data = buffer;
+            eventBus_.trigger(Events.FRAGMENT_DOWNLOADED, frag);
         }
 
         let request = {
-            url: fragment.url,
+            url: frag.url,
             cbSuccess: cbSuccess
         };
-        isFragmentProcessing_ = true;
 
         // log
         printLog('request url: ' + request.url);

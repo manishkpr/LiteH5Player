@@ -12,7 +12,6 @@ import KeyLoader from './loader/key-loader';
 import StreamController from './controller/stream-controller';
 import LevelController from './controller/level-controller';
 import ID3TrackController from './controller/id3-track-controller';
-
 import { isSupported } from './helper/is-supported';
 import { logger, enableLogs } from './utils/logger';
 import { hlsDefaultConfig } from './config';

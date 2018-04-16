@@ -20,22 +20,16 @@ import CommonUtils from './utils/common_utils';
 
 import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
-
-// BD
-import { hlsDefaultConfig } from './hls/config';
-import Demuxer from './hls/demux/demuxer';
-// ED
-
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
     let containerId_ = containerId;
-    let cfg_;
     let context_ = oldmtn; //{ flag: 'player' };
 
+    let cfg_;
+    let mediaCfg_;
+    
     let uiEngine_;
     let media_;
-
-    let streamInfo_;
 
     let eventBus_;
     let debug_;
@@ -96,15 +90,20 @@ function Player(containerId) {
                 return;
             }
 
-            streamInfo_ = info;
+            mediaCfg_ = info;
 
-            // fetch dash content
-            parser_ = manifestParser_.getParser(streamInfo_.url);
-            parser_.loadManifest(streamInfo_.url);
+            // detech parser type
+            parser_ = manifestParser_.getParser(mediaCfg_.url);
+            parser_.loadManifest(mediaCfg_.url);
+
+            // Create MediaSource
+            let mediaSrc = mseEngine_.createMediaSource();
+            let objURL = window.URL.createObjectURL(mediaSrc);
+            mediaEngine_.setSrc(objURL);
 
             // load webvtt thumbnail
             let vttThumbnail = WebvttThumbnails(context_).getInstance();
-            vttThumbnail.open(streamInfo_.thumbnail);
+            vttThumbnail.open(mediaCfg_.thumbnail);
 
             if (adsEngine_) {
                 adsEngine_.requestAds();
@@ -132,7 +131,7 @@ function Player(containerId) {
             mediaEngine_.close();
         }
 
-        streamInfo_ = null;
+        mediaCfg_ = null;
     }
 
     function dellAll() {
@@ -387,14 +386,12 @@ function Player(containerId) {
         flagContentOpenComplete_ = false;
         flagAdOpenComplete_ = false;
         flagPlayedOnce_ = false;
-        streamInfo_ = null;
+        mediaCfg_ = null;
     }
 
     function addEventListeners() {
         // html5 event
         eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
-
-        eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
 
         eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
@@ -430,68 +427,6 @@ function Player(containerId) {
                 playerState_ = 'opened';
             }
         }
-    }
-
-    function onManifestParsed(activeStream) {
-        streamInfo_.activeStream = activeStream;
-        // if it is pd, so we don't need to create mediasource
-        if (streamInfo_.activeStream.pdRep) {
-            debug_.log('+addPD, pdContent: ' + streamInfo_.activeStream.pdRep);
-            let url = streamInfo_.activeStream.pdRep.media;
-            media_.src = url;
-            return;
-        }
-
-        //
-        if (!window.MediaSource) {
-            debug_.log('Don\'t support MediaSource in this platform');
-            return;
-        }
-
-        if (streamInfo_.activeStream.aRep) {
-            if (streamInfo_.activeStream.aRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.aRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.aRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.aRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.aRep.codecs);
-                return;
-            }
-        }
-
-        if (streamInfo_.activeStream.vRep) {
-            if (streamInfo_.activeStream.vRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.vRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.vRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.vRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.vRep.codecs);
-                return;
-            }
-        }
-
-        if (streamInfo_.activeStream.pdRep) {
-            if (streamInfo_.activeStream.pdRep.codecs) {
-                debug_.log('Player, +open: ' + streamInfo_.activeStream.pdRep.codecs);
-            }
-
-            if (streamInfo_.activeStream.pdRep.codecs &&
-                window.MediaSource &&
-                !window.MediaSource.isTypeSupported(streamInfo_.activeStream.pdRep.codecs)) {
-                debug_.log('Don\'t support: ' + streamInfo_.activeStream.pdRep.codecs);
-                return;
-            }
-        }
-
-        mseEngine_.open(streamInfo_.activeStream);
-
-        let objURL = window.URL.createObjectURL(mseEngine_.getMediaSource());
-        mediaEngine_.setSrc(objURL);
-        drmEngine_.setDrmInfo(streamInfo_);
     }
 
     function onMSEOpened() {
@@ -540,10 +475,6 @@ function Player(containerId) {
     }
 
     function test() {
-        // let hls_ = {};
-        // hls_.config = hlsDefaultConfig;
-        // let demuxer_ = new Demuxer(hls_, 'main');
-
         parser_.getNextFragment();
 
         // let a1 = getBufferedRanges();

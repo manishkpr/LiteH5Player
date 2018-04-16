@@ -49,10 +49,13 @@ class CoreEvents {
 
         // controller events
         this.MANIFEST_PARSED = 'manifestParsed';
+        this.STREAM_LOADED = 'streamLoaded';    // Loaded a stream has a specified bitrate.
         this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
         this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
+        this.BUFFER_CODEC = 'bufferCodec';
+        this.BUFFER_APPENDING = 'bufferAppending';
 
-        // Begin hls.js
+        // Begin hls.js, for compatible hls.js
         this.HLS_INIT_PTS_FOUND = 'hlsInitPtsFound';
         this.HLS_FRAG_PARSING_INIT_SEGMENT = 'hlsFragParsingInitSegment';
         this.HLS_FRAG_PARSING_DATA = 'hlsFragParsingData';

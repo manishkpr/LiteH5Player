@@ -14,6 +14,8 @@ import DurationMatcher from './parser/matchers/DurationMatcher';
 import DateTimeMatcher from './parser/matchers/DateTimeMatcher';
 import NumericMatcher from './parser/matchers/NumericMatcher';
 
+import { Fragment, TrackInfo, StreamInfo } from '../common/common';
+
 function DashParser() {
     let context_ = this.context;
 
@@ -25,14 +27,14 @@ function DashParser() {
     let converter_;
 
     // Begin dash manifest info
-    let mediaPresentationDuration_;
-    let vRep_;
+    let streamInfo_;
     let aRep_;
     // End dash manifest info
 
     let manifestUrl_;
 
     // flag
+    let fragCurrent_;
     let videoHeaderAdded_ = false;
     let vSegmentNumber_ = 0;
 
@@ -57,6 +59,9 @@ function DashParser() {
             ignoreRoot:         true,
             matchers:           matchers_
         });
+
+        //
+        eventBus_.on(Events.FRAGMENT_DOWNLOADED, onFragmentDownloaded);
     }
 
     function getRepresentation(manifest) {
@@ -68,24 +73,28 @@ function DashParser() {
 
             return duration;
         }
+        //
+        let mediaPresentationDuration = manifest.mediaPresentationDuration;
+
+        // push video track to stream(support video only now)
+        let track = new TrackInfo();
+        track.type = 'video';
 
         let period = manifest.Period_asArray[0];
         let adaptationSet = period.AdaptationSet_asArray[0];
-        vRep_ = adaptationSet.Representation_asArray[0];
+        track.rep = adaptationSet.Representation_asArray[0];
+
         let segmentTemplate = adaptationSet.SegmentTemplate;
-
-        //
-        mediaPresentationDuration_ = manifest.mediaPresentationDuration;
-
-        vRep_.type = 'video';
-        vRep_.codecs = 'video/mp4; ' + 'codecs=\"' + vRep_.codecs + '\"';
-        vRep_.duration = manifest.mediaPresentationDuration;
-        vRep_.segmentTemplate = segmentTemplate;
-        let cnt = mediaPresentationDuration_ / getSegmentDuration(segmentTemplate);
-        let remainder = mediaPresentationDuration_ % getSegmentDuration(segmentTemplate);
-        vRep_.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
+        track.segmentTemplate = adaptationSet.SegmentTemplate;
+        let cnt = mediaPresentationDuration / getSegmentDuration(segmentTemplate);
+        let remainder = mediaPresentationDuration % getSegmentDuration(segmentTemplate);
+        track.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
 
         vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
+
+        streamInfo_ = new StreamInfo();
+        streamInfo_.duration = mediaPresentationDuration;
+        streamInfo_.tracks.push(track);
     }
 
     function loadManifest(url) {
@@ -103,7 +112,9 @@ function DashParser() {
             let manifest = converter_.xml_str2json(content);
             getRepresentation(manifest);
 
-            eventBus_.trigger(Events.MANIFEST_PARSED, {aRep: null, vRep: vRep_});
+            eventBus_.trigger(Events.MANIFEST_PARSED);
+
+            eventBus_.trigger(Events.STREAM_LOADED, streamInfo_);
         }
 
         let request = {
@@ -114,89 +125,73 @@ function DashParser() {
         xhrLoader_.load(request);
     }
 
-    function getFragmentInitialization(rep) {
-        let initialization = replaceIDForTemplate(rep.segmentTemplate.initialization, rep.id);
+    function getFragmentInitialization(track) {
+        let initialization = replaceIDForTemplate(track.segmentTemplate.initialization, track.rep.id);
 
         let url = require('url');
         return url.resolve(manifestUrl_, initialization);
     }
 
-    function getFragmentMedia(rep, number) {
-        let media = replaceTokenForTemplate(rep.segmentTemplate.media, 'Number', number);
-        media = replaceIDForTemplate(media, rep.id);
+    function getFragmentMedia(track, number) {
+        let media = replaceTokenForTemplate(track.segmentTemplate.media, 'Number', number);
+        media = replaceIDForTemplate(media, track.rep.id);
 
         let url = require('url');
         return url.resolve(manifestUrl_, media);
     }
 
     function getNextFragment() {
-        let ret = {};
+        fragCurrent_ = new Fragment();
 
-        if (vRep_ && aRep_) {
-            do {
-                // init segments
-                if (videoHeaderAdded_ === false) {
-                    ret.type = vRep_.type;
-                    ret.url = getFragmentInitialization(vRep_);
-                    videoHeaderAdded_ = true;
-                    break;
-                }
-                if (audioHeaderAdded_ === false) {
-                    ret.type = aRep_.type;
-                    ret.url = getFragmentInitialization(aRep_);
-                    audioHeaderAdded_ = true;
-                    break;
-                }
-
-                // media segments
-                if (vSegmentNumber_ >= vRep_.media.length ||
-                    audioIndex_ >= aRep_.media.length) {
-                    ret = null;
-                } else {
-                    if (vSegmentNumber_ > audioIndex_) {
-                        if (audioIndex_ < aRep_.segmentCnt) {
-                            ret.type = aRep_.type;
-                            ret.url = getFragmentMedia(aRep_, audioIndex_);
-                            audioIndex_++;
-                        }
-                    } else {
-                        if (vSegmentNumber_ < vRep_.segmentCnt) {
-                            ret.type = vRep_.type;
-                            ret.url = getFragmentMedia(vRep_, vSegmentNumber_);
-                            vSegmentNumber_++;
-                        }
-                    }
-                }
-            } while (false);
-        } else {
-            if (vRep_) {
-                ret.type = vRep_.type;
+        for (let i = 0; i < streamInfo_.tracks.length; i ++) {
+            let trackInfo = streamInfo_.tracks[i];
+            if (trackInfo.type === 'video') {
+                fragCurrent_.type = trackInfo.type;
 
                 if (videoHeaderAdded_ === false) {
-                    ret.url = getFragmentInitialization(vRep_);
+                    fragCurrent_.url = getFragmentInitialization(trackInfo);
+                    fragCurrent_.content = 'initSegment';
                     videoHeaderAdded_ = true;
                 } else {
-                    if (vSegmentNumber_ < vRep_.segmentCnt) {
-                        ret.url = getFragmentMedia(vRep_, vSegmentNumber_);
+                    if (vSegmentNumber_ < trackInfo.segmentCnt) {
+                        fragCurrent_.url = getFragmentMedia(trackInfo, vSegmentNumber_);
+                        fragCurrent_.content = 'data';
                         vSegmentNumber_++;
                     } else {
-                        ret = null;
+                        fragCurrent_ = null;
                     }
                 }
-            } else if (aRep_) {
-                ret.type = aRep_.type;
 
-                if (audioHeaderAdded_ === false) {
-                    ret.url = getFragmentInitialization(aRep_);
-                    audioHeaderAdded_ = true;
-                } else {
-                    if (audioIndex_ < aRep_.segmentCnt) {
-                        ret.url = getFragmentMedia(aRep_, audioIndex_);
-                        audioIndex_++;
-                    } else {
-                        ret = null;
-                    }
-                }
+                break;
+            }
+        }
+
+        return fragCurrent_;
+    }
+
+    function onFragmentDownloaded(e) {
+        if (e.content === 'initSegment') {
+            let track = findTrackInfo('video');
+            //
+            let tracks = {};
+            tracks.video = {};
+            tracks.video.container = 'video/mp4';
+            tracks.video.codec = track.rep.codecs;
+            eventBus_.trigger(Events.BUFFER_CODEC, tracks);
+            //
+            eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: e.content, data: e.data});
+        } else if (e.content === 'data') {
+            eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: e.content, data: e.data});
+        }
+    }
+
+    function findTrackInfo(type) {
+        let ret = null;
+        for (let i = 0; i < streamInfo_.tracks.length; i ++) {
+            let track = streamInfo_.tracks[i];
+            if (track.type === type) {
+                ret = track;
+                break;
             }
         }
 

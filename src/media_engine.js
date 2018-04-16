@@ -17,7 +17,7 @@ canplaythrough
 
 function MediaEngine(media, cfg) {
     let context_ = this.context;
-    
+
     let media_ = media;
     let cfg_ = cfg;
     let eventBus_ = EventBus(context_).getInstance();
