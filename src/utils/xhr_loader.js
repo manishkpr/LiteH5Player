@@ -2,14 +2,14 @@
 import FactoryMaker from '../core/FactoryMaker';
 
 // Define xhr_loader internal structure FYI.
-class XHRLoaderConfig() {
+class XHRLoaderConfig {
   constructor() {
     this.remainingAttempts = 0;
     this.retryInterval = 4000;
   }
 }
 
-class XHRLoaderContext() {
+class XHRLoaderRequest {
   constructor() {
     this.url = null;
     this.rangeStart = null;
@@ -20,12 +20,14 @@ class XHRLoaderContext() {
 
 function XHRLoader(config)
 {
+  let context_ = this.context;
+
   let config_ = config || {
     remainingAttempts: 0,
     retryInterval: 4000
   };
 
-  let context_ = null;
+  let request_ = null;
   let xhr_ = null;
   let needFailureReport_ = false;
 
@@ -35,11 +37,11 @@ function XHRLoader(config)
   function loadInternal() {
   }
 
-  function load(context) {
+  function load(request) {
     printlog('begin load time: ' + (new Date().getTime())/1000);
 
-    context_ = context;
-    printlog(context_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
+    request_ = request;
+    printlog(request_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
 
     needFailureReport_ = true;
 
@@ -47,10 +49,10 @@ function XHRLoader(config)
 
     printlog('--before open--, readyState: ' + xhr_.readyState);
 
-    xhr_.open('GET', context_.url);
+    xhr_.open('GET', request_.url);
     xhr_.responseType = 'arraybuffer';
-    if (context_.rangeEnd) {
-      xhr_.setRequestHeader('Range', 'bytes=' + context_.rangeStart + '-' + (context_.rangeEnd - 1));
+    if (request_.rangeEnd) {
+      xhr_.setRequestHeader('Range', 'bytes=' + request_.rangeStart + '-' + (request_.rangeEnd - 1));
     }
 
     xhr_.onloadstart = function() {
@@ -62,7 +64,7 @@ function XHRLoader(config)
       printlog(`--onload--, status:${xhr_.status}, readyState:${xhr_.readyState}`);
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
-        context_.cbSuccess(xhr_.response);
+        request_.cbSuccess(xhr_.response);
         needFailureReport_ = false;
       };
     }
@@ -77,14 +79,14 @@ function XHRLoader(config)
 
           // BD, test retry counts
           // if (config_.remainingAttempts === 0) {
-          //   context_.url = 'http://localhost/1/tmp/test.txt';
+          //   request_.url = 'http://localhost/1/tmp/test.txt';
           // }
           // // ED
 
           printlog('begin load timeout: ' + (new Date().getTime())/1000);
 
           //setTimeout(retryFunc, config_.retryInterval);
-          setTimeout(load.bind(this, context_), config_.retryInterval);
+          setTimeout(load.bind(this, request_), config_.retryInterval);
         }
       }
     };

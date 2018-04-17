@@ -20,6 +20,8 @@ import CommonUtils from './utils/common_utils';
 
 import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
+import FetchLoader from './utils/fetch_loader';
+
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
     let containerId_ = containerId;
@@ -475,7 +477,13 @@ function Player(containerId) {
     }
 
     function test() {
-        parser_.getNextFragment();
+        let fetch1 = FetchLoader(context_).create();
+
+        let request = {
+            url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4'
+        };
+
+        fetch1.load(request);
 
         // let a1 = getBufferedRanges();
         // let b1 = getSeekableRange();
