@@ -93,7 +93,8 @@ export var hlsDefaultConfig = {
             requestMediaKeySystemAccess // used by eme-controller
 };
 
-if (__USE_SUBTITLES__) {
+//if (__USE_SUBTITLES__) {
+if (true) {
   hlsDefaultConfig.subtitleStreamController = SubtitleStreamController;
   hlsDefaultConfig.subtitleTrackController = SubtitleTrackController;
   hlsDefaultConfig.timelineController = TimelineController;
@@ -106,10 +107,12 @@ if (__USE_SUBTITLES__) {
   hlsDefaultConfig.captionsTextTrack2LanguageCode = 'es'; // used by timeline-controller
 }
 
-if (__USE_ALT_AUDIO__) {
+//if (__USE_ALT_AUDIO__) {
+if (true) {
   hlsDefaultConfig.audioStreamController = AudioStreamController;
   hlsDefaultConfig.audioTrackController = AudioTrackController;
 }
 
-if (__USE_EME_DRM__)
+//if (__USE_EME_DRM__)
+if (true)
   hlsDefaultConfig.emeController = EMEController;
