@@ -2,7 +2,6 @@ import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
-import XHRLoader from '../utils/xhr_loader';
 import StringUtils from '../utils/string_utils';
 
 import {Fragment, TrackInfo, StreamInfo} from '../common/common';
@@ -16,7 +15,7 @@ function HlsParser() {
 
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
-    let xhrLoader_ = XHRLoader(context_).create();
+    let xhrLoader_ = context_.loader(context_).create();
 
     let manifestUrl_;
     let streamInfo_;

@@ -1,5 +1,4 @@
 import FactoryMaker from '../core/FactoryMaker';
-import XHRLoader from '../utils/xhr_loader';
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
 
@@ -8,7 +7,7 @@ function ScheduleController() {
 
     let parser_;
     let scheduleTimeout_;
-    let xhrLoader_ = XHRLoader(context_).create();
+    let xhrLoader_ = context_.loader(context_).create();
     let eventBus_ = EventBus(context_).getInstance();
 
     // flag
@@ -19,16 +18,9 @@ function ScheduleController() {
     }
 
     function onSbUpdateEnded() {
-        schedule();
     }
 
-    function schedule() {
-        let frag = parser_.getNextFragment();
-        if (!frag) {
-            eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
-            return;
-        }
-
+    function loadFragment(frag) {
         function cbSuccess(buffer) {
             frag.data = buffer;
             eventBus_.trigger(Events.FRAGMENT_DOWNLOADED, frag);
@@ -44,6 +36,18 @@ function ScheduleController() {
         // log
         printLog(`request fragment: ${request.url}, [${request.rangeStart}, ${request.rangeEnd}]`);
         xhrLoader_.load(request);
+
+        return true;
+    }
+
+    function schedule() {
+        let frag = parser_.getNextFragment();
+        if (frag) {
+            loadFragment(frag);
+            startScheduleTimer(50);
+        } else {
+            eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
+        }
     }
 
     function startScheduleTimer(value) {

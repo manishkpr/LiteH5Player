@@ -2,8 +2,6 @@ import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
-import XHRLoader from '../utils/xhr_loader';
-
 import StringUtils from '../utils/string_utils';
 
 // Begin from Dashjs
@@ -26,7 +24,7 @@ function DashParser() {
 
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
-    let xhrLoader_ = XHRLoader(context_).create();
+    let xhrLoader_ = context_.loader(context_).create();
     // parser reference variable
     let matchers_;
     let converter_;
@@ -82,7 +80,7 @@ function DashParser() {
         }
         //
         let mediaPresentationDuration = manifest.mediaPresentationDuration;
-        // new
+
         streamInfo_ = new StreamInfo();
         streamInfo_.duration = mediaPresentationDuration;
 

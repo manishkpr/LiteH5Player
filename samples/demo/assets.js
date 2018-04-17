@@ -143,7 +143,7 @@ function getMediaInfo()
     //--Item: dash part(True mpd path)
     //url: 'http://localhost/2/dash/voweb/test_audio_template.mpd',
     //url: 'http://localhost/2/dash/voweb/test_video180_audio_template.mpd',
-    url: 'http://localhost/2/dash/voweb/test_video180_template.mpd',
+    url: 'http://10.2.68.64/2/dash/voweb/test_video180_template.mpd',
     //url: 'http://localhost/2/pd/mp4/trailer/test_segment_template.mpd',
     //url: 'http://localhost/2/dash/bbb_30fps/video.mpd',
     //url: 'http://localhost/2/dash/testpic_2s/video.mpd',

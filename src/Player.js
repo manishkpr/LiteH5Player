@@ -20,6 +20,7 @@ import CommonUtils from './utils/common_utils';
 
 import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
+import XHRLoader from './utils/xhr_loader';
 import FetchLoader from './utils/fetch_loader';
 
 //////////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,10 @@ function Player(containerId) {
     let openPromiseReject_;
 
     function setup() {
+        // init internal configuration
+        context_.loader = XHRLoader;
+        //context_.loader = FetchLoader;
+
         uiEngine_ = UIEngine(context_).getInstance();
         uiEngine_.initUI(containerId_);
         media_ = uiEngine_.getVideo();
@@ -480,7 +485,7 @@ function Player(containerId) {
         let fetch1 = FetchLoader(context_).create();
 
         let request = {
-            url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4'
+            url: 'http://localhost/2/hls/videoonly01/stream0.ts'
         };
 
         fetch1.load(request);
