@@ -1,6 +1,22 @@
 ﻿
 import FactoryMaker from '../core/FactoryMaker';
 
+// Define xhr_loader internal structure FYI.
+class XHRLoaderConfig() {
+  constructor() {
+    this.remainingAttempts = 0;
+    this.retryInterval = 4000;
+  }
+}
+
+class XHRLoaderContext() {
+  constructor() {
+    this.url = null;
+    this.rangeStart = null;
+    this.rangeEnd = null;
+    this.cbSuccess = null;
+  }
+}
 
 function XHRLoader(config)
 {
@@ -17,7 +33,6 @@ function XHRLoader(config)
   let enableLog_ = false;
 
   function loadInternal() {
-
   }
 
   function load(context) {
@@ -35,7 +50,7 @@ function XHRLoader(config)
     xhr_.open('GET', context_.url);
     xhr_.responseType = 'arraybuffer';
     if (context_.rangeEnd) {
-      xhr_.setRequestHeader('Range','bytes=' + context_.rangeStart + '-' + (context_.rangeEnd-1));
+      xhr_.setRequestHeader('Range', 'bytes=' + context_.rangeStart + '-' + (context_.rangeEnd - 1));
     }
 
     xhr_.onloadstart = function() {
@@ -96,11 +111,6 @@ function XHRLoader(config)
 
     xhr_.onload = onload.bind(this);
     xhr_.onloadend = onloadend.bind(this);
-
-    // set XMLHttpRequest properties
-    if (context_.rangeEnd) {
-      xhr_.setRequestHeader('Range', 'bytes=' + context_.rangeStart + '-' + (context_.rangeEnd - 1));
-    }
 
     printlog('--before send--, readyState: ' + xhr_.readyState);
     xhr_.send();
