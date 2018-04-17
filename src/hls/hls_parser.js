@@ -7,9 +7,9 @@ import StringUtils from '../utils/string_utils';
 
 import {Fragment, TrackInfo, StreamInfo} from '../common/common';
 
-import M3U8Parser from './loader/m3u8-parser';
-import Demuxer from './demux/demuxer';
-import { hlsDefaultConfig } from './config';
+import M3U8Parser from './hlsjs/src/loader/m3u8-parser';
+import Demuxer from './hlsjs/src/demux/demuxer';
+import { hlsDefaultConfig } from './hlsjs/src/config';
 
 function HlsParser() {
     let context_ = this.context;
