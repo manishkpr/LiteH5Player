@@ -3,16 +3,21 @@ import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
 import XHRLoader from '../utils/xhr_loader';
-import X2JS from '../externals/xml2json';
+
 import StringUtils from '../utils/string_utils';
+
+// Begin from Dashjs
+import X2JS from './dashjs/externals/xml2json';
 import {
     replaceIDForTemplate,
     replaceTokenForTemplate
-} from './utils/SegmentsUtils';
-import StringMatcher from './parser/matchers/StringMatcher';
-import DurationMatcher from './parser/matchers/DurationMatcher';
-import DateTimeMatcher from './parser/matchers/DateTimeMatcher';
-import NumericMatcher from './parser/matchers/NumericMatcher';
+} from './dashjs/src/dash/utils/SegmentsUtils';
+
+import StringMatcher from './dashjs/src/dash/parser/matchers/StringMatcher';
+import DurationMatcher from './dashjs/src/dash/parser/matchers/DurationMatcher';
+import DateTimeMatcher from './dashjs/src/dash/parser/matchers/DateTimeMatcher';
+import NumericMatcher from './dashjs/src/dash/parser/matchers/NumericMatcher';
+// End from Dashjs
 
 import { Fragment, TrackInfo, StreamInfo } from '../common/common';
 
