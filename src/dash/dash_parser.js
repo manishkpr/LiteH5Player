@@ -39,7 +39,6 @@ function DashParser() {
     let vSegmentNumber_ = 0;
 
     let audioHeaderAdded_ = false;
-    let audioIndex_ = 0;
     let aSegmentNumber_ = 0;
 
     let flagCurrSegmentType;
@@ -119,7 +118,7 @@ function DashParser() {
         videoHeaderAdded_ = false;
         vSegmentNumber_ = 0;
         audioHeaderAdded_ = false;
-        audioIndex_ = 0;
+        aSegmentNumber_ = 0;
 
         function cbSuccess(bytes) {
             let content = StringUtils.ab2str_v1(bytes);
