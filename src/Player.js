@@ -94,10 +94,6 @@ function Player(containerId) {
 
             mediaCfg_ = info;
 
-            // detech parser type
-            parser_ = manifestParser_.getParser(mediaCfg_.url);
-            parser_.loadManifest(mediaCfg_.url);
-
             // Create MediaSource
             let mediaSrc = mseEngine_.createMediaSource();
             let objURL = window.URL.createObjectURL(mediaSrc);
@@ -397,6 +393,8 @@ function Player(containerId) {
 
         eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
+        eventBus_.on(Events.MANIFEST_PARSED, onManifestPared, {});
+
         // ads events
         eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
         eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
@@ -434,10 +432,12 @@ function Player(containerId) {
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
 
-        // Detecting autoplay success or failure
-        //mediaEngine_.detectAutoplay();
+        // detech parser type
+        parser_ = manifestParser_.getParser(mediaCfg_.url);
+        parser_.loadManifest(mediaCfg_.url);
+    }
 
-        //
+    function onManifestPared() {
         scheduleCtrl_ = ScheduleController(context_).getInstance();
         scheduleCtrl_.start(parser_);
     }
