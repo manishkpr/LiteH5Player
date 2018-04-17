@@ -17,10 +17,9 @@ function HlsParser() {
     let debug_ = Debug(context_).getInstance();
     let eventBus_ = EventBus(context_).getInstance();
     let xhrLoader_ = XHRLoader(context_).create();
-    
+
     let manifestUrl_;
     let streamInfo_;
-    let vRep_;
 
     // hls
     let hls_;

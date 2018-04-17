@@ -93,27 +93,25 @@ function MediaSourceEngine() {
 
     function onBufferCodec(e) {
         tracks_ = e;
+
+        let buffer = null;
         if (tracks_.audio) {
             let mimeType = `${tracks_.audio.container};codecs=${tracks_.audio.codec}`;
-            let buffer = mediaSource_.addSourceBuffer(mimeType);
-            buffer.addEventListener('updatestart', sourceBuffer_updatestart);
-            buffer.addEventListener('update', sourceBuffer_update);
-            buffer.addEventListener('updateend', sourceBuffer_updateend);
-            buffer.addEventListener('error', sourceBuffer_error);
-            buffer.addEventListener('abort', sourceBuffer_abort);
-
+            buffer = mediaSource_.addSourceBuffer(mimeType);
             sourceBuffer_.audio = buffer;
         }
         if (tracks_.video) {
             let mimeType = `${tracks_.video.container};codecs=${tracks_.video.codec}`;
-            let buffer = mediaSource_.addSourceBuffer(mimeType);
+            buffer = mediaSource_.addSourceBuffer(mimeType);
+            sourceBuffer_.video = buffer;
+        }
+
+        if (buffer) {
             buffer.addEventListener('updatestart', sourceBuffer_updatestart);
             buffer.addEventListener('update', sourceBuffer_update);
             buffer.addEventListener('updateend', sourceBuffer_updateend);
             buffer.addEventListener('error', sourceBuffer_error);
             buffer.addEventListener('abort', sourceBuffer_abort);
-
-            sourceBuffer_.video = buffer;
         }
     }
 
