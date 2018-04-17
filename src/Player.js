@@ -77,6 +77,11 @@ function Player(containerId) {
         initData();
         addEventListeners();
         addResizeListener();
+
+        // Create MediaSource
+        let mediaSrc = mseEngine_.createMediaSource();
+        let objURL = window.URL.createObjectURL(mediaSrc);
+        mediaEngine_.setSrc(objURL);
     }
 
     function uninit() {}
@@ -94,10 +99,9 @@ function Player(containerId) {
 
             mediaCfg_ = info;
 
-            // Create MediaSource
-            let mediaSrc = mseEngine_.createMediaSource();
-            let objURL = window.URL.createObjectURL(mediaSrc);
-            mediaEngine_.setSrc(objURL);
+            // detech parser type
+            parser_ = manifestParser_.getParser(mediaCfg_.url);
+            parser_.loadManifest(mediaCfg_.url);
 
             // load webvtt thumbnail
             let vttThumbnail = WebvttThumbnails(context_).getInstance();
@@ -431,10 +435,6 @@ function Player(containerId) {
 
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
-
-        // detech parser type
-        parser_ = manifestParser_.getParser(mediaCfg_.url);
-        parser_.loadManifest(mediaCfg_.url);
     }
 
     function onManifestPared() {

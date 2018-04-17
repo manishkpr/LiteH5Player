@@ -194,7 +194,7 @@ function MediaSourceEngine() {
         }
 
         // set media source duration
-        if (mediaSource_.duration !== streamInfo_.duration) {
+        if (mediaSource_.duration < streamInfo_.duration) {
             mediaSource_.duration = streamInfo_.duration;
         }
     }
