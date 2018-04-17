@@ -40,6 +40,9 @@ function DashParser() {
 
     let audioHeaderAdded_ = false;
     let audioIndex_ = 0;
+    let aSegmentNumber_ = 0;
+
+    let flagCurrSegmentType;
 
     function setup() {
         matchers_ = [
@@ -75,26 +78,39 @@ function DashParser() {
         }
         //
         let mediaPresentationDuration = manifest.mediaPresentationDuration;
-
-        // push video track to stream(support video only now)
-        let track = new TrackInfo();
-        track.type = 'video';
-
-        let period = manifest.Period_asArray[0];
-        let adaptationSet = period.AdaptationSet_asArray[0];
-        track.rep = adaptationSet.Representation_asArray[0];
-
-        let segmentTemplate = adaptationSet.SegmentTemplate;
-        track.segmentTemplate = adaptationSet.SegmentTemplate;
-        let cnt = mediaPresentationDuration / getSegmentDuration(segmentTemplate);
-        let remainder = mediaPresentationDuration % getSegmentDuration(segmentTemplate);
-        track.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
-
-        vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
-
+        // new
         streamInfo_ = new StreamInfo();
         streamInfo_.duration = mediaPresentationDuration;
-        streamInfo_.tracks.push(track);
+
+        let period = manifest.Period_asArray[0];
+        for (let i = 0; i < period.AdaptationSet_asArray.length; i ++) {
+            let adaptationSet = period.AdaptationSet_asArray[i];
+            let segmentTemplate = adaptationSet.SegmentTemplate;
+            let representation = adaptationSet.Representation;
+
+            let cnt = mediaPresentationDuration / getSegmentDuration(segmentTemplate);
+            let remainder = mediaPresentationDuration % getSegmentDuration(segmentTemplate);
+
+            let track = new TrackInfo();
+            track.rep = adaptationSet.Representation;
+            track.segmentTemplate = adaptationSet.SegmentTemplate;
+            track.segmentCnt = cnt + (remainder > 0 ? 1 : 0);
+            track.endNumber = track.segmentCnt + segmentTemplate.startNumber;
+            //
+            if (representation.mimeType.indexOf('video') !== -1) {
+                track.type = 'video';
+                vSegmentNumber_ = parseInt(segmentTemplate.startNumber);
+            } else {
+                track.type = 'audio';
+                aSegmentNumber_ = parseInt(segmentTemplate.startNumber);
+            }
+
+            debug_.log(`${track.type} segment, start number:${segmentTemplate.startNumber}, cnt:${track.segmentCnt}`);
+
+            streamInfo_.tracks.push(track);
+        }
+
+        flagCurrSegmentType = 'video';
     }
 
     function loadManifest(url) {
@@ -140,49 +156,101 @@ function DashParser() {
         return url.resolve(manifestUrl_, media);
     }
 
-    function getNextFragment() {
-        fragCurrent_ = new Fragment();
-
-        for (let i = 0; i < streamInfo_.tracks.length; i ++) {
-            let trackInfo = streamInfo_.tracks[i];
-            if (trackInfo.type === 'video') {
-                fragCurrent_.type = trackInfo.type;
-
-                if (videoHeaderAdded_ === false) {
-                    fragCurrent_.url = getFragmentInitialization(trackInfo);
-                    fragCurrent_.content = 'initSegment';
-                    videoHeaderAdded_ = true;
+    function getNextAudioFragment() {
+        let frag = null;
+        let audioTrack = findTrackInfo('audio');
+        if (audioTrack) {
+            if (audioHeaderAdded_ === false) {
+                frag = new Fragment();
+                frag.type = 'audio';
+                frag.url = getFragmentInitialization(audioTrack);
+                frag.content = 'initSegment';
+                audioHeaderAdded_ = true;
+            } else {
+                if (aSegmentNumber_ < audioTrack.endNumber) {
+                    frag = new Fragment();
+                    frag.type = 'audio';
+                    frag.url = getFragmentMedia(audioTrack, aSegmentNumber_);
+                    frag.content = 'data';
+                    aSegmentNumber_++;
                 } else {
-                    if (vSegmentNumber_ < trackInfo.segmentCnt) {
-                        fragCurrent_.url = getFragmentMedia(trackInfo, vSegmentNumber_);
-                        fragCurrent_.content = 'data';
-                        vSegmentNumber_++;
-                    } else {
-                        fragCurrent_ = null;
-                    }
+                    frag = null;
                 }
-
-                break;
             }
         }
+        return frag;
+    }
+
+    function getNextVideoFragment() {
+        let frag = null;
+        let videoTrack = findTrackInfo('video');
+
+        if (videoTrack) {
+            if (videoHeaderAdded_ === false) {
+                frag = new Fragment();
+                frag.type = 'video';
+                frag.url = getFragmentInitialization(videoTrack);
+                frag.content = 'initSegment';
+                videoHeaderAdded_ = true;
+            } else {
+                if (vSegmentNumber_ < videoTrack.endNumber) {
+                    frag = new Fragment();
+                    frag.type = 'video';
+                    frag.url = getFragmentMedia(videoTrack, vSegmentNumber_);
+                    frag.content = 'data';
+                    vSegmentNumber_++;
+                } else {
+                    frag = null;
+                }
+            }
+        }
+        return frag;
+    }
+
+    function getNextFragment() {
+        fragCurrent_ = null;
+        do {
+            if (flagCurrSegmentType === 'video') {
+                fragCurrent_ = getNextVideoFragment();
+                if (fragCurrent_) {
+                    flagCurrSegmentType = 'audio';
+                } else {
+                    fragCurrent_ = getNextAudioFragment();
+                }
+            } else if (flagCurrSegmentType === 'audio') {
+                fragCurrent_ = getNextAudioFragment();
+                if (fragCurrent_) {
+                    flagCurrSegmentType = 'video';
+                } else {
+                    fragCurrent_ = getNextVideoFragment();
+                }
+            }
+        } while (false);
 
         return fragCurrent_;
     }
 
     function onFragmentDownloaded(e) {
         if (e.content === 'initSegment') {
-            let track = findTrackInfo('video');
-            //
+            // Need to create source buffer before push initSegment
             let tracks = {};
-            tracks.video = {};
-            tracks.video.container = 'video/mp4';
-            tracks.video.codec = track.rep.codecs;
+            let vTrack = findTrackInfo('video');
+            if (vTrack) {
+                tracks.video = {};
+                tracks.video.container = 'video/mp4';
+                tracks.video.codec = vTrack.rep.codecs;
+            }
+            let aTrack = findTrackInfo('audio');
+            if (aTrack) {
+                tracks.audio = {};
+                tracks.audio.container = 'audio/mp4';
+                tracks.audio.codec = aTrack.rep.codecs;
+            }
+            
             eventBus_.trigger(Events.BUFFER_CODEC, tracks);
-            //
-            eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: e.content, data: e.data});
-        } else if (e.content === 'data') {
-            eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: e.content, data: e.data});
         }
+
+        eventBus_.trigger(Events.BUFFER_APPENDING, {type: e.type, content: e.content, data: e.data});
     }
 
     function findTrackInfo(type) {

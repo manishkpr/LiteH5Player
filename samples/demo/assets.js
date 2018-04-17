@@ -141,6 +141,7 @@ function getMediaInfo()
     //--Item: Live
     //url: 'live01.mpd',
     //--Item: dash part(True mpd path)
+    url: 'http://localhost/2/dash/voweb/test_video180_audio_template.mpd',
     //url: 'http://localhost/2/dash/voweb/test_video180_template_tmp.mpd',
     //url: 'http://localhost/2/pd/mp4/trailer/test_segment_template.mpd',
     //url: 'http://localhost/2/dash/bbb_30fps/video.mpd',
@@ -152,7 +153,7 @@ function getMediaInfo()
     //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
-    url: 'http://localhost/2/hls/av_muxed/test.m3u8',
+    //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
     //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
 
     // internal test
