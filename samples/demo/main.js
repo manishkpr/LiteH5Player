@@ -27,9 +27,9 @@ function printLogUI(msg) {
     v.innerHTML = (v.innerHTML + '<br/>' + msg);
 }
 
-playerUI.initVariable = function () {
+playerUI.initVariable = function() {
     this.player_ = null;
-    this.playerState_ = 'none';// none, inited, opening, opened, failed, ended
+    this.playerState_ = 'none'; // none, inited, opening, opened, failed, ended
     this.castSender_ = null;
 
     // UI Controls
@@ -90,28 +90,27 @@ playerUI.initVariable = function () {
     this.subtitlesMenuContext = {
         currMenu: 'none', // could be 'none'
         subtitleTracks: [{
-                id: '1',
-                lang: 'English'
-            }, {
-                id: '2',
-                lang: 'France'
-            }, {
-                id: '3',
-                lang: 'Chinese'
-            }, {
-                id: '4',
-                lang: '444'
-            }, {
-                id: '5',
-                lang: '5555'
-            }, {
-                id: '6',
-                lang: '666'
-            }, {
-                id: '7',
-                lang: '777'
-            }
-        ],
+            id: '1',
+            lang: 'English'
+        }, {
+            id: '2',
+            lang: 'France'
+        }, {
+            id: '3',
+            lang: 'Chinese'
+        }, {
+            id: '4',
+            lang: '444'
+        }, {
+            id: '5',
+            lang: '5555'
+        }, {
+            id: '6',
+            lang: '666'
+        }, {
+            id: '7',
+            lang: '777'
+        }],
         currSubtitleId: ''
     };
 
@@ -119,124 +118,142 @@ playerUI.initVariable = function () {
         currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu
 
         // main setting menu
-        mainList: [
-        {id: 1, text: 'Quality'},
-        {id: 2, text: 'Language'},
-        {id: 3, text: 'Subtitle'}],
+        mainList: [{
+            id: 1,
+            text: 'Quality'
+        }, {
+            id: 2,
+            text: 'Language'
+        }, {
+            id: 3,
+            text: 'Subtitle'
+        }],
 
         // quality settings menu
         qualityList: [{
-                id: '6',
-                bitrate: '1080p'
-            }, {
-                id: '5',
-                bitrate: '720p'
-            }, {
-                id: '4',
-                bitrate: '480p'
-            }, {
-                id: '3',
-                bitrate: '360p'
-            }, {
-                id: '2',
-                bitrate: '240p'
-            }, {
-                id: '1',
-                bitrate: '144p'
-            }, {
-                id: '-1',
-                bitrate: 'Auto'
-            }
-        ],
+            id: '6',
+            bitrate: '1080p'
+        }, {
+            id: '5',
+            bitrate: '720p'
+        }, {
+            id: '4',
+            bitrate: '480p'
+        }, {
+            id: '3',
+            bitrate: '360p'
+        }, {
+            id: '2',
+            bitrate: '240p'
+        }, {
+            id: '1',
+            bitrate: '144p'
+        }, {
+            id: '-1',
+            bitrate: 'Auto'
+        }],
         isQualityAuto: true,
         currQualityId: '2',
 
         // audio track settings menu
-        audioTrackList: [
-        {id:'1', lang:'Bipbop1'}, {id:'2', lang:'Bipbop2'},
-        {id:'3', lang:'Bipbop3'}, {id:'4', lang:'Bipbop4'},
-        {id:'5', lang:'Bipbop5'}, {id:'6', lang:'Bipbop6'}
-        ],
+        audioTrackList: [{
+            id: '1',
+            lang: 'Bipbop1'
+        }, {
+            id: '2',
+            lang: 'Bipbop2'
+        }, {
+            id: '3',
+            lang: 'Bipbop3'
+        }, {
+            id: '4',
+            lang: 'Bipbop4'
+        }, {
+            id: '5',
+            lang: 'Bipbop5'
+        }, {
+            id: '6',
+            lang: 'Bipbop6'
+        }],
         currAudioTrackId: '1',
 
         // FCC settings menu
         isEnableFCC: true,
         fccPropertyList: [{
-                // white/black(default)/red/green/blue/yellow/magenta/cyan
-                name: 'background_color',
-                values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-                currValue: 'black'
-            }, {
-                name: 'background_opacity',
-                values: ['0%', '25%', '50%', '75%', '100%'],
-                currValue: '100%'
-            }, {
-                // white/black(default)/red/green/blue/yellow/magenta/cyan
-                name: 'font_color',
-                values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-                currValue: 'black'
-            }, {
-                name: 'font_opacity',
-                values: ['0%', '25%', '50%', '75%', '100%'],
-                currValue: '100%'
-            }, {
-                // Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic
-                name: 'font_family',
-                values: ['Arial', 'Courier', 'Times New Roman', 'Helvetica', 'Dom', 'Coronet', 'Gothic'],
-                currValue: 'Arial'
-            }, {
-                // none/dropshadow/raised(default)/depressed/uniform
-                name: 'font_edge_type',
-                values: ['none', 'leftDropShadow', 'rightDropShadow', 'raised', 'depressed', 'uniform'],
-                currValue: 'none'
-            }, {
-                // white/black/red/green/blue(default)/yellow/magenta/cyan
-                name: 'font_edge_color',
-                values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-                currValue: 'black'
-            }, {
-                name: 'font_edge_opacity',
-                values: ['0%', '25%', '50%', '75%', '100%'],
-                currValue: '100%'
-            }, {
-                name: 'font_size',
-                values: ['50%', '75%', '100%', '150%', '200%', '300%', '400%'],
-                currValue: '100%'
-            }, {
-                name: 'font_bold',
-                values: ['true', 'false'],
-                currValue: 'false'
-            }, {
-                name: 'font_underline',
-                values: ['true', 'false'],
-                currValue: 'false'
-            }, {
-                name: 'font_italic',
-                values: ['true', 'false'],
-                currValue: 'false'
-            }, {
-                // white/black/red/green/blue(default)/yellow/magenta/cyan
-                name: 'window_color',
-                values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-                currValue: 'green'
-            }, {
-                name: 'window_color_opacity',
-                values: ['0%', '25%', '50%', '75%', '100%'],
-                currValue: '50%'
-            }, {
-                name: 'bounding_box',
-                values: ['Left', 'Top', 'Right', 'Bottom'],
-                currValue: 'Left'
-            }, {
-                name: 'horizontal_position',
-                values: ['left', 'center', 'right'],
-                currValue: 'left'
-            }, {
-                name: 'vertical_position',
-                values: ['top', 'middle', 'bottom'],
-                currValue: 'top'
-            }
-        ]
+            // white/black(default)/red/green/blue/yellow/magenta/cyan
+            name: 'background_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'background_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            // white/black(default)/red/green/blue/yellow/magenta/cyan
+            name: 'font_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'font_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            // Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic
+            name: 'font_family',
+            values: ['Arial', 'Courier', 'Times New Roman', 'Helvetica', 'Dom', 'Coronet', 'Gothic'],
+            currValue: 'Arial'
+        }, {
+            // none/dropshadow/raised(default)/depressed/uniform
+            name: 'font_edge_type',
+            values: ['none', 'leftDropShadow', 'rightDropShadow', 'raised', 'depressed', 'uniform'],
+            currValue: 'none'
+        }, {
+            // white/black/red/green/blue(default)/yellow/magenta/cyan
+            name: 'font_edge_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'black'
+        }, {
+            name: 'font_edge_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '100%'
+        }, {
+            name: 'font_size',
+            values: ['50%', '75%', '100%', '150%', '200%', '300%', '400%'],
+            currValue: '100%'
+        }, {
+            name: 'font_bold',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            name: 'font_underline',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            name: 'font_italic',
+            values: ['true', 'false'],
+            currValue: 'false'
+        }, {
+            // white/black/red/green/blue(default)/yellow/magenta/cyan
+            name: 'window_color',
+            values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+            currValue: 'green'
+        }, {
+            name: 'window_color_opacity',
+            values: ['0%', '25%', '50%', '75%', '100%'],
+            currValue: '50%'
+        }, {
+            name: 'bounding_box',
+            values: ['Left', 'Top', 'Right', 'Bottom'],
+            currValue: 'Left'
+        }, {
+            name: 'horizontal_position',
+            values: ['left', 'center', 'right'],
+            currValue: 'left'
+        }, {
+            name: 'vertical_position',
+            values: ['top', 'middle', 'bottom'],
+            currValue: 'top'
+        }]
     };
 
     // reference variable of ad
@@ -245,7 +262,7 @@ playerUI.initVariable = function () {
 }
 
 // Title: init part
-playerUI.initUIElements = function () {
+playerUI.initUIElements = function() {
     this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
@@ -278,9 +295,10 @@ playerUI.initUIElements = function () {
     this.vopSpinner = document.querySelector('.vop-spinner');
 
     this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
+    this.uiGiantButton = document.querySelector('.vop-giant-button');
 };
 
-playerUI.initUIEventListeners = function () {
+playerUI.initUIEventListeners = function() {
     this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
     this.vopPlayer.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
     this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
@@ -309,7 +327,10 @@ playerUI.initUIEventListeners = function () {
 
     this.vopSettingsMenu.addEventListener('click', this.onSettingsMenuClick.bind(this));
 
-    this.uiGiantBtnContainer.addEventListener('click', this.onUICmdGiantButtonClick.bind(this));
+    // listen for animation end
+    this.uiGiantBtnContainer.addEventListener("animationend", function(e) {
+        this.uiGiantBtnContainer.style.display = 'none';
+    }.bind(this), false);
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -358,7 +379,7 @@ playerUI.initUIEventListeners = function () {
     }
 };
 
-playerUI.playerInit = function () {
+playerUI.playerInit = function() {
     this.player_ = new oldmtn.Player('player-container');
     this.player_.init(cfg_);
 
@@ -396,41 +417,41 @@ playerUI.playerInit = function () {
     this.updateUIStateMachine('inited');
 };
 
-playerUI.uninitPlayer = function () {
+playerUI.uninitPlayer = function() {
     if (this.player_) {
         this.player_.close();
         this.player_ = null;
     }
 };
 
-playerUI.playerOpen = function () {
+playerUI.playerOpen = function() {
     var p = this.player_.open(mediaCfg_);
     p.then(function(v) {
-        console.log('open ret: ' + v);
-        this.onOpenComplete();
-    }.bind(this))
-    .catch(function(e) {
-        console.log('e: ' + e);
-    });
+            console.log('open ret: ' + v);
+            this.onOpenComplete();
+        }.bind(this))
+        .catch(function(e) {
+            console.log('e: ' + e);
+        });
     // since open is an async operation, we transition it to opening state.
     this.updateUIStateMachine('opening');
 };
 
-playerUI.playerClose = function () {
+playerUI.playerClose = function() {
     printLog('+onBtnClose');
     this.player_.close();
     this.updateUIStateMachine('closed');
 };
 
-playerUI.playerRequestAds = function () {
+playerUI.playerRequestAds = function() {
     this.player_.playAd();
 };
 
-playerUI.onBtnInit = function () {
+playerUI.onBtnInit = function() {
     this.player_.init(cfg_);
 };
 
-playerUI.onBtnUninit = function () {
+playerUI.onBtnUninit = function() {
     this.player_.uninit(cfg_);
 };
 
@@ -438,41 +459,51 @@ playerUI.onBtnUninit = function () {
 // Title: UI reference functions
 // This function is mainly focus on:
 // 1. Record the player state, and refect it to UI
-playerUI.updateUIStateMachine = function (state) {
+playerUI.updateUIStateMachine = function(state) {
     printLog('oldState: ' + this.playerState_ + ', newState: ' + state);
     this.playerState_ = state;
-    switch(this.playerState_) {
-        case 'inited': {
-        } break;
-        case 'opening': {
-            this.startBufferingUI();
-        } break;
-        case 'opened': {
-            this.stopBufferingUI();
+    switch (this.playerState_) {
+        case 'inited':
+            {}
+            break;
+        case 'opening':
+            {
+                this.startBufferingUI();
+            }
+            break;
+        case 'opened':
+            {
+                this.stopBufferingUI();
 
-            this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-            this.vopControlBar.style.display = 'block';
-        } break;
-        case 'ended': {
-            $('.html5-video-player').removeClass('vop-autohide');
-        } break;
-        case 'closed': {
-            
-        } break;
-        default: break;
+                this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+                this.vopControlBar.style.display = 'block';
+            }
+            break;
+        case 'ended':
+            {
+                $('.html5-video-player').removeClass('vop-autohide');
+            }
+            break;
+        case 'closed':
+            {
+
+            }
+            break;
+        default:
+            break;
     }
 };
 
-playerUI.startBufferingUI = function () {
+playerUI.startBufferingUI = function() {
     this.vopSpinner.style.display = 'block';
 };
 
-playerUI.stopBufferingUI = function () {
+playerUI.stopBufferingUI = function() {
     this.vopSpinner.style.display = 'none';
 };
 
 // begin progress bar
-playerUI.updateVolumeMovePosition = function (e) {
+playerUI.updateVolumeMovePosition = function(e) {
     // part - input
     var rect = this.vopVolumeSlider.getBoundingClientRect();
 
@@ -488,7 +519,7 @@ playerUI.updateVolumeMovePosition = function (e) {
     this.valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
 };
 
-playerUI.getProgressMovePosition = function (e) {
+playerUI.getProgressMovePosition = function(e) {
     // part - input
     var rect = this.vopProgressBar.getBoundingClientRect();
 
@@ -505,7 +536,7 @@ playerUI.getProgressMovePosition = function (e) {
     return (offsetX / rect.width) * duration;
 };
 
-playerUI.updateProgressBarUI = function (position, duration) {
+playerUI.updateProgressBarUI = function(position, duration) {
     // part - input
 
     // part - logic process
@@ -547,7 +578,7 @@ playerUI.updateProgressBarUI = function (position, duration) {
     tDisplay.innerText = timeText;
 };
 
-playerUI.updateProgressBarHoverUI = function () {
+playerUI.updateProgressBarHoverUI = function() {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
 
@@ -561,8 +592,9 @@ playerUI.updateProgressBarHoverUI = function () {
     }
 };
 
-playerUI.updateTooltipUI = function (e) {
+playerUI.updateTooltipUI = function(e) {
     var thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+
     function getTooltipOffsetX(e, tooltipWidth) {
         // part - input
         // bounding client rect can return the progress bar's rect relative to current page.
@@ -594,9 +626,9 @@ playerUI.updateTooltipUI = function (e) {
             if (isSprite) {
                 this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
                 this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
-                this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')'
-                     + ' -' + thumbnail.data.x.toString() + 'px'
-                     + ' -' + thumbnail.data.y.toString() + 'px';
+                this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')' +
+                    ' -' + thumbnail.data.x.toString() + 'px' +
+                    ' -' + thumbnail.data.y.toString() + 'px';
             } else {
                 this.vopTooltipBg.style.width = '158px';
                 this.vopTooltipBg.style.height = '90px';
@@ -625,7 +657,7 @@ playerUI.updateTooltipUI = function (e) {
     this.vopTooltip.style.left = offsetX.toString() + 'px';
 };
 
-playerUI.updateAdProgressUI = function () {
+playerUI.updateAdProgressUI = function() {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
 
@@ -641,7 +673,7 @@ playerUI.updateAdProgressUI = function () {
     tDisplay.innerText = fmtTime;
 };
 
-playerUI.updatePlayBtnUI = function (paused, ended) {
+playerUI.updatePlayBtnUI = function(paused, ended) {
     if (ended) {
         this.vopPlayButton.innerText = 'replay';
     } else {
@@ -653,7 +685,16 @@ playerUI.updatePlayBtnUI = function (paused, ended) {
     }
 };
 
-playerUI.updateContentVolumeBarUI = function (muted, volume) {
+playerUI.updateGiantPlayBtnUI = function(paused) {
+    if (paused) {
+        this.uiGiantButton.innerHTML = 'pause';
+    } else {
+        this.uiGiantButton.innerHTML = 'play_arrow';
+    }
+    this.uiGiantBtnContainer.style = '';
+};
+
+playerUI.updateContentVolumeBarUI = function(muted, volume) {
     var uiMutedIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
@@ -688,7 +729,7 @@ playerUI.updateContentVolumeBarUI = function (muted, volume) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Title: Tool function
-playerUI.removeAutohideAction = function () {
+playerUI.removeAutohideAction = function() {
     $('.html5-video-player').removeClass('vop-autohide');
     if (this.timerHideControlBar) {
         clearTimeout(this.timerHideControlBar);
@@ -696,13 +737,12 @@ playerUI.removeAutohideAction = function () {
     }
 };
 
-playerUI.docVolumeSliderMousemove = function (e) {
+playerUI.docVolumeSliderMousemove = function(e) {
     this.updateVolumeMovePosition(e);
 
     var muted = this.player_.isMuted();
     var volume = this.valueVolumeMovePosition;
-    if (volume === 0) {}
-    else {
+    if (volume === 0) {} else {
         if (muted === true) {
             this.player_.unmute();
         }
@@ -715,7 +755,7 @@ playerUI.docVolumeSliderMousemove = function (e) {
     this.updateContentVolumeBarUI(muted, volume);
 };
 
-playerUI.docVolumeSliderMouseup = function (e) {
+playerUI.docVolumeSliderMouseup = function(e) {
     printLog('+docVolumeSliderMouseup');
     this.releaseVolumeSliderMouseEvents();
     e.preventDefault();
@@ -732,7 +772,7 @@ playerUI.docVolumeSliderMouseup = function (e) {
     }
 };
 
-playerUI.captureVolumeSliderMouseEvents = function () {
+playerUI.captureVolumeSliderMouseEvents = function() {
     playerUI.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
     playerUI.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
 
@@ -740,13 +780,13 @@ playerUI.captureVolumeSliderMouseEvents = function () {
     document.addEventListener('mouseup', playerUI.newVolumeSliderMouseup, true);
 };
 
-playerUI.releaseVolumeSliderMouseEvents = function () {
+playerUI.releaseVolumeSliderMouseEvents = function() {
     document.removeEventListener('mousemove', playerUI.newVolumeSliderMousemove, true);
     document.removeEventListener('mouseup', playerUI.newVolumeSliderMouseup, true);
 };
 
 ///////////////////////////////////////////////////////////////////
-playerUI.onPlayerMouseenter = function () {
+playerUI.onPlayerMouseenter = function() {
     // Don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
         return;
@@ -755,7 +795,7 @@ playerUI.onPlayerMouseenter = function () {
     $('.html5-video-player').removeClass('vop-autohide');
 };
 
-playerUI.onPlayerMousemove = function (e) {
+playerUI.onPlayerMousemove = function(e) {
     //printLog('+onPlayerMousemove');
     // don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
@@ -763,12 +803,12 @@ playerUI.onPlayerMousemove = function (e) {
     }
 
     this.removeAutohideAction();
-    this.timerHideControlBar = setTimeout(function () {
+    this.timerHideControlBar = setTimeout(function() {
         this.onPlayerMouseleave();
     }.bind(this), 3000);
 };
 
-playerUI.onPlayerMouseleave = function () {
+playerUI.onPlayerMouseleave = function() {
     var paused = this.player_.isPaused();
     var fullscreen = isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
@@ -776,7 +816,7 @@ playerUI.onPlayerMouseleave = function () {
     }
 };
 
-playerUI.onPlayerClick = function () {
+playerUI.onPlayerClick = function() {
     if (this.flagAdStarted && this.flagIsLinearAd) {
         return;
     }
@@ -785,7 +825,7 @@ playerUI.onPlayerClick = function () {
 };
 
 // browser & UI callback functions
-playerUI.onUICmdPlay = function () {
+playerUI.onUICmdPlay = function() {
     var currPaused = this.player_.isPaused();
     var currEnded = this.player_.isEnded();
     if (currEnded) {
@@ -807,29 +847,25 @@ playerUI.onUICmdPlay = function () {
 
         // update ui
         this.updatePlayBtnUI(newPaused, currEnded);
+        this.updateGiantPlayBtnUI(newPaused);
     }
 };
 
-playerUI.onControlMousemove = function (e) {
+playerUI.onControlMousemove = function(e) {
     e.stopPropagation();
     this.removeAutohideAction();
 };
 
-playerUI.onSettingsMenuClick = function (e) {
+playerUI.onSettingsMenuClick = function(e) {
     // Don't route 'click' event from panel to its parent div
     e.stopPropagation();
 };
 
-playerUI.onUICmdGiantButtonClick = function (e) {
-    e.stopPropagation();
-    this.onPlayFromGiantButton();
-};
-
-playerUI.onUICmdControlBarClick = function (e) {
+playerUI.onUICmdControlBarClick = function(e) {
     e.stopPropagation();
 };
 
-playerUI.onUICmdMute = function () {
+playerUI.onUICmdMute = function() {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
 
@@ -855,25 +891,25 @@ playerUI.onUICmdMute = function () {
     this.updateContentVolumeBarUI(muted, volume);
 };
 
-playerUI.onBtnManualSchedule = function () {
+playerUI.onBtnManualSchedule = function() {
     this.player_.manualSchedule();
 };
 
-playerUI.onBtnInitAD = function () {
+playerUI.onBtnInitAD = function() {
     this.player_.test();
 };
 
-playerUI.onBtnDelAll = function () {
+playerUI.onBtnDelAll = function() {
     this.player_.dellAll();
 };
 
-playerUI.onBtnStop = function () {
+playerUI.onBtnStop = function() {
     this.player_.close();
     this.player_ = null;
 }
 
 
-playerUI.onUICmdSwitchSubtitle = function () {
+playerUI.onUICmdSwitchSubtitle = function() {
     printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
 
     // Part - process
@@ -894,7 +930,7 @@ playerUI.onUICmdSwitchSubtitle = function () {
     }
 };
 
-playerUI.onUICmdSetting = function (e) {
+playerUI.onUICmdSetting = function(e) {
     printLog('+onUICmdSetting, currMenu: ' + this.settingMenuContext.currMenu);
 
     // Part - destroy subtitle menu first if it's visible
@@ -921,7 +957,7 @@ playerUI.onUICmdSetting = function (e) {
     }
 };
 
-playerUI.onUICmdFullscreen = function () {
+playerUI.onUICmdFullscreen = function() {
     printLog('+onBtnFullscreen');
     if (isFullscreen()) {
         h5LeaveFullscreen();
@@ -930,78 +966,73 @@ playerUI.onUICmdFullscreen = function () {
     }
 };
 
-playerUI.onPlayFromGiantButton = function () {
-    this.onUICmdPlay();
-    this.uiGiantBtnContainer.style.display = 'none';
-};
-
-playerUI.onBtnSeek = function () {
+playerUI.onBtnSeek = function() {
     var time = document.getElementById('seekedTime').value;
     this.player_.setPosition(time);
 };
 
-playerUI.onBtnAddTextTrack = function () {
+playerUI.onBtnAddTextTrack = function() {
     if (this.player_) {
         this.player_.addTextTrack();
     }
 };
 
-playerUI.onBtnRemoveTextTrack = function () {
+playerUI.onBtnRemoveTextTrack = function() {
     this.player_.removeTextTrack();
 };
 
-playerUI.setTextTrackHidden = function () {
+playerUI.setTextTrackHidden = function() {
     this.player_.setTextTrackHidden();
 };
 
-playerUI.setCueAlign = function (align) {
+playerUI.setCueAlign = function(align) {
     this.player_.setCueAlign(align);
 };
 
-playerUI.onFruitClick = function () {
+playerUI.onFruitClick = function() {
     alert('aaaa');
 };
 
-playerUI.onBtnAttribute = function () {
+playerUI.onBtnAttribute = function() {
     //this.player_.attribute();
 };
 
 //
-playerUI.onUICmdCastInit = function () {
+playerUI.onUICmdCastInit = function() {
     var cfg = getInitConfig();
     this.castSender.new_init(cfg);
 };
 
-playerUI.onUICmdCastOpen = function () {
+playerUI.onUICmdCastOpen = function() {
     var info = getMediaInfo();
     this.castSender.new_open(info);
 };
 
-playerUI.onUICmdCastAddV = function () {
+playerUI.onUICmdCastAddV = function() {
     this.castSender.new_addV();
 }
 
-playerUI.onUICmdCastAddPD = function () {
+playerUI.onUICmdCastAddPD = function() {
     this.castSender.new_addPD();
 };
 
-playerUI.onUICmdCastPlay = function () {
+playerUI.onUICmdCastPlay = function() {
     this.castSender.new_play();
 };
 
-playerUI.onUICmdCastPause = function () {
+playerUI.onUICmdCastPause = function() {
     this.castSender.new_pause();
 };
 
-playerUI.onUICmdCastPlayAd = function () {
+playerUI.onUICmdCastPlayAd = function() {
     this.castSender.new_playAd();
 };
 
-playerUI.onUICmdCastTest = function () {
+playerUI.onUICmdCastTest = function() {
     this.castSender.new_test();
 };
 
-playerUI.doEnterThumbnailMode = function () {
+playerUI.doEnterThumbnailMode = function() {
     printLog('+doEnterThumbnailMode');
     if (!this.flagThumbnailMode) {
         // need to pause content first before starting a seek operation.
@@ -1018,15 +1049,15 @@ playerUI.doEnterThumbnailMode = function () {
     }
 };
 
-playerUI.doProcessThumbnailMove = function () {
+playerUI.doProcessThumbnailMove = function() {
     // for further action, you can add thumbnail popup here.
 };
 
-playerUI.doProcessThumbnailUp = function () {
+playerUI.doProcessThumbnailUp = function() {
     // for further action, you can add thumbnail ended event here.
 };
 
-playerUI.onProgressBarMousedown = function (e) {
+playerUI.onProgressBarMousedown = function(e) {
     printLog('+onProgressBarMousedown');
     this.captureProgressBarMouseEvents();
     e.preventDefault();
@@ -1037,7 +1068,7 @@ playerUI.onProgressBarMousedown = function (e) {
     this.progressBarContext.endedBeforeMousedown = this.player_.isEnded();
     this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
     this.flagThumbnailMode = false;
-    this.progressBarContext.timer = setTimeout(function () {
+    this.progressBarContext.timer = setTimeout(function() {
         this.doEnterThumbnailMode();
     }.bind(this), 200);
 
@@ -1047,7 +1078,7 @@ playerUI.onProgressBarMousedown = function (e) {
     this.updateProgressBarHoverUI();
 };
 
-playerUI.onProgressBarMousemove = function (e) {
+playerUI.onProgressBarMousemove = function(e) {
     //printLog('+onProgressBarMousemove');
     e.stopPropagation();
     this.removeAutohideAction();
@@ -1065,12 +1096,12 @@ playerUI.onProgressBarMousemove = function (e) {
     this.updateTooltipUI(e);
 };
 
-playerUI.onProgressBarMouseleave = function () {
+playerUI.onProgressBarMouseleave = function() {
     //printLog('+onProgressBarMouseleave');
     this.vopTooltip.style.display = 'none';
 };
 
-playerUI.captureProgressBarMouseEvents = function () {
+playerUI.captureProgressBarMouseEvents = function() {
     playerUI.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
     playerUI.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
 
@@ -1078,12 +1109,12 @@ playerUI.captureProgressBarMouseEvents = function () {
     document.addEventListener('mouseup', playerUI.newProgressBarMouseup, true);
 };
 
-playerUI.releaseProgressBarMouseEvents = function () {
+playerUI.releaseProgressBarMouseEvents = function() {
     document.removeEventListener('mousemove', playerUI.newProgressBarMousemove, true);
     document.removeEventListener('mouseup', playerUI.newProgressBarMouseup, true);
 };
 
-playerUI.docProgressBarMousemove = function (e) {
+playerUI.docProgressBarMousemove = function(e) {
     printLog('+docProgressBarMousemove');
 
     var movePos = this.getProgressMovePosition(e);
@@ -1099,7 +1130,7 @@ playerUI.docProgressBarMousemove = function (e) {
     this.updateProgressBarHoverUI();
 };
 
-playerUI.docProgressBarMouseup = function (e) {
+playerUI.docProgressBarMouseup = function(e) {
     printLog('+docProgressBarMouseup');
     e.preventDefault();
     this.releaseProgressBarMouseEvents();
@@ -1128,7 +1159,7 @@ playerUI.docProgressBarMouseup = function (e) {
     this.progressBarContext.mousedown = false;
 };
 
-playerUI.onVolumeSliderMousedown = function (e) {
+playerUI.onVolumeSliderMousedown = function(e) {
     printLog('+onVolumeSliderMousedown');
     this.captureVolumeSliderMouseEvents();
     e.preventDefault();
@@ -1141,11 +1172,11 @@ playerUI.onVolumeSliderMousedown = function (e) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // this.player_ event callback
-playerUI.onMediaDurationChanged = function () {
+playerUI.onMediaDurationChanged = function() {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
 };
 
-playerUI.onMediaEnded = function () {
+playerUI.onMediaEnded = function() {
     var paused = this.player_.isPaused();
     var ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
@@ -1158,7 +1189,7 @@ playerUI.onMediaEnded = function () {
     this.updateUIStateMachine('ended');
 };
 
-playerUI.onOpenComplete = function () {
+playerUI.onOpenComplete = function() {
     if (this.playerState_ === 'opening') {
         printLog('+onOpenComplete');
         this.updateUIStateMachine('opened');
@@ -1181,7 +1212,7 @@ playerUI.onOpenComplete = function () {
     }
 };
 
-playerUI.onMediaLoadedMetaData = function (e) {
+playerUI.onMediaLoadedMetaData = function(e) {
     // update external div's dimensions
     this.metaWidth = e.width;
     this.metaHeight = e.height;
@@ -1197,9 +1228,9 @@ playerUI.onMediaLoadedMetaData = function (e) {
     this.player_.resize(dstWidth, dstHeight);
 };
 
-playerUI.onMediaPaused = function () {};
+playerUI.onMediaPaused = function() {};
 
-playerUI.onMediaPlaying = function () {
+playerUI.onMediaPlaying = function() {
     var paused = this.player_.isPaused();
     var ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
@@ -1207,11 +1238,11 @@ playerUI.onMediaPlaying = function () {
     this.stopBufferingUI();
 };
 
-playerUI.onMediaSeeking = function () {
+playerUI.onMediaSeeking = function() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
 };
 
-playerUI.onMediaSeeked = function () {
+playerUI.onMediaSeeked = function() {
     printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
 
     if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
@@ -1223,34 +1254,33 @@ playerUI.onMediaSeeked = function () {
     }
 };
 
-playerUI.onMediaTimeupdated = function () {
+playerUI.onMediaTimeupdated = function() {
     //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
-    if (this.progressBarContext.mousedown) {}
-    else {
+    if (this.progressBarContext.mousedown) {} else {
         //this.progressBarContext.movePos = this.player_.getPosition();
         this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
         this.updateProgressBarHoverUI();
     }
 };
 
-playerUI.onMediaVolumeChanged = function () {
+playerUI.onMediaVolumeChanged = function() {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
 };
 
-playerUI.onMediaWaiting = function () {
+playerUI.onMediaWaiting = function() {
     this.startBufferingUI();
 };
 
-playerUI.onLog = function (e) {
+playerUI.onLog = function(e) {
     printLogUI(e.message);
 };
 
-playerUI.onAdStarted = function (e) {
+playerUI.onAdStarted = function(e) {
     printLog('onAdStarted, linear: ' + e.isLinearAd);
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.isLinearAd;
@@ -1263,7 +1293,7 @@ playerUI.onAdStarted = function (e) {
     }
 };
 
-playerUI.onAdComplete = function () {
+playerUI.onAdComplete = function() {
     printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
     this.flagAdStarted = false;
 
@@ -1272,16 +1302,16 @@ playerUI.onAdComplete = function () {
     this.vopSettingsBtn.style.display = 'inline-block';
 };
 
-playerUI.onAdTimeUpdate = function () {
+playerUI.onAdTimeUpdate = function() {
     var position = this.player_.getPosition();
     var duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
 };
 
-playerUI.onAdCompanions = function (e) {
+playerUI.onAdCompanions = function(e) {
     var v = document.getElementById('idCompanionAd');
-    for (var i = 0; i < e.companions.length; i ++) {
+    for (var i = 0; i < e.companions.length; i++) {
         var companion = e.companions[i];
         if (v.clientWidth === companion.width && v.clientHeight === companion.height) {
             v.innerHTML = companion.content;
@@ -1289,7 +1319,7 @@ playerUI.onAdCompanions = function (e) {
     }
 };
 
-playerUI.onFullscreenChanged = function () {
+playerUI.onFullscreenChanged = function() {
     var v = this.player_.isFullscreen();
     var v1 = document.querySelector('.player');
     printLog('fullscreen changed, ret: ' + v + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
@@ -1303,7 +1333,7 @@ playerUI.onFullscreenChanged = function () {
 
 /////////////////////////////////////////////////////////////////////////
 // Title: Dynamic create UI
-playerUI.createSubtitlesMenu = function () {
+playerUI.createSubtitlesMenu = function() {
     // The subtitle menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
@@ -1389,7 +1419,7 @@ playerUI.createSubtitlesMenu = function () {
     this.subtitlesMenuContext.currMenu = 'main_menu';
 };
 
-playerUI.destroySettingsMenu = function () {
+playerUI.destroySettingsMenu = function() {
     var v = document.querySelector('.vop-panel-header');
     if (v) {
         this.vopPanel.removeChild(v);
@@ -1403,21 +1433,21 @@ playerUI.destroySettingsMenu = function () {
     this.subtitlesMenuContext.currMenu = 'none';
 };
 
-playerUI.createHeaderItemUI = function (text, cb) {
+playerUI.createHeaderItemUI = function(text, cb) {
     var header = document.createElement('div');
     header.setAttribute('class', 'vop-panel-header');
 
     var title = document.createElement('button');
-    title.setAttribute('class', 'vop-panel-title');
     title.innerText = text;
+    title.setAttribute('class', 'vop-panel-title');
 
     header.appendChild(title);
     header.addEventListener('click', cb);
-    
+
     return header;
 };
 
-playerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
+playerUI.createRadioMenuItem = function(text, cbBlur, cbClick) {
     var menuitem = document.createElement('div');
     menuitem.setAttribute('class', 'vop-menuitem');
     menuitem.setAttribute('role', 'menuitemradio');
@@ -1427,14 +1457,14 @@ playerUI.createRadioMenuItem = function (text, cbBlur, cbClick) {
     menuitem.addEventListener('click', cbClick);
 
     var label = document.createElement('div');
-    label.setAttribute('class', 'vop-menuitem-label');
     label.innerText = text;
+    label.setAttribute('class', 'vop-menuitem-label');
 
     menuitem.appendChild(label);
     return menuitem;
 };
 
-playerUI.createSettingsMenu = function () {
+playerUI.createSettingsMenu = function() {
     // The main menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
@@ -1462,7 +1492,7 @@ playerUI.createSettingsMenu = function () {
     // Part - input: current quality, current audio track, etc.
     function getQualityText() {
         var qualityText = '';
-        for (var i = 0; i < this.settingMenuContext.qualityList.length; i ++) {
+        for (var i = 0; i < this.settingMenuContext.qualityList.length; i++) {
             var qualityId = this.settingMenuContext.qualityList[i].id;
             if (qualityId === this.settingMenuContext.currQualityId) {
                 qualityText = this.settingMenuContext.qualityList[i].bitrate;
@@ -1471,9 +1501,10 @@ playerUI.createSettingsMenu = function () {
         }
         return qualityText;
     }
+
     function getLangText() {
         var langText = '';
-        for (var i = 0; i < this.settingMenuContext.audioTrackList.length; i ++) {
+        for (var i = 0; i < this.settingMenuContext.audioTrackList.length; i++) {
             var langId = this.settingMenuContext.audioTrackList[i].id;
             if (langId === this.settingMenuContext.currAudioTrackId) {
                 langText = this.settingMenuContext.audioTrackList[i].lang;
@@ -1510,8 +1541,8 @@ playerUI.createSettingsMenu = function () {
     }
 
     var contentText = document.createElement('span');
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
     contentText.innerText = getQualityText.call(this);
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
     content.appendChild(contentText);
 
     qualityMenuitem.appendChild(label);
@@ -1531,15 +1562,15 @@ playerUI.createSettingsMenu = function () {
     audioMenuitem.onblur = this.onMainMenuBlur.bind(this);
 
     label = document.createElement('div');
-    label.setAttribute('class', 'vop-menuitem-label');
     label.innerText = 'Language';
+    label.setAttribute('class', 'vop-menuitem-label');
 
     content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
     contentText = document.createElement('span');
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
     contentText.innerText = getLangText.call(this);
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
     content.appendChild(contentText);
 
     audioMenuitem.appendChild(label);
@@ -1555,14 +1586,16 @@ playerUI.createSettingsMenu = function () {
     fccMenuitem.onblur = this.onMainMenuBlur.bind(this);
 
     label = document.createElement('div');
-    label.setAttribute('class', 'vop-menuitem-label');
     label.innerText = 'Subtitle';
+    label.setAttribute('class', 'vop-menuitem-label');
 
     content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
+
     contentText = document.createElement('span');
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
     contentText.innerText = 'Options';
+    contentText.setAttribute('class', 'vop-menuitem-content-text');
+
     content.appendChild(contentText);
 
     fccMenuitem.appendChild(label);
@@ -1581,7 +1614,7 @@ playerUI.createSettingsMenu = function () {
     this.settingMenuContext.currMenu = 'main_menu';
 };
 
-playerUI.createQualityMenu = function () {
+playerUI.createQualityMenu = function() {
     // The quality menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
@@ -1641,7 +1674,7 @@ playerUI.createQualityMenu = function () {
     this.settingMenuContext.currMenu = 'quality_menu';
 }
 
-playerUI.createAudioTrackMenu = function () {
+playerUI.createAudioTrackMenu = function() {
     // The audio track menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
@@ -1696,7 +1729,7 @@ playerUI.createAudioTrackMenu = function () {
     this.settingMenuContext.currMenu = 'audio_track_menu';
 }
 
-playerUI.createFccMenu = function () {
+playerUI.createFccMenu = function() {
     // The fcc menu html:
     // <div class="vop-panel-menu">
     //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
@@ -1760,7 +1793,7 @@ playerUI.createFccMenu = function () {
     firstItem.focus();
 }
 
-playerUI.createFccItemMenu = function (name) {
+playerUI.createFccItemMenu = function(name) {
     // Part - fcc property title
     var header = this.createHeaderItemUI(name, this.onFccPropertyItemBack.bind(this));
     this.vopPanel.insertBefore(header, this.vopPanelMenu);
@@ -1793,8 +1826,8 @@ playerUI.createFccItemMenu = function (name) {
     }
 }
 
-playerUI.updatePanelMenuUI = function (id) {
-    var elem_child = this.vopPanelMenu.childNodes;
+playerUI.updatePanelMenuUI = function(id) {
+    var elem_child = this.vopPanelMenu.children;
     for (var i = 0; i < elem_child.length; i++) {
         var menuitem = elem_child[i];
 
@@ -1806,24 +1839,24 @@ playerUI.updatePanelMenuUI = function (id) {
     }
 }
 
-playerUI.onQualityMenuClick = function (e) {
+playerUI.onQualityMenuClick = function(e) {
     printLog('+onQualityMenuClick: ' + e.target.innerText);
 
     this.destroySettingsMenu();
     this.createQualityMenu();
 }
 
-playerUI.onAudioTrackMenuClick = function (e) {
+playerUI.onAudioTrackMenuClick = function(e) {
     this.destroySettingsMenu();
     this.createAudioTrackMenu();
 }
 
-playerUI.onFccMenuClick = function (e) {
+playerUI.onFccMenuClick = function(e) {
     this.destroySettingsMenu();
     this.createFccMenu();
 }
 
-playerUI.onMainMenuBlur = function (e) {
+playerUI.onMainMenuBlur = function(e) {
     var text = '';
     if (e.relatedTarget) {
         text = ', text: ' + e.relatedTarget.innerText;
@@ -1849,7 +1882,7 @@ playerUI.onMainMenuBlur = function (e) {
     }
 }
 
-playerUI.onSubtitleItemClick = function (e) {
+playerUI.onSubtitleItemClick = function(e) {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
@@ -1862,7 +1895,7 @@ playerUI.onSubtitleItemClick = function (e) {
     this.updatePanelMenuUI(this.subtitlesMenuContext.currSubtitleId);
 }
 
-playerUI.onSubtitleItemBlur = function (e) {
+playerUI.onSubtitleItemBlur = function(e) {
     if (e.relatedTarget) {
         if (e.relatedTarget === this.vopSubtitlesBtn) {
             if (this.subtitlesMenuContext.currMenu === 'main_menu') {
@@ -1874,26 +1907,26 @@ playerUI.onSubtitleItemBlur = function (e) {
     }
 };
 
-playerUI.onSubitlesBack = function (e) {
+playerUI.onSubitlesBack = function(e) {
     printLog('+onSubitlesBack');
 };
 
-playerUI.onQualityBack = function (e) {
+playerUI.onQualityBack = function(e) {
     printLog('+onQualityBack');
     this.destroySettingsMenu();
     this.createSettingsMenu();
 };
 
-playerUI.onQualityItemClick = function (e) {
-    printLog('+onQualityItemClick, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu
-         + ', text: ' + e.target.innerText);
+playerUI.onQualityItemClick = function(e) {
+    printLog('+onQualityItemClick, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu +
+        ', text: ' + e.target.innerText);
     var nextFocus = e.currentTarget;
 
     this.settingMenuContext.currQualityId = nextFocus.dataset.id;
     this.updatePanelMenuUI(this.settingMenuContext.currQualityId);
 };
 
-playerUI.onQualityItemBlur = function (e) {
+playerUI.onQualityItemBlur = function(e) {
     printLog('+onQualityItemBlur');
     var nextFocus = e.relatedTarget;
     if (nextFocus) {
@@ -1909,13 +1942,13 @@ playerUI.onQualityItemBlur = function (e) {
     }
 };
 
-playerUI.onAudioTrackBack = function (e) {
+playerUI.onAudioTrackBack = function(e) {
     printLog('+onAudioTrackBack');
     this.destroySettingsMenu();
     this.createSettingsMenu();
 };
 
-playerUI.onAudioTrackItemClick = function (e) {
+playerUI.onAudioTrackItemClick = function(e) {
     printLog('+onAudioTrackItemClick');
     var nextFocus = e.currentTarget;
 
@@ -1923,17 +1956,17 @@ playerUI.onAudioTrackItemClick = function (e) {
     this.updatePanelMenuUI(this.settingMenuContext.currAudioTrackId);
 };
 
-playerUI.onAudioTrackItemBlur = function (e) {
+playerUI.onAudioTrackItemBlur = function(e) {
     printLog('+onAudioTrackItemBlur');
     this.onQualityItemBlur(e);
 };
 
-playerUI.onFccBack = function (e) {
+playerUI.onFccBack = function(e) {
     this.destroySettingsMenu();
     this.createSettingsMenu();
 };
 
-playerUI.onFccItemClick = function (e) {
+playerUI.onFccItemClick = function(e) {
     printLog('+onFccItemClick, e.currentTarget.dataset.name: ' + e.currentTarget.dataset.name);
 
     // Part - destroy old ui
@@ -1944,16 +1977,16 @@ playerUI.onFccItemClick = function (e) {
     this.createFccItemMenu(nextFocus.dataset.name);
 };
 
-playerUI.onFccItemBlur = function (e) {
+playerUI.onFccItemBlur = function(e) {
 
 };
 
-playerUI.onFccPropertyItemBack = function (e) {
+playerUI.onFccPropertyItemBack = function(e) {
     this.destroySettingsMenu();
     this.createFccMenu();
 };
 
-playerUI.onFccPropertyItemClick = function (e) {
+playerUI.onFccPropertyItemClick = function(e) {
     printLog('+onFccPropertyItemClick');
     printLog('this.vopPanelMenu.dataset.fccProperty: ' + this.vopPanelMenu.dataset.fccProperty);
     printLog('new value: ' + e.currentTarget.dataset.id);
@@ -1968,7 +2001,7 @@ playerUI.onFccPropertyItemClick = function (e) {
     }
 };
 
-playerUI.onFccPropertyItemBlur = function (e) {
+playerUI.onFccPropertyItemBlur = function(e) {
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
 
@@ -1987,19 +2020,25 @@ playerUI.onFccPropertyItemBlur = function (e) {
     }
 };
 
-playerUI.playerTest = function () {
-    this.player_.test();
-    // var v = document.querySelector('.vop-video');
-    // var d = v.duration;
-    // var a = 2;
-    // var b = a;
-    // this.uninitPlayer();
+var isPaused = true;
+playerUI.playerTest = function() {
+    // test2
+    var vopGiantButtonContainer = document.querySelector('.vop-giant-button-container');
+    var vopGiantButton = document.querySelector('.vop-giant-button');
+    if (isPaused) {
+        vopGiantButton.innerHTML = 'play_arrow';
+        vopGiantButtonContainer.style = '';
+    } else {
+        vopGiantButton.innerHTML = 'pause';
+        vopGiantButtonContainer.style = '';
+    }
+    // listen for animation end
+    vopGiantButtonContainer.addEventListener("animationend",function(e){
+        var vopGiantButtonContainer = document.querySelector('.vop-giant-button-container');
+        vopGiantButtonContainer.style.display = 'none';
+    }, false);
 
-    // this.initVariable();
-    // this.initUIElements();
-    // this.initUIEventListeners();
-
-    // this.updateProgressBarUI(0, 0);
+    isPaused = !isPaused;
 };
 
 /////////////////////////////////////////////////////////////////////////
@@ -2072,14 +2111,14 @@ function onBtnSeek() {
 /////////////////////////////////////////////////////////////////////////
 // Title: experience functions
 function onBtnTmp1() {
-// visual viewport 可见视口 屏幕宽度
-// layout viewport 布局视口 DOM宽度
-// ideal viewport 理想适口：使布局视口就是可见视口
-// 设备宽度(visual viewport)与DOM宽度(layout viewport), scale的关系为：
+    // visual viewport 可见视口 屏幕宽度
+    // layout viewport 布局视口 DOM宽度
+    // ideal viewport 理想适口：使布局视口就是可见视口
+    // 设备宽度(visual viewport)与DOM宽度(layout viewport), scale的关系为：
 
-// （visual viewport）= （layout viewport）* scale
-// 获取屏幕宽度(visual viewport)的尺寸：window. innerWidth/Height。
-// 获取DOM宽度(layout viewport)的尺寸：document. documentElement. clientWidth/Height。
+    // （visual viewport）= （layout viewport）* scale
+    // 获取屏幕宽度(visual viewport)的尺寸：window. innerWidth/Height。
+    // 获取DOM宽度(layout viewport)的尺寸：document. documentElement. clientWidth/Height。
 
     printLog('visual viewport, width: ' + window.width + ', height: ' + window.height);
     printLog('layout viewport, width: ' + document.width + ', height: ' + document.height);
@@ -2091,46 +2130,39 @@ function onBtnTmp1() {
 /////////////////////////////////////////////////////////////////////////
 // Title: chromecast cmd part
 var castSender = null;
-function onUICmdCastInit()
-{
+
+function onUICmdCastInit() {
     playerUI.castSender_.new_init(cfg_);
 
-        // new_init: new_init,
-        // new_open: new_open,
-        // new_addV: new_addV,
-        // new_addPD: new_addPD,
-        // new_play: new_play,
-        // new_pause: new_pause,
-        // new_playAd: new_playAd,
-        // new_test: new_test,
+    // new_init: new_init,
+    // new_open: new_open,
+    // new_addV: new_addV,
+    // new_addPD: new_addPD,
+    // new_play: new_play,
+    // new_pause: new_pause,
+    // new_playAd: new_playAd,
+    // new_test: new_test,
 }
 
-function onUICmdCastOpen()
-{
+function onUICmdCastOpen() {
     playerUI.castSender_.new_open(mediaCfg_);
 }
 
-function onUICmdCastAdd()
-{
+function onUICmdCastAdd() {
     playerUI.castSender_.new_add();
 }
 
-function onUICmdCastAddPD()
-{}
+function onUICmdCastAddPD() {}
 
-function onUICmdCastPlay()
-{
+function onUICmdCastPlay() {
     playerUI.castSender_.new_play();
 }
 
-function onUICmdCastPause()
-{}
+function onUICmdCastPause() {}
 
-function onUICmdCastPlayAd()
-{}
+function onUICmdCastPlayAd() {}
 
-function onUICmdCastTest()
-{
+function onUICmdCastTest() {
     playerUI.castSender_.new_test();
 }
 
@@ -2141,7 +2173,7 @@ function onUICmdCastSeek() {
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
-window.onload = function () {
+window.onload = function() {
     // print browser version info
     browserInfo = oldmtn.CommonUtils.getBrowserInfo();
     console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
@@ -2157,9 +2189,6 @@ window.onload = function () {
     // ED
 };
 
-window.onunload = function () {
+window.onunload = function() {
     //onBtnStop();
 };
-
-
-
