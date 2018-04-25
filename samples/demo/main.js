@@ -32,6 +32,14 @@ playerUI.initVariable = function() {
     this.playerState_ = 'none'; // none, inited, opening, opened, failed, ended
     this.castSender_ = null;
 
+    // Google Material Icon
+    this.iconPlay = '&#xe037';
+    this.iconPause = '&#xe034';
+    this.iconReplay = '&#xe042';
+    this.iconVolumeOff = '&#xe04f';
+    this.iconVolumeUp = '&#xe050';
+    this.iconVolumeDown = '&#xe04d';
+
     // UI Controls
     this.vopPlayer = null;
     this.vopTooltip = null;
@@ -676,21 +684,21 @@ playerUI.updateAdProgressUI = function() {
 
 playerUI.updatePlayBtnUI = function(paused, ended) {
     if (ended) {
-        this.vopPlayButton.innerText = 'replay';
+        this.vopPlayButton.innerHTML = this.iconReplay;
     } else {
         if (paused) {
-            this.vopPlayButton.innerText = 'play_arrow';
+            this.vopPlayButton.innerHTML = this.iconPlay;
         } else {
-            this.vopPlayButton.innerText = 'pause';
+            this.vopPlayButton.innerHTML = this.iconPause;
         }
     }
 };
 
 playerUI.updateGiantPlayBtnUI = function(paused) {
     if (paused) {
-        this.uiGiantButton.innerHTML = 'pause';
+        this.uiGiantButton.innerHTML = this.iconPause;
     } else {
-        this.uiGiantButton.innerHTML = 'play_arrow';
+        this.uiGiantButton.innerHTML = this.iconPlay;
     }
     this.uiGiantBtnContainer.style = '';
 };
@@ -699,15 +707,16 @@ playerUI.updateContentVolumeBarUI = function(muted, volume) {
     var uiMutedIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
+
     if (volume === 0 || muted) {
-        uiMutedIcon = 'volume_off';
+        uiMutedIcon = this.iconVolumeOff;
         uiVolumeList = [0, 1];
         uiVolumeHandleLeft = '0px';
     } else {
         if (volume >= 0.5) {
-            uiMutedIcon = 'volume_up';
+            uiMutedIcon = this.iconVolumeUp;
         } else {
-            uiMutedIcon = 'volume_down';
+            uiMutedIcon = this.iconVolumeDown;
         }
 
         uiVolumeList = [volume, 1];
@@ -721,7 +730,7 @@ playerUI.updateContentVolumeBarUI = function(muted, volume) {
     }
 
     // update muted button
-    this.vopMuteButton.innerText = uiMutedIcon;
+    this.vopMuteButton.innerHTML = uiMutedIcon;
     // update volume slider background
     this.vopVolumeSlider.style.background = genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle

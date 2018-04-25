@@ -785,7 +785,7 @@ body {
 }
 
 .vop-giant-button {
-  background-color: orange;
+  background-color: red;
   cursor: pointer;
   border-radius: 24px;
 }
