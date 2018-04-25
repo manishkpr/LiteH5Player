@@ -50,6 +50,7 @@ class CoreEvents {
         // controller events
         this.MANIFEST_PARSED = 'manifestParsed';
         this.STREAM_LOADED = 'streamLoaded';    // Loaded a stream has a specified bitrate.
+        this.PD_DOWNLOADED = 'pdDownloaded';
         this.FRAGMENT_DOWNLOADED = 'fragmentDownloaded';
         this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
         this.BUFFER_CODEC = 'bufferCodec';

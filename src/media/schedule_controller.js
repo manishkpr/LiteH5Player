@@ -36,12 +36,15 @@ function ScheduleController() {
         // log
         printLog(`request fragment: ${request.url}, [${request.rangeStart}, ${request.rangeEnd}]`);
         xhrLoader_.load(request);
-
-        return true;
     }
 
     function schedule() {
         let frag = parser_.getNextFragment();
+        if (frag && frag.type === 'pd') {
+            eventBus_.trigger(Events.PD_DOWNLOADED, frag);
+            return;
+        }
+
         if (frag) {
             loadFragment(frag);
             startScheduleTimer(50);

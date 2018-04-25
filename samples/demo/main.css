@@ -762,6 +762,17 @@ body {
   pointer-events: none
 }
 
+@-webkit-keyframes vop-bezel-fadeout {
+  0% {
+    opacity: 1
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2)
+  }
+}
+
 @keyframes vop-bezel-fadeout {
   0% {
     opacity: 1

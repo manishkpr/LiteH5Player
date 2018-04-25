@@ -12,10 +12,13 @@ function ManifestParser() {
         let extension = url.split('.').pop();
         if (extension === 'mpd') {
             parser = DashParser(context_).getInstance();
+            parser.type = 'dash';
         } else if (extension === 'm3u8') {
             parser = HlsParser(context_).getInstance();
+            parser.type = 'hls';
         } else if (extension === 'mp4') {
             parser = PDParser(context_).getInstance();
+            parser.type = 'pd';
         }
 
         return parser;

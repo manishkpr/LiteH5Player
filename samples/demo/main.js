@@ -56,6 +56,7 @@ playerUI.initVariable = function() {
     this.vopFullscreen;
     this.vopSpinner;
     this.uiGiantBtnContainer;
+    this.uiGiantButton;
 
     this.uiLog = null;
 
@@ -427,12 +428,12 @@ playerUI.uninitPlayer = function() {
 playerUI.playerOpen = function() {
     var p = this.player_.open(mediaCfg_);
     p.then(function(v) {
-            console.log('open ret: ' + v);
-            this.onOpenComplete();
-        }.bind(this))
-        .catch(function(e) {
-            console.log('e: ' + e);
-        });
+        console.log('open ret: ' + v);
+        this.onOpenComplete();
+    }.bind(this))
+    .catch(function(e) {
+        console.log('e: ' + e);
+    });
     // since open is an async operation, we transition it to opening state.
     this.updateUIStateMachine('opening');
 };
@@ -1199,16 +1200,6 @@ playerUI.onOpenComplete = function() {
         var volume = this.player_.getVolume();
 
         this.updateContentVolumeBarUI(muted, volume);
-
-        // BD
-        this.uiGiantBtnContainer.style.display = 'flex';
-        // ED
-        // // process config parameter
-        // if (cfg_.autoplay) {
-        //     this.onPlayFromGiantButton();
-        // } else {
-        //     this.uiGiantBtnContainer.style.display = 'flex';
-        // }
     }
 };
 

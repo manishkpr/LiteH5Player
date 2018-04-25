@@ -82,11 +82,6 @@ function Player(containerId) {
         initData();
         addEventListeners();
         addResizeListener();
-
-        // Create MediaSource
-        let mediaSrc = mseEngine_.createMediaSource();
-        let objURL = window.URL.createObjectURL(mediaSrc);
-        mediaEngine_.setSrc(objURL);
     }
 
     function uninit() {}
@@ -106,7 +101,14 @@ function Player(containerId) {
 
             // detech parser type
             parser_ = manifestParser_.getParser(mediaCfg_.url);
-            parser_.loadManifest(mediaCfg_.url);
+            if (parser_.type === 'dash' || parser_.type === 'hls') {
+                // Create MediaSource
+                let mediaSrc = mseEngine_.createMediaSource();
+                let objURL = window.URL.createObjectURL(mediaSrc);
+                mediaEngine_.setSrc(objURL);
+            } else {
+                parser_.loadManifest(mediaCfg_.url);
+            }
 
             // load webvtt thumbnail
             let vttThumbnail = WebvttThumbnails(context_).getInstance();
@@ -402,7 +404,9 @@ function Player(containerId) {
 
         eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
-        eventBus_.on(Events.MANIFEST_PARSED, onManifestPared, {});
+        eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
+
+        eventBus_.on(Events.PD_DOWNLOADED, onPdDownloaded);
 
         // ads events
         eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
@@ -432,19 +436,24 @@ function Player(containerId) {
         if (playerState_ === 'opening') {
             flagContentOpenComplete_ = true;
             if (flagAdOpenComplete_) {
-                openPromiseResolve_('ok');
-                playerState_ = 'opened';
+                processOpenComplete();
             }
         }
     }
 
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
+        
+        parser_.loadManifest(mediaCfg_.url);
     }
 
-    function onManifestPared() {
+    function onManifestParsed() {
         scheduleCtrl_ = ScheduleController(context_).getInstance();
         scheduleCtrl_.start(parser_);
+    }
+
+    function onPdDownloaded(frag) {
+        mediaEngine_.setSrc(frag.url);
     }
 
     function onAdContentPauseRequested() {
@@ -458,19 +467,27 @@ function Player(containerId) {
     }
 
     function onAdStarted() {}
-
     function onAdComplete() {}
     
     function onAdLoadingComplete() {
         if (playerState_ === 'opening') {
             flagAdOpenComplete_ = true;
             if (flagContentOpenComplete_) {
-                openPromiseResolve_('ok');
-                playerState_ = 'opened';
+                processOpenComplete();
             }
         }
     }
     // End -- internal events listener functions
+
+    function processOpenComplete() {
+        //
+        if (cfg_.autoplay) {
+            play();
+        }
+        //
+        openPromiseResolve_('ok');
+        playerState_ = 'opened';
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Title: debug function here
