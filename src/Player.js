@@ -435,15 +435,12 @@ function Player(containerId) {
     function onMediaCanPlay() {
         if (playerState_ === 'opening') {
             flagContentOpenComplete_ = true;
-            if (flagAdOpenComplete_) {
-                processOpenComplete();
-            }
+            processOpenComplete();
         }
     }
 
     function onMSEOpened() {
         mediaEngine_.revokeSrc();
-        
         parser_.loadManifest(mediaCfg_.url);
     }
 
@@ -472,21 +469,21 @@ function Player(containerId) {
     function onAdLoadingComplete() {
         if (playerState_ === 'opening') {
             flagAdOpenComplete_ = true;
-            if (flagContentOpenComplete_) {
-                processOpenComplete();
-            }
+            processOpenComplete();
         }
     }
     // End -- internal events listener functions
 
     function processOpenComplete() {
-        //
-        if (cfg_.autoplay) {
-            play();
+        if (flagContentOpenComplete_ && flagAdOpenComplete_) {
+            //
+            if (cfg_.autoplay) {
+                play();
+            }
+            //
+            openPromiseResolve_('ok');
+            playerState_ = 'opened';
         }
-        //
-        openPromiseResolve_('ok');
-        playerState_ = 'opened';
     }
 
     ///////////////////////////////////////////////////////////////////////////

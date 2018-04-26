@@ -234,7 +234,7 @@ function MediaEngine(media, cfg) {
             }
         }
 
-        debug_.log('hasAudio: ' + hasAudio());
+        //debug_.log('hasAudio: ' + hasAudio());
         eventBus_.trigger(Events.MEDIA_LOADEDDATA);
     }
 

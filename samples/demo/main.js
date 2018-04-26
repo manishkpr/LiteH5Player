@@ -1281,11 +1281,15 @@ playerUI.onLog = function(e) {
 };
 
 playerUI.onAdStarted = function(e) {
-    printLog('onAdStarted, linear: ' + e.isLinearAd);
+    // BD
+    var videos = document.getElementsByTagName('video');
+    // ED
+    printLog('onAdStarted, linear: ' + e.isLinearAd + ', videos length: ' + videos.length);
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.isLinearAd;
     // update control bar ui
     if (this.flagIsLinearAd) {
+        this.vopSubtitlesBtn.style.display = 'none';
         this.vopSettingsBtn.style.display = 'none';
     } else {
         var v = document.querySelector('.vop-ads-container');
@@ -1299,6 +1303,7 @@ playerUI.onAdComplete = function() {
 
     // update control bar ui
     this.vopProgressBar.style.display = 'block';
+    this.vopSubtitlesBtn.style.display = 'inline-block';
     this.vopSettingsBtn.style.display = 'inline-block';
 };
 

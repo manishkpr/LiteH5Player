@@ -47,7 +47,7 @@ function ScheduleController() {
 
         if (frag) {
             loadFragment(frag);
-            startScheduleTimer(50);
+            startScheduleTimer(500);
         } else {
             eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
         }

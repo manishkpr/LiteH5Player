@@ -19,6 +19,7 @@ function getInitConfig()
   // Begin ads test links
   // Single Inline Linear
   var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+  var Single_Inline_Linear_local = 'http://10.2.68.64/2/ads/Single_Inline_Linear.xml';
 
   // Single Skippable Inline
   var Single_Skippable_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=';
@@ -34,7 +35,7 @@ function getInitConfig()
 
   // Single Non-linear Inline
   var Single_Non_linear_Inline = 'https://pubads.g.doubleclick.net/gampad/ads?sz=480x70&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dnonlinear&correlator=';
-  var Single_Non_linear_Inline2 = 'http://10.2.68.64/2/ads/Single_Non_linear_Inline2.xml';
+  var Single_Non_linear_Inline_local = 'http://10.2.68.64/2/ads/Single_Non_linear_Inline.xml';
 
   // VMAP Pre-roll
   var VMAP_Pre_roll_Bumper = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonlybumper&cmsid=496&vid=short_onecue&correlator=';
@@ -71,7 +72,7 @@ function getInitConfig()
   var cfg = {
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
-    autoplay: true,
+    autoplay: false,
     mutedAutoplay: true,
 
     advertising: {
@@ -83,6 +84,7 @@ function getInitConfig()
       //tag: yun_test_ad01,
       //tag: VPAID_LINK01,
       tag: Single_Inline_Linear,
+      //tag: Single_Inline_Linear_local,
       //tag: Single_Skippable_Inline,
       //tag: Single_Non_linear_Inline,
       //tag: Single_Non_linear_Inline2,
