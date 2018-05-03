@@ -496,20 +496,49 @@ function Player(containerId) {
     }
 
     function test() {
-        let fetch1 = FetchLoader(context_).create();
+        // sample1
+        let xhrLoader_ = XHRLoader(context_).create();
+
+        function cbProgress() {
+        }
+
+        function cbSuccess() {
+        }
 
         let request = {
-            url: 'http://localhost/2/hls/videoonly01/stream0.ts'
+            url: 'http://10.2.68.64/2/hls/videoonly01/stream0.ts',
+            cbProgress: cbProgress,
+            cbSuccess: cbSuccess
         };
 
-        fetch1.load(request);
+        // log
+        xhrLoader_.load(request);
 
-        // let a1 = getBufferedRanges();
-        // let b1 = getSeekableRange();
-        // let a1Str = TimeRanges.toString(a1);
-        // let b1Str = TimeRanges.toString(b1);
-        // console.log('buffered: ' + a1Str);
-        // console.log('seekable: ' + b1Str);
+        // sample2
+        // let fetch1 = FetchLoader(context_).create();
+
+        // function sleep(numberMillis) {
+        //     var now = new Date();
+        //     var exitTime = now.getTime() + numberMillis;
+        //     while (true) {
+        //         now = new Date();
+        //         if (now.getTime() > exitTime)
+        //         return;
+        //     }
+        // }
+
+        // let request = {
+        //     url: 'http://localhost/2/hls/videoonly01/stream0.ts',
+        //     cbProgress: function (chunkBytes) {
+        //         console.log('cbProgress: ' + chunkBytes);
+        //         sleep(5000);  //睡眠5秒
+        //     },
+        //     cbSuccess: function (totalBytes) {
+        //         console.log('totalBytes: ' + totalBytes);
+        //     }
+        // };
+
+        // fetch1.load(request);
     }
 
     function test2() {

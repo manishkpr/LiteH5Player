@@ -17,7 +17,7 @@ class FetchLoaderContext {
 }
 
 
-function FetchLoader(config)
+function FetchLoader()
 {
   let context_ = this.context;
   let debug_ = Debug(context_).getInstance();
@@ -51,6 +51,7 @@ function FetchLoader(config)
                 // if we're done reading the stream, return
                 if (result.done) {
                     debug_.log('download ' + fetchRequest.url + ' complete, totalBytes: ' + totalBytes);
+                    request_.cbSuccess(totalBytes);
                     return;
                 }
 
@@ -59,6 +60,7 @@ function FetchLoader(config)
                 totalBytes += chunk.byteLength;
 
                 debug_.log('fetch download chunk: ' + chunk.byteLength);
+                request_.cbProgress(chunk.byteLength);
 
                 return pump(reader);
             });

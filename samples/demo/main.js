@@ -2025,25 +2025,9 @@ playerUI.onFccPropertyItemBlur = function(e) {
     }
 };
 
-var isPaused = true;
-playerUI.playerTest = function() {
-    // test2
-    var vopGiantButtonContainer = document.querySelector('.vop-giant-button-container');
-    var vopGiantButton = document.querySelector('.vop-giant-button');
-    if (isPaused) {
-        vopGiantButton.innerHTML = 'play_arrow';
-        vopGiantButtonContainer.style = '';
-    } else {
-        vopGiantButton.innerHTML = 'pause';
-        vopGiantButtonContainer.style = '';
-    }
-    // listen for animation end
-    vopGiantButtonContainer.addEventListener("animationend",function(e){
-        var vopGiantButtonContainer = document.querySelector('.vop-giant-button-container');
-        vopGiantButtonContainer.style.display = 'none';
-    }, false);
 
-    isPaused = !isPaused;
+playerUI.playerTest = function() {
+    this.player_.test();
 };
 
 /////////////////////////////////////////////////////////////////////////

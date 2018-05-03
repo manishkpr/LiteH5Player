@@ -167,6 +167,7 @@ function MediaSourceEngine() {
         debug_.log('+sourceBuffer_updateend');
         appending_ = false;
         if (segments_.length === 0) {
+            
             eventBus_.trigger(Events.SB_UPDATE_ENDED);
         } else {
             doAppending();
