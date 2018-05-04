@@ -66,7 +66,7 @@ function DashParser() {
         });
 
         //
-        eventBus_.on(Events.FRAGMENT_DOWNLOADED, onFragmentDownloaded);
+        eventBus_.on(Events.FRAG_LOADING, onFragmentDownloaded);
     }
 
     function getRepresentation(manifest) {
@@ -123,7 +123,7 @@ function DashParser() {
         audioHeaderAdded_ = false;
         aSegmentNumber_ = 0;
 
-        function cbSuccess(bytes) {
+        function onSuccess(bytes) {
             let content = StringUtils.ab2str_v1(bytes);
             debug_.log('content: ' + content);
 
@@ -153,11 +153,13 @@ function DashParser() {
         }
 
         let request = {
-            url: manifestUrl_,
-            cbSuccess: cbSuccess
+            url: manifestUrl_
         };
+        let callbacks = {
+            onSuccess: onSuccess
+        }
 
-        xhrLoader_.load(request);
+        xhrLoader_.load(request, null, callbacks);
     }
 
     function getFragmentInitialization(track) {

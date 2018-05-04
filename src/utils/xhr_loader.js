@@ -2,12 +2,6 @@
 import FactoryMaker from '../core/FactoryMaker';
 
 // Define xhr_loader internal structure FYI.
-class XHRLoaderConfig {
-  constructor() {
-    this.remainingAttempts = 0;
-    this.retryInterval = 4000;
-  }
-}
 
 class XHRLoaderRequest {
   constructor() {
@@ -18,16 +12,29 @@ class XHRLoaderRequest {
   }
 }
 
+class XHRLoaderConfig {
+  constructor() {
+    this.remainingAttempts = 0;
+    this.retryInterval = 4000;
+  }
+}
+
+class XHRLoaderCallback {
+  constructor() {
+
+  }
+}
+
+
 function XHRLoader(config)
 {
   let context_ = this.context;
 
-  let config_ = config || {
-    remainingAttempts: 0,
-    retryInterval: 4000
-  };
-
+  //
   let request_ = null;
+  let config_ = null;
+  let callbacks_ = null;
+
   let xhr_ = null;
   let needFailureReport_ = false;
 
@@ -37,18 +44,23 @@ function XHRLoader(config)
   function loadInternal() {
   }
 
-  function load(request) {
+  function load(request, config, callbacks) {
     printlog('begin load time: ' + (new Date().getTime())/1000);
-
+    // save input parameters
     request_ = request;
+    config_ = config || {
+      remainingAttempts: 0,
+      retryInterval: 4000
+    };
+    callbacks_ = callbacks;
+
     printlog(request_.url + ', remainingAttempts_: ' + config_.remainingAttempts);
 
+    // init reference variables
     needFailureReport_ = true;
-
     xhr_ = new XMLHttpRequest;
 
     printlog('--before open--, readyState: ' + xhr_.readyState);
-
     xhr_.open('GET', request_.url);
     xhr_.responseType = 'arraybuffer';
     if (request_.rangeEnd) {
@@ -64,7 +76,7 @@ function XHRLoader(config)
       printlog(`--onload--, status:${xhr_.status}, readyState:${xhr_.readyState}`);
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
-        request_.cbSuccess(xhr_.response);
+        callbacks_.onSuccess(xhr_.response);
         needFailureReport_ = false;
       };
     }

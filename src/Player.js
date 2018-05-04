@@ -22,6 +22,7 @@ import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
 import XHRLoader from './utils/xhr_loader';
 import FetchLoader from './utils/fetch_loader';
+import FragmentLoader from './utils/fragment_loader';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
@@ -42,6 +43,7 @@ function Player(containerId) {
     let drmEngine_;
     let manifestParser_;
     let parser_;
+    let fragmentLoader_;
 
     let scheduleCtrl_;
 
@@ -380,6 +382,7 @@ function Player(containerId) {
         mseEngine_ = MediaSourceEngine(context_).getInstance();
         drmEngine_ = DRMEngine(context_).getInstance(media_);
         manifestParser_ = ManifestParser(context_).getInstance();
+        fragmentLoader_ = FragmentLoader(context_).create();
 
         if (cfg_.poster) {
             media_.poster = cfg_.poster;
@@ -496,24 +499,6 @@ function Player(containerId) {
     }
 
     function test() {
-        // sample1
-        let xhrLoader_ = XHRLoader(context_).create();
-
-        function cbProgress() {
-        }
-
-        function cbSuccess() {
-        }
-
-        let request = {
-            url: 'http://10.2.68.64/2/hls/videoonly01/stream0.ts',
-            cbProgress: cbProgress,
-            cbSuccess: cbSuccess
-        };
-
-        // log
-        xhrLoader_.load(request);
-
         // sample2
         // let fetch1 = FetchLoader(context_).create();
 
