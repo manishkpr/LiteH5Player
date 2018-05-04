@@ -61,6 +61,7 @@ class CoreEvents {
         this.INIT_PTS_FOUND = 'hlsInitPtsFound';
         this.FRAG_PARSING_INIT_SEGMENT = 'hlsFragParsingInitSegment';
         this.FRAG_PARSING_DATA = 'hlsFragParsingData';
+        this.BUFFER_APPENDED = 'hlsBufferAppended';
         // End hls.js
 
         //

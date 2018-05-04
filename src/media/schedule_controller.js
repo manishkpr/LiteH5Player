@@ -35,6 +35,8 @@ function ScheduleController() {
     eventBus_.on(Events.FRAG_PARSING_DATA, onParsingData, {});
     eventBus_.on(Events.FRAG_LOADED, onFragLoaded);
 
+    eventBus_.on(Events.BUFFER_APPENDED, onBufferAppended);
+
     eventBus_.on(Events.SB_UPDATE_ENDED, onSbUpdateEnded);
   }
 
@@ -82,6 +84,12 @@ function ScheduleController() {
     let frag = e.frag;
     let data = frag.data;
     demuxer_.push(data, undefined, undefined, undefined, frag.frag, streamInfo_.duration, true, undefined);
+  }
+
+  function onBufferAppended(e) {
+    if (e.pending === 0) {
+        schedule();
+    }
   }
 
   function schedule() {
