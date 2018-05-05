@@ -30,6 +30,9 @@ function HlsParser() {
   let currentSN_;
   let fragCurrent_;
 
+  // flag
+  let gotInitSegment_;
+
   function setup() {
   }
 
@@ -65,23 +68,29 @@ function HlsParser() {
 
   function getNextFragment() {
     fragCurrent_ = new Fragment();
+    fragCurrent_.type = 'stream';
+    fragCurrent_.content = 'tsContent';
 
     for (let i = 0; i < streamInfo_.tracks.length; i++) {
       let trackInfo = streamInfo_.tracks[i];
       if (trackInfo.type === 'stream') {
-        if (currentSN_ === trackInfo.levelDetails.fragments.length) {
-          fragCurrent_ = null;
-        } else {
-          let frag = trackInfo.levelDetails.fragments[currentSN_];
-          currentSN_++;
-          fragCurrent_.type = 'stream';
+        // get initSegment first
+        if (trackInfo.levelDetails.initSegment && !trackInfo.levelDetails.initSegment.data) {
+          let frag = trackInfo.levelDetails.initSegment;
           fragCurrent_.url = frag.url;
-          fragCurrent_.content = 'tsContent';
-          fragCurrent_.frag = frag;
-          fragCurrent_.byteRangeStartOffset = frag.byteRangeStartOffset;
-          fragCurrent_.byteRangeEndOffset = frag.byteRangeEndOffset;
+          fragCurrent_.frag = trackInfo.levelDetails.initSegment;
+        } else {
+          if (currentSN_ === trackInfo.levelDetails.fragments.length) {
+            fragCurrent_ = null;
+          } else {
+            let frag = trackInfo.levelDetails.fragments[currentSN_];
+            currentSN_++;
+            fragCurrent_.url = frag.url;
+            fragCurrent_.frag = frag;
+            fragCurrent_.byteRangeStartOffset = frag.byteRangeStartOffset;
+            fragCurrent_.byteRangeEndOffset = frag.byteRangeEndOffset;
+          }
         }
-
         break;
       }
     }

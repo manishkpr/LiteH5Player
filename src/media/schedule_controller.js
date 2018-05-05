@@ -40,6 +40,21 @@ function ScheduleController() {
     eventBus_.on(Events.SB_UPDATE_ENDED, onSbUpdateEnded);
   }
 
+  // tool functions
+  function getLevelDetails() {
+    let details = null;
+    for (let i = 0; i < streamInfo_.tracks.length; i++) {
+      let trackInfo = streamInfo_.tracks[i];
+      if (trackInfo.type === 'stream') {
+        details = trackInfo.levelDetails;
+        break;
+      }
+    }
+
+    return details;
+  }
+
+  //
   function onStreamLoaded(streamInfo) {
     streamInfo_ = streamInfo;
   }
@@ -68,31 +83,43 @@ function ScheduleController() {
   }
 
   function onParsingData(e) {
-    eventBus_.trigger(Events.BUFFER_APPENDING, {
-      type: e.type,
-      content: 'data',
-      data: e.data1
-    });
-    eventBus_.trigger(Events.BUFFER_APPENDING, {
-      type: e.type,
-      content: 'data',
-      data: e.data2
-    });
+    if (e.data1) {
+      eventBus_.trigger(Events.BUFFER_APPENDING, {
+        type: e.type,
+        content: 'data',
+        data: e.data1
+      });
+    }
+    if (e.data2) {
+      eventBus_.trigger(Events.BUFFER_APPENDING, {
+        type: e.type,
+        content: 'data',
+        data: e.data2
+      });
+    }
   }
 
   function onFragLoaded(e) {
     let frag = e.frag;
     let data = frag.data;
-    demuxer_.push(data, undefined, undefined, undefined, frag.frag, streamInfo_.duration, true, undefined);
+    let fragLoaded = frag.frag;
+    if (fragLoaded.sn === 'initSegment') {
+      fragLoaded.data = data;
+      tick();
+    } else {
+      let details = getLevelDetails();
+      let initSegmentData = details.initSegment ? details.initSegment.data : [];
+      demuxer_.push(data, initSegmentData, undefined, undefined, frag.frag, streamInfo_.duration, true, undefined);
+    }
   }
 
   function onBufferAppended(e) {
     if (e.pending === 0) {
-        schedule();
+      tick();
     }
   }
 
-  function schedule() {
+  function tick() {
     let frag = parser_.getNextFragment();
     if (frag && frag.type === 'pd') {
       eventBus_.trigger(Events.PD_DOWNLOADED, frag);
@@ -117,7 +144,7 @@ function ScheduleController() {
       clearTimeout(scheduleTimeout_);
       scheduleTimeout_ = null;
     }
-    scheduleTimeout_ = setTimeout(schedule, value);
+    scheduleTimeout_ = setTimeout(tick, value);
   }
 
   function start(parser) {
@@ -133,7 +160,7 @@ function ScheduleController() {
   }
 
   function manualSchedule() {
-    schedule();
+    tick();
   }
 
   let instance = {

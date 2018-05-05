@@ -157,7 +157,9 @@ function getMediaInfo()
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
-    url: 'http://localhost/2/hls/videoonly01/test.m3u8',
+    //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
+    //--Item: HLS CMAF
+    url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
 
     // internal test
     audioCodec: audioCodec,
