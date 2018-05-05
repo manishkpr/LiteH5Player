@@ -30,9 +30,6 @@ function HlsParser() {
   let currentSN_;
   let fragCurrent_;
 
-  // flag
-  let gotInitSegment_;
-
   function setup() {
   }
 
@@ -69,7 +66,6 @@ function HlsParser() {
   function getNextFragment() {
     fragCurrent_ = new Fragment();
     fragCurrent_.type = 'stream';
-    fragCurrent_.content = 'tsContent';
 
     for (let i = 0; i < streamInfo_.tracks.length; i++) {
       let trackInfo = streamInfo_.tracks[i];

@@ -12,7 +12,6 @@ function ScheduleController() {
   let context_ = this.context;
 
   let parser_;
-  let scheduleTimeout_;
   let eventBus_ = EventBus(context_).getInstance();
 
   let streamInfo_;
@@ -82,21 +81,14 @@ function ScheduleController() {
     }
   }
 
-  function onParsingData(e) {
-    if (e.data1) {
+  function onParsingData(data) {
+    [data.data1, data.data2].forEach(buffer => {
       eventBus_.trigger(Events.BUFFER_APPENDING, {
-        type: e.type,
+        type: data.type,
         content: 'data',
-        data: e.data1
+        data: buffer
       });
-    }
-    if (e.data2) {
-      eventBus_.trigger(Events.BUFFER_APPENDING, {
-        type: e.type,
-        content: 'data',
-        data: e.data2
-      });
-    }
+    });
   }
 
   function onFragLoaded(e) {
@@ -135,28 +127,13 @@ function ScheduleController() {
     }
   }
 
-  function startScheduleTimer(value) {
-    if (manualMode_) {
-      return;
-    }
-
-    if (scheduleTimeout_) {
-      clearTimeout(scheduleTimeout_);
-      scheduleTimeout_ = null;
-    }
-    scheduleTimeout_ = setTimeout(tick, value);
-  }
-
   function start(parser) {
     parser_ = parser;
-    startScheduleTimer(0);
+
+    tick();
   }
 
   function stop() {
-    if (scheduleTimeout_) {
-      clearTimeout(scheduleTimeout_);
-      scheduleTimeout_ = null;
-    }
   }
 
   function manualSchedule() {

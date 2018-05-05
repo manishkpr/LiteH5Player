@@ -1,12 +1,11 @@
 export class Fragment {
-    constructor() {
-        this.type = null; // audio/video/pd
-        this.url = null; // https://abc.com/1.m4s
-        this.content = null; // 'initSegment'/'data'
+  constructor() {
+    this.type = null; // audio/video/pd
+    this.url = null; // https://abc.com/1.m4s
 
-        this.byteRangeStart = null;
-        this.byteRangeEnd = null;
-    }
+    this.byteRangeStart = null;
+    this.byteRangeEnd = null;
+  }
 }
 
 export class TrackInfo {
@@ -23,8 +22,3 @@ export class StreamInfo {
     this.tracks = []; // an array of TrackInfo
   }
 }
-
-
-
-
-
