@@ -30,8 +30,7 @@ function HlsParser() {
   let currentSN_;
   let fragCurrent_;
 
-  function setup() {
-  }
+  function setup() {}
 
   function loadManifest(url) {
     function onSuccess(bytes) {
@@ -64,27 +63,18 @@ function HlsParser() {
   }
 
   function getNextFragment() {
-    fragCurrent_ = new Fragment();
-    fragCurrent_.type = 'stream';
-
     for (let i = 0; i < streamInfo_.tracks.length; i++) {
       let trackInfo = streamInfo_.tracks[i];
       if (trackInfo.type === 'stream') {
         // get initSegment first
         if (trackInfo.levelDetails.initSegment && !trackInfo.levelDetails.initSegment.data) {
-          let frag = trackInfo.levelDetails.initSegment;
-          fragCurrent_.url = frag.url;
-          fragCurrent_.frag = trackInfo.levelDetails.initSegment;
+          fragCurrent_ = trackInfo.levelDetails.initSegment;
         } else {
           if (currentSN_ === trackInfo.levelDetails.fragments.length) {
             fragCurrent_ = null;
           } else {
-            let frag = trackInfo.levelDetails.fragments[currentSN_];
+            fragCurrent_ = trackInfo.levelDetails.fragments[currentSN_];
             currentSN_++;
-            fragCurrent_.url = frag.url;
-            fragCurrent_.frag = frag;
-            fragCurrent_.byteRangeStartOffset = frag.byteRangeStartOffset;
-            fragCurrent_.byteRangeEndOffset = frag.byteRangeEndOffset;
           }
         }
         break;

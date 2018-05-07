@@ -152,7 +152,7 @@ function getMediaInfo()
     //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     //url: 'http://localhost/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
-    url: 'http://localhost/2/pd/mp4/trailer/test.mp4',
+    //url: 'http://localhost/2/pd/mp4/trailer/test.mp4',
     //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
@@ -160,6 +160,8 @@ function getMediaInfo()
     //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
+    //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
+    url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
 
     // internal test
     audioCodec: audioCodec,
@@ -176,7 +178,7 @@ function getMediaInfo()
       drmInitData: drmInitData
     },
 
-    // 
+    //
     thumbnail: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
     //thumbnail: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt'
   };

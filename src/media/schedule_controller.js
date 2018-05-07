@@ -83,25 +83,26 @@ function ScheduleController() {
 
   function onParsingData(data) {
     [data.data1, data.data2].forEach(buffer => {
-      eventBus_.trigger(Events.BUFFER_APPENDING, {
-        type: data.type,
-        content: 'data',
-        data: buffer
-      });
+      if (buffer) {
+        eventBus_.trigger(Events.BUFFER_APPENDING, {
+          type: data.type,
+          content: 'data',
+          data: buffer
+        });
+      }
     });
   }
 
   function onFragLoaded(e) {
     let frag = e.frag;
     let data = frag.data;
-    let fragLoaded = frag.frag;
-    if (fragLoaded.sn === 'initSegment') {
-      fragLoaded.data = data;
+    if (frag.sn === 'initSegment') {
+      frag.data = data;
       tick();
     } else {
       let details = getLevelDetails();
       let initSegmentData = details.initSegment ? details.initSegment.data : [];
-      demuxer_.push(data, initSegmentData, undefined, undefined, frag.frag, streamInfo_.duration, true, undefined);
+      demuxer_.push(data, initSegmentData, undefined, undefined, frag, streamInfo_.duration, true, undefined);
     }
   }
 
