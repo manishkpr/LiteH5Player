@@ -22,7 +22,8 @@ import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
 import XHRLoader from './utils/xhr_loader';
 import FetchLoader from './utils/fetch_loader';
-import FragmentLoader from './utils/fragment_loader';
+import FragmentLoader from './loader/fragment_loader';
+import PlaylistLoader from './loader/playlist_loader';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
@@ -70,11 +71,16 @@ function Player(containerId) {
   function setup() {
     // init internal configuration
     context_.loader = XHRLoader;
+    context_.fragLoader = FragmentLoader;
+    context_.playlistLoader = PlaylistLoader;
     //context_.loader = FetchLoader;
 
     uiEngine_ = UIEngine(context_).getInstance();
     uiEngine_.initUI(containerId_);
     media_ = uiEngine_.getVideo();
+
+    //
+    context_.media = media_;
   }
 
   function init(cfg) {
@@ -499,6 +505,8 @@ function Player(containerId) {
   }
 
   function test() {
+    eventBus_.trigger(Events.TEST_MSG);
+
     // sample2
     // let fetch1 = FetchLoader(context_).create();
 

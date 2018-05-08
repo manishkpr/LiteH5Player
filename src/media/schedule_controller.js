@@ -112,6 +112,10 @@ function ScheduleController() {
     }
   }
 
+  function _checkBuffer() {
+    
+  }
+
   function tick() {
     let frag = parser_.getNextFragment();
     if (frag && frag.type === 'pd') {
@@ -126,6 +130,8 @@ function ScheduleController() {
     } else {
       eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
     }
+
+    _checkBuffer();
   }
 
   function start(parser) {

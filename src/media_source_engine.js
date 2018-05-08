@@ -2,6 +2,7 @@
 import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 import Debug from './core/Debug';
+import TimeRanges from './utils/timeRanges';
 
 function MediaSourceEngine() {
   let context_ = this.context;
@@ -25,6 +26,9 @@ function MediaSourceEngine() {
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
 
     eventBus_.on(Events.STREAM_LOADED, onStreamLoaded);
+
+    //
+    eventBus_.on(Events.TEST_MSG, onTestMsg);
   }
 
   function createMediaSource() {
@@ -156,6 +160,18 @@ function MediaSourceEngine() {
 
   function onStreamLoaded(streamInfo) {
     streamInfo_ = streamInfo;
+  }
+
+  function onTestMsg() {
+    var a = sourceBuffer_.audio;
+    var v = sourceBuffer_.video;
+    if (a) {
+      debug_.log(`audio buffered: ${TimeRanges.toString(a.buffered)}`);
+    }
+    if (v) {
+      debug_.log(`video buffered: ${TimeRanges.toString(v.buffered)}`);
+    }
+    console.log('aaaa');
   }
 
   // Begin source buffer event

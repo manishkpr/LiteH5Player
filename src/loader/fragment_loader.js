@@ -1,11 +1,13 @@
 import FactoryMaker from '../core/FactoryMaker';
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
 
 function FragmentLoader() {
   let context_ = this.context;
   let eventBus_ = EventBus(context_).getInstance();
   let xhrLoader_ = context_.loader(context_).create();
+  let debug_ = Debug(context_).getInstance();
 
   let request_;
   function setup() {
@@ -24,7 +26,7 @@ function FragmentLoader() {
       onSuccess: loadsuccess
     };
 
-    printLog(`request fragment: ${request_.url}, [${request_.rangeStart}, ${request_.rangeEnd}]`);
+    debug_.log(`request fragment: ${request_.url}, [${request_.rangeStart}, ${request_.rangeEnd}], sn:${request_.frag.sn}`);
     xhrLoader_.load(request_, null, callbacks);
   }
 
