@@ -1,14 +1,12 @@
-﻿import FactoryMaker from './core/FactoryMaker';
-import EventBus from './core/EventBus';
-import Events from './core/CoreEvents';
-import Debug from './core/Debug';
-import TimeRanges from './utils/timeRanges';
+﻿import FactoryMaker from '../core/FactoryMaker';
+import Events from '../core/CoreEvents';
+import TimeRanges from '../utils/timeRanges';
 
-function MediaSourceEngine() {
+function BufferController() {
   let context_ = this.context;
 
-  let eventBus_ = EventBus(context_).getInstance();
-  let debug_ = Debug(context_).getInstance();
+  let eventBus_ = context_.eventBus;
+  let debug_ = context_.debug;
   let mediaSource_ = null;
   let sourceBuffer_ = {};
 
@@ -29,7 +27,7 @@ function MediaSourceEngine() {
   }
 
   function createMediaSource() {
-    debug_.log('MediaSourceEngine, +createMediaSource');
+    debug_.log('BufferController, +createMediaSource');
     //
     var hasWebKit = ('WebKitMediaSource' in window);
     var hasMediaSource = ('MediaSource' in window);
@@ -44,7 +42,7 @@ function MediaSourceEngine() {
       mediaSource_.addEventListener('webkitsourceopen', onMediaSourceOpen, false);
     }
 
-    debug_.log('MediaSourceEngine, -createMediaSource');
+    debug_.log('BufferController, -createMediaSource');
 
     return mediaSource_;
   }
@@ -169,7 +167,6 @@ function MediaSourceEngine() {
       debug_.log(`video buffered: ${TimeRanges.toString(v.buffered)}`);
     }
     debug_.log(`media buffered: ${TimeRanges.toString(media.buffered)}`);
-    console.log('aaaa');
   }
 
   // Begin source buffer event
@@ -226,5 +223,5 @@ function MediaSourceEngine() {
   return instance;
 };
 
-MediaSourceEngine.__h5player_factory_name = 'MediaSourceEngine';
-export default FactoryMaker.getSingletonFactory(MediaSourceEngine);
+BufferController.__h5player_factory_name = 'BufferController';
+export default FactoryMaker.getSingletonFactory(BufferController);

@@ -161,8 +161,8 @@ function getMediaInfo()
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
-    //url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
-    url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
+    url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
+    //url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
 
     // internal test
     audioCodec: audioCodec,
