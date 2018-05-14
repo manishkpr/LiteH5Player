@@ -5,6 +5,11 @@ import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 import Debug from './core/Debug';
 
+import XHRLoader from './utils/xhr_loader';
+import FetchLoader from './utils/fetch_loader';
+import FragmentLoader from './loader/fragment_loader';
+import PlaylistLoader from './loader/playlist_loader';
+
 import UIEngine from './ui/ui_engine';
 import MediaSourceEngine from './media_source_engine';
 import TextEngine from './text_engine';
@@ -13,17 +18,13 @@ import DRMEngine from './drm_engine';
 import AdsEngine from './ads/ads_engine';
 
 import ManifestParser from './media/manifest_parser';
+import LevelController from './media/level_controller';
 import ScheduleController from './media/schedule_controller';
 
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
-
-import XHRLoader from './utils/xhr_loader';
-import FetchLoader from './utils/fetch_loader';
-import FragmentLoader from './loader/fragment_loader';
-import PlaylistLoader from './loader/playlist_loader';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
@@ -45,7 +46,7 @@ function Player(containerId) {
   let manifestParser_;
   let parser_;
   let fragmentLoader_;
-
+  let levelController_;
   let scheduleCtrl_;
 
   // ads part
@@ -69,17 +70,23 @@ function Player(containerId) {
   let openPromiseReject_;
 
   function setup() {
+    // enging component
+    eventBus_ = EventBus(context_).getInstance();
+    debug_ = Debug(context_).getInstance();
+
     // init internal configuration
     context_.loader = XHRLoader;
     context_.fragLoader = FragmentLoader;
     context_.playlistLoader = PlaylistLoader;
+    context_.events = Events;
+    context_.debug = debug_;
+    context_.eventBus = eventBus_;
     //context_.loader = FetchLoader;
 
     uiEngine_ = UIEngine(context_).getInstance();
     uiEngine_.initUI(containerId_);
     media_ = uiEngine_.getVideo();
 
-    //
     context_.media = media_;
   }
 
@@ -109,6 +116,7 @@ function Player(containerId) {
 
       // detech parser type
       parser_ = manifestParser_.getParser(mediaCfg_.url);
+      eventBus_.trigger(Events.FOUND_PARSER, { parser: parser_ });
       if (parser_.type === 'dash' || parser_.type === 'hls') {
         // Create MediaSource
         let mediaSrc = mseEngine_.createMediaSource();
@@ -379,15 +387,14 @@ function Player(containerId) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
-    // enging component
-    eventBus_ = EventBus(context_).getInstance();
-    debug_ = Debug(context_).getInstance();
     mediaEngine_ = MediaEngine(context_).getInstance(media_, cfg_);
     textEngine_ = new TextEngine(media_);
     mseEngine_ = MediaSourceEngine(context_).getInstance();
     drmEngine_ = DRMEngine(context_).getInstance(media_);
     manifestParser_ = ManifestParser(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
+    levelController_ = LevelController(context_).getInstance();
+    scheduleCtrl_ = ScheduleController(context_).getInstance();
 
     if (cfg_.poster) {
       media_.poster = cfg_.poster;
@@ -412,9 +419,9 @@ function Player(containerId) {
 
     eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
-    eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed, {});
-
     eventBus_.on(Events.PD_DOWNLOADED, onPdDownloaded);
+
+    eventBus_.on(Events.FOUND_PARSER, onFoundParser);
 
     // ads events
     eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
@@ -452,9 +459,8 @@ function Player(containerId) {
     parser_.loadManifest(mediaCfg_.url);
   }
 
-  function onManifestParsed() {
-    scheduleCtrl_ = ScheduleController(context_).getInstance();
-    scheduleCtrl_.start(parser_);
+  function onFoundParser(data) {
+
   }
 
   function onPdDownloaded(frag) {

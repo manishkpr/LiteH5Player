@@ -14,7 +14,6 @@ function MediaSourceEngine() {
 
   let tracks_ = null;
 
-  let streamInfo_ = null;
   let segments_ = null;
   // flag
   let appending_ = false;
@@ -24,8 +23,6 @@ function MediaSourceEngine() {
 
     eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
-
-    eventBus_.on(Events.STREAM_LOADED, onStreamLoaded);
 
     //
     eventBus_.on(Events.TEST_MSG, onTestMsg);
@@ -158,11 +155,8 @@ function MediaSourceEngine() {
     doAppending();
   }
 
-  function onStreamLoaded(streamInfo) {
-    streamInfo_ = streamInfo;
-  }
-
   function onTestMsg() {
+    var media = context_.media;
     var a = sourceBuffer_.audio;
     var v = sourceBuffer_.video;
     if (a) {
@@ -171,6 +165,7 @@ function MediaSourceEngine() {
     if (v) {
       debug_.log(`video buffered: ${TimeRanges.toString(v.buffered)}`);
     }
+    debug_.log(`media buffered: ${TimeRanges.toString(media.buffered)}`);
     console.log('aaaa');
   }
 
@@ -214,11 +209,6 @@ function MediaSourceEngine() {
       if (sourceBuffer_[type].updating === true) {
         return;
       }
-    }
-
-    // set media source duration
-    if (mediaSource_.duration < streamInfo_.duration) {
-      mediaSource_.duration = streamInfo_.duration;
     }
   }
 

@@ -436,11 +436,11 @@ playerUI.uninitPlayer = function() {
 playerUI.playerOpen = function() {
     var p = this.player_.open(mediaCfg_);
     p.then(function(v) {
-        console.log('open ret: ' + v);
+        printLog('open ret: ' + v);
         this.onOpenComplete();
     }.bind(this))
     .catch(function(e) {
-        console.log('e: ' + e);
+        printLog('e: ' + e);
     });
     // since open is an async operation, we transition it to opening state.
     this.updateUIStateMachine('opening');
@@ -554,8 +554,8 @@ playerUI.updateProgressBarUI = function(position, duration) {
     if (isLive) {
         var seekable = this.player_.getSeekableRange();
         var buffered = this.player_.getBufferedRanges();
-        console.log('seekable: ' + TimeRangesToString(seekable));
-        console.log('buffered: ' + TimeRangesToString(buffered));
+        printLog('seekable: ' + TimeRangesToString(seekable));
+        printLog('buffered: ' + TimeRangesToString(buffered));
 
         // update time display label
         timeText = 'Live';

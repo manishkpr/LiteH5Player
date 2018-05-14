@@ -1,7 +1,6 @@
 import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
-import Debug from '../core/Debug';
 import StringUtils from '../utils/string_utils';
 
 import {
@@ -19,7 +18,7 @@ import {
 function HlsParser() {
   let context_ = this.context;
 
-  let debug_ = Debug(context_).getInstance();
+  let debug_ = context_.debug;
   let eventBus_ = EventBus(context_).getInstance();
   let xhrLoader_ = context_.loader(context_).create();
 
@@ -29,7 +28,7 @@ function HlsParser() {
   // hls
   let currentSN_;
   let fragCurrent_;
-
+  
   function setup() {}
 
   function loadManifest(url) {
@@ -47,8 +46,7 @@ function HlsParser() {
       streamInfo_.duration = track.levelDetails.totalduration;
       streamInfo_.tracks.push(track);
 
-      eventBus_.trigger(Events.MANIFEST_PARSED);
-      eventBus_.trigger(Events.STREAM_LOADED, streamInfo_);
+      eventBus_.trigger(Events.MANIFEST_PARSED, streamInfo_);
     }
 
     manifestUrl_ = url;
