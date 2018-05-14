@@ -182,11 +182,9 @@ function BufferController() {
     debug_.log('+sourceBuffer_updateend');
     appending_ = false;
 
-    if (segments_.length === 0) {
-      let pending = segments_.length;
-      eventBus_.trigger(Events.BUFFER_APPENDED, {
-        pending
-      });
+    let pending = segments_.length;
+    if (pending === 0) {
+      eventBus_.trigger(Events.BUFFER_APPENDED, { pending });
     } else {
       doAppending();
     }

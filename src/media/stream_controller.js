@@ -154,7 +154,7 @@ function ScheduleController() {
     //debug_.log('main buffered: ' + TimeRanges.toString(media.buffered));
     debug_.log(`main buffered: ${TimeRanges.toString(media.buffered)}, duration:${media.duration}`);
     if (e.pending === 0) {
-      //tick();
+      tick();
     }
   }
 
