@@ -31,6 +31,7 @@ function ScheduleController() {
     demuxer_ = new Demuxer(hls_, 'main');
 
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
+    eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
 
     eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed);
     eventBus_.on(Events.STREAM_LOADED, onStreamLoaded);
@@ -63,15 +64,24 @@ function ScheduleController() {
     return details;
   }
 
-  //
+  // Begin events functions
   function onFoundParser(data) {
     parser_ = data.parser;
+
+    if (parser_.type === 'dash' || parser_.type === 'hls') {
+      eventBus_.trigger(Events.MEDIA_ATTACHING);
+    } else if (parser_.type === 'pd') {
+      onMediaAttached();
+    }
+  }
+
+  function onMediaAttached() {
+    parser_.loadManifest(context_.mediaCfg.url);
   }
 
   function onManifestParsed(streamInfo) {
     streamInfo_ = streamInfo;
-
-    start();
+    tick();
   }
 
   function onStreamLoaded() {
@@ -148,8 +158,9 @@ function ScheduleController() {
     }
   }
 
+  // Begin internal functions
   function _checkBuffer() {
-    
+
   }
 
   function _findFragment() {
@@ -168,9 +179,11 @@ function ScheduleController() {
 
   function tick() {
     let frag = _findFragment();
-    
+
     if (frag) {
-      eventBus_.trigger(Events.FRAG_LOADING, { frag });
+      eventBus_.trigger(Events.FRAG_LOADING, {
+        frag
+      });
     } else {
       eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
     }
@@ -178,21 +191,11 @@ function ScheduleController() {
     _checkBuffer();
   }
 
-  function start() {
-    tick();
-  }
-
-  function stop() {
-  }
-
   function manualSchedule() {
     tick();
   }
 
   let instance = {
-    start: start,
-    stop: stop,
-
     // for debug
     manualSchedule: manualSchedule
   };

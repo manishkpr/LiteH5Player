@@ -31,9 +31,6 @@ function Player(containerId) {
   let containerId_ = containerId;
   let context_ = oldmtn; //{ flag: 'player' };
 
-  let cfg_;
-  let mediaCfg_;
-
   let uiEngine_;
   let media_;
 
@@ -91,7 +88,7 @@ function Player(containerId) {
   }
 
   function init(cfg) {
-    cfg_ = cfg;
+    context_.cfg = cfg;
 
     initComponent();
     initData();
@@ -112,23 +109,15 @@ function Player(containerId) {
         return;
       }
 
-      mediaCfg_ = info;
+      context_.mediaCfg = info;
 
       // detech parser type
-      parser_ = manifestParser_.getParser(mediaCfg_.url);
+      parser_ = manifestParser_.getParser(context_.mediaCfg.url);
       eventBus_.trigger(Events.FOUND_PARSER, { parser: parser_ });
-      if (parser_.type === 'dash' || parser_.type === 'hls') {
-        // Create MediaSource
-        let mediaSrc = mseEngine_.createMediaSource();
-        let objURL = window.URL.createObjectURL(mediaSrc);
-        mediaEngine_.setSrc(objURL);
-      } else if (parser_.type === 'pd') {
-        parser_.loadManifest(mediaCfg_.url);
-      }
 
       // load webvtt thumbnail
       let vttThumbnail = WebvttThumbnails(context_).getInstance();
-      vttThumbnail.open(mediaCfg_.thumbnail);
+      vttThumbnail.open(context_.mediaCfg.thumbnail);
 
       if (adsEngine_) {
         adsEngine_.requestAds();
@@ -156,7 +145,7 @@ function Player(containerId) {
       mediaEngine_.close();
     }
 
-    mediaCfg_ = null;
+    context_.mediaCfg = null;
   }
 
   function dellAll() {
@@ -387,7 +376,7 @@ function Player(containerId) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
-    mediaEngine_ = MediaEngine(context_).getInstance(media_, cfg_);
+    mediaEngine_ = MediaEngine(context_).getInstance(media_, context_.cfg);
     textEngine_ = new TextEngine(media_);
     mseEngine_ = MediaSourceEngine(context_).getInstance();
     drmEngine_ = DRMEngine(context_).getInstance(media_);
@@ -396,12 +385,12 @@ function Player(containerId) {
     levelController_ = LevelController(context_).getInstance();
     scheduleCtrl_ = ScheduleController(context_).getInstance();
 
-    if (cfg_.poster) {
-      media_.poster = cfg_.poster;
+    if (context_.cfg.poster) {
+      media_.poster = context_.cfg.poster;
     }
-    if (cfg_.advertising) {
+    if (context_.cfg.advertising) {
       let adContainer = uiEngine_.getAdContainer();
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, cfg_.advertising);
+      adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, context_.cfg.advertising);
     }
   }
 
@@ -410,18 +399,15 @@ function Player(containerId) {
     flagContentOpenComplete_ = false;
     flagAdOpenComplete_ = false;
     flagPlayedOnce_ = false;
-    mediaCfg_ = null;
+    context_.mediaCfg = null;
   }
 
   function addEventListeners() {
     // html5 event
     eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
 
-    eventBus_.on(Events.MSE_OPENED, onMSEOpened, {});
 
     eventBus_.on(Events.PD_DOWNLOADED, onPdDownloaded);
-
-    eventBus_.on(Events.FOUND_PARSER, onFoundParser);
 
     // ads events
     eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
@@ -454,15 +440,6 @@ function Player(containerId) {
     }
   }
 
-  function onMSEOpened() {
-    mediaEngine_.revokeSrc();
-    parser_.loadManifest(mediaCfg_.url);
-  }
-
-  function onFoundParser(data) {
-
-  }
-
   function onPdDownloaded(frag) {
     mediaEngine_.setSrc(frag.url);
   }
@@ -492,7 +469,7 @@ function Player(containerId) {
   function processOpenComplete() {
     if (flagContentOpenComplete_ && flagAdOpenComplete_) {
       //
-      if (cfg_.autoplay) {
+      if (context_.cfg.autoplay) {
         play();
       }
       //

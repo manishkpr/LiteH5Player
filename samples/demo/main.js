@@ -554,8 +554,7 @@ playerUI.updateProgressBarUI = function(position, duration) {
     if (isLive) {
         var seekable = this.player_.getSeekableRange();
         var buffered = this.player_.getBufferedRanges();
-        printLog('seekable: ' + TimeRangesToString(seekable));
-        printLog('buffered: ' + TimeRangesToString(buffered));
+        printLog('seekable: ' + TimeRangesToString(seekable) + ', buffered: ' + TimeRangesToString(buffered));
 
         // update time display label
         timeText = 'Live';

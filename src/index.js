@@ -10,7 +10,7 @@ var context = (typeof window !== 'undefined' && window) || global;
 
 var oldmtn = context.oldmtn;
 if (!oldmtn) {
-    oldmtn = context.oldmtn = {};
+  oldmtn = context.oldmtn = {};
 }
 
 oldmtn.Player = Player;
@@ -20,8 +20,4 @@ oldmtn.CastReceiver = CastReceiver;
 
 oldmtn.CommonUtils = CommonUtils;
 
-
 export default oldmtn;
-
-
-

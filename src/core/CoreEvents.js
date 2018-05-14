@@ -8,9 +8,6 @@ class CoreEvents {
      * @description Public facing external events to be used when developing a player that implements dash.js.
      */
     constructor () {
-        // mse events
-        this.MSE_OPENED = 'mseOpened';
-
         // source buffer events
         this.SB_UPDATE_ENDED = 'sbUpdateEnded';
 
@@ -63,6 +60,8 @@ class CoreEvents {
         this.FRAG_PARSING_DATA = 'hlsFragParsingData';
         this.FRAG_PARSED = 'hlsFragParsed';
         this.BUFFER_APPENDED = 'hlsBufferAppended';
+        this.MEDIA_ATTACHING = 'hlsMediaAttaching';
+        this.MEDIA_ATTACHED = 'hlsMediaAttached';
         // End hls.js
 
         this.FINDING_PARSER = 'findingParser';

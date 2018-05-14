@@ -19,7 +19,7 @@ function MediaSourceEngine() {
   let appending_ = false;
 
   function setup() {
-    eventBus_.on(Events.FRAGMENT_DOWNLOADED_ENDED, onFragmentDownloadedEnded);
+    eventBus_.on(Events.MEDIA_ATTACHING, onMediaAttaching);
 
     eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
@@ -76,7 +76,8 @@ function MediaSourceEngine() {
     mediaSource_.removeEventListener('sourceopen', onMediaSourceOpen);
     mediaSource_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
-    eventBus_.trigger(Events.MSE_OPENED, {});
+    URL.revokeObjectURL(context_.media.src);
+    eventBus_.trigger(Events.MEDIA_ATTACHED, {});
   }
 
   function onMediaSourceEnded() {
@@ -87,8 +88,10 @@ function MediaSourceEngine() {
     debug_.log('+onMediaSourceClose');
   }
 
-  function onFragmentDownloadedEnded() {
-    debug_.log('+onFragmentDownloadedEnded');
+  function onMediaAttaching() {
+    let mediaSrc = createMediaSource();
+    let objURL = window.URL.createObjectURL(mediaSrc);
+    context_.media.src = objURL;
   }
 
   function onBufferCodec(e) {
