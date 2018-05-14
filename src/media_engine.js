@@ -15,11 +15,11 @@ canplay
 canplaythrough
 */
 
-function MediaEngine(media, cfg) {
+function MediaEngine() {
   let context_ = this.context;
 
-  let media_ = media;
-  let cfg_ = cfg;
+  let media_ = context_.media;
+  let cfg_ = context_.cfg;
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
@@ -187,6 +187,10 @@ function MediaEngine(media, cfg) {
     eventBus_.trigger(Events.MEDIA_CANPLAY_THROUGH);
   }
 
+  function onMediaEncrypted() {
+    debug_.log('+Native video element event: encrypted');
+  }
+
   function onMediaDurationChanged() {
     // debug_.log('+Native video element event: durationchange' +
     //     ', getPosition: ' + media_.getPosition +
@@ -314,6 +318,7 @@ function MediaEngine(media, cfg) {
     media_.addEventListener('canplay', onMediaCanplay);
     media_.addEventListener('canplaythrough', onMediaCanplayThrough);
     media_.addEventListener('durationchange', onMediaDurationChanged);
+    media_.addEventListener('encrypted', onMediaEncrypted);
     media_.addEventListener('ended', onMediaEnded);
     media_.addEventListener('error', onMediaError);
     media_.addEventListener('interruptbegin', onMediaInterruptBegin);
@@ -340,6 +345,7 @@ function MediaEngine(media, cfg) {
     media_.removeEventListener('canplay', onMediaCanplay);
     media_.removeEventListener('canplaythrough', onMediaCanplayThrough);
     media_.removeEventListener('durationchange', onMediaDurationChanged);
+    media_.removeEventListener('encrypted', onMediaEncrypted);
     media_.removeEventListener('ended', onMediaEnded);
     media_.removeEventListener('error', onMediaError);
     media_.removeEventListener('interruptbegin', onMediaInterruptBegin);

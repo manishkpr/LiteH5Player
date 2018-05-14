@@ -9,7 +9,7 @@ import {
   hlsDefaultConfig
 } from '../hls/hlsjs/src/config';
 
-function ScheduleController() {
+function StreamController() {
   let context_ = this.context;
   let debug_ = context_.debug;
 
@@ -203,5 +203,5 @@ function ScheduleController() {
   return instance;
 }
 
-ScheduleController.__h5player_factory_name = 'ScheduleController';
-export default FactoryMaker.getSingletonFactory(ScheduleController);
+StreamController.__h5player_factory_name = 'StreamController';
+export default FactoryMaker.getSingletonFactory(StreamController);

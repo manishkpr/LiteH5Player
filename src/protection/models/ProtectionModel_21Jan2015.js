@@ -231,14 +231,17 @@ ProtectionModel_21Jan2015.prototype.requestKeySystemAccess = function() {
   }
 
   var self = this;
-  this.promiseAction_ = navigator.requestMediaKeySystemAccess(self.keySystem_.systemString, configs_).then(function(keySystemAccess) {
+  this.promiseAction_ = navigator.requestMediaKeySystemAccess(self.keySystem_.systemString, configs_)
+  .then(function(keySystemAccess) {
     console.log('H5Player, requestMediaKeySystemAccess is ok');
     return keySystemAccess.createMediaKeys();
-  }).then(function(mediaKeys) {
+  })
+  .then(function(mediaKeys) {
     console.log('H5Player, createMediaKeys is ok, mediaKeys: ' + mediaKeys);
     let ret = self.media_.setMediaKeys(mediaKeys);
     return ret;
-  }).then(function() {
+  })
+  .then(function() {
     // create session
     let mediaKeys = self.media_.mediaKeys;
     self.session_ = mediaKeys.createSession('temporary');

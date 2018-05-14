@@ -111,6 +111,7 @@ function Player(containerId) {
 
       context_.mediaCfg = info;
 
+      drmEngine_.setDrmInfo(info);
       // detech parser type
       parser_ = manifestParser_.getParser(context_.mediaCfg.url);
       eventBus_.trigger(Events.FOUND_PARSER, { parser: parser_ });
@@ -376,10 +377,10 @@ function Player(containerId) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
-    mediaEngine_ = MediaEngine(context_).getInstance(media_, context_.cfg);
+    mediaEngine_ = MediaEngine(context_).getInstance();
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();
-    drmEngine_ = DRMEngine(context_).getInstance(media_);
+    drmEngine_ = DRMEngine(context_).getInstance();
     manifestParser_ = ManifestParser(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
