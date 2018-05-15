@@ -16,7 +16,7 @@ import MediaEngine from './media_engine';
 import EMEController from './media/eme_controller';
 import AdsEngine from './ads/ads_engine';
 
-import ManifestParser from './media/manifest_parser';
+import ParserController from './media/parser_controller';
 import LevelController from './media/level_controller';
 import BufferController from './media/buffer_controller';
 import StreamController from './media/stream_controller';
@@ -39,7 +39,7 @@ function Player(containerId) {
   let textEngine_;
   let mseEngine_;
   let emeController_;
-  let manifestParser_;
+  let parserController_;
   let fragmentLoader_;
   let levelController_;
   let scheduleCtrl_;
@@ -82,6 +82,8 @@ function Player(containerId) {
     uiEngine_ = UIEngine(context_).getInstance();
     uiEngine_.initUI(containerId_);
     media_ = uiEngine_.getVideo();
+
+    context_.media = media_;
   }
 
   function init(cfg) {
@@ -94,7 +96,6 @@ function Player(containerId) {
   }
 
   function uninit() {
-
   }
 
   function open(mediaCfg) {
@@ -107,6 +108,8 @@ function Player(containerId) {
         openPromiseReject_('failed');
         return;
       }
+
+      context_.mediaCfg = mediaCfg;
 
       emeController_.setDrmInfo(mediaCfg);
       // detech parser type
@@ -379,7 +382,7 @@ function Player(containerId) {
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
-    manifestParser_ = ManifestParser(context_).getInstance();
+    parserController_ = ParserController(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
     scheduleCtrl_ = StreamController(context_).getInstance();
@@ -445,7 +448,7 @@ function Player(containerId) {
     switch(parser.type) {
       case 'dash':
       case 'hls': {
-        eventBus_.trigger(Events.MEDIA_ATTACHING, {media: media_});
+        eventBus_.trigger(Events.MEDIA_ATTACHING, { media: media_ });
       } break;
       case 'pd': {
         eventBus_.trigger(Events.MEDIA_ATTACHED);
