@@ -35,36 +35,36 @@
  * @ignore
  */
 class KeySystemConfiguration {
-    /**
-     * @param {Array.<MediaCapability>} audioCapabilities array of
-     * desired audio capabilities.  Higher preference capabilities should be placed earlier
-     * in the array.
-     * @param {Array.<MediaCapability>} videoCapabilities array of
-     * desired video capabilities.  Higher preference capabilities should be placed earlier
-     * in the array.
-     * @param {string} distinctiveIdentifier desired use of distinctive identifiers.
-     * One of "required", "optional", or "not-allowed"
-     * @param {string} persistentState desired support for persistent storage of
-     * key systems.  One of "required", "optional", or "not-allowed"
-     * @param {Array.<string>} sessionTypes List of session types that must
-     * be supported by the key system
-     * @class
-     */
-    constructor(audioCapabilities, videoCapabilities, distinctiveIdentifier, persistentState, sessionTypes) {
-        // new
-        //this.initDataTypes = [ 'keyids' ];
-        this.initDataTypes = [ 'cenc' ];
+  /**
+   * @param {Array.<MediaCapability>} audioCapabilities array of
+   * desired audio capabilities.  Higher preference capabilities should be placed earlier
+   * in the array.
+   * @param {Array.<MediaCapability>} videoCapabilities array of
+   * desired video capabilities.  Higher preference capabilities should be placed earlier
+   * in the array.
+   * @param {string} distinctiveIdentifier desired use of distinctive identifiers.
+   * One of "required", "optional", or "not-allowed"
+   * @param {string} persistentState desired support for persistent storage of
+   * key systems.  One of "required", "optional", or "not-allowed"
+   * @param {Array.<string>} sessionTypes List of session types that must
+   * be supported by the key system
+   * @class
+   */
+  constructor(audioCapabilities, videoCapabilities, distinctiveIdentifier, persistentState, sessionTypes) {
+    // new
+    //this.initDataTypes = [ 'keyids' ];
+    this.initDataTypes = ['cenc'];
 
-        if (audioCapabilities && audioCapabilities.length) {
-            this.audioCapabilities = audioCapabilities;
-        }
-        if (videoCapabilities && videoCapabilities.length) {
-            this.videoCapabilities = videoCapabilities;
-        }
-        this.distinctiveIdentifier = distinctiveIdentifier;
-        this.persistentState = persistentState;
-        this.sessionTypes = sessionTypes;
+    if (audioCapabilities && audioCapabilities.length) {
+      this.audioCapabilities = audioCapabilities;
     }
+    if (videoCapabilities && videoCapabilities.length) {
+      this.videoCapabilities = videoCapabilities;
+    }
+    this.distinctiveIdentifier = distinctiveIdentifier;
+    this.persistentState = persistentState;
+    this.sessionTypes = sessionTypes;
+  }
 }
 
 export default KeySystemConfiguration;

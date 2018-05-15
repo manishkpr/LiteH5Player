@@ -33,16 +33,16 @@
  * @ignore
  */
 class MediaCapability {
-    /**
-     * @param {string} contentType MIME type and codecs (RFC6386)
-     * @param {string} robustness
-     * @class
-     * @ignore
-     */
-    constructor(contentType, robustness) {
-        this.contentType = contentType;
-        this.robustness = robustness;
-    }
+  /**
+   * @param {string} contentType MIME type and codecs (RFC6386)
+   * @param {string} robustness
+   * @class
+   * @ignore
+   */
+  constructor(contentType, robustness) {
+    this.contentType = contentType;
+    this.robustness = robustness;
+  }
 }
 
 export default MediaCapability;
