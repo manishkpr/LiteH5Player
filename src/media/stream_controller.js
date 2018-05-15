@@ -10,6 +10,20 @@ import {
   hlsDefaultConfig
 } from '../hls/hlsjs/src/config';
 
+export const State = {
+  STOPPED: 'STOPPED',
+  IDLE: 'IDLE',
+  KEY_LOADING: 'KEY_LOADING',
+  FRAG_LOADING: 'FRAG_LOADING',
+  FRAG_LOADING_WAITING_RETRY: 'FRAG_LOADING_WAITING_RETRY',
+  WAITING_LEVEL: 'WAITING_LEVEL',
+  PARSING: 'PARSING',
+  PARSED: 'PARSED',
+  BUFFER_FLUSHING: 'BUFFER_FLUSHING',
+  ENDED: 'ENDED',
+  ERROR: 'ERROR'
+};
+
 function StreamController() {
   let context_ = this.context;
   let debug_ = Debug(context_).getInstance();
@@ -24,10 +38,16 @@ function StreamController() {
 
   // flag
   let manualMode_ = false;
+  // state machine
+  let state_;
 
   function setup() {
+    state_ = State.IDLE;
+
     hls_ = eventBus_;
     hls_.config = hlsDefaultConfig;
+    //hls_.config.enableWorker = true;
+
     demuxer_ = new Demuxer(hls_, 'main');
 
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
@@ -90,13 +110,15 @@ function StreamController() {
     let data = frag.data;
 
     // BD
-    debug_.log('onFragLoaded, start: ' + frag.start + ', duration: ' + frag.duration);
+    debug_.log(`+onFragLoaded, SN:${frag.sn}, start:${frag.start}, duration:${frag.duration}`);
     // ED
 
     if (frag.sn === 'initSegment') {
       frag.data = data;
       tick();
     } else {
+      state_ = State.PARSING;
+
       let details = getLevelDetails();
       let initSegmentData = details.initSegment ? details.initSegment.data : [];
       demuxer_.push(data, initSegmentData, undefined, undefined, frag, streamInfo_.duration, true, undefined);
@@ -111,6 +133,7 @@ function StreamController() {
   function onFragParsingInitSegment(data) {
     eventBus_.trigger(Events.BUFFER_CODEC, data.tracks);
 
+    debug_.log('+onFragParsingInitSegment');
     for (let trackName in data.tracks) {
       let track = data.tracks[trackName];
       let initSegment = track.initSegment;
@@ -125,8 +148,19 @@ function StreamController() {
   }
 
   function onFragParsingData(data) {
-    [data.data1, data.data2].forEach(buffer => {
+    // BD
+    let cnt = 0;
+    if (data.data1) {
+      cnt++;
+    }
+    if (data.data2) {
+      cnt++;
+    }
+    // ED
+    debug_.log(`+onFragParsingData, cnt:${cnt}`);
+    [data.data1, data.data2].forEach((buffer, index) => {
       if (buffer) {
+        debug_.log(`push data, index:${index}`);
         eventBus_.trigger(Events.BUFFER_APPENDING, {
           type: data.type,
           content: 'data',
@@ -137,22 +171,22 @@ function StreamController() {
   }
 
   function onFragParsed(data) {
-
+    debug_.log('+onFragParsed');
+    state_ = State.PARSED;
   }
 
   function onBufferAppended(e) {
     let media = context_.media;
     //debug_.log('main buffered: ' + TimeRanges.toString(media.buffered));
-    debug_.log(`main buffered: ${TimeRanges.toString(media.buffered)}, duration:${media.duration}`);
-    if (e.pending === 0) {
+    debug_.log(`+onBufferAppended, main buffered: ${TimeRanges.toString(media.buffered)}, duration:${media.duration}`);
+    if (state_ === State.PARSED && e.pending === 0) {
+      state_ = State.IDLE;
       tick();
     }
   }
 
   // Begin internal functions
-  function _checkBuffer() {
-
-  }
+  function _checkBuffer() {}
 
   function _findFragment() {
     if (currentStream_ === -1) {
@@ -169,14 +203,20 @@ function StreamController() {
   }
 
   function tick() {
-    let frag = _findFragment();
-    
-    if (frag) {
-      eventBus_.trigger(Events.FRAG_LOADING, {
-        frag
-      });
-    } else {
-      eventBus_.trigger(Events.BUFFER_EOS);
+    switch (state_) {
+      case State.IDLE:
+        {
+          let frag = _findFragment();
+          if (frag) {
+            eventBus_.trigger(Events.FRAG_LOADING, {
+              frag
+            });
+            state_ = State.FRAG_LOADING;
+          } else {
+            eventBus_.trigger(Events.BUFFER_EOS);
+          }
+        }
+        break;
     }
 
     _checkBuffer();

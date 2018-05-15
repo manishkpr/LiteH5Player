@@ -187,7 +187,7 @@ function BufferController() {
   }
 
   function sourceBuffer_updateend() {
-    debug_.log('+sourceBuffer_updateend');
+    //debug_.log('+sourceBuffer_updateend');
     appending_ = false;
 
     let pending = segments_.length;

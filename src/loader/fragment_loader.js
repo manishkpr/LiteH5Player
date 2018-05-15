@@ -26,7 +26,7 @@ function FragmentLoader() {
       onSuccess: loadsuccess
     };
 
-    debug_.log(`request fragment: ${request_.url}, [${request_.rangeStart}, ${request_.rangeEnd}], sn:${request_.frag.sn}`);
+    debug_.log(`+onFragLoading, ${request_.url}, [${request_.rangeStart}, ${request_.rangeEnd}], sn:${request_.frag.sn}`);
     xhrLoader_.load(request_, null, callbacks);
   }
 
