@@ -179,13 +179,13 @@ function StreamController() {
 
   function tick() {
     let frag = _findFragment();
-
+    
     if (frag) {
       eventBus_.trigger(Events.FRAG_LOADING, {
         frag
       });
     } else {
-      eventBus_.trigger(Events.FRAGMENT_DOWNLOADED_ENDED);
+      eventBus_.trigger(Events.BUFFER_EOS);
     }
 
     _checkBuffer();

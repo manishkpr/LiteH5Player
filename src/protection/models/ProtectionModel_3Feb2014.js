@@ -21,6 +21,8 @@ function ProtectionModel_3Feb2014(media) {
   let session_ = null;
   let keySystem_ = null;
   let mediaKeys_ = null;
+  let audioCodec_ = null;
+  let videoCodec_ = null;
 
   function attachMedia(media) {
     media_ = media;
@@ -40,6 +42,11 @@ function ProtectionModel_3Feb2014(media) {
 
   function setDrmInfo(streamInfo) {
     streamInfo_ = streamInfo;
+  }
+
+  function setMediaCodec(audioCodec, videoCodec) {
+    audioCodec_ = audioCodec;
+    videoCodec_ = videoCodec;
   }
 
   function onNeedKey(ev) {
@@ -121,11 +128,11 @@ function ProtectionModel_3Feb2014(media) {
     let audioCapabilities = [];
     let videoCapabilities = [];
     let robustnessLevel = '';
-    if (streamInfo_.audioCodec) {
-      audioCapabilities.push(new MediaCapability(streamInfo_.audioCodec, robustnessLevel));
+    if (audioCodec_) {
+      audioCapabilities.push(new MediaCapability(audioCodec_, robustnessLevel));
     }
-    if (streamInfo_.videoCodec) {
-      videoCapabilities.push(new MediaCapability(streamInfo_.videoCodec, robustnessLevel));
+    if (videoCodec_) {
+      videoCapabilities.push(new MediaCapability(videoCodec_, robustnessLevel));
     }
 
     let ksConfig = new KeySystemConfiguration(
@@ -166,7 +173,8 @@ function ProtectionModel_3Feb2014(media) {
     attachMedia: attachMedia,
     detachMedia: detachMedia,
     setKeySystem: setKeySystem,
-    setDrmInfo: setDrmInfo
+    setDrmInfo: setDrmInfo,
+    setMediaCodec: setMediaCodec
   };
   return instance_;
 }

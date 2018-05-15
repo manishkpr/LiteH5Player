@@ -72,6 +72,8 @@ function ProtectionModel_21Jan2015() {
   let keySystem_ = null;
   let session_ = null;
   let streamInfo_ = null;
+  let audioCodec_ = null;
+  let videoCodec_ = null;
 
   let promiseAction_ = null;
 
@@ -201,16 +203,21 @@ function ProtectionModel_21Jan2015() {
     console.log('--setDrmInfo in 21Jan2015--');
     streamInfo_ = streamInfo;
   }
+  
+  function setMediaCodec(audioCodec, videoCodec) {
+    audioCodec_ = audioCodec;
+    videoCodec_ = videoCodec;
+  }
 
   function requestKeySystemAccess() {
     let audioCapabilities = [];
     let videoCapabilities = [];
     let robustnessLevel = ''; // SW_SECURE_CRYPTO
-    if (streamInfo_.audioCodec) {
-      audioCapabilities.push(new MediaCapability(streamInfo_.audioCodec, robustnessLevel));
+    if (audioCodec_) {
+      audioCapabilities.push(new MediaCapability(audioCodec_, robustnessLevel));
     }
-    if (streamInfo_.videoCodec) {
-      videoCapabilities.push(new MediaCapability(streamInfo_.videoCodec, robustnessLevel));
+    if (videoCodec_) {
+      videoCapabilities.push(new MediaCapability(videoCodec_, robustnessLevel));
     }
 
     let ksConfig = new KeySystemConfiguration(
@@ -257,7 +264,8 @@ function ProtectionModel_21Jan2015() {
     attachMedia: attachMedia,
     detachMedia: detachMedia,
     setKeySystem: setKeySystem,
-    setDrmInfo: setDrmInfo
+    setDrmInfo: setDrmInfo,
+    setMediaCodec: setMediaCodec
   };
   return instance_;
 }

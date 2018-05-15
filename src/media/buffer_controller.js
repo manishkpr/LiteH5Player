@@ -10,8 +10,6 @@ function BufferController() {
   let mediaSource_ = null;
   let sourceBuffer_ = {};
 
-  let tracks_ = null;
-
   let segments_ = null;
   // flag
   let appending_ = false;
@@ -21,6 +19,8 @@ function BufferController() {
 
     eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
+    eventBus_.on(Events.BUFFER_EOS, onBufferEOS);
+
 
     //
     eventBus_.on(Events.TEST_MSG, onTestMsg);
@@ -92,11 +92,11 @@ function BufferController() {
     context_.media.src = objURL;
   }
 
-  function onBufferCodec(e) {
-    tracks_ = e;
+  function onBufferCodec(data) {
+    let tracks = data;
 
-    if (tracks_.audio) {
-      let mimeType = `${tracks_.audio.container};codecs=${tracks_.audio.codec}`;
+    if (tracks.audio) {
+      let mimeType = `${tracks.audio.container};codecs=${tracks.audio.codec}`;
       let buffer = mediaSource_.addSourceBuffer(mimeType);
       sourceBuffer_.audio = buffer;
 
@@ -106,8 +106,8 @@ function BufferController() {
       buffer.addEventListener('error', sourceBuffer_error);
       buffer.addEventListener('abort', sourceBuffer_abort);
     }
-    if (tracks_.video) {
-      let mimeType = `${tracks_.video.container};codecs=${tracks_.video.codec}`;
+    if (tracks.video) {
+      let mimeType = `${tracks.video.container};codecs=${tracks.video.codec}`;
       let buffer = mediaSource_.addSourceBuffer(mimeType);
       sourceBuffer_.video = buffer;
 
@@ -154,6 +154,10 @@ function BufferController() {
     }
 
     doAppending();
+  }
+
+  function onBufferEOS() {
+    signalEndOfStream();
   }
 
   function onTestMsg() {

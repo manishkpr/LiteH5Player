@@ -48,9 +48,6 @@ class CoreEvents {
         this.MANIFEST_PARSED = 'manifestParsed';
         this.STREAM_LOADED = 'streamLoaded';    // Loaded a stream has a specified bitrate.
         this.PD_DOWNLOADED = 'pdDownloaded';
-        this.FRAGMENT_DOWNLOADED_ENDED = 'fragmentDownloadedEnded';
-        this.BUFFER_CODEC = 'bufferCodec';
-        this.BUFFER_APPENDING = 'bufferAppending';
 
         // Begin hls.js, for compatible hls.js
         this.FRAG_LOADING = 'hlsFragLoading';
@@ -59,7 +56,10 @@ class CoreEvents {
         this.FRAG_PARSING_INIT_SEGMENT = 'hlsFragParsingInitSegment';
         this.FRAG_PARSING_DATA = 'hlsFragParsingData';
         this.FRAG_PARSED = 'hlsFragParsed';
+        this.BUFFER_CODEC = 'hlsBufferCodec';
+        this.BUFFER_APPENDING = 'hlsBufferAppending';
         this.BUFFER_APPENDED = 'hlsBufferAppended';
+        this.BUFFER_EOS = 'hlsBufferEOS';
         this.MEDIA_ATTACHING = 'hlsMediaAttaching';
         this.MEDIA_ATTACHED = 'hlsMediaAttached';
         // End hls.js

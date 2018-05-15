@@ -13,7 +13,7 @@ import PlaylistLoader from './loader/playlist_loader';
 import UIEngine from './ui/ui_engine';
 import TextEngine from './text_engine';
 import MediaEngine from './media_engine';
-import DRMEngine from './drm_engine';
+import EMEController from './media/eme_controller';
 import AdsEngine from './ads/ads_engine';
 
 import ManifestParser from './media/manifest_parser';
@@ -380,7 +380,7 @@ function Player(containerId) {
     mediaEngine_ = MediaEngine(context_).getInstance();
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();
-    drmEngine_ = DRMEngine(context_).getInstance();
+    drmEngine_ = EMEController(context_).getInstance();
     manifestParser_ = ManifestParser(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
