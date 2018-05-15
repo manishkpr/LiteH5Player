@@ -164,7 +164,7 @@ function getMediaInfo() {
     //--Item: DRM
     //url: 'http://localhost/tasklink/2017/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4',
     url: 'http://localhost/2/drm/case01/test.m3u8',
-    videoCodec: 'video/mp4; codecs="avc1.42c01e"',
+    videoCodec: 'video/mp4; codecs="avc1.42e01e"',
     drm: {
       type: 'com.widevine.alpha',
       laUrl: 'https://widevine-proxy.appspot.com/proxy'
@@ -192,8 +192,8 @@ function getMediaInfo() {
     // },
 
     //
-    thumbnail: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
-    //thumbnail: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt'
+    thumbnailUrl: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
+    //thumbnailUrl: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt'
   };
 
   return info;

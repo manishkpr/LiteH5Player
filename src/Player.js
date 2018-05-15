@@ -20,11 +20,10 @@ import ManifestParser from './media/manifest_parser';
 import LevelController from './media/level_controller';
 import BufferController from './media/buffer_controller';
 import StreamController from './media/stream_controller';
+import ThumbnailController from './media/thumbnail_controller';
 
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
-
-import WebvttThumbnails from './thumbnail/webvtt_thumbnails';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
@@ -39,12 +38,12 @@ function Player(containerId) {
   let mediaEngine_;
   let textEngine_;
   let mseEngine_;
-  let drmEngine_;
+  let emeController_;
   let manifestParser_;
-  let parser_;
   let fragmentLoader_;
   let levelController_;
   let scheduleCtrl_;
+  let thumbnailController_;
 
   // ads part
   let adsEngine_;
@@ -83,8 +82,6 @@ function Player(containerId) {
     uiEngine_ = UIEngine(context_).getInstance();
     uiEngine_.initUI(containerId_);
     media_ = uiEngine_.getVideo();
-
-    context_.media = media_;
   }
 
   function init(cfg) {
@@ -96,29 +93,27 @@ function Player(containerId) {
     addResizeListener();
   }
 
-  function uninit() {}
+  function uninit() {
 
-  function open(info) {
+  }
+
+  function open(mediaCfg) {
     debug_.log('Player, +open');
     openPromise_ = new Promise((resolve, reject) => {
       openPromiseResolve_ = resolve;
       openPromiseReject_ = reject;
 
-      if (info.url === '') {
+      if (mediaCfg.url === '') {
         openPromiseReject_('failed');
         return;
       }
 
-      context_.mediaCfg = info;
-
-      drmEngine_.setDrmInfo(info);
+      emeController_.setDrmInfo(mediaCfg);
       // detech parser type
-      parser_ = manifestParser_.getParser(context_.mediaCfg.url);
-      eventBus_.trigger(Events.FOUND_PARSER, { parser: parser_ });
+      eventBus_.trigger(Events.FINDING_PARSER, { url: mediaCfg.url });
 
       // load webvtt thumbnail
-      let vttThumbnail = WebvttThumbnails(context_).getInstance();
-      vttThumbnail.open(context_.mediaCfg.thumbnail);
+      eventBus_.trigger(Events.THUMBNAIL_LOADING, { url: mediaCfg.thumbnailUrl });
 
       if (adsEngine_) {
         adsEngine_.requestAds();
@@ -330,8 +325,11 @@ function Player(containerId) {
   }
 
   function getThumbnail(time) {
-    let vttThumbnail = WebvttThumbnails(context_).getInstance();
-    return vttThumbnail.getThumbnail(time);
+    if (thumbnailController_) {
+      return thumbnailController_.getThumbnail(time);
+    } else {
+      return undefined;
+    }
   }
 
   function isFullscreen() {
@@ -380,11 +378,12 @@ function Player(containerId) {
     mediaEngine_ = MediaEngine(context_).getInstance();
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();
-    drmEngine_ = EMEController(context_).getInstance();
+    emeController_ = EMEController(context_).getInstance();
     manifestParser_ = ManifestParser(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
     scheduleCtrl_ = StreamController(context_).getInstance();
+    thumbnailController_ = ThumbnailController(context_).getInstance();
 
     if (context_.cfg.poster) {
       media_.poster = context_.cfg.poster;
@@ -406,8 +405,8 @@ function Player(containerId) {
   function addEventListeners() {
     // html5 event
     eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
-
-
+    // controller events
+    eventBus_.on(Events.FOUND_PARSER, onFoundParser);
     eventBus_.on(Events.PD_DOWNLOADED, onPdDownloaded);
 
     // ads events
@@ -438,6 +437,21 @@ function Player(containerId) {
     if (playerState_ === 'opening') {
       flagContentOpenComplete_ = true;
       processOpenComplete();
+    }
+  }
+
+  function onFoundParser(data) {
+    let parser = data.parser;
+    switch(parser.type) {
+      case 'dash':
+      case 'hls': {
+        eventBus_.trigger(Events.MEDIA_ATTACHING, {media: media_});
+      } break;
+      case 'pd': {
+        eventBus_.trigger(Events.MEDIA_ATTACHED);
+      } break;
+      default:
+      break;
     }
   }
 

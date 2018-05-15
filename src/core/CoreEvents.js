@@ -68,6 +68,9 @@ class CoreEvents {
         this.FOUND_PARSER = 'foundParser';
 
         //
+        this.THUMBNAIL_LOADING = 'thumbnailLoading';
+
+        //
         this.TEST_MSG = 'testMsg';
     }
 }

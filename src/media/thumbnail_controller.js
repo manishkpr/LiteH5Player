@@ -1,17 +1,27 @@
 import FactoryMaker from '../core/FactoryMaker';
+import Events from '../core/CoreEvents';
+import EventBus from '../core/EventBus';
+
 import XHRLoader from '../utils/xhr_loader';
 import VTTParser from '../utils/VTTParser';
 import StringUtils from '../utils/string_utils';
 
-function WebvttThumbnails() {
+function ThumbnailController() {
   let context_ = this.context;
+  let eventBus_ = EventBus(context_).getInstance();
   let xhrLoader_ = XHRLoader(context_).create();
   let vttParser_ = VTTParser(context_).getInstance();
 
   let vttUrl_;
   let thumbnails_;
 
-  function open(url) {
+  function setup() {
+    eventBus_.on(Events.THUMBNAIL_LOADING, onThumbnailLoading);
+  }
+
+  function onThumbnailLoading(data) {
+    let url = data.url;
+
     vttUrl_ = url;
     let request = {
       url: vttUrl_
@@ -78,12 +88,11 @@ function WebvttThumbnails() {
   }
 
   let instance_ = {
-    open: open,
     getThumbnail: getThumbnail
   };
-
+  setup();
   return instance_;
 }
 
-WebvttThumbnails.__h5player_factory_name = 'WebvttThumbnails';
-export default FactoryMaker.getSingletonFactory(WebvttThumbnails);
+ThumbnailController.__h5player_factory_name = 'ThumbnailController';
+export default FactoryMaker.getSingletonFactory(ThumbnailController);

@@ -68,7 +68,7 @@ function ProtectionModel_3Feb2014(media) {
       mediaKeys_ = new window.MSMediaKeys(keySystem_.systemString);
       media_.msSetMediaKeys(mediaKeys_);
 
-      session_ = mediaKeys_.createSession(streamInfo_.videoCodec, new Uint8Array(abInitData));
+      session_ = mediaKeys_.createSession(videoCodec_, new Uint8Array(abInitData));
       session_.addEventListener('mskeyerror', onSessionError);
       session_.addEventListener('mskeymessage', onSessionMessage);
       session_.addEventListener('mskeyadded', onSessionAdded);

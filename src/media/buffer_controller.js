@@ -1,13 +1,16 @@
 ﻿import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
+import EventBus from '../core/EventBus';
+import Debug from '../core/Debug';
 import TimeRanges from '../utils/timeRanges';
 
 function BufferController() {
   let context_ = this.context;
 
-  let eventBus_ = context_.eventBus;
-  let debug_ = context_.debug;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
   let mediaSource_ = null;
+  let media_;
   let sourceBuffer_ = {};
 
   let segments_ = null;
@@ -20,7 +23,6 @@ function BufferController() {
     eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
     eventBus_.on(Events.BUFFER_EOS, onBufferEOS);
-
 
     //
     eventBus_.on(Events.TEST_MSG, onTestMsg);
@@ -74,7 +76,7 @@ function BufferController() {
     mediaSource_.removeEventListener('sourceopen', onMediaSourceOpen);
     mediaSource_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
-    URL.revokeObjectURL(context_.media.src);
+    URL.revokeObjectURL(media_.src);
     eventBus_.trigger(Events.MEDIA_ATTACHED, {});
   }
 
@@ -86,10 +88,12 @@ function BufferController() {
     debug_.log('+onMediaSourceClose');
   }
 
-  function onMediaAttaching() {
+  function onMediaAttaching(data) {
+    media_ = data.media;
+
     let mediaSrc = createMediaSource();
     let objURL = window.URL.createObjectURL(mediaSrc);
-    context_.media.src = objURL;
+    media_.src = objURL;
   }
 
   function onBufferCodec(data) {

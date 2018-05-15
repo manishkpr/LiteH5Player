@@ -1,6 +1,7 @@
 import FactoryMaker from '../core/FactoryMaker';
 import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
 import TimeRanges from '../utils/timeRanges';
 
 // from 
@@ -11,11 +12,10 @@ import {
 
 function StreamController() {
   let context_ = this.context;
-  let debug_ = context_.debug;
-
-  let parser_;
+  let debug_ = Debug(context_).getInstance();
   let eventBus_ = EventBus(context_).getInstance();
 
+  let parser_;
   let streamInfo_;
   let currentStream_ = -1;
 
@@ -44,7 +44,6 @@ function StreamController() {
     eventBus_.on(Events.FRAG_PARSED, onFragParsed, {});
 
     eventBus_.on(Events.BUFFER_APPENDED, onBufferAppended);
-    eventBus_.on(Events.SB_UPDATE_ENDED, onSbUpdateEnded);
 
     //
     eventBus_.on(Events.TEST_MSG, onTestMsg);
@@ -67,12 +66,6 @@ function StreamController() {
   // Begin events functions
   function onFoundParser(data) {
     parser_ = data.parser;
-
-    if (parser_.type === 'dash' || parser_.type === 'hls') {
-      eventBus_.trigger(Events.MEDIA_ATTACHING);
-    } else if (parser_.type === 'pd') {
-      onMediaAttached();
-    }
   }
 
   function onMediaAttached() {
@@ -87,8 +80,6 @@ function StreamController() {
   function onStreamLoaded() {
     currentStream_ = 0;
   }
-
-  function onSbUpdateEnded() {}
 
   function onTestMsg() {
     tick();
