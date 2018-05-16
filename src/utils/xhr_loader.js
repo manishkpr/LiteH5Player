@@ -26,8 +26,7 @@ class XHRLoaderCallback {
 }
 
 
-function XHRLoader(config)
-{
+function XHRLoader() {
   let context_ = this.context;
 
   //

@@ -45,11 +45,13 @@ class CoreEvents {
         this.FULLSCREEN_CHANGE = 'fullscreenChange';
 
         // controller events
-        this.MANIFEST_PARSED = 'manifestParsed';
         this.STREAM_LOADED = 'streamLoaded';    // Loaded a stream has a specified bitrate.
         this.PD_DOWNLOADED = 'pdDownloaded';
 
         // Begin hls.js, for compatible hls.js
+        this.MANIFEST_LOADING = 'hlsManifestLoading';
+        this.MANIFEST_LOADED = 'hlsManifestLoaded';
+        this.MANIFEST_PARSED = 'hlsManifestParsed';
         this.FRAG_LOADING = 'hlsFragLoading';
         this.FRAG_LOADED = 'hlsFragLoaded';
         this.INIT_PTS_FOUND = 'hlsInitPtsFound';

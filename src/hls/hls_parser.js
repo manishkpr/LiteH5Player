@@ -1,6 +1,4 @@
 import FactoryMaker from '../core/FactoryMaker';
-import Events from '../core/CoreEvents';
-import EventBus from '../core/EventBus';
 import StringUtils from '../utils/string_utils';
 
 import {
@@ -17,10 +15,9 @@ import {
 
 function HlsParser() {
   let context_ = this.context;
-
-  let debug_ = context_.debug;
-  let eventBus_ = EventBus(context_).getInstance();
-  let xhrLoader_ = context_.loader(context_).create();
+  let debug_ = context_.debug
+  let events_ = context_.events;
+  let eventBus_ = context_.eventBus;
 
   let manifestUrl_;
   let streamInfo_;
@@ -28,36 +25,31 @@ function HlsParser() {
   // hls
   let currentSN_;
   let fragCurrent_;
-  
-  function setup() {}
+
+  function setup() {
+    eventBus_.on(events_.MANIFEST_LOADED, onManifestLoaded);
+  }
+
+  function onManifestLoaded(data) {
+    let content = StringUtils.ab2str_v1(data.bytes);
+    debug_.log('content: ' + content);
+
+    currentSN_ = 0;
+
+    let track = new TrackInfo();
+    track.type = 'stream';
+    track.levelDetails = M3U8Parser.parseLevelPlaylist(content, manifestUrl_, 0, 'main');
+
+    streamInfo_ = new StreamInfo();
+    streamInfo_.duration = track.levelDetails.totalduration;
+    streamInfo_.tracks.push(track);
+
+    eventBus_.trigger(events_.MANIFEST_PARSED, streamInfo_);
+  }
 
   function loadManifest(url) {
-    function onSuccess(bytes) {
-      let content = StringUtils.ab2str_v1(bytes);
-      debug_.log('content: ' + content);
-
-      currentSN_ = 0;
-
-      let track = new TrackInfo();
-      track.type = 'stream';
-      track.levelDetails = M3U8Parser.parseLevelPlaylist(content, manifestUrl_, 0, 'main');
-
-      streamInfo_ = new StreamInfo();
-      streamInfo_.duration = track.levelDetails.totalduration;
-      streamInfo_.tracks.push(track);
-
-      eventBus_.trigger(Events.MANIFEST_PARSED, streamInfo_);
-    }
-
     manifestUrl_ = url;
-    let request = {
-      url: manifestUrl_
-    };
-    let callbacks = {
-      onSuccess: onSuccess
-    };
-
-    xhrLoader_.load(request, null, callbacks);
+    eventBus_.trigger(events_.MANIFEST_LOADING, { url: manifestUrl_ });
   }
 
   function getNextFragment() {

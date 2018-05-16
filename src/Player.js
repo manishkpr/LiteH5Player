@@ -35,6 +35,8 @@ function Player(containerId) {
 
   let eventBus_;
   let debug_;
+  let playlistLoader_;
+
   let mediaEngine_;
   let textEngine_;
   let mseEngine_;
@@ -73,7 +75,6 @@ function Player(containerId) {
     // init internal configuration
     context_.loader = XHRLoader;
     context_.fragLoader = FragmentLoader;
-    context_.playlistLoader = PlaylistLoader;
     context_.events = Events;
     context_.debug = debug_;
     context_.eventBus = eventBus_;
@@ -378,6 +379,7 @@ function Player(containerId) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
+    playlistLoader_ = PlaylistLoader(context_).getInstance();
     mediaEngine_ = MediaEngine(context_).getInstance();
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();

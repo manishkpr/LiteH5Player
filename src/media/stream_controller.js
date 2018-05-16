@@ -109,10 +109,7 @@ function StreamController() {
     let frag = e.frag;
     let data = frag.data;
 
-    // BD
     debug_.log(`+onFragLoaded, SN:${frag.sn}, start:${frag.start}, duration:${frag.duration}`);
-    // ED
-
     if (frag.sn === 'initSegment') {
       frag.data = data;
       tick();
