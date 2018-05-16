@@ -1,4 +1,3 @@
-
 import CommonEncryption from '../vo/CommonEncryption';
 import FactoryMaker from '../../core/FactoryMaker';
 
@@ -8,35 +7,35 @@ const schemeIdURI = 'urn:uuid:' + uuid;
 
 function KeySystemWidevine() {
 
-    let instance_;
+  let instance_;
 
-    function getInitData(cp) {
-        return CommonEncryption.parseInitDataFromContentProtection(cp);
-    }
+  function getInitData(cp) {
+    return CommonEncryption.parseInitDataFromContentProtection(cp);
+  }
 
-    function getRequestHeadersFromMessage(/*message*/) {
-        return null;
-    }
+  function getRequestHeadersFromMessage( /*message*/ ) {
+    return null;
+  }
 
-    function getLicenseRequestFromMessage(message) {
-        return new Uint8Array(message);
-    }
+  function getLicenseRequestFromMessage(message) {
+    return new Uint8Array(message);
+  }
 
-    function getLicenseServerURLFromInitData(/*initData*/) {
-        return null;
-    }
+  function getLicenseServerURLFromInitData( /*initData*/ ) {
+    return null;
+  }
 
-    instance_ = {
-        uuid: uuid,
-        schemeIdURI: schemeIdURI,
-        systemString: systemString,
-        getInitData: getInitData,
-        getRequestHeadersFromMessage: getRequestHeadersFromMessage,
-        getLicenseRequestFromMessage: getLicenseRequestFromMessage,
-        getLicenseServerURLFromInitData: getLicenseServerURLFromInitData,
-    };
+  instance_ = {
+    uuid: uuid,
+    schemeIdURI: schemeIdURI,
+    systemString: systemString,
+    getInitData: getInitData,
+    getRequestHeadersFromMessage: getRequestHeadersFromMessage,
+    getLicenseRequestFromMessage: getLicenseRequestFromMessage,
+    getLicenseServerURLFromInitData: getLicenseServerURLFromInitData,
+  };
 
-    return instance_;
+  return instance_;
 }
 
 KeySystemWidevine.__h5player_factory_name = 'KeySystemWidevine';

@@ -37,66 +37,66 @@ const schemeIdURI = 'urn:uuid:' + uuid;
 
 function KeySystemClearKey() {
 
-    let instance;
-    /**
-     * Returns desired clearkeys (as specified in the CDM message) from protection data
-     *
-     * @param {ProtectionData} protectionData the protection data
-     * @param {ArrayBuffer} message the ClearKey CDM message
-     * @returns {ClearKeyKeySet} the key set or null if none found
-     * @throws {Error} if a keyID specified in the CDM message was not found in the
-     * protection data
-     * @memberof KeySystemClearKey
-     */
-    function getClearKeysFromProtectionData(protectionData, message) {
-        var clearkeySet = null;
-        // if (protectionData) {
-        //     // ClearKey is the only system that does not require a license server URL, so we
-        //     // handle it here when keys are specified in protection data
-        //     var jsonMsg = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(message)));
-        //     var keyPairs = [];
-        //     for (var i = 0; i < jsonMsg.kids.length; i++) {
-        //         var clearkeyID = jsonMsg.kids[i];
-        //         var clearkey = (protectionData.clearkeys.hasOwnProperty(clearkeyID)) ? protectionData.clearkeys[clearkeyID] : null;
-        //         if (!clearkey) {
-        //             throw new Error('DRM: ClearKey keyID (' + clearkeyID + ') is not known!');
-        //         }
-        //         // KeyIDs from CDM are not base64 padded.  Keys may or may not be padded
-        //         keyPairs.push(new KeyPair(clearkeyID, clearkey));
-        //     }
-        //     clearkeySet = new ClearKeyKeySet(keyPairs);
-        // }
-        return clearkeySet;
-    }
+  let instance;
+  /**
+   * Returns desired clearkeys (as specified in the CDM message) from protection data
+   *
+   * @param {ProtectionData} protectionData the protection data
+   * @param {ArrayBuffer} message the ClearKey CDM message
+   * @returns {ClearKeyKeySet} the key set or null if none found
+   * @throws {Error} if a keyID specified in the CDM message was not found in the
+   * protection data
+   * @memberof KeySystemClearKey
+   */
+  function getClearKeysFromProtectionData(protectionData, message) {
+    var clearkeySet = null;
+    // if (protectionData) {
+    //     // ClearKey is the only system that does not require a license server URL, so we
+    //     // handle it here when keys are specified in protection data
+    //     var jsonMsg = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(message)));
+    //     var keyPairs = [];
+    //     for (var i = 0; i < jsonMsg.kids.length; i++) {
+    //         var clearkeyID = jsonMsg.kids[i];
+    //         var clearkey = (protectionData.clearkeys.hasOwnProperty(clearkeyID)) ? protectionData.clearkeys[clearkeyID] : null;
+    //         if (!clearkey) {
+    //             throw new Error('DRM: ClearKey keyID (' + clearkeyID + ') is not known!');
+    //         }
+    //         // KeyIDs from CDM are not base64 padded.  Keys may or may not be padded
+    //         keyPairs.push(new KeyPair(clearkeyID, clearkey));
+    //     }
+    //     clearkeySet = new ClearKeyKeySet(keyPairs);
+    // }
+    return clearkeySet;
+  }
 
-    function getInitData(cp) {
-        return CommonEncryption.parseInitDataFromContentProtection(cp);
-    }
+  function getInitData(cp) {
+    return CommonEncryption.parseInitDataFromContentProtection(cp);
+  }
 
-    function getRequestHeadersFromMessage(/*message*/) {
-        return null;
-    }
+  function getRequestHeadersFromMessage( /*message*/ ) {
+    return null;
+  }
 
-    function getLicenseRequestFromMessage(message) {
-        return new Uint8Array(message);
-    }
+  function getLicenseRequestFromMessage(message) {
+    return new Uint8Array(message);
+  }
 
-    function getLicenseServerURLFromInitData(/*initData*/) {
-        return null;
-    }
+  function getLicenseServerURLFromInitData( /*initData*/ ) {
+    return null;
+  }
 
-    instance = {
-        uuid: uuid,
-        schemeIdURI: schemeIdURI,
-        systemString: systemString,
-        getInitData: getInitData,
-        getRequestHeadersFromMessage: getRequestHeadersFromMessage,
-        getLicenseRequestFromMessage: getLicenseRequestFromMessage,
-        getLicenseServerURLFromInitData: getLicenseServerURLFromInitData,
-        getClearKeysFromProtectionData: getClearKeysFromProtectionData
-    };
+  instance = {
+    uuid: uuid,
+    schemeIdURI: schemeIdURI,
+    systemString: systemString,
+    getInitData: getInitData,
+    getRequestHeadersFromMessage: getRequestHeadersFromMessage,
+    getLicenseRequestFromMessage: getLicenseRequestFromMessage,
+    getLicenseServerURLFromInitData: getLicenseServerURLFromInitData,
+    getClearKeysFromProtectionData: getClearKeysFromProtectionData
+  };
 
-    return instance;
+  return instance;
 }
 
 KeySystemClearKey.__h5player_factory_name = 'KeySystemClearKey';
