@@ -4,6 +4,86 @@
 		"selected_items":
 		[
 			[
+				"Even",
+				"EventBus"
+			],
+			[
+				"Eve",
+				"EventBus"
+			],
+			[
+				"videoC",
+				"videoCodec_"
+			],
+			[
+				"event",
+				"eventBus_"
+			],
+			[
+				"events",
+				"events_"
+			],
+			[
+				"conte",
+				"context_"
+			],
+			[
+				"debu",
+				"debug_"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"STATE",
+				"state_"
+			],
+			[
+				"FRA",
+				"FRAG_LOADED"
+			],
+			[
+				"par",
+				"parser_"
+			],
+			[
+				"medi",
+				"media_"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"marg",
+				"margin-left"
+			],
+			[
+				"body",
+				"bodystyle"
+			],
+			[
+				"cre",
+				"createElement"
+			],
+			[
+				"crea",
+				"createElement"
+			],
+			[
+				"create",
+				"createElement"
+			],
+			[
+				"con",
+				"content"
+			],
+			[
+				"retr",
+				"retryInterval"
+			],
+			[
 				"frag",
 				"fragCurrent_"
 			],
@@ -30,10 +110,6 @@
 			[
 				"onUICmd",
 				"onUICmdPlay"
-			],
-			[
-				"event",
-				"events"
 			],
 			[
 				"isAd",
@@ -80,10 +156,6 @@
 				"nowrap"
 			],
 			[
-				"marg",
-				"margin-right"
-			],
-			[
 				"Destr",
 				"destroySettingsMenu"
 			],
@@ -114,10 +186,6 @@
 			[
 				"audioT",
 				"audioTrackList"
-			],
-			[
-				"con",
-				"context_"
 			],
 			[
 				"Player",
@@ -412,10 +480,6 @@
 				"receiverAppId"
 			],
 			[
-				"margin",
-				"margin-top"
-			],
-			[
 				"meta",
 				"metaHeight"
 			],
@@ -450,116 +514,61 @@
 			[
 				"isL",
 				"isLinear"
-			],
-			[
-				"is",
-				"isLinear"
-			],
-			[
-				"pl",
-				"playerContainer"
-			],
-			[
-				"playerCo",
-				"playerContainer_"
-			],
-			[
-				"media",
-				"mediaEngine_"
-			],
-			[
-				"medi",
-				"mediaEngine_"
-			],
-			[
-				"backgr",
-				"background-color"
-			],
-			[
-				"bac",
-				"background-color"
-			],
-			[
-				"border-bottom",
-				"border-bottom-width"
-			],
-			[
-				"bor",
-				"border-bottom"
-			],
-			[
-				"vi",
-				"visible"
-			],
-			[
-				"recei",
-				"receiverApplicationId"
-			],
-			[
-				"initD",
-				"initData_"
-			],
-			[
-				"ab",
-				"ab2str_v1"
-			],
-			[
-				"ar",
-				"ab2str_v1"
-			],
-			[
-				"sys",
-				"systemString"
-			],
-			[
-				"load",
-				"loadCertificate"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/dash/dash_parser.js",
+			"file": "/D/xampp/htdocs/1/front-end/demo/save2file/FileSaver.js",
 			"settings":
 			{
-				"buffer_size": 9311,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/player.js",
-			"settings":
-			{
-				"buffer_size": 14617,
-				"encoding": "UTF-8 with BOM",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/media/schedule_controller.js",
-			"settings":
-			{
-				"buffer_size": 2170,
+				"buffer_size": 6491,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "samples/demo/assets.js",
+			"file": "/D/xampp/htdocs/1/front-end/demo/save2file/index.html",
 			"settings":
 			{
-				"buffer_size": 26673,
+				"buffer_size": 2596,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/xampp/htdocs/1/front-end/tmp/index.html",
+			"settings":
+			{
+				"buffer_size": 18703,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/media/stream_controller.js",
+			"settings":
+			{
+				"buffer_size": 5579,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/media_source_engine.js",
+			"file": "samples/demo/main.js",
 			"settings":
 			{
-				"buffer_size": 6562,
+				"buffer_size": 65774,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "samples/demo/index.html",
+			"settings":
+			{
+				"buffer_size": 8328,
 				"encoding": "UTF-8 with BOM",
 				"line_ending": "Unix"
 			}
@@ -572,18 +581,28 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "",
+		"height": 137.0,
+		"last_filter": "install",
 		"selected_items":
 		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Install p",
+				"Package Control: Install Package"
+			]
 		],
-		"width": 392.0
+		"width": 412.0
 	},
 	"console":
 	{
-		"height": 0.0,
+		"height": 157.0,
 		"history":
 		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib2,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')"
 		]
 	},
 	"distraction_free":
@@ -601,139 +620,145 @@
 		"/D/xampp/htdocs/1/LiteH5Player/samples",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo",
 		"/D/xampp/htdocs/1/LiteH5Player/src",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media"
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls",
+		"/D/xampp/htdocs/1/LiteH5Player/src/loader",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection",
+		"/D/xampp/htdocs/1/front-end",
+		"/D/xampp/htdocs/1/front-end/demo",
+		"/D/xampp/htdocs/1/front-end/demo/save2file",
+		"/D/xampp/htdocs/1/front-end/tmp"
 	],
 	"file_history":
 	[
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/streaming/rules/scheduling/NextFragmentRequestRule.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls_parser.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media_source_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/assets.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media/schedule_controller.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/controller/buffer-controller.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/xhr_loader.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/loader/fragment.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/common/common.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/player.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dash_parser.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/core/CoreEvents.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/controller/stream-controller.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/front-end/demo/save2file/fun_save2File.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/stream_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/loader/fragment_loader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tool/download.html",
 		"/D/xampp/htdocs/1/LiteH5Player/src/media_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo3/index.html",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo3/mysharedworker.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo3/mycoolworker.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo2/index.html",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo2/mycoolworker.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/string_utils.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo1/index.html",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/foo.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/mycoolworker.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5/demo1.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/demux/demuxer-worker.js",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter3.html",
-		"/D/xampp/htdocs/1/front-end/you_don't_know_js(2)/part2/chapter5.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/SourceBufferWrapper.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
-		"/D/xampp/htdocs/2/hls/videoonly01/test.m3u8",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/demux/demuxer-inline.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/loader/fragment-loader.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/config.js",
-		"/D/xampp/htdocs/2/hls/webvtt_01/gear1/test1.m3u8",
-		"/D/xampp/htdocs/2/hls/webvtt_01/bipbopall.m3u8",
-		"/D/xampp/htdocs/2/hls/av_nonmuxed/video/prog_index.m3u8",
-		"/D/xampp/htdocs/2/hls/av_nonmuxed/video/test.m3u8",
-		"/D/xampp/htdocs/1/LiteH5Player/package.json",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/demux/demuxer.js",
-		"/D/xampp/htdocs/1/LiteH5Player/webpack.config.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo/app/main.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo2/index.html",
-		"/D/xampp/htdocs/1/front-end/webpack_demo2/package.json",
-		"/D/xampp/htdocs/1/front-end/webpack_demo2/src/index.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo2/app/main.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo2/public/index.html",
-		"/D/xampp/htdocs/1/front-end/webpack_demo/README.txt",
-		"/D/xampp/htdocs/1/front-end/webpack_demo/webpack.config.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo/app/Greeter.js",
-		"/D/xampp/htdocs/1/front-end/webpack_demo/public/index.html",
-		"/D/xampp/htdocs/1/front-end/demo/mobile_adaptive/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/test.js",
-		"/D/xampp/htdocs/1/front-end/demo/mobile_adaptive/android.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/pd/pd_parser.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/tool.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_receiver.js",
-		"/D/xampp/htdocs/2/pd/mp4/trailer/test_segment_template.mpd",
-		"/D/xampp/htdocs/1/LiteH5Player/src/cast/cast_sender.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/drm_engine.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver.html",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/receiver/main.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/media/manifest_parser.js",
-		"/D/xampp/htdocs/2/hls/av_muxed/test.m3u8",
-		"/D/xampp/htdocs/1/front-end/tmp/index.html",
-		"/D/xampp/htdocs/1/front-end/demo/div_center/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/core/Debug.js",
-		"/D/xampp/htdocs/1/front-end/demo/tabindex_blur/index.html",
-		"/D/xampp/htdocs/1/front-end/demo/css_white-space/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/iconfont/codepoints",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/iconfont/material-icons.css",
-		"/D/xampp/htdocs/1/front-end/samples/css/css_display.html",
-		"/D/xampp/htdocs/1/front-end/articles/books.txt",
-		"/D/xampp/htdocs/1/front-end/articles/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/common_utils.js",
-		"/D/xampp/htdocs/1/frontDemo/demo/tabindex_blur/index.html",
-		"/D/xampp/htdocs/1/frontDemo/demo/tabindex_blur/note.txt",
-		"/D/xampp/htdocs/1/frontDemo/cross-browser/click_blur/index.html",
-		"/D/xampp/htdocs/2/hls/subtitles/webvtt_01/bipbopall.m3u8",
-		"/D/xampp/htdocs/2/hls/subtitles/webvtt_01/test2.m3u8",
-		"/D/xampp/htdocs/2/hls/subtitles/webvtt_01/tests.m3u8",
-		"/D/xampp/htdocs/2/hls/subtitles/webvtt_01/test1.m3u8",
-		"/D/xampp/htdocs/1/frontDemo/cross-browser/click_blur_click.html",
-		"/D/xampp/htdocs/2/hls/common/test.m3u8",
-		"/D/xampp/htdocs/1/LiteH5Player/src/hls/demuxer.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/thumbnail/webvtt_thumbnails.js",
-		"/D/xampp/htdocs/1/LiteH5Player/tests/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/VTTParser.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/plugins/webvtt_thumbnails.js",
-		"/D/xampp/htdocs/opensource/dash.js/samples/dash-if-reference-player/app/main.js",
-		"/D/xampp/htdocs/opensource/dash.js/samples/thumbnails/thumbnails.html",
-		"/D/xampp/htdocs/opensource/dash.js/src/streaming/MediaPlayer.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/test/VTTParser.js",
-		"/D/xampp/htdocs/opensource/dash.js/src/streaming/thumbnail/ThumbnailController.js",
-		"/D/xampp/htdocs/opensource/dash.js/src/streaming/vo/Thumbnail.js",
-		"/D/xampp/htdocs/opensource/dash.js/src/streaming/thumbnail/ThumbnailTracks.js",
-		"/D/xampp/htdocs/1/tmp/index.html",
-		"/D/xampp/htdocs/1/LiteH5Player/src/text_engine.js",
-		"/D/xampp/htdocs/2/dash/features/av_nonmuxed/video.mpd",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/parser/matchers/DurationMatcher.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/parser/matchers/StringMatcher.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/utils/SegmentsUtils.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/matchers/DurationMatcher.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/maps/RepresentationBaseValuesMap.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/matchers/StringMatcher.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/externals/xml2json.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/dash/DashConstants.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/cast/sender.html",
-		"/D/xampp/htdocs/1/voSamplePlayer/trunk/samples/labs_hasVttThumbnail/main.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/utils/timeRanges.js",
-		"/D/xampp/htdocs/1/LiteH5Player/src/TestFeature.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/iconfont/MaterialIcons-Regular.ijmap",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/material-icons.css",
-		"/D/xampp/htdocs/opensource/material-design-icons/iconfont/MaterialIcons-Regular.svg",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/matrial-design-icons.css",
-		"/D/xampp/htdocs/opensource/material-design-icons/iconfont/material-icons.css",
-		"/D/xampp/htdocs/1/frontDemo/you_don't_know_js(volume1)/part2_chapter5.html",
-		"/D/xampp/htdocs/1/frontDemo/you_don't_know_js(volume1)/1.html",
 		"/D/xampp/htdocs/1/LiteH5Player/src/Player.js",
-		"/D/xampp/htdocs/1/tmp/111/ads.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/assets.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/demux/demuxer.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/buffer_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/webpack.config.js",
+		"/D/xampp/htdocs/1/LiteH5Player/Gruntfile.js",
+		"/D/xampp/htdocs/1/LiteH5Player/README.md",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hls_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/eme_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/parser_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_3Feb2014.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/models/ProtectionModel_21Jan2015.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/thumbnail_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/core/CoreEvents.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/thumbnail/webvtt_thumbnails.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/level_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/manifest_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/drm_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tool/test_pd.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/controller/ProtectionKeyController.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/vo/CommonEncryption.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/vo/KeySystemConfiguration.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/vo/KSUtils.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/protection/vo/MediaCapability.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/demux/demuxer-inline.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/demux/mp4demuxer.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dashjs/src/dash/controllers/RepresentationController.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dashjs/src/streaming/controllers/BufferController.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dashjs/src/streaming/controllers/ScheduleController.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dashjs/src/streaming/StreamProcessor.js",
+		"/D/xampp/htdocs/tasklink/2017/65421_chromecast/content_wv_shaka/test.m3u8",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/controller/buffer-controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/media/schedule_controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.js",
 		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/liteH5Player.debug.js",
-		"/D/xampp/htdocs/1/LiteH5Player/samples/test_simple.html"
+		"/D/xampp/htdocs/1/LiteH5Player/src/media_source_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/controller/eme-controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/index.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/pd/pd_parser.js",
+		"/D/pj_company/task_folder/task_html5/refer_utils/tools/Sublime+Text+Build+3170+x64（英文注册便携版）/Sublime Text Build 3170 x64/Data/Packages/User/JsFormat.sublime-settings",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ads/ads_engine.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/hlsjs/helper/buffer-helper.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/loader/playlist_loader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/fragment_loader.js",
+		"/D/xampp/htdocs/2/dash/test2_main_index/Video1/cmaf.m3u8",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/controller/stream-controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dash_parser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/common/common.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/remux/passthrough-remuxer.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/loader/m3u8-parser.js",
+		"/D/xampp/htdocs/2/hls/cmaf01/video/180_250000/test.m3u8",
+		"/D/xampp/htdocs/2/dash/test2_main_index/manifest1.mpd",
+		"/D/xampp/htdocs/2/dash/bbb_30fps/bbb_30fps.mpd",
+		"/D/xampp/htdocs/2/dash/voweb/manifest.mpd",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/xhr_loader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/fetch_loader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/dashjs/src/streaming/FragmentLoader.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/helper/buffer-helper.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/package.json",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/note.txt",
+		"/D/xampp/htdocs/1/LiteH5Player/src/player.js",
+		"/D/xampp/htdocs/opensource/hls.js/tests/unit/helper/buffer-helper.js",
+		"/D/xampp/htdocs/1/LiteH5Player/tests/t_jasmine/spec/Hello.spec.js",
+		"/D/xampp/htdocs/1/front-end/tmp/index.html",
+		"/D/xampp/htdocs/1/front-end/demo/giant_button/index.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/README.txt",
+		"/D/xampp/htdocs/1/front-end/README.md",
+		"/D/xampp/htdocs/1/LiteH5Player/src/ui/ui_engine.js",
+		"/D/xampp/htdocs/2/ads/Single_Non_linear_Inline.xml",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/index.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.css",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/iconfont/codepoints",
+		"/D/xampp/htdocs/1/front-end/demo/giant_button/index2.html",
+		"/D/xampp/htdocs/1/tmp/index.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/00_HelloWorld.html",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/iconfont/material-icons.css",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/05_Handling Events.html",
+		"/D/xampp/htdocs/1/front-end/react/advanced_guides/01_jsx-in-depth.html",
+		"/D/xampp/htdocs/1/front-end/react/advanced_guides/README.txt",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/10_composition-vs-inheritance.html",
+		"/D/xampp/htdocs/1/front-end/react/README.txt",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/9_lifting-state-up.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/1.jsx",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/6_Conditional Rendering.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/7_lists_and_keys.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/8_forms.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/0_HelloWorld.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/5_Handling Events.html",
+		"/C/Users/huang_hao/AppData/Roaming/Sublime Text 3/Packages/User/JsFormat.sublime-settings",
+		"/C/Users/huang_hao/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/huang_hao/AppData/Roaming/Sublime Text 3/Packages/User/Emmet.sublime-settings",
+		"/D/xampp/htdocs/1/LiteH5Player/samples/demo/main.jsx",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/6_Conditional Rendering",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/4_State and Lifecycle.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/1_JSX.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/2_Rendering_Elements.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/3_Components and Props.html",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/1.js",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/4_State and Lifecycle.js",
+		"/D/xampp/htdocs/1/front-end/react/quick_start/1_JSX",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/remux/mp4-remuxer.js",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo5/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo6/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/chapter3_note",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo9/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo7/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo8/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo1/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo2/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo3/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo4/index.html",
+		"/D/xampp/htdocs/1/front-end/HighPerformanceJavaScript/chapter3/demo1.html",
+		"/D/xampp/htdocs/1/front-end/you_don't_know_js(1)/part2_chapter5.html",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/config.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/hlsjs/src/hls.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/src/dash/parser/DashParser.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/controller/buffer-controller.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/controller/stream-controller.js",
+		"/D/xampp/htdocs/2/dash/voweb/test_video180_audio_template.mpd",
+		"/D/xampp/htdocs/1/LiteH5Player/src/hls/config.js",
+		"/D/xampp/htdocs/1/LiteH5Player/src/utils/fetch_loader",
+		"/D/xampp/htdocs/1/LiteH5Player/src/dash/streaming/rules/scheduling/NextFragmentRequestRule.js"
 	],
 	"find":
 	{
@@ -744,6 +769,27 @@
 		"height": 128.0,
 		"where_history":
 		[
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src,D:\\xampp\\htdocs\\1\\LiteH5Player\\samples\\demo",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
+			"<current file>",
+			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
 			"<current file>",
 			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src,D:\\xampp\\htdocs\\1\\LiteH5Player\\src\\hls",
 			"<current file>,D:\\xampp\\htdocs\\1\\LiteH5Player\\src",
@@ -821,137 +867,137 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
-			"flagNextSegmentType",
-			"onFragmentDownloaded",
-			"scheduleCtrl_",
-			"MANIFEST_PARSED",
-			"onStreamLoaded",
-			"STREAM_LOADED",
-			"onBufferCodec",
-			"signalEndOfStream",
-			"endOfStream",
-			"updateMediaElementDuration",
-			"request url",
-			"request_",
-			"request",
-			"start",
-			"byteRangeStartOffset",
-			"range",
-			"rangeStart",
-			"byterange",
-			"updateMediaElementDuration",
-			"update",
-			"pdSourceBuffer_",
-			"aSourceBuffer_",
-			"vSourceBuffer_",
-			"onBufferAppending",
-			"updateMediaElementDuration",
-			"getNextFragment",
-			"getFragmentMedia",
-			"levelDetails_",
-			"mediaPresentationDuration_",
-			"MANIFEST_PARSED",
-			"getRepresentation",
-			"mediaPresentationDuration_",
-			"activeStream_",
-			"getRepresentation",
-			"vRep_",
-			"mediaPresentationDuration_",
-			"onFragmentDownloaded",
-			"FRAGMENT_DOWNLOADED_ENDED",
-			"onManifestParsed",
-			"getRepresentation",
-			"vRep_",
-			"vSegmentNumber_",
-			"getRepresentation",
-			"manifestUrl_",
-			"streamInfo_",
-			"updateMediaElementDuration",
-			"waitForUpdateEnd",
-			"onBufferAppending",
+			"save_binary_to_file_method2",
+			"save_binary_to_file_method1",
+			"FileSaver",
+			"saveAs",
+			"onFragParsed",
+			"tick",
+			"parsed_",
+			"FRAG_LOADING",
+			"parsed_",
+			"onFragLoaded",
+			"onFragParsingInitSegment",
+			"onBufferAppended",
+			"tick",
+			"onFragParsingData",
+			"onBufferAppended",
 			"sourceBuffer_updateend",
-			"doAppending",
-			"createSourceBuffers",
-			"this.sourceBuffer",
-			"this.sourceBuffer.push",
-			"sourceBuffer.push",
-			"sourceBuffer",
-			"appending_",
-			"doAppending",
-			"this.segments",
-			"doAppending",
+			"+sourceBuffer_updateend",
+			"require",
+			"onMediaAttached",
+			"media_",
+			"media_ = ",
+			"emeController_",
+			"getPosition",
+			"media",
+			"media_",
+			"cfg_",
+			"addEventListeners",
+			"media_",
+			"manifestParser_",
+			"ParserController",
+			"ManifestParser",
+			"adsEngine_",
+			"adsEngine_ = ",
+			"adsEngine_ =",
+			"adsEngine_",
+			"setKeySystem",
+			"setDrmInfo",
+			"streamInfo_",
+			"setMediaCodec",
+			"streamInfo_",
+			"setDrmInfo",
+			"emeController_",
+			"drmEngine_",
+			"drmEngine_ =",
+			"onSbUpdateEnded",
+			"media_",
+			"parser_",
+			"data",
+			"onMediaAttaching",
+			"onMediaSourceOpen",
+			"onMediaAttaching",
+			"MEDIA_ATTACHING",
+			"onFoundParser",
+			"ThumbnailController",
+			"onPdDownloaded",
+			".on",
+			"onFoundParser",
+			"thumbnailController_",
+			"THUMBNAIL_FINDING",
+			"thumbnailController_",
+			"webvttThumbnail_",
+			"WebVtt",
+			"ThumbnailController",
+			"WebvttThumbnails",
+			"getThumbnail",
+			"webvttThumbnail_",
+			"webvttThumbnail",
+			"WebvttThumbnails",
+			"initComponent",
+			"WebvttThumbnails",
+			"onFoundParser",
+			"onMediaSourceOpen",
+			"onMediaAttaching",
+			"createMediaSource",
+			"MEDIA_ATTACHING",
+			"onMediaAttaching",
+			"context_.media",
+			"onBufferEOS",
+			"BUFFER_EOS",
+			"onBufferAppending",
+			"FRAGMENT_DOWNLOADED_ENDED",
+			"signalEndOfStream",
+			"updateMediaElementDuration",
+			"tracks_",
 			"onBufferCodec",
-			"createSourceBuffers",
-			"checkPendingTracks",
-			"onFragmentDownloaded",
-			"Fragment",
-			"import {Fragment} from '../common/common';",
-			"fragCurrent_",
-			"BUFFER_APPENDING",
+			"audioCodec_",
+			"setMediaCodec",
+			"setDrmInfo",
 			"onBufferCodec",
-			"BUFFER_CODEC",
-			"BUFFER_APPENDING",
-			"dataType",
-			"this.segments",
-			"SB_UPDATE_ENDED",
-			"sourceBuffer_update",
-			",\n",
+			"DRMEngine",
 			"onBufferCodec",
 			"streamInfo_",
-			"_handleTrackOrLevelPlaylist",
-			"loadSuccess",
-			"this.segments",
-			"doAppending",
-			"flagCurrent_",
-			"getNextFragment",
-			"onFragmentDownloaded",
-			"FRAGMENT_DOWNLOADED_ENDED",
-			"CODEC",
-			"onFragmentDownloaded",
-			"FRAGMENT_DOWNLOADED",
-			"onMSEOpened",
-			"10.2.68.64",
-			"onFragmentDownloaded",
-			"manualMode_",
-			"isFragmentDownloading_",
-			"onFragmentDownloaded",
-			"FRAGMENT_DOWNLOADED",
-			"mediaEngine_",
-			"onMSEOpened",
-			"onManifestParsed",
-			".on(",
-			"createMediaSource",
-			".duration",
-			"setDuration",
-			"activeStream_",
-			"createSourceBuffer",
-			"mediaSrc_",
-			"waitForUpdateEnd",
-			"isFragmentProcessing_",
-			"hlsDefaultConfig",
-			"appendBuffer",
-			"onFragmentDownloaded",
-			"SB_UPDATE_ENDED",
-			"activeStream_",
-			"waitForUpdateEnd",
-			"appendBuffer",
-			"doAppending",
-			"onSBUpdateEnd",
-			"waitForUpdateEnd",
-			"appendBuffer",
-			"waitForUpdateEnd",
-			"appendBuffer",
-			"sourceBuffer_updatestart",
-			"mediaSrc_",
-			"createSourceBuffer",
-			"vRep",
+			"requestKeySystemAccess",
+			"session_",
+			"ProtectionModel_21Jan2015.prototype.",
+			"this.promiseAction_",
+			"this.streamInfo_",
+			"this.keySystem_",
+			"this.initData_",
+			"this.initDataType_",
+			"this.media_",
+			"ScheduleController",
+			"onMediaDurationChanged",
+			"drmEngine_",
+			"DRMEngine",
+			"initWV_MP4",
+			"aContents",
+			"initWV_MP4",
+			"MEDIA_ATTACHED",
+			"onMediaAttached",
+			"initWV_MP4",
+			"initDRM_PR",
+			"initPDContent",
+			"initComponent",
+			"onBufferAppended",
+			"onBufferAppending",
+			"ScheduleController",
+			"TEST_MSG",
+			"video buffered",
+			"main buffered:",
+			"media_source_engine",
+			"MediaSourceEngine",
+			"start",
 			"onFragmentDownloadedEnded",
-			"streamInfo_.activeStream",
-			"onManifestParsed",
-			"createSourceBuffers"
+			"media",
+			"media_",
+			"createMediaSource",
+			"mediaCfg_"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -959,6 +1005,44 @@
 		"regex": false,
 		"replace_history":
 		[
+			"parserController_",
+			"ParserController",
+			"emeController_",
+			"thumbnailController_",
+			"VttThumbnailController",
+			"BUFFER_EOS",
+			"EMEController",
+			"function ",
+			"promiseAction_",
+			"streamInfo_",
+			"keySystem_",
+			"initData_",
+			"initDataType_",
+			"media_",
+			"StreamController",
+			"buffer_controller",
+			"BufferController",
+			"context_.mediaCfg",
+			"context_.cfg",
+			"MEDIA_ATTACHED",
+			"printLog",
+			"onFragParsingData",
+			"flagGotFragment",
+			"tick",
+			"FRAG_LOADING",
+			"localhost",
+			"FRAG_LOADED_ENDED",
+			"FRAG_LOADED",
+			"var",
+			"console.log",
+			"10.2.68.64",
+			"onManifestParsed",
+			"getAudioFragment",
+			"getVideoFragment",
+			"request_",
+			"XHRLoaderRequest",
+			"request",
+			"request_",
 			"flagCurrSegmentType",
 			"context_",
 			"context",
@@ -1048,163 +1132,124 @@
 			"this.vopScrubberContainer",
 			"this.vopHoverProgress",
 			"this.vopPlayProgress",
-			"this.vopLoadProgress",
-			"this.vopProgressBar",
-			"this.vopControlBar",
-			"this.vopTooltipText",
-			"this.vopTooltipBg",
-			"this.vopTooltip",
-			"this.vopH5Player",
-			"this.flagPlayerInited",
-			"this.castSender",
-			"this.player_",
-			"updatePanelMenuUI",
-			"onFccBack",
-			"onFccItemClick",
-			"onFccClick",
-			"createHeaderItemUI",
-			"audio_track_menu",
-			"vopPanelMenu",
-			"vopPanel",
-			"destroyPopupMenu",
-			"currSubtitleId",
-			"vopPopupMenu",
-			"subtitlesMenuContext",
-			"createSubtitleMenu",
-			"settingMenuContext",
-			"",
-			"vop-menuitem-content-text",
-			"destroySettingsMenu",
-			"vop-button",
-			"function ",
-			"context_",
-			"vSegmentNumber_",
-			"videoNumber_",
-			"manifestUrl_",
-			"initElements",
-			"removeAutohideAction",
-			"vopSettingsMenuPanelMenu",
-			"vopSettingsMenuPanel",
-			"vopSettingsMenu.style",
-			"vopSettingsBtnSvg"
+			"this.vopLoadProgress"
 		],
 		"reverse": false,
 		"show_context": false,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/dash/dash_parser.js",
+					"file": "/D/xampp/htdocs/1/front-end/demo/save2file/FileSaver.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9311,
+						"buffer_size": 6491,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7562,
-								7562
+								4228,
+								4228
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3933.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/player.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 14617,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								12004,
-								12004
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 7938.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/media/schedule_controller.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2170,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1647,
-								1647
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 893.0,
+						"translation.y": 1699.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "samples/demo/assets.js",
+					"buffer": 1,
+					"file": "/D/xampp/htdocs/1/front-end/demo/save2file/index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 26673,
+						"buffer_size": 2596,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8378,
-								8378
+								1491,
+								1495
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 629.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/xampp/htdocs/1/front-end/tmp/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18703,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								18703
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10603.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/media/stream_controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5579,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3677,
+								3677
 							]
 						],
 						"settings":
@@ -1214,40 +1259,70 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2109.0,
+						"translation.y": 2337.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "src/media_source_engine.js",
+					"file": "samples/demo/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6562,
+						"buffer_size": 65774,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2679,
-								2679
+								506,
+								387
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1535.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "samples/demo/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8328,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8169,
+								8096
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3061.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1255,7 +1330,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -1292,7 +1367,7 @@
 	"project": "solution.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1330,7 +1405,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 280.0,
+	"side_bar_width": 260.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
