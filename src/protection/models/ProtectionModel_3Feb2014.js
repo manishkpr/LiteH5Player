@@ -42,11 +42,6 @@ function ProtectionModel_3Feb2014(media) {
     streamInfo_ = streamInfo;
   }
 
-  function setMediaCodec(audioCodec, videoCodec) {
-    streamInfo_.drm.audioCodec = audioCodec;
-    streamInfo_.drm.videoCodec = videoCodec;
-  }
-
   function onNeedKey(ev) {
     let initDataType = 'cenc';
     // Some browsers return initData as Uint8Array (IE), some as ArrayBuffer (Chrome).
@@ -171,10 +166,10 @@ function ProtectionModel_3Feb2014(media) {
     attachMedia: attachMedia,
     detachMedia: detachMedia,
     setKeySystem: setKeySystem,
-    setDrmInfo: setDrmInfo,
-    setMediaCodec: setMediaCodec
+    setDrmInfo: setDrmInfo
   };
   return instance_;
 }
 
 export default ProtectionModel_3Feb2014;
+

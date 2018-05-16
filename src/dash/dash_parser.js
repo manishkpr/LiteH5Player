@@ -133,7 +133,7 @@ function DashParser() {
 
       eventBus_.trigger(Events.MANIFEST_PARSED);
 
-      eventBus_.trigger(Events.STREAM_LOADED, streamInfo_);
+      eventBus_.trigger(Events.STREAM_UPDATED, streamInfo_);
 
       // trigger buffer codec;
       let tracks = {};

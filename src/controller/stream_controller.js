@@ -52,7 +52,7 @@ function StreamController() {
     eventBus_.on(events_.MEDIA_ATTACHED, onMediaAttached);
 
     eventBus_.on(events_.MANIFEST_PARSED, onManifestParsed);
-    eventBus_.on(events_.STREAM_LOADED, onStreamLoaded);
+    eventBus_.on(events_.STREAM_UPDATED, onStreamLoaded);
 
     eventBus_.on(events_.FRAG_LOADED, onFragLoaded);
 

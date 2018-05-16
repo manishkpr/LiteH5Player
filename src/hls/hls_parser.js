@@ -30,6 +30,7 @@ function HlsParser() {
     eventBus_.on(events_.MANIFEST_LOADED, onManifestLoaded);
   }
 
+  // event callbacks
   function onManifestLoaded(data) {
     let content = StringUtils.ab2str_v1(data.bytes);
     debug_.log('content: ' + content);
@@ -47,6 +48,7 @@ function HlsParser() {
     eventBus_.trigger(events_.MANIFEST_PARSED, streamInfo_);
   }
 
+  // public functions
   function loadManifest(url) {
     manifestUrl_ = url;
     eventBus_.trigger(events_.MANIFEST_LOADING, { url: manifestUrl_ });

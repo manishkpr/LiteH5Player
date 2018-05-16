@@ -10,6 +10,7 @@ function EMEController() {
   let events_ = context_.events;
   let eventBus_ = context_.eventBus;
 
+  let streamInfo_;
   let protectionModel_ = null;
   let protectionKeyController_ = ProtectionKeyController(context_).getInstance();
 
@@ -23,19 +24,14 @@ function EMEController() {
   function onBufferCodec(data) {
     let tracks = data;
 
-    let audioCodec;
-    let videoCodec;
     if (tracks.audio) {
-      videoCodec = `${tracks.audio.container};codecs=${tracks.audio.codec}`;
+      streamInfo_.drm.audioCodec = `${tracks.audio.container};codecs=${tracks.audio.codec}`;
     }
     if (tracks.video) {
-      videoCodec = `${tracks.video.container};codecs=${tracks.video.codec}`;
+      streamInfo_.drm.videoCodec = `${tracks.video.container};codecs=${tracks.video.codec}`;
     }
-
-    protectionModel_.setMediaCodec(audioCodec, videoCodec);
   }
 
-  //
   function getProtectionModel() {
     let media = context_.media;
     if (media.onencrypted !== undefined &&
@@ -54,9 +50,10 @@ function EMEController() {
     if (!info.drm || !info.drm.type) {
       return;
     }
+    streamInfo_ = info;
 
     let keySystem = protectionKeyController_.getKeySystemBySystemString(info.drm.type);
-    debug_.log('H5Player, request systemString: ' + keySystem.systemString);
+    debug_.log('H5Player, request system tring: ' + keySystem.systemString);
     protectionModel_.setKeySystem(keySystem);
     protectionModel_.setDrmInfo(info);
   }

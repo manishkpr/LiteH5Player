@@ -204,11 +204,6 @@ function ProtectionModel_21Jan2015() {
     streamInfo_ = streamInfo;
   }
 
-  function setMediaCodec(audioCodec, videoCodec) {
-    streamInfo_.drm.audioCodec = audioCodec;
-    streamInfo_.drm.videoCodec = videoCodec;
-  }
-
   function requestKeySystemAccess() {
     let audioCapabilities = [];
     let videoCapabilities = [];
@@ -260,8 +255,7 @@ function ProtectionModel_21Jan2015() {
     attachMedia: attachMedia,
     detachMedia: detachMedia,
     setKeySystem: setKeySystem,
-    setDrmInfo: setDrmInfo,
-    setMediaCodec: setMediaCodec
+    setDrmInfo: setDrmInfo
   };
   return instance_;
 }

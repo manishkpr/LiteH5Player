@@ -15,22 +15,10 @@ function LevelController() {
   function onManifestParsed(streamInfo) {
     streamInfo_ = streamInfo;
 
-    eventBus_.trigger(events_.STREAM_LOADED);
+    eventBus_.trigger(events_.STREAM_UPDATED);
   }
 
-
-
-
-
-
-
-
-
-
-
-
   let instance_ = {
-
   };
   setup();
   return instance_;
@@ -38,3 +26,4 @@ function LevelController() {
 
 LevelController.__h5player_factory_name = 'LevelController';
 export default FactoryMaker.getSingletonFactory(LevelController);
+
