@@ -1,9 +1,6 @@
-﻿import FactoryMaker from './core/FactoryMaker';
-import EventBus from './core/EventBus';
-import Events from './core/CoreEvents';
-import Debug from './core/Debug';
-import TimeRanges from './utils/timeRanges';
-import CommonUtils from './utils/common_utils';
+﻿import FactoryMaker from '../core/FactoryMaker';
+import TimeRanges from '../utils/timeRanges';
+import CommonUtils from '../utils/common_utils';
 
 /* During the loading process of an audio/video, the following events occur, in this order:
 loadstart
@@ -15,13 +12,14 @@ canplay
 canplaythrough
 */
 
-function MediaEngine() {
+function PlaybackController() {
   let context_ = this.context;
 
   let media_ = context_.media;
   let cfg_ = context_.cfg;
-  let eventBus_ = EventBus(context_).getInstance();
-  let debug_ = Debug(context_).getInstance();
+  let eventBus_ = context_.eventBus;
+  let debug_ = context_.debug;
+  let events_ = context_.events;
 
   // flag
   let autoplayAllowed_;
@@ -178,13 +176,13 @@ function MediaEngine() {
   function onMediaCanplay() {
     //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
     debug_.log('+Native video element event: canplay');
-    eventBus_.trigger(Events.MEDIA_CANPLAY);
+    eventBus_.trigger(events_.MEDIA_CANPLAY);
   }
 
   function onMediaCanplayThrough() {
     debug_.log('+Native video element event: canplaythrough');
     let a = media_;
-    eventBus_.trigger(Events.MEDIA_CANPLAY_THROUGH);
+    eventBus_.trigger(events_.MEDIA_CANPLAY_THROUGH);
   }
 
   function onMediaEncrypted() {
@@ -195,12 +193,12 @@ function MediaEngine() {
     // debug_.log('+Native video element event: durationchange' +
     //     ', getPosition: ' + media_.getPosition +
     //     ', duration: ' + media_.duration);
-    eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
+    eventBus_.trigger(events_.MEDIA_DURATION_CHANGED);
   }
 
   function onMediaEnded() {
     debug_.log('+Native video element event: ended');
-    eventBus_.trigger(Events.MEDIA_ENDED);
+    eventBus_.trigger(events_.MEDIA_ENDED);
   }
 
   function onMediaError() {
@@ -239,7 +237,7 @@ function MediaEngine() {
     }
 
     //debug_.log('hasAudio: ' + hasAudio());
-    eventBus_.trigger(Events.MEDIA_LOADEDDATA);
+    eventBus_.trigger(events_.MEDIA_LOADEDDATA);
   }
 
   function onMediaLoadedMetadata() {
@@ -249,7 +247,7 @@ function MediaEngine() {
       ', duration: ' + media_.duration);
     let width = media_.videoWidth;
     let height = media_.videoHeight;
-    eventBus_.trigger(Events.MEDIA_LOADEDMETADATA, {
+    eventBus_.trigger(events_.MEDIA_LOADEDMETADATA, {
       width: width,
       height: height
     });
@@ -261,7 +259,7 @@ function MediaEngine() {
 
   function onMediaPaused() {
     debug_.log('+Native video element event: pause');
-    eventBus_.trigger(Events.MEDIA_PAUSED);
+    eventBus_.trigger(events_.MEDIA_PAUSED);
   }
 
   function onMediaPlay() {
@@ -270,7 +268,7 @@ function MediaEngine() {
 
   function onMediaPlaying() {
     debug_.log('+Native video element event: playing');
-    eventBus_.trigger(Events.MEDIA_PLAYING);
+    eventBus_.trigger(events_.MEDIA_PLAYING);
   }
 
   function onMediaProgress(e) {
@@ -284,11 +282,11 @@ function MediaEngine() {
   }
 
   function onMediaSeeking() {
-    eventBus_.trigger(Events.MEDIA_SEEKING);
+    eventBus_.trigger(events_.MEDIA_SEEKING);
   }
 
   function onMediaSeeked() {
-    eventBus_.trigger(Events.MEDIA_SEEKED);
+    eventBus_.trigger(events_.MEDIA_SEEKED);
   }
 
   function onMediaSuspend() {
@@ -296,18 +294,18 @@ function MediaEngine() {
   }
 
   function onMediaTimeUpdated(e) {
-    eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
+    eventBus_.trigger(events_.MEDIA_TIMEUPDATE);
     //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', getPosition: ' + media.getPosition);
   }
 
   function onMediaVolumeChanged() {
     debug_.log('+Native video element event: volumechange, muted: ' + media_.muted + ', volume: ' + media_.volume);
-    eventBus_.trigger(Events.MEDIA_VOLUME_CHANGED);
+    eventBus_.trigger(events_.MEDIA_VOLUME_CHANGED);
   }
 
   function onMediaWaiting() {
     debug_.log('+Native video element event: waiting');
-    eventBus_.trigger(Events.MEDIA_WAITING);
+    eventBus_.trigger(events_.MEDIA_WAITING);
   }
   // End
 
@@ -433,5 +431,5 @@ function MediaEngine() {
   return instance;
 }
 
-MediaEngine.__h5player_factory_name = 'MediaEngine';
-export default FactoryMaker.getSingletonFactory(MediaEngine);
+PlaybackController.__h5player_factory_name = 'PlaybackController';
+export default FactoryMaker.getSingletonFactory(PlaybackController);

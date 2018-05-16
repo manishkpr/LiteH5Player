@@ -12,15 +12,15 @@ import PlaylistLoader from './loader/playlist_loader';
 
 import UIEngine from './ui/ui_engine';
 import TextEngine from './text_engine';
-import MediaEngine from './media_engine';
-import EMEController from './media/eme_controller';
+import PlaybackController from './controller/playback_controller';
+import EMEController from './controller/eme_controller';
 import AdsEngine from './ads/ads_engine';
 
-import ParserController from './media/parser_controller';
-import LevelController from './media/level_controller';
-import BufferController from './media/buffer_controller';
-import StreamController from './media/stream_controller';
-import ThumbnailController from './media/thumbnail_controller';
+import ParserController from './controller/parser_controller';
+import LevelController from './controller/level_controller';
+import BufferController from './controller/buffer_controller';
+import StreamController from './controller/stream_controller';
+import ThumbnailController from './controller/thumbnail_controller';
 
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
@@ -37,7 +37,7 @@ function Player(containerId) {
   let debug_;
   let playlistLoader_;
 
-  let mediaEngine_;
+  let PlaybackController_;
   let textEngine_;
   let mseEngine_;
   let emeController_;
@@ -141,8 +141,8 @@ function Player(containerId) {
     if (mseEngine_) {
       mseEngine_.close();
     }
-    if (mediaEngine_) {
-      mediaEngine_.close();
+    if (PlaybackController_) {
+      PlaybackController_.close();
     }
 
     context_.mediaCfg = null;
@@ -167,14 +167,14 @@ function Player(containerId) {
       if (adsEngine_) {
         adsEngine_.playAd();
       } else {
-        mediaEngine_.play();
+        PlaybackController_.play();
       }
       flagPlayedOnce_ = true;
     } else {
       if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
         adsEngine_.play();
       } else {
-        mediaEngine_.play();
+        PlaybackController_.play();
       }
     }
   }
@@ -183,10 +183,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.pause();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      mediaEngine_.pause();
+      PlaybackController_.pause();
     }
   }
 
@@ -194,10 +194,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.isPaused();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      return mediaEngine_.isPaused();
+      return PlaybackController_.isPaused();
     }
   }
 
@@ -205,10 +205,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getPosition();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      return mediaEngine_.getPosition();
+      return PlaybackController_.getPosition();
     }
   }
 
@@ -216,33 +216,33 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getDuration();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      return mediaEngine_.getDuration();
+      return PlaybackController_.getDuration();
     }
   }
 
   function getSeekableRange() {
-    if (!mediaEngine_) {
+    if (!PlaybackController_) {
       return;
     }
-    return mediaEngine_.getSeekableRange();
+    return PlaybackController_.getSeekableRange();
   }
 
   function getBufferedRanges() {
-    if (!mediaEngine_) {
+    if (!PlaybackController_) {
       return;
     }
-    return mediaEngine_.getBufferedRanges();
+    return PlaybackController_.getBufferedRanges();
   }
 
   function isEnded() {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {} else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      return mediaEngine_.isEnded();
+      return PlaybackController_.isEnded();
     }
   }
 
@@ -250,10 +250,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.mute();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      mediaEngine_.mute();
+      PlaybackController_.mute();
     }
   }
 
@@ -261,10 +261,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.unmute();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      mediaEngine_.unmute();
+      PlaybackController_.unmute();
     }
   }
 
@@ -272,10 +272,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.isMuted();
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      return mediaEngine_.isMuted();
+      return PlaybackController_.isMuted();
     }
   }
 
@@ -283,31 +283,31 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.setVolume(volume);
     } else {
-      if (!mediaEngine_) {
+      if (!PlaybackController_) {
         return;
       }
-      mediaEngine_.setVolume(volume);
+      PlaybackController_.setVolume(volume);
     }
   }
 
   function getVolume() {
-    if (!mediaEngine_) {
+    if (!PlaybackController_) {
       return;
     }
 
-    return mediaEngine_.getVolume();
+    return PlaybackController_.getVolume();
   }
 
   function setPosition(time) {
-    mediaEngine_.setPosition(time);
+    PlaybackController_.setPosition(time);
   }
 
   function getWidth() {
-    return mediaEngine_.videoWidth();
+    return PlaybackController_.videoWidth();
   }
 
   function getHeight() {
-    return mediaEngine_.videoHeight();
+    return PlaybackController_.videoHeight();
   }
 
   function resize(width, height) {
@@ -347,7 +347,7 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isLinearAd() && adsEngine_.isPlayingAd()) {
       return 0;
     } else {
-      return mediaEngine_.getValidBufferPosition(currentPos);
+      return PlaybackController_.getValidBufferPosition(currentPos);
     }
   }
 
@@ -380,7 +380,7 @@ function Player(containerId) {
   // private functions
   function initComponent() {
     playlistLoader_ = PlaylistLoader(context_).getInstance();
-    mediaEngine_ = MediaEngine(context_).getInstance();
+    PlaybackController_ = PlaybackController(context_).getInstance();
     textEngine_ = new TextEngine(media_);
     mseEngine_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
@@ -461,16 +461,16 @@ function Player(containerId) {
   }
 
   function onPdDownloaded(frag) {
-    mediaEngine_.setSrc(frag.url);
+    PlaybackController_.setSrc(frag.url);
   }
 
   function onAdContentPauseRequested() {
-    mediaEngine_.pause();
+    PlaybackController_.pause();
   }
 
   function onAdContentResumeRequested() {
-    if (!mediaEngine_.isEnded()) {
-      mediaEngine_.play();
+    if (!PlaybackController_.isEnded()) {
+      PlaybackController_.play();
     }
   }
 
