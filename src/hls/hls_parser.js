@@ -7,11 +7,7 @@ import {
   StreamInfo
 } from '../common/common';
 
-import M3U8Parser from './hlsjs/src/loader/m3u8-parser';
-import Demuxer from './hlsjs/src/demux/demuxer';
-import {
-  hlsDefaultConfig
-} from './hlsjs/src/config';
+import M3U8Parser from '../../third_party/hlsjs/src/loader/m3u8-parser';
 
 function HlsParser() {
   let context_ = this.context;

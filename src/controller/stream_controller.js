@@ -2,10 +2,10 @@ import FactoryMaker from '../core/FactoryMaker';
 import TimeRanges from '../utils/timeRanges';
 
 // from 
-import Demuxer from '../hls/hlsjs/src/demux/demuxer';
+import Demuxer from '../../third_party/hlsjs/src/demux/demuxer';
 import {
   hlsDefaultConfig
-} from '../hls/hlsjs/src/config';
+} from '../../third_party/hlsjs/src/config';
 
 export const State = {
   STOPPED: 'STOPPED',
