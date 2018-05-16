@@ -30,21 +30,21 @@ function Player(containerId) {
   let containerId_ = containerId;
   let context_ = oldmtn; //{ flag: 'player' };
 
-  let uiEngine_;
   let media_;
+  let adContainer_;
 
   let eventBus_;
   let debug_;
   let playlistLoader_;
 
-  let PlaybackController_;
   let textEngine_;
-  let mseEngine_;
+  let bufferController_;
   let emeController_;
   let parserController_;
   let fragmentLoader_;
   let levelController_;
   let scheduleCtrl_;
+  let playbackController_;
   let thumbnailController_;
 
   // ads part
@@ -80,9 +80,10 @@ function Player(containerId) {
     context_.eventBus = eventBus_;
     //context_.loader = FetchLoader;
 
-    uiEngine_ = UIEngine(context_).getInstance();
-    uiEngine_.initUI(containerId_);
+    let uiEngine = UIEngine(context_).getInstance();
+    uiEngine.initUI(containerId_);
     media_ = uiEngine_.getVideo();
+    adContainer_ = uiEngine_.getAdContainer();
 
     context_.media = media_;
   }
@@ -138,18 +139,18 @@ function Player(containerId) {
     if (adsEngine_) {
       adsEngine_.close();
     }
-    if (mseEngine_) {
-      mseEngine_.close();
+    if (bufferController_) {
+      bufferController_.close();
     }
-    if (PlaybackController_) {
-      PlaybackController_.close();
+    if (playbackController_) {
+      playbackController_.close();
     }
 
     context_.mediaCfg = null;
   }
 
   function dellAll() {
-    mseEngine_.removeBuffer();
+    bufferController_.removeBuffer();
   }
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -167,14 +168,14 @@ function Player(containerId) {
       if (adsEngine_) {
         adsEngine_.playAd();
       } else {
-        PlaybackController_.play();
+        playbackController_.play();
       }
       flagPlayedOnce_ = true;
     } else {
       if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
         adsEngine_.play();
       } else {
-        PlaybackController_.play();
+        playbackController_.play();
       }
     }
   }
@@ -183,10 +184,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.pause();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      PlaybackController_.pause();
+      playbackController_.pause();
     }
   }
 
@@ -194,10 +195,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.isPaused();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      return PlaybackController_.isPaused();
+      return playbackController_.isPaused();
     }
   }
 
@@ -205,10 +206,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getPosition();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      return PlaybackController_.getPosition();
+      return playbackController_.getPosition();
     }
   }
 
@@ -216,33 +217,33 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getDuration();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      return PlaybackController_.getDuration();
+      return playbackController_.getDuration();
     }
   }
 
   function getSeekableRange() {
-    if (!PlaybackController_) {
+    if (!playbackController_) {
       return;
     }
-    return PlaybackController_.getSeekableRange();
+    return playbackController_.getSeekableRange();
   }
 
   function getBufferedRanges() {
-    if (!PlaybackController_) {
+    if (!playbackController_) {
       return;
     }
-    return PlaybackController_.getBufferedRanges();
+    return playbackController_.getBufferedRanges();
   }
 
   function isEnded() {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {} else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      return PlaybackController_.isEnded();
+      return playbackController_.isEnded();
     }
   }
 
@@ -250,10 +251,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.mute();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      PlaybackController_.mute();
+      playbackController_.mute();
     }
   }
 
@@ -261,10 +262,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.unmute();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      PlaybackController_.unmute();
+      playbackController_.unmute();
     }
   }
 
@@ -272,10 +273,10 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.isMuted();
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      return PlaybackController_.isMuted();
+      return playbackController_.isMuted();
     }
   }
 
@@ -283,31 +284,31 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.setVolume(volume);
     } else {
-      if (!PlaybackController_) {
+      if (!playbackController_) {
         return;
       }
-      PlaybackController_.setVolume(volume);
+      playbackController_.setVolume(volume);
     }
   }
 
   function getVolume() {
-    if (!PlaybackController_) {
+    if (!playbackController_) {
       return;
     }
 
-    return PlaybackController_.getVolume();
+    return playbackController_.getVolume();
   }
 
   function setPosition(time) {
-    PlaybackController_.setPosition(time);
+    playbackController_.setPosition(time);
   }
 
   function getWidth() {
-    return PlaybackController_.videoWidth();
+    return playbackController_.videoWidth();
   }
 
   function getHeight() {
-    return PlaybackController_.videoHeight();
+    return playbackController_.videoHeight();
   }
 
   function resize(width, height) {
@@ -347,7 +348,7 @@ function Player(containerId) {
     if (adsEngine_ && adsEngine_.isLinearAd() && adsEngine_.isPlayingAd()) {
       return 0;
     } else {
-      return PlaybackController_.getValidBufferPosition(currentPos);
+      return playbackController_.getValidBufferPosition(currentPos);
     }
   }
 
@@ -380,9 +381,9 @@ function Player(containerId) {
   // private functions
   function initComponent() {
     playlistLoader_ = PlaylistLoader(context_).getInstance();
-    PlaybackController_ = PlaybackController(context_).getInstance();
+    playbackController_ = PlaybackController(context_).getInstance();
     textEngine_ = new TextEngine(media_);
-    mseEngine_ = BufferController(context_).getInstance();
+    bufferController_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
     parserController_ = ParserController(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
@@ -394,8 +395,7 @@ function Player(containerId) {
       media_.poster = context_.cfg.poster;
     }
     if (context_.cfg.advertising) {
-      let adContainer = uiEngine_.getAdContainer();
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, context_.cfg.advertising);
+      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
     }
   }
 
@@ -461,16 +461,16 @@ function Player(containerId) {
   }
 
   function onPdDownloaded(frag) {
-    PlaybackController_.setSrc(frag.url);
+    playbackController_.setSrc(frag.url);
   }
 
   function onAdContentPauseRequested() {
-    PlaybackController_.pause();
+    playbackController_.pause();
   }
 
   function onAdContentResumeRequested() {
-    if (!PlaybackController_.isEnded()) {
-      PlaybackController_.play();
+    if (!playbackController_.isEnded()) {
+      playbackController_.play();
     }
   }
 
@@ -544,7 +544,7 @@ function Player(containerId) {
     debug_.log(`media.buffered : ${TimeRanges.toString(media.buffered)}`);
     debug_.log(`media.seekable: ${TimeRanges.toString(media.seekable)}`);
 
-    mseEngine_.setDuration(200);
+    bufferController_.setDuration(200);
 
     let a = 2;
     let b = a;

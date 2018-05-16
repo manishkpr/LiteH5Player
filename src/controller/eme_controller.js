@@ -3,7 +3,6 @@ import ProtectionKeyController from '../protection/controller/ProtectionKeyContr
 import ProtectionModel_21Jan2015 from '../protection/models/ProtectionModel_21Jan2015';
 import ProtectionModel_3Feb2014 from '../protection/models/ProtectionModel_3Feb2014';
 
-//
 function EMEController() {
   let context_ = this.context;
   let debug_ = context_.debug;
@@ -38,10 +37,10 @@ function EMEController() {
       media.mediaKeys !== undefined &&
       navigator.requestMediaKeySystemAccess !== undefined &&
       typeof navigator.requestMediaKeySystemAccess === 'function') {
-      console.log('User Agent support ProtectionModel_21Jan2015');
+      debug_.log('User Agent support ProtectionModel_21Jan2015');
       return new ProtectionModel_21Jan2015();
     } else {
-      console.log('User Agent support ProtectionModel_3Feb2014');
+      debug_.log('User Agent support ProtectionModel_3Feb2014');
       return new ProtectionModel_3Feb2014();
     }
   }
