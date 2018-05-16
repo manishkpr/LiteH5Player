@@ -21,8 +21,6 @@ function ProtectionModel_3Feb2014(media) {
   let session_ = null;
   let keySystem_ = null;
   let mediaKeys_ = null;
-  let audioCodec_ = null;
-  let videoCodec_ = null;
 
   function attachMedia(media) {
     media_ = media;
@@ -45,8 +43,8 @@ function ProtectionModel_3Feb2014(media) {
   }
 
   function setMediaCodec(audioCodec, videoCodec) {
-    audioCodec_ = audioCodec;
-    videoCodec_ = videoCodec;
+    streamInfo_.drm.audioCodec = audioCodec;
+    streamInfo_.drm.videoCodec = videoCodec;
   }
 
   function onNeedKey(ev) {
@@ -68,7 +66,7 @@ function ProtectionModel_3Feb2014(media) {
       mediaKeys_ = new window.MSMediaKeys(keySystem_.systemString);
       media_.msSetMediaKeys(mediaKeys_);
 
-      session_ = mediaKeys_.createSession(videoCodec_, new Uint8Array(abInitData));
+      session_ = mediaKeys_.createSession(streamInfo.drm.videoCodec, new Uint8Array(abInitData));
       session_.addEventListener('mskeyerror', onSessionError);
       session_.addEventListener('mskeymessage', onSessionMessage);
       session_.addEventListener('mskeyadded', onSessionAdded);
@@ -128,11 +126,11 @@ function ProtectionModel_3Feb2014(media) {
     let audioCapabilities = [];
     let videoCapabilities = [];
     let robustnessLevel = '';
-    if (audioCodec_) {
-      audioCapabilities.push(new MediaCapability(audioCodec_, robustnessLevel));
+    if (streamInfo_.drm.audioCodec) {
+      audioCapabilities.push(new MediaCapability(streamInfo_.drm.audioCodec, robustnessLevel));
     }
-    if (videoCodec_) {
-      videoCapabilities.push(new MediaCapability(videoCodec_, robustnessLevel));
+    if (streamInfo_.drm.videoCodec) {
+      videoCapabilities.push(new MediaCapability(streamInfo_.drm.videoCodec, robustnessLevel));
     }
 
     let ksConfig = new KeySystemConfiguration(

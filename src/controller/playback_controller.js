@@ -14,12 +14,12 @@ canplaythrough
 
 function PlaybackController() {
   let context_ = this.context;
-
-  let media_ = context_.media;
-  let cfg_ = context_.cfg;
-  let eventBus_ = context_.eventBus;
   let debug_ = context_.debug;
   let events_ = context_.events;
+  let eventBus_ = context_.eventBus;
+  
+  let media_ = context_.media;
+  let cfg_ = context_.cfg;
 
   // flag
   let autoplayAllowed_;

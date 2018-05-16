@@ -72,8 +72,6 @@ function ProtectionModel_21Jan2015() {
   let keySystem_ = null;
   let session_ = null;
   let streamInfo_ = null;
-  let audioCodec_ = null;
-  let videoCodec_ = null;
 
   let promiseAction_ = null;
 
@@ -109,14 +107,16 @@ function ProtectionModel_21Jan2015() {
     }
 
     // BD
-    // var pssh = CommonEncryption.parsePSSHList(ev.initData);
-    // let a1 = StringUtils.ab2str_v1(pssh['edef8ba9-79d6-4ace-a3c8-27dcd51d21ed']);
-    // let a2 = StringUtils.ab2str_v1(pssh['9a04f079-9840-4286-ab92-e65be0885f95']);
-    // console.log('DRM, a1: ' + a1);
-    // console.log('DRM, a2: ' + a2);
+    var pssh = CommonEncryption.parsePSSHList(ev.initData);
+    let a1 = StringUtils.ab2str_v1(pssh['edef8ba9-79d6-4ace-a3c8-27dcd51d21ed']);
+    let a2 = StringUtils.ab2str_v1(pssh['9a04f079-9840-4286-ab92-e65be0885f95']);
+    console.log('DRM, a1: ' + a1);
+    console.log('DRM, a2: ' + a2);
     // ED
 
-    requestKeySystemAccess();
+    if (!promiseAction_) {
+      promiseAction_ = requestKeySystemAccess();
+    }
   }
 
   function onSessionMessage(ev) {
@@ -203,21 +203,21 @@ function ProtectionModel_21Jan2015() {
     console.log('--setDrmInfo in 21Jan2015--');
     streamInfo_ = streamInfo;
   }
-  
+
   function setMediaCodec(audioCodec, videoCodec) {
-    audioCodec_ = audioCodec;
-    videoCodec_ = videoCodec;
+    streamInfo_.drm.audioCodec = audioCodec;
+    streamInfo_.drm.videoCodec = videoCodec;
   }
 
   function requestKeySystemAccess() {
     let audioCapabilities = [];
     let videoCapabilities = [];
     let robustnessLevel = ''; // SW_SECURE_CRYPTO
-    if (audioCodec_) {
-      audioCapabilities.push(new MediaCapability(audioCodec_, robustnessLevel));
+    if (streamInfo_.drm.audioCodec) {
+      audioCapabilities.push(new MediaCapability(streamInfo_.drm.audioCodec, robustnessLevel));
     }
-    if (videoCodec_) {
-      videoCapabilities.push(new MediaCapability(videoCodec_, robustnessLevel));
+    if (streamInfo_.drm.videoCodec) {
+      videoCapabilities.push(new MediaCapability(streamInfo_.drm.videoCodec, robustnessLevel));
     }
 
     let ksConfig = new KeySystemConfiguration(
@@ -230,11 +230,7 @@ function ProtectionModel_21Jan2015() {
     //dumpKSConfig(keySystem_.systemString, ksConfig);
     // ED
 
-    if (promiseAction_) {
-      return;
-    }
-
-    promiseAction_ = navigator.requestMediaKeySystemAccess(keySystem_.systemString, configs_)
+    return navigator.requestMediaKeySystemAccess(keySystem_.systemString, configs_)
       .then(function(keySystemAccess) {
         console.log('H5Player, requestMediaKeySystemAccess is ok');
         return keySystemAccess.createMediaKeys();

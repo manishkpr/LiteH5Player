@@ -1,7 +1,4 @@
 import FactoryMaker from '../core/FactoryMaker';
-import EventBus from '../core/EventBus';
-import Events from '../core/CoreEvents';
-import Debug from '../core/Debug';
 import TimeRanges from '../utils/timeRanges';
 
 // from 
@@ -26,8 +23,9 @@ export const State = {
 
 function StreamController() {
   let context_ = this.context;
-  let debug_ = Debug(context_).getInstance();
-  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = context_.debug;
+  let events_ = context_.events;
+  let eventBus_ = context_.eventBus;
 
   let parser_;
   let streamInfo_;
@@ -50,23 +48,23 @@ function StreamController() {
 
     demuxer_ = new Demuxer(hls_, 'main');
 
-    eventBus_.on(Events.FOUND_PARSER, onFoundParser);
-    eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
+    eventBus_.on(events_.FOUND_PARSER, onFoundParser);
+    eventBus_.on(events_.MEDIA_ATTACHED, onMediaAttached);
 
-    eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed);
-    eventBus_.on(Events.STREAM_LOADED, onStreamLoaded);
+    eventBus_.on(events_.MANIFEST_PARSED, onManifestParsed);
+    eventBus_.on(events_.STREAM_LOADED, onStreamLoaded);
 
-    eventBus_.on(Events.FRAG_LOADED, onFragLoaded);
+    eventBus_.on(events_.FRAG_LOADED, onFragLoaded);
 
-    eventBus_.on(Events.INIT_PTS_FOUND, onInitPtsFound, {});
-    eventBus_.on(Events.FRAG_PARSING_INIT_SEGMENT, onFragParsingInitSegment, {});
-    eventBus_.on(Events.FRAG_PARSING_DATA, onFragParsingData, {});
-    eventBus_.on(Events.FRAG_PARSED, onFragParsed, {});
+    eventBus_.on(events_.INIT_PTS_FOUND, onInitPtsFound, {});
+    eventBus_.on(events_.FRAG_PARSING_INIT_SEGMENT, onFragParsingInitSegment, {});
+    eventBus_.on(events_.FRAG_PARSING_DATA, onFragParsingData, {});
+    eventBus_.on(events_.FRAG_PARSED, onFragParsed, {});
 
-    eventBus_.on(Events.BUFFER_APPENDED, onBufferAppended);
+    eventBus_.on(events_.BUFFER_APPENDED, onBufferAppended);
 
     //
-    eventBus_.on(Events.TEST_MSG, onTestMsg);
+    eventBus_.on(events_.TEST_MSG, onTestMsg);
   }
 
   // tool functions
@@ -112,6 +110,7 @@ function StreamController() {
     debug_.log(`+onFragLoaded, SN:${frag.sn}, start:${frag.start}, duration:${frag.duration}`);
     if (frag.sn === 'initSegment') {
       frag.data = data;
+      state_ = State.IDLE;
       tick();
     } else {
       state_ = State.PARSING;
@@ -128,14 +127,14 @@ function StreamController() {
   }
 
   function onFragParsingInitSegment(data) {
-    eventBus_.trigger(Events.BUFFER_CODEC, data.tracks);
+    eventBus_.trigger(events_.BUFFER_CODEC, data.tracks);
 
     debug_.log('+onFragParsingInitSegment');
     for (let trackName in data.tracks) {
       let track = data.tracks[trackName];
       let initSegment = track.initSegment;
       if (initSegment) {
-        eventBus_.trigger(Events.BUFFER_APPENDING, {
+        eventBus_.trigger(events_.BUFFER_APPENDING, {
           type: trackName,
           content: 'initSegment',
           data: initSegment
@@ -158,7 +157,7 @@ function StreamController() {
     [data.data1, data.data2].forEach((buffer, index) => {
       if (buffer) {
         debug_.log(`push data, index:${index}`);
-        eventBus_.trigger(Events.BUFFER_APPENDING, {
+        eventBus_.trigger(events_.BUFFER_APPENDING, {
           type: data.type,
           content: 'data',
           data: buffer
@@ -192,7 +191,7 @@ function StreamController() {
 
     let frag = parser_.getNextFragment();
     if (frag && frag.type === 'pd') {
-      eventBus_.trigger(Events.PD_DOWNLOADED, frag);
+      eventBus_.trigger(events_.PD_DOWNLOADED, frag);
       return;
     }
 
@@ -205,12 +204,12 @@ function StreamController() {
         {
           let frag = _findFragment();
           if (frag) {
-            eventBus_.trigger(Events.FRAG_LOADING, {
+            eventBus_.trigger(events_.FRAG_LOADING, {
               frag
             });
             state_ = State.FRAG_LOADING;
           } else {
-            eventBus_.trigger(Events.BUFFER_EOS);
+            eventBus_.trigger(events_.BUFFER_EOS);
           }
         }
         break;

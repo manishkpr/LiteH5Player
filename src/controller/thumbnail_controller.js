@@ -1,22 +1,19 @@
 import FactoryMaker from '../core/FactoryMaker';
-import Events from '../core/CoreEvents';
-import EventBus from '../core/EventBus';
-
-import XHRLoader from '../utils/xhr_loader';
 import VTTParser from '../utils/VTTParser';
 import StringUtils from '../utils/string_utils';
 
 function ThumbnailController() {
   let context_ = this.context;
-  let eventBus_ = EventBus(context_).getInstance();
-  let xhrLoader_ = XHRLoader(context_).create();
+  let events_ = context_.events;
+  let eventBus_ = context_.eventBus;
+  let xhrLoader_ = context_.loader(context_).create();
   let vttParser_ = VTTParser(context_).getInstance();
 
   let vttUrl_;
   let thumbnails_;
 
   function setup() {
-    eventBus_.on(Events.THUMBNAIL_LOADING, onThumbnailLoading);
+    eventBus_.on(events_.THUMBNAIL_LOADING, onThumbnailLoading);
   }
 
   function onThumbnailLoading(data) {

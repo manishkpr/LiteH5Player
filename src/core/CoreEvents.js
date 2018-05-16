@@ -68,8 +68,6 @@ class CoreEvents {
 
         this.FINDING_PARSER = 'findingParser';
         this.FOUND_PARSER = 'foundParser';
-
-        //
         this.THUMBNAIL_LOADING = 'thumbnailLoading';
 
         //

@@ -2,9 +2,9 @@ import FactoryMaker from '../core/FactoryMaker';
 
 function LevelController() {
   let context_ = this.context;
+  let debug_ = context_.debug;
   let events_ = context_.events;
   let eventBus_ = context_.eventBus;
-  let debug_ = context_.debug;
 
   let streamInfo_;
 
