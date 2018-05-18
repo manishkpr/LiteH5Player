@@ -659,7 +659,7 @@ playerUI.updateTooltipUI = function(e) {
   // calculate metrics first
   this.vopTooltip.style.left = '10000px';
   this.vopTooltip.style.display = 'block';
-  tooltipWidth = this.vopTooltip.clientWidth;
+  var tooltipWidth = this.vopTooltip.clientWidth;
   // set the correct offset of tooltip.
   var offsetX = getTooltipOffsetX.call(this, e, tooltipWidth);
   this.vopTooltip.style.left = offsetX.toString() + 'px';
@@ -2028,73 +2028,6 @@ playerUI.playerTest = function() {
 };
 
 /////////////////////////////////////////////////////////////////////////
-// Title: UI Command
-function onBtnInit() {
-
-}
-
-function onBtnUninit() {
-
-}
-
-function onBtnOpen() {
-  playerUI.playerOpen();
-}
-
-function onBtnClose() {
-  playerUI.playerClose();
-}
-
-function onBtnPlay() {
-  playerUI.vopPlayButton.click();
-}
-
-function onBtnManualSchedule() {
-  playerUI.onBtnManualSchedule();
-}
-
-function onBtnInitAD() {
-  playerUI.playerRequestAds();
-}
-
-function onBtnDelAll() {}
-
-function onBtnStop() {}
-
-function onBtnPlayAd() {}
-
-function onBtnTest() {
-  playerUI.playerTest();
-}
-
-function onBtnTest2() {
-  printLog('--onBtnTest2--');
-  this.player_.test2();
-
-  //this.player_.resize(1024, 768);
-  //stopBufferingUI();
-
-  // var v = document.querySelector('.ytp-play-button');
-  // var v1 = v.querySelector('.ytp-svg-fill');
-  // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
-
-  // var v = document.querySelector('.vop-video');
-  // v.addEventListener("webkitfullscreenchange", function() {
-  //   printLog('--webkitfullscreenchange--');
-  //     //printLog(document.webkitIsFullScreen);
-  // }, false);
-
-  // v.webkitEnterFullScreen();
-
-  //v.setAttribute('aria-hidden', true);
-}
-
-function onBtnSeek() {
-  var time = document.getElementById('seekedTime').value;
-  playerUI.player_.setPosition(time);
-}
-
-/////////////////////////////////////////////////////////////////////////
 // Title: experience functions
 function onBtnTmp1() {
   // visual viewport 可见视口 屏幕宽度
@@ -2158,11 +2091,177 @@ function onUICmdCastSeek() {
 }
 
 /////////////////////////////////////////////////////////////////////////
+// Title Player Components
+const elePlayer =
+<div>
+  <div className="vop-tooltip">
+    <div className="vop-tooltip-bg"></div>
+    <div className="vop-tooltip-text-wrapper">
+      <span className="vop-tooltip-text">00:00</span>
+    </div>
+  </div>
+  <div className="vop-popup vop-settings-menu">
+    <div className="vop-panel">
+      <div className="vop-panel-menu">
+      </div>
+    </div>
+  </div>
+  <div className="vop-gradient-bottom"></div>
+    <div className="vop-control-bar">
+      <div className="vop-progress-bar">
+        <div className="vop-progress-list">
+          <div className="vop-load-progress"></div>
+          <div className="vop-play-progress"></div>
+          <div className="vop-hover-progress"></div>
+        </div>
+        <div className="vop-scrubber-container"></div>
+      </div>
+    <div className="vop-controls">
+      <div className="vop-left-controls">
+        <button className="vop-button material-icons vop-play-button" title="play">&#xe037;</button>
+        <button className="vop-button material-icons vop-mute-button" title="mute">&#xe050;</button>
+        <div className="vop-volume-panel">
+          <div className="vop-volume-slider">
+            <div className="vop-volume-slider-handle">
+            </div>
+          </div>
+        </div>
+      <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
+      </div>
+      <div className="vop-right-controls">
+        <button className="vop-button material-icons vop-subtitles-button" title="subtitles">&#xe048;</button>
+          <button className="vop-button material-icons vop-settings-button" title="settings">&#xe8b8;</button>
+          <button className="vop-button material-icons vop-fullscreen-button" title="fullscreen">&#xe5d0;</button>
+        </div>
+      </div>
+    </div>
+    <div className="vop-caption-window">
+    </div>
+    <div className="vop-spinner">
+      <div className="vop-spinner-container">
+        <div className="vop-spinner-rotator">
+          <div className="vop-spinner-left">
+            <div className="vop-spinner-circle">
+            </div>
+          </div>
+          <div className="vop-spinner-right">
+            <div className="vop-spinner-circle">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div className="vop-giant-button-container" style={{display: 'none'}}>
+    <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
+  </div>
+</div>;
+
+/////////////////////////////////////////////////////////////////////////
+// Title: UI Components & Command
+function onBtnInit() {
+}
+
+function onBtnUninit() {
+
+}
+
+function onBtnOpen() {
+  playerUI.playerOpen();
+}
+
+function onBtnClose() {
+  playerUI.playerClose();
+}
+
+function onBtnPlay() {
+  playerUI.vopPlayButton.click();
+}
+
+function onBtnManualSchedule() {
+  playerUI.onBtnManualSchedule();
+}
+
+function onBtnInitAD() {
+  playerUI.playerRequestAds();
+}
+
+function onBtnDelAll() {}
+
+function onBtnStop() {}
+
+function onBtnPlayAd() {}
+
+function onBtnTest() {
+  playerUI.playerTest();
+}
+
+function onBtnTest2() {
+  printLog('--onBtnTest2--');
+  this.player_.test2();
+
+  //this.player_.resize(1024, 768);
+  //stopBufferingUI();
+
+  // var v = document.querySelector('.ytp-play-button');
+  // var v1 = v.querySelector('.ytp-svg-fill');
+  // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
+
+  // var v = document.querySelector('.vop-video');
+  // v.addEventListener("webkitfullscreenchange", function() {
+  //   printLog('--webkitfullscreenchange--');
+  //     //printLog(document.webkitIsFullScreen);
+  // }, false);
+
+  // v.webkitEnterFullScreen();
+
+  //v.setAttribute('aria-hidden', true);
+}
+
+function onBtnSeek() {
+  var time = document.getElementById('seekedTime').value;
+  playerUI.player_.setPosition(time);
+}
+
+const eleBtnController =
+<div>
+  <button type="button" onClick={onBtnInit}>init</button>
+  <button type="button" onClick={onBtnUninit}>uninit</button>
+  <button type="button" onClick={onBtnOpen}>open</button>
+  <button type="button" onClick={onBtnClose}>close</button>
+  <button type="button" onClick={onBtnPlay}>play</button>
+  <button type="button" onClick={onBtnManualSchedule}>add</button>
+  <button type="button" onClick={onBtnInitAD}>initAd</button>
+  <button type="button" onClick={onBtnDelAll}>del all</button>
+  <button type="button" onClick={onBtnStop} style={{display: 'none'}}>stop</button>
+  <button type="button" onClick={onBtnPlayAd}>play ad</button>
+  <br/>
+  <button type="button" onClick={onBtnTest}>test</button>
+  <button type="button" onClick={onBtnTest2}>test2</button>
+  <div>
+    <label>seek to: </label>
+    <input type="text" id="seekedTime"/>
+    <button type="button" onClick={onBtnSeek}>OK</button>
+  </div>
+  <br/>
+</div>;
+
+
+/////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
 window.onload = function() {
   // print browser version info
   browserInfo = oldmtn.CommonUtils.getBrowserInfo();
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
+
+  // InitUI -- add ui command
+  ReactDOM.render(
+    elePlayer,
+    document.getElementById('player-container'));
+
+  ReactDOM.render(
+    eleBtnController,
+    document.getElementById('idBtnController')
+  );
 
   playerUI.initVariable();
   playerUI.initUIElements();
@@ -2178,3 +2277,7 @@ window.onload = function() {
 window.onunload = function() {
   //onBtnStop();
 };
+
+
+
+

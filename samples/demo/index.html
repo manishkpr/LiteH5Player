@@ -4,8 +4,12 @@
   <!-- viewport tag only valid to mobile browser. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <!-- jQuery lib -->
+  <!-- jQuery -->
   <script src="./lib/jquery-1.10.2.min.js"></script>
+  <!-- React -->
+  <script src="./lib/react/react.js"></script>
+  <script src="./lib/react/react-dom.js"></script>
+  <script src="./lib/react/browser.min.js"></script>
   <!-- google cast sender sdk -->
   <script src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   <!-- google ads sdk -->
@@ -18,93 +22,18 @@
   <script src="./liteH5Player.debug.js"></script>
   <script src="./assets.js"></script>
   <script src="./tool.js"></script>
-  <script src="./main.js"></script>
+  <script type="text/babel" src="./components.js"></script>
+  <script type="text/babel" src="./main.js"></script>
 </head>
 <body>
   <h2>LiteH5Player</h2>
 
   <div class="player">
     <div id="player-container" class="html5-video-player vop-autohide">
-        <!-- class vop-preview represent there is a vtt thumbnail. -->
-        <div class="vop-tooltip">
-          <div class="vop-tooltip-bg"></div>
-          <div class="vop-tooltip-text-wrapper">
-            <span class="vop-tooltip-text">00:00</span>
-          </div>
-        </div>
-        <div class="vop-popup vop-settings-menu">
-          <div class="vop-panel">
-            <div class="vop-panel-menu">
-<!--
-    <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
-       <div class="vop-menuitem-label">
-           Font Family
-       </div>
-       <div class="vop-menuitem-content">
-          Default
-       </div>
     </div>
-    <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
-        <div class="vop-menuitem-label">
-            Font Color
-        </div>
-        <div class="vop-menuitem-content">
-          Yellow
-        </div>
-    </div>
--->
-            </div>
-          </div>
-        </div>
-        <div class="vop-gradient-bottom"></div>
-        <div class="vop-control-bar">
-          <div class="vop-progress-bar">
-            <div class="vop-progress-list">
-              <div class="vop-load-progress"></div>
-              <div class="vop-play-progress"></div>
-              <div class="vop-hover-progress"></div>
-            </div>
-            <div class="vop-scrubber-container"></div>
-          </div>
-          <div class="vop-controls">
-            <div class="vop-left-controls">
-              <button class="vop-button material-icons vop-play-button" title="play">&#xe037;</button>
-              <button class="vop-button material-icons vop-mute-button" title="mute">&#xe050;</button>
-              <div class="vop-volume-panel">
-                <div class="vop-volume-slider">
-                  <div class="vop-volume-slider-handle">
-                  </div>
-                </div>
-              </div>
-              <div class="vop-time-display"><span class="vop-time-text">00:00/00:00</span></div>
-            </div>
-            <div class="vop-right-controls">
-              <button class="vop-button material-icons vop-subtitles-button" title="subtitles">&#xe048;</button>
-              <button class="vop-button material-icons vop-settings-button" title="settings">&#xe8b8;</button>
-              <button class="vop-button material-icons vop-fullscreen-button" title="fullscreen">&#xe5d0;</button>
-            </div>
-          </div>
-        </div>
-        <div class="vop-caption-window">
-        </div>
-        <div class="vop-spinner">
-          <div class="vop-spinner-container">
-            <div class="vop-spinner-rotator">
-              <div class="vop-spinner-left">
-                <div class="vop-spinner-circle">
-                </div>
-              </div>
-              <div class="vop-spinner-right">
-                <div class="vop-spinner-circle">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="vop-giant-button-container" style="display: none;">
-          <div class="material-icons vop-giant-button" style="color: white; font-size: 48px;">&#xe037;</div>
-        </div>
-    </div>
+  </div>
+
+  <div id="root">
   </div>
 
   <div>
@@ -123,25 +52,6 @@
 
   <br/>
   <div id="idBtnController">
-    <button type="button" onclick="onBtnInit()">init</button>
-    <button type="button" onclick="onBtnUninit()">uninit</button>
-    <button type="button" onclick="onBtnOpen()">open</button>
-    <button type="button" onclick="onBtnClose()">close</button>
-    <button type="button" onclick="onBtnPlay()">play</button>
-    <button type="button" onclick="onBtnManualSchedule()">add</button>
-    <button type="button" onclick="onBtnInitAD()">initAd</button>
-    <button type="button" onclick="onBtnDelAll()">del all</button>
-    <button type="button" onclick="onBtnStop()" style="display:none">stop</button>
-    <button type="button" onclick="onBtnPlayAd()">play ad</button>
-    <br/>
-    <button type="button" onclick="onBtnTest()">test</button>
-    <button type="button" onclick="onBtnTest2()">test2</button>
-    <div>
-      <label>seek to: </label>
-      <input type="text" id="seekedTime"/>
-      <button type="button" onclick="onBtnSeek()">OK</button>
-    </div>
-    <br />
   </div>
 
   <div>

@@ -82,8 +82,8 @@ function Player(containerId) {
 
     let uiEngine = UIEngine(context_).getInstance();
     uiEngine.initUI(containerId_);
-    media_ = uiEngine_.getVideo();
-    adContainer_ = uiEngine_.getAdContainer();
+    media_ = uiEngine.getVideo();
+    adContainer_ = uiEngine.getAdContainer();
 
     context_.media = media_;
   }
