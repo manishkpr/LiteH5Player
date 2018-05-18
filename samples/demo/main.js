@@ -2092,8 +2092,14 @@ function onUICmdCastSeek() {
 
 /////////////////////////////////////////////////////////////////////////
 // Title Player Components
-const elePlayer =
-<div>
+
+class UIPlayer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (<div>
   <div className="vop-tooltip">
     <div className="vop-tooltip-bg"></div>
     <div className="vop-tooltip-text-wrapper">
@@ -2154,97 +2160,117 @@ const elePlayer =
   <div className="vop-giant-button-container" style={{display: 'none'}}>
     <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
   </div>
-</div>;
+</div>);
+  }
+};
 
 /////////////////////////////////////////////////////////////////////////
 // Title: UI Components & Command
-function onBtnInit() {
+class UIBtnControlBar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onBtnOpen = this.onBtnOpen.bind(this);
+    this.onBtnClose = this.onBtnClose.bind(this);
+  }
+
+  componentWillMount() {
+    console.log('+UIBtnControlBar, componentWillMount()');
+  }
+
+  componentDidMount() {
+    console.log('+UIBtnControlBar, componentDidMount()');
+  }
+
+  render() {
+    console.log('+UIBtnControlBar, render()');
+
+    return (
+      <div>
+        <button type="button" onClick={this.onBtnInit}>init</button>
+        <button type="button" onClick={this.onBtnUninit}>uninit</button>
+        <button type="button" onClick={this.onBtnOpen}>open</button>
+        <button type="button" onClick={this.onBtnClose}>close</button>
+        <button type="button" onClick={this.onBtnPlay}>play</button>
+        <button type="button" onClick={this.onBtnManualSchedule}>add</button>
+        <button type="button" onClick={this.onBtnInitAD}>initAd</button>
+        <button type="button" onClick={this.onBtnDelAll}>del all</button>
+        <button type="button" onClick={this.onBtnStop} style={{display: 'none'}}>stop</button>
+        <button type="button" onClick={this.onBtnPlayAd}>play ad</button>
+        <br/>
+        <button type="button" onClick={this.onBtnTest}>test</button>
+        <button type="button" onClick={this.onBtnTest2}>test2</button>
+        <div>
+          <label>seek to: </label>
+          <input type="text" id="seekedTime"/>
+          <button type="button" onClick={this.onBtnSeek}>OK</button>
+        </div>
+        <br/>
+      </div>
+    );
+  }
+
+  // Custom Methods
+  onBtnInit() {}
+
+  onBtnUninit() {
+  }
+
+  onBtnOpen() {
+    playerUI.playerOpen();
+  }
+
+  onBtnClose() {
+    playerUI.playerClose();
+  }
+
+  onBtnPlay() {
+    playerUI.vopPlayButton.click();
+  }
+
+  onBtnManualSchedule() {
+    playerUI.onBtnManualSchedule();
+  }
+
+  onBtnInitAD() {
+    playerUI.playerRequestAds();
+  }
+
+  onBtnDelAll() {}
+
+  onBtnStop() {}
+
+  onBtnPlayAd() {}
+
+  onBtnTest() {
+    playerUI.playerTest();
+  }
+
+  onBtnTest2() {
+    printLog('--onBtnTest2--');
+    //this.player_.resize(1024, 768);
+    //stopBufferingUI();
+
+    // var v = document.querySelector('.ytp-play-button');
+    // var v1 = v.querySelector('.ytp-svg-fill');
+    // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
+
+    // var v = document.querySelector('.vop-video');
+    // v.addEventListener("webkitfullscreenchange", function() {
+    //   printLog('--webkitfullscreenchange--');
+    //     //printLog(document.webkitIsFullScreen);
+    // }, false);
+
+    // v.webkitEnterFullScreen();
+
+    //v.setAttribute('aria-hidden', true);
+  }
+
+  onBtnSeek() {
+    var time = document.getElementById('seekedTime').value;
+    playerUI.player_.setPosition(time);
+  }
 }
-
-function onBtnUninit() {
-
-}
-
-function onBtnOpen() {
-  playerUI.playerOpen();
-}
-
-function onBtnClose() {
-  playerUI.playerClose();
-}
-
-function onBtnPlay() {
-  playerUI.vopPlayButton.click();
-}
-
-function onBtnManualSchedule() {
-  playerUI.onBtnManualSchedule();
-}
-
-function onBtnInitAD() {
-  playerUI.playerRequestAds();
-}
-
-function onBtnDelAll() {}
-
-function onBtnStop() {}
-
-function onBtnPlayAd() {}
-
-function onBtnTest() {
-  playerUI.playerTest();
-}
-
-function onBtnTest2() {
-  printLog('--onBtnTest2--');
-  this.player_.test2();
-
-  //this.player_.resize(1024, 768);
-  //stopBufferingUI();
-
-  // var v = document.querySelector('.ytp-play-button');
-  // var v1 = v.querySelector('.ytp-svg-fill');
-  // v1.setAttribute('d', 'M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z');
-
-  // var v = document.querySelector('.vop-video');
-  // v.addEventListener("webkitfullscreenchange", function() {
-  //   printLog('--webkitfullscreenchange--');
-  //     //printLog(document.webkitIsFullScreen);
-  // }, false);
-
-  // v.webkitEnterFullScreen();
-
-  //v.setAttribute('aria-hidden', true);
-}
-
-function onBtnSeek() {
-  var time = document.getElementById('seekedTime').value;
-  playerUI.player_.setPosition(time);
-}
-
-const eleBtnController =
-<div>
-  <button type="button" onClick={onBtnInit}>init</button>
-  <button type="button" onClick={onBtnUninit}>uninit</button>
-  <button type="button" onClick={onBtnOpen}>open</button>
-  <button type="button" onClick={onBtnClose}>close</button>
-  <button type="button" onClick={onBtnPlay}>play</button>
-  <button type="button" onClick={onBtnManualSchedule}>add</button>
-  <button type="button" onClick={onBtnInitAD}>initAd</button>
-  <button type="button" onClick={onBtnDelAll}>del all</button>
-  <button type="button" onClick={onBtnStop} style={{display: 'none'}}>stop</button>
-  <button type="button" onClick={onBtnPlayAd}>play ad</button>
-  <br/>
-  <button type="button" onClick={onBtnTest}>test</button>
-  <button type="button" onClick={onBtnTest2}>test2</button>
-  <div>
-    <label>seek to: </label>
-    <input type="text" id="seekedTime"/>
-    <button type="button" onClick={onBtnSeek}>OK</button>
-  </div>
-  <br/>
-</div>;
-
 
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
@@ -2255,13 +2281,15 @@ window.onload = function() {
 
   // InitUI -- add ui command
   ReactDOM.render(
-    elePlayer,
+    <UIPlayer/>,
     document.getElementById('player-container'));
 
   ReactDOM.render(
-    eleBtnController,
+    <UIBtnControlBar/>,
     document.getElementById('idBtnController')
   );
+  
+  console.log('after render UIBtnControlBar');
 
   playerUI.initVariable();
   playerUI.initUIElements();
@@ -2277,7 +2305,3 @@ window.onload = function() {
 window.onunload = function() {
   //onBtnStop();
 };
-
-
-
-
