@@ -27,7 +27,6 @@ function StreamController() {
   let events_ = context_.events;
   let eventBus_ = context_.eventBus;
 
-  let parser_;
   let streamInfo_;
   let currentStream_ = -1;
 
@@ -48,7 +47,6 @@ function StreamController() {
 
     demuxer_ = new Demuxer(hls_, 'main');
 
-    eventBus_.on(events_.FOUND_PARSER, onFoundParser);
     eventBus_.on(events_.MEDIA_ATTACHED, onMediaAttached);
 
     eventBus_.on(events_.MANIFEST_PARSED, onManifestParsed);
@@ -82,12 +80,9 @@ function StreamController() {
   }
 
   // Begin events functions
-  function onFoundParser(data) {
-    parser_ = data.parser;
-  }
-
   function onMediaAttached() {
-    parser_.loadManifest(context_.mediaCfg.url);
+    let parser = context_.parser;
+    parser.loadManifest(context_.mediaCfg.url);
   }
 
   function onManifestParsed(streamInfo) {
@@ -153,6 +148,7 @@ function StreamController() {
       cnt++;
     }
     // ED
+
     debug_.log(`+onFragParsingData, cnt:${cnt}`);
     [data.data1, data.data2].forEach((buffer, index) => {
       if (buffer) {
@@ -189,7 +185,8 @@ function StreamController() {
       return;
     }
 
-    let frag = parser_.getNextFragment();
+    let parser = context_.parser;
+    let frag = parser.getNextFragment();
     if (frag && frag.type === 'pd') {
       eventBus_.trigger(events_.PD_DOWNLOADED, frag);
       return;
@@ -204,9 +201,7 @@ function StreamController() {
         {
           let frag = _findFragment();
           if (frag) {
-            eventBus_.trigger(events_.FRAG_LOADING, {
-              frag
-            });
+            eventBus_.trigger(events_.FRAG_LOADING, { frag });
             state_ = State.FRAG_LOADING;
           } else {
             eventBus_.trigger(events_.BUFFER_EOS);
@@ -222,12 +217,12 @@ function StreamController() {
     tick();
   }
 
-  let instance = {
+  let instance_ = {
     // for debug
     manualSchedule: manualSchedule
   };
   setup();
-  return instance;
+  return instance_;
 }
 
 StreamController.__h5player_factory_name = 'StreamController';

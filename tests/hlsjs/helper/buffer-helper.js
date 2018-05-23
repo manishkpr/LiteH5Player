@@ -1,5 +1,5 @@
 const assert = require('assert');
-import BufferHelper from '../../../src/hls/hlsjs/src/helper/buffer-helper';
+import BufferHelper from '../../../third_party/hlsjs/src/helper/buffer-helper';
 
 function createMockBuffer (buffered) {
   return {

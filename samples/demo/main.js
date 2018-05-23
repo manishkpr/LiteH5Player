@@ -930,16 +930,16 @@ class UIPlayer extends React.Component {
   };
 
   captureVolumeSliderMouseEvents() {
-    newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
-    newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
+    this.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
+    this.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
 
-    document.addEventListener('mousemove', newVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', newVolumeSliderMouseup, true);
+    document.addEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', this.newVolumeSliderMouseup, true);
   };
 
   releaseVolumeSliderMouseEvents() {
-    document.removeEventListener('mousemove', newVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', newVolumeSliderMouseup, true);
+    document.removeEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
   };
 
   ///////////////////////////////////////////////////////////////////
@@ -1258,16 +1258,16 @@ class UIPlayer extends React.Component {
   };
 
   captureProgressBarMouseEvents() {
-    newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
-    newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
+    this.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
+    this.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
 
-    document.addEventListener('mousemove', newProgressBarMousemove, true);
-    document.addEventListener('mouseup', newProgressBarMouseup, true);
+    document.addEventListener('mousemove', this.newProgressBarMousemove, true);
+    document.addEventListener('mouseup', this.newProgressBarMouseup, true);
   };
 
   releaseProgressBarMouseEvents() {
-    document.removeEventListener('mousemove', newProgressBarMousemove, true);
-    document.removeEventListener('mouseup', newProgressBarMouseup, true);
+    document.removeEventListener('mousemove', this.newProgressBarMousemove, true);
+    document.removeEventListener('mouseup', this.newProgressBarMouseup, true);
   };
 
   docProgressBarMousemove(e) {

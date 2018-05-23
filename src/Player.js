@@ -447,6 +447,7 @@ function Player(containerId) {
 
   function onFoundParser(data) {
     let parser = data.parser;
+    context_.parser = data.parser;
     switch(parser.type) {
       case 'dash':
       case 'hls': {
@@ -594,3 +595,5 @@ function Player(containerId) {
 };
 
 export default Player;
+
+
