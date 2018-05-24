@@ -22,47 +22,52 @@ function toArrayBuffer(buffer) {
 }
 
 function toBuffer(ab) {
-    var buffer = new Buffer(ab.byteLength);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buffer.length; ++i) {
-        buffer[i] = view[i];
-    }
-    return buffer;
+  var buffer = new Buffer(ab.byteLength);
+  var view = new Uint8Array(ab);
+  for (var i = 0; i < buffer.length; ++i) {
+    buffer[i] = view[i];
+  }
+  return buffer;
 }
 
 // describe('Decrypter', function() {
 //   it('test1', function() {
 var keyPath = "D:/xampp/htdocs/2/drm/aes01/oceans.key";
-var contentInPath = "D:/xampp/htdocs/2/drm/aes01/oceans_aes-audio=65000-video=571000-1.ts";
-var contentOutPath = "D:/xampp/htdocs/2/drm/aes01/oceans_aes-audio=65000-video=571000-1_out.ts";
-var iv = createInitializationVector(1);
-
-//
 var keyBuffer = fs.readFileSync(keyPath);
 var key = toArrayBuffer(keyBuffer);
-var content = toArrayBuffer(fs.readFileSync(contentInPath));
 
-console.log('keyBuffer: ', keyBuffer); // true  表示Buffer对象已转为ArrayBuffer
-console.log('key: ', key); // true  表示Buffer对象已转为ArrayBuffer
-console.log('keyBuffer instanceof ArrayBuffer: ' + keyBuffer instanceof ArrayBuffer); // true  表示Buffer对象已转为ArrayBuffer
-console.log('key instanceof ArrayBuffer: ' + key instanceof ArrayBuffer); // true  表示Buffer对象已转为ArrayBuffer
-console.log('content: ', content); // true  表示Buffer对象已转为ArrayBuffer
-console.log('iv: ', iv);
+for (var i = 1; i <= 10; i++) {
+  var contentInPath = "D:/xampp/htdocs/2/drm/aes01/oceans_aes-audio=65000-video=571000-" + i + ".ts";
+  var contentOutPath = "D:/xampp/htdocs/2/drm/aes01/oceans_aes-audio=65000-video=571000-" + i + "_out" + ".ts";
+  var iv = createInitializationVector(i);
 
-var config = {
-  enableSoftwareAES: true
-};
-var decrypter = new Decrypter(null, config);
-decrypter.decrypt(content, key, iv.buffer, function(decryptedData) {
-  console.log('callback: ', decryptedData);
+  var content = toArrayBuffer(fs.readFileSync(contentInPath));
 
-  fs.writeFile(contentOutPath, toBuffer(decryptedData), function(err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("file writes sucess!!")
-    }
+  console.log('keyBuffer: ', keyBuffer); // true  表示Buffer对象已转为ArrayBuffer
+  console.log('key: ', key); // true  表示Buffer对象已转为ArrayBuffer
+  console.log('keyBuffer instanceof ArrayBuffer: ' + keyBuffer instanceof ArrayBuffer); // true  表示Buffer对象已转为ArrayBuffer
+  console.log('key instanceof ArrayBuffer: ' + key instanceof ArrayBuffer); // true  表示Buffer对象已转为ArrayBuffer
+  console.log('content: ', content); // true  表示Buffer对象已转为ArrayBuffer
+  console.log('iv: ', iv);
+
+  var config = {
+    enableSoftwareAES: true
+  };
+  var decrypter = new Decrypter(null, config);
+  decrypter.decrypt(content, key, iv.buffer, function(decryptedData) {
+    console.log('callback: ', decryptedData);
+
+    fs.writeFile(contentOutPath, toBuffer(decryptedData), function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("file writes sucess!!")
+      }
+    });
   });
-});
+}
+
+//
+
 //   });
 // });

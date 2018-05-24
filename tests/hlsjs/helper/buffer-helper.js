@@ -10,7 +10,6 @@ function createMockBuffer (buffered) {
 }
 
 describe('BufferHelper', function () {
-  // Begin oldmtn added
   describe('bufferInfo', () => {
     it('should return found buffer info when maxHoleDuration is 0', function () {
       const media = {
@@ -35,7 +34,6 @@ describe('BufferHelper', function () {
       assert.deepEqual(vActual, vExpect);
     });
   });
-  // End oldmtn added
 });
 
 

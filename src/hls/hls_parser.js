@@ -15,7 +15,6 @@ function HlsParser() {
   let events_ = context_.events;
   let eventBus_ = context_.eventBus;
 
-  let manifestUrl_;
   let streamInfo_;
 
   // hls
@@ -29,13 +28,14 @@ function HlsParser() {
   // event callbacks
   function onManifestLoaded(data) {
     let content = StringUtils.ab2str_v1(data.bytes);
+    let url = data.url;
     debug_.log('content: ' + content);
 
     currentSN_ = 0;
 
     let track = new TrackInfo();
     track.type = 'stream';
-    track.levelDetails = M3U8Parser.parseLevelPlaylist(content, manifestUrl_, 0, 'main');
+    track.levelDetails = M3U8Parser.parseLevelPlaylist(content, url, 0, 'main');
 
     streamInfo_ = new StreamInfo();
     streamInfo_.duration = track.levelDetails.totalduration;
@@ -45,11 +45,6 @@ function HlsParser() {
   }
 
   // public functions
-  function loadManifest(url) {
-    manifestUrl_ = url;
-    eventBus_.trigger(events_.MANIFEST_LOADING, { url: manifestUrl_ });
-  }
-
   function getNextFragment() {
     for (let i = 0; i < streamInfo_.tracks.length; i++) {
       let trackInfo = streamInfo_.tracks[i];
@@ -73,7 +68,6 @@ function HlsParser() {
   }
 
   let instance_ = {
-    loadManifest: loadManifest,
     getNextFragment: getNextFragment
   };
   setup();

@@ -6,26 +6,26 @@ function PlaylistLoader() {
   let debug_ = context_.debug
   let events_ = context_.events;
   let eventBus_ = context_.eventBus;
-
   let xhrLoader_ = new context_.loader(context_).create();
+  let request_;
 
   function setup() {
     eventBus_.on(events_.MANIFEST_LOADING, onManifestLoading);
   }
 
   function onManifestLoading(data) {
-    let request = {
+    request_ = {
       url: data.url
     };
     let callbacks = {
       onSuccess: loadsuccess
     };
 
-    xhrLoader_.load(request, null, callbacks);
+    xhrLoader_.load(request_, null, callbacks);
   }
 
   function loadsuccess(bytes) {
-    eventBus_.trigger(events_.MANIFEST_LOADED, { bytes: bytes });
+    eventBus_.trigger(events_.MANIFEST_LOADED, { bytes: bytes, url: request_.url });
   }
 
   let instance_ = {

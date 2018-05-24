@@ -81,8 +81,7 @@ function StreamController() {
 
   // Begin events functions
   function onMediaAttached() {
-    let parser = context_.parser;
-    parser.loadManifest(context_.mediaCfg.url);
+    eventBus_.trigger(events_.MANIFEST_LOADING, { url: context_.mediaCfg.url });
   }
 
   function onManifestParsed(streamInfo) {
