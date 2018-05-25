@@ -1,7 +1,6 @@
-import FactoryMaker from '../core/FactoryMaker';
-import StringUtils from '../utils/string_utils';
-import XHRLoader from '../utils/xhr_loader';
-import M3U8Parser from '../../third_party/hlsjs/src/loader/m3u8-parser';
+import StringUtils from '../../../src/utils/string_utils';
+import XHRLoader from '../../../src/utils/xhr_loader';
+import M3U8Parser from '../../../third_party/hlsjs/src/loader/m3u8-parser';
 import FileSaver from './FileSaver';
 
 function StreamingDownloader() {
@@ -10,15 +9,17 @@ function StreamingDownloader() {
   let xhrLoader_ = XHRLoader(context_).create();
 
   let hlsUrl_;
+  let fragmentCnt_;
   let levelDetails_;
   let flagInitSegmentDownloaded_;
   let currentSN_;
   let currentFrag_;
 
-  function downloadHls(url) {
+  function downloadHls(url, cnt) {
     flagInitSegmentDownloaded_ = false;
     currentSN_ = 0;
     hlsUrl_ = url;
+    fragmentCnt_ = cnt || 15;
 
     let request = {
       url: hlsUrl_,
@@ -55,7 +56,7 @@ function StreamingDownloader() {
       flagInitSegmentDownloaded_ = true;
     } else if (currentSN_ !== levelDetails_.fragments.length) {
       // only download first 15 fragments
-      if (currentSN_ <= 15) {
+      if (currentSN_ < fragmentCnt_) {
         frag = levelDetails_.fragments[currentSN_];
         currentSN_++;
       }
