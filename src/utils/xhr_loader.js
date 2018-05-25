@@ -61,7 +61,7 @@ function XHRLoader() {
 
     printlog('--before open--, readyState: ' + xhr_.readyState);
     xhr_.open('GET', request_.url);
-    xhr_.responseType = 'arraybuffer';
+    xhr_.responseType = request.responseType || 'arraybuffer';
     if (request_.rangeEnd) {
       xhr_.setRequestHeader('Range', 'bytes=' + request_.rangeStart + '-' + (request_.rangeEnd - 1));
     }

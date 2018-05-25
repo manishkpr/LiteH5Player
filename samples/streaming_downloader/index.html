@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+  <!-- viewport tag only valid to mobile browser. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script src="../../dist/liteH5Player.debug.js"></script>
+
+</head>
+<body>
+
+  <input id="idUrl" type="text" style="width: 320px;height: 24px;"></input>
+  <button onclick="onBtnDownload()">Download</button>
+
+  <script type="text/javascript">
+    function onBtnDownload() {
+      var vIdUrl = document.getElementById('idUrl');
+      var url = vIdUrl.value || 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8';
+
+      var downloader = new oldmtn.StreamingDownloader();
+      downloader.downloadHls(url);
+    }
+  </script>
+</body>
+</html>
+

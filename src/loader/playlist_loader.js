@@ -29,7 +29,6 @@ function PlaylistLoader() {
   }
 
   let instance_ = {
-
   };
   setup();
   return instance_;

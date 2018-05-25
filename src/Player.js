@@ -27,11 +27,10 @@ import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(containerId) {
-  let containerId_ = containerId;
   let context_ = oldmtn; //{ flag: 'player' };
+  let containerId_ = containerId;
 
   let media_;
-  let adContainer_;
 
   let eventBus_;
   let debug_;
@@ -83,7 +82,6 @@ function Player(containerId) {
     let uiEngine = UIEngine(context_).getInstance();
     uiEngine.initUI(containerId_);
     media_ = uiEngine.getVideo();
-    adContainer_ = uiEngine.getAdContainer();
 
     context_.media = media_;
   }
@@ -395,7 +393,8 @@ function Player(containerId) {
       media_.poster = context_.cfg.poster;
     }
     if (context_.cfg.advertising) {
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
+      let adContainer = uiEngine.getAdContainer();
+      adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, context_.cfg.advertising);
     }
   }
 
