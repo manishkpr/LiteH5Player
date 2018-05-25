@@ -1,4 +1,4 @@
 Build method
 
-$ browserify index.js -o t_downloader_debug.js
+$ browserify index.js -o out.js
 

@@ -1,3 +1,3 @@
-Build Method
-$ babel-node decrypter.js
+Build method
 
+$ babel-node index.js
