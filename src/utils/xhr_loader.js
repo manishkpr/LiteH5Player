@@ -61,7 +61,6 @@ function XHRLoader() {
 
     printlog('--before open--, readyState: ' + xhr_.readyState);
     xhr_.open('GET', request_.url);
-    xhr_.responseType = request.responseType || 'arraybuffer';
     if (request_.rangeEnd) {
       xhr_.setRequestHeader('Range', 'bytes=' + request_.rangeStart + '-' + (request_.rangeEnd - 1));
     }
@@ -125,9 +124,10 @@ function XHRLoader() {
     xhr_.onload = onload.bind(this);
     xhr_.onloadend = onloadend.bind(this);
 
+    xhr_.responseType = request.responseType || 'arraybuffer';
     printlog('--before send--, readyState: ' + xhr_.readyState);
     xhr_.send();
-  };
+  }
 
   function printlog(log) {
     if (enableLog_) {

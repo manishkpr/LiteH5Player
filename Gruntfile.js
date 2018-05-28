@@ -41,6 +41,12 @@ module.exports = function(grunt) {
           './samples/demo/liteH5Player.debug.js': ['dist/liteH5Player.debug.js']
         }
       }
+    },
+    typescript: {
+      dist: {
+        src: ['./src/index2.ts'],
+        dest: './src/index2.js'
+      }
     }
   });
 
@@ -49,4 +55,8 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['clean:dist', 'browserify:dist', 'copy:dist']);
   grunt.registerTask('omClean', ['clean:dist']);
   grunt.registerTask('omBuild', ['clean:dist', 'browserify:dist', 'uglify:dist']);
+
+  // BD
+  grunt.registerTask('test1', ['typescript:dist']);
+  // ED
 };

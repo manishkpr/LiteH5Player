@@ -22,3 +22,4 @@ export class StreamInfo {
     this.tracks = []; // an array of TrackInfo
   }
 }
+
