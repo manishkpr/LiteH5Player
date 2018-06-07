@@ -2069,7 +2069,7 @@ function onBtnTest() {
 
 function onBtnTest2() {
   printLog('--onBtnTest2--');
-  this.player_.test2();
+  playerUI.player_.setAudioPlaybackSpeed(2);
 
   //this.player_.resize(1024, 768);
   //stopBufferingUI();

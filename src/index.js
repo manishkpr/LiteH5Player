@@ -1,5 +1,4 @@
-﻿// 
-import Events from './core/CoreEvents';
+﻿import Events from './core/CoreEvents';
 import CommonUtils from './utils/common_utils';
 import Player from './Player';
 import CastSender from './cast/cast_sender';

@@ -302,6 +302,10 @@ function Player(containerId) {
     return playbackController_.getVolume();
   }
 
+  function setAudioPlaybackSpeed(speed) {
+    playbackController_.setAudioPlaybackSpeed(speed);
+  }
+
   function setPosition(time) {
     playbackController_.setPosition(time);
   }
@@ -574,6 +578,7 @@ function Player(containerId) {
     isMuted: isMuted,
     setVolume: setVolume,
     getVolume: getVolume,
+    setAudioPlaybackSpeed: setAudioPlaybackSpeed,
     // Resize
     getWidth: getWidth,
     getHeight: getHeight,

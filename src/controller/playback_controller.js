@@ -109,6 +109,10 @@ function PlaybackController() {
     return media_.volume;
   }
 
+  function setAudioPlaybackSpeed(speed) {
+    media_.playbackRate = speed;
+  }
+
   function videoWidth() {
     return media_.videoWidth;
   }
@@ -422,6 +426,7 @@ function PlaybackController() {
     isMuted: isMuted,
     setVolume: setVolume,
     getVolume: getVolume,
+    setAudioPlaybackSpeed: setAudioPlaybackSpeed,
     videoWidth: videoWidth,
     videoHeight: videoHeight,
 
