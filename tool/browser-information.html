@@ -2,12 +2,27 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>MSE Compatibility Validator</title>
+  <title>Media Mime Support Validator</title>
 </head>
 <body>
+  <div>
+  <h2>User Agent</h2>
+  <div id="idUA"></div>
+  </div>
+
   <h2>
     MSE Compatibility Validator
   </h2>
+
+  <div>
+    <span>Does this browser has WebKitMediaSource:</span>
+    <span id="idWebKitMediaSource" style="font-weight:bold;"></span>
+  </div>
+  <div>
+    <span>Does this browser has MediaSource:</span>
+    <span id="idMediaSource" style="font-weight:bold;"></span>
+  </div>
+  <br/>
 
   <label>Type: </label>
   <div>
@@ -22,7 +37,16 @@
   <label>Sample03: video/mp4; codecs="mp4a.40.2, avc1.64001e"</label>
   <br />
 
+
+  <script type="text/javascript">
+    // Title: User Agent
+    var ua = navigator.userAgent;
+    var v = document.getElementById('idUA');
+    v.innerText = ua;
+  </script>
+
   <script>
+    // Title: MSE Compatibility Validator
     function onBtnTest() {
       var mimeType = document.getElementById('input_type').value;
 
@@ -37,8 +61,10 @@
       var hasWebKitMediaSource = ('WebKitMediaSource' in window);
       var hasMediaSource = ('MediaSource' in window);
 
-      alert('Does this browser has WebKitMediaSource: ' + hasWebKitMediaSource);
-      alert('Does this browser has MediaSource: ' + hasMediaSource);
+      var v1 = document.getElementById('idWebKitMediaSource');
+      v1.innerText = hasWebKitMediaSource;
+      var v2 = document.getElementById('idMediaSource');
+      v2.innerText = hasMediaSource;
     };
   </script>
 

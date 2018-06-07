@@ -151,7 +151,7 @@ function getMediaInfo() {
     //--Item: pd
     //url: 'http://localhost/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://localhost/2/pd/mp4/trailer/test.mp4',
-    //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
+    url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
@@ -161,18 +161,22 @@ function getMediaInfo() {
     //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
     //url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
+    //url: 'http://localhost/6/dash1/project/verizon/envivio/2/clear/audio.m3u8',
+    //url: 'http://localhost/6/dash1/project/verizon/envivio/2/clear/video1.m3u8',
     //--Item: DRM
     //url: 'http://localhost/tasklink/2017/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4',
-    url: 'http://localhost/2/drm/wv02/video_type5/playlist.m3u8', // videoCodec: 'video/mp4; codecs="avc1.42e01e"'
-    drm: {
-      type: 'com.widevine.alpha',
-      laUrl: 'https://widevine-proxy.appspot.com/proxy'
-    },
+    // url: 'http://localhost/2/drm/wv02/video_type5/playlist.m3u8', // videoCodec: 'video/mp4; codecs="avc1.42e01e"'
+    // drm: {
+    //   type: 'com.widevine.alpha',
+    //   laUrl: 'https://widevine-proxy.appspot.com/proxy'
+    // },
     // url: 'http://10.2.68.64/2/drm/pr01/master.m3u8',
     // drm: {
     //   type: 'com.microsoft.playready',
     //   laUrl: 'https://test.playready.microsoft.com/service/rightsmanager.asmx'
     // },
+    //--Item: Error
+    //url: 'http://localhost/2/hls/error/MEDIA_ERROR/2/master.m3u8',
 
 
     // vContents.push('http://localhost/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');

@@ -45,6 +45,10 @@ function HlsParser() {
   }
 
   // public functions
+  function getType() {
+    return 'hls';
+  }
+
   function getNextFragment() {
     for (let i = 0; i < streamInfo_.tracks.length; i++) {
       let trackInfo = streamInfo_.tracks[i];
@@ -68,6 +72,7 @@ function HlsParser() {
   }
 
   let instance_ = {
+    getType: getType,
     getNextFragment: getNextFragment
   };
   setup();

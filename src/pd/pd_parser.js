@@ -15,6 +15,10 @@ function PDParser() {
   let streamInfo_;
   let flagGotFragment = false;
 
+  function getType() {
+    return 'pd';
+  }
+
   function loadManifest(url) {
     streamInfo_ = new StreamInfo();
     streamInfo_.url = url;
@@ -34,6 +38,7 @@ function PDParser() {
   }
 
   let instance = {
+    getType: getType,
     loadManifest: loadManifest,
     getNextFragment: getNextFragment
   };

@@ -22,7 +22,6 @@ function EMEController() {
 
   function onBufferCodec(data) {
     let tracks = data;
-
     if (tracks.audio) {
       streamInfo_.drm.audioCodec = `${tracks.audio.container};codecs=${tracks.audio.codec}`;
     }
@@ -46,10 +45,11 @@ function EMEController() {
   }
 
   function setDrmInfo(info) {
+    streamInfo_ = info;
+
     if (!info.drm || !info.drm.type) {
       return;
     }
-    streamInfo_ = info;
 
     let keySystem = protectionKeyController_.getKeySystemBySystemString(info.drm.type);
     debug_.log('H5Player, request system tring: ' + keySystem.systemString);

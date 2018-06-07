@@ -172,7 +172,7 @@ function StreamController() {
     debug_.log(`+onBufferAppended, main buffered: ${TimeRanges.toString(media.buffered)}, duration:${media.duration}`);
     if (state_ === State.PARSED && e.pending === 0) {
       state_ = State.IDLE;
-      tick();
+      //tick();
     }
   }
 

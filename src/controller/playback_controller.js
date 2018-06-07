@@ -201,8 +201,12 @@ function PlaybackController() {
     eventBus_.trigger(events_.MEDIA_ENDED);
   }
 
-  function onMediaError() {
-    debug_.log('+Native video element event: error');
+  function onMediaError(e) {
+    let error;
+    if (e.target && e.target.error) {
+      error = e.target.error;
+    }
+    debug_.log(`+Native video element event: error, code:${error.code}, msg:${error.message}`);
   }
 
   function onMediaInterruptBegin() {

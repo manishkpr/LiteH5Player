@@ -22,6 +22,8 @@ import BufferController from './controller/buffer_controller';
 import StreamController from './controller/stream_controller';
 import ThumbnailController from './controller/thumbnail_controller';
 
+import VideoPlayer from './videoplayer';
+
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
@@ -42,7 +44,7 @@ function Player(containerId) {
   let parserController_;
   let fragmentLoader_;
   let levelController_;
-  let scheduleCtrl_;
+  let streamController_;
   let playbackController_;
   let thumbnailController_;
 
@@ -109,6 +111,9 @@ function Player(containerId) {
         return;
       }
 
+      // preprocess the mediaCfg
+      mediaCfg.drm = mediaCfg.drm || {};
+
       context_.mediaCfg = mediaCfg;
 
       emeController_.setDrmInfo(mediaCfg);
@@ -131,8 +136,8 @@ function Player(containerId) {
   }
 
   function close() {
-    if (scheduleCtrl_) {
-      scheduleCtrl_.stop();
+    if (streamController_) {
+      streamController_.stop();
     }
     if (adsEngine_) {
       adsEngine_.close();
@@ -386,7 +391,7 @@ function Player(containerId) {
     parserController_ = ParserController(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
-    scheduleCtrl_ = StreamController(context_).getInstance();
+    streamController_ = StreamController(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
 
     if (context_.cfg.poster) {
@@ -453,7 +458,8 @@ function Player(containerId) {
         eventBus_.trigger(Events.MEDIA_ATTACHING, { media: media_ });
       } break;
       case 'pd': {
-        eventBus_.trigger(Events.MEDIA_ATTACHED);
+        let vPlayer = VideoPlayer(context_).getInstance();
+        vPlayer.setSrc(context_.mediaCfg.url);
       } break;
       default:
       break;
@@ -501,10 +507,7 @@ function Player(containerId) {
   ///////////////////////////////////////////////////////////////////////////
   // Title: debug function here
   function manualSchedule() {
-    if (!scheduleCtrl_) {
-      scheduleCtrl_ = StreamController(context_).getInstance();
-    }
-    scheduleCtrl_.manualSchedule();
+    streamController_.manualSchedule();
   }
 
   function test() {
