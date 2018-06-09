@@ -31,8 +31,8 @@ import CommonUtils from './utils/common_utils';
 function Player(containerId) {
   let context_ = oldmtn; //{ flag: 'player' };
   let containerId_ = containerId;
-
-  let media_;
+  let uiEngine = new UIEngine(containerId_);
+  let media_ = uiEngine.getVideo();
 
   let eventBus_;
   let debug_;
@@ -80,10 +80,6 @@ function Player(containerId) {
     context_.debug = debug_;
     context_.eventBus = eventBus_;
     //context_.loader = FetchLoader;
-
-    let uiEngine = new UIEngine();
-    uiEngine.initUI(containerId_);
-    media_ = uiEngine.getVideo();
 
     context_.media = media_;
   }

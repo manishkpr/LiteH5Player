@@ -3,42 +3,38 @@ import ReactDOM from 'react-dom';
 
 import UIPlayer from './ui_player';
 
-function UIEngine() {
-  let playerContainer_ = null;
-  let videoContainer_ = null;
-  let video_ = null;
-  let adContainer_ = null;
+class UIEngine {
+  constructor(idPlayerContainer) {
+    this.playerContainer_ = document.getElementById(idPlayerContainer);
 
-  function initUI(playerContainer) {
-    playerContainer_ = document.getElementById(playerContainer);
+    this.videoContainer_ = null;
+    this.video_ = null;
+    this.adContainer_ = null;
 
-    ReactDOM.render(<UIPlayer/>, playerContainer_);
+    this.initUI();
+  }
+  
+  initUI() {
+    ReactDOM.render(<UIPlayer/>, this.playerContainer_);
 
-    videoContainer_ = document.querySelector('.vop-video-container');
-    video_ = document.querySelector('.vop-video');
-    adContainer_ = document.querySelector('.vop-ads-container');
+    this.videoContainer_ = document.querySelector('.vop-video-container');
+    this.video_ = document.querySelector('.vop-video');
+    this.adContainer_ = document.querySelector('.vop-ads-container');
   }
 
-  function getVideo() {
-    return video_;
+  getVideo() {
+    return this.video_;
   }
 
-  function getVideoContainer() {
-    return videoContainer_;
+  getVideoContainer() {
+    return this.videoContainer_;
   }
 
-  function getAdContainer() {
-    return adContainer_;
+  getAdContainer() {
+    return this.adContainer_;
   }
-
-  let instance = {
-    initUI: initUI,
-    getVideo: getVideo,
-    getVideoContainer: getVideoContainer,
-    getAdContainer: getAdContainer
-  };
-
-  return instance;
 };
 
 export default UIEngine;
+
+
