@@ -4,6 +4,8 @@ import Player from './Player';
 import CastSender from './cast/cast_sender';
 import CastReceiver from './cast/cast_receiver';
 
+import InitUI from './ui/ui_player';
+
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
 
@@ -21,7 +23,7 @@ oldmtn.CommonUtils = CommonUtils;
 
 
 /////////////////////////////////////////////////////////////////////////
-
+oldmtn.test = InitUI;
 
 
 export default oldmtn;

@@ -2097,15 +2097,6 @@ function onBtnSeek() {
 /////////////////////////////////////////////////////////////////////////
 // Title: experience functions
 function onBtnTmp1() {
-  // visual viewport 鍙瑙嗗彛 灞忓箷瀹藉害
-  // layout viewport 甯冨眬瑙嗗彛 DOM瀹藉害
-  // ideal viewport 鐞嗘兂閫傚彛锛氫娇甯冨眬瑙嗗彛灏辨槸鍙瑙嗗彛
-  // 璁惧瀹藉害(visual viewport)涓嶥OM瀹藉害(layout viewport), scale鐨勫叧绯讳负锛
-
-  // 锛坴isual viewport锛? 锛坙ayout viewport锛? scale
-  // 鑾峰彇灞忓箷瀹藉害(visual viewport)鐨勫昂瀵革細window. innerWidth/Height銆
-  // 鑾峰彇DOM瀹藉害(layout viewport)鐨勫昂瀵革細document. documentElement. clientWidth/Height銆
-
   printLog('visual viewport, width: ' + window.width + ', height: ' + window.height);
   printLog('layout viewport, width: ' + document.width + ', height: ' + document.height);
 
@@ -2172,6 +2163,7 @@ window.onload = function() {
 
   // BD
   //onBtnTmp1();
+  oldmtn.test();
   // ED
 };
 
