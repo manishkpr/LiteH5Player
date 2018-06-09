@@ -2,6 +2,7 @@ import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
+
 import {
   Fragment,
   TrackInfo,
@@ -10,8 +11,9 @@ import {
 
 function PDParser() {
   let context_ = this.context;
-
   let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
   let streamInfo_;
   let flagGotFragment = false;
 

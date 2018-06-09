@@ -28,25 +28,28 @@ import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
-function Player(containerId) {
-  let context_ = oldmtn; //{ flag: 'player' };
-  let containerId_ = containerId;
-  let uiEngine = new UIEngine(containerId_);
-  let media_ = uiEngine.getVideo();
+function Player(media, adContainer) {
+  //let containerId_ = containerId;
 
-  let eventBus_;
-  let debug_;
+  let context_ = oldmtn; //{ flag: 'player' };
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
+  //let uiEngine = new UIEngine(containerId_);
+  let media_ = media;// uiEngine.getVideo();
+  let adContainer_ = adContainer;//uiEngine.getAdContainer();
+
   let playlistLoader_;
 
   let textEngine_;
   let bufferController_;
   let emeController_;
   let parserController_;
-  let fragmentLoader_;
   let levelController_;
   let streamController_;
   let playbackController_;
   let thumbnailController_;
+  let fragmentLoader_;
 
   // ads part
   let adsEngine_;
@@ -69,25 +72,26 @@ function Player(containerId) {
   let openPromiseReject_;
 
   function setup() {
-    // enging component
-    eventBus_ = EventBus(context_).getInstance();
-    debug_ = Debug(context_).getInstance();
-
     // init internal configuration
     context_.loader = XHRLoader;
     context_.fragLoader = FragmentLoader;
-    context_.events = Events;
-    context_.debug = debug_;
-    context_.eventBus = eventBus_;
     //context_.loader = FetchLoader;
 
     context_.media = media_;
+
+    initComponent();
   }
 
   function init(cfg) {
     context_.cfg = cfg;
 
-    initComponent();
+    if (context_.cfg.poster) {
+      media_.poster = context_.cfg.poster;
+    }
+    if (context_.cfg.advertising) {
+      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
+    }
+
     initData();
     addEventListeners();
     addResizeListener();
@@ -389,18 +393,11 @@ function Player(containerId) {
     bufferController_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
     parserController_ = ParserController(context_).getInstance();
-    fragmentLoader_ = FragmentLoader(context_).create();
     levelController_ = LevelController(context_).getInstance();
     streamController_ = StreamController(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
 
-    if (context_.cfg.poster) {
-      media_.poster = context_.cfg.poster;
-    }
-    if (context_.cfg.advertising) {
-      let adContainer = uiEngine.getAdContainer();
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer, media_, context_.cfg.advertising);
-    }
+    fragmentLoader_ = FragmentLoader(context_).create();
   }
 
   function initData() {

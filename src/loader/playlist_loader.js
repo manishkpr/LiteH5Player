@@ -1,16 +1,20 @@
 import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 import StringUtils from '../utils/string_utils';
 
 function PlaylistLoader() {
   let context_ = this.context;
-  let debug_ = context_.debug
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
   let xhrLoader_ = new context_.loader(context_).create();
   let request_;
 
   function setup() {
-    eventBus_.on(events_.MANIFEST_LOADING, onManifestLoading);
+    eventBus_.on(Events.MANIFEST_LOADING, onManifestLoading);
   }
 
   function onManifestLoading(data) {
@@ -25,7 +29,7 @@ function PlaylistLoader() {
   }
 
   function loadsuccess(bytes) {
-    eventBus_.trigger(events_.MANIFEST_LOADED, { bytes: bytes, url: request_.url });
+    eventBus_.trigger(Events.MANIFEST_LOADED, { bytes: bytes, url: request_.url });
   }
 
   let instance_ = {

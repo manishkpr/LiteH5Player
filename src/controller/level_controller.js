@@ -1,21 +1,23 @@
 import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
 
 function LevelController() {
   let context_ = this.context;
-  let debug_ = context_.debug;
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   let streamInfo_;
 
   function setup() {
-    eventBus_.on(events_.MANIFEST_PARSED, onManifestParsed);
+    eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed);
   }
 
   function onManifestParsed(streamInfo) {
     streamInfo_ = streamInfo;
 
-    eventBus_.trigger(events_.STREAM_UPDATED);
+    eventBus_.trigger(Events.STREAM_UPDATED);
   }
 
   let instance_ = {

@@ -1,22 +1,26 @@
 import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 import DashParser from '../dash/dash_parser';
 import HlsParser from '../hls/hls_parser';
 import PDParser from '../pd/pd_parser';
 
 function ParserController() {
   let context_ = this.context;
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   function setup() {
-    eventBus_.on(events_.FINDING_PARSER, onFindingParser);
+    eventBus_.on(Events.FINDING_PARSER, onFindingParser);
   }
 
   function onFindingParser(data) {
     let url = data.url;
 
     let parser = getParser(url);
-    eventBus_.trigger(events_.FOUND_PARSER, { parser });
+    eventBus_.trigger(Events.FOUND_PARSER, { parser });
   }
 
   function getParser(url) {

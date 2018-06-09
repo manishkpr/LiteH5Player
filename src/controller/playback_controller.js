@@ -1,4 +1,8 @@
 ﻿import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 import TimeRanges from '../utils/timeRanges';
 import CommonUtils from '../utils/common_utils';
 
@@ -14,9 +18,8 @@ canplaythrough
 
 function PlaybackController() {
   let context_ = this.context;
-  let debug_ = context_.debug;
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
   
   let media_ = context_.media;
   let cfg_ = context_.cfg;
@@ -180,13 +183,13 @@ function PlaybackController() {
   function onMediaCanplay() {
     //The canplay event occurs when the browser can start playing the specified audio/video (when it has buffered enough to begin).
     debug_.log('+Native video element event: canplay');
-    eventBus_.trigger(events_.MEDIA_CANPLAY);
+    eventBus_.trigger(Events.MEDIA_CANPLAY);
   }
 
   function onMediaCanplayThrough() {
     debug_.log('+Native video element event: canplaythrough');
     let a = media_;
-    eventBus_.trigger(events_.MEDIA_CANPLAY_THROUGH);
+    eventBus_.trigger(Events.MEDIA_CANPLAY_THROUGH);
   }
 
   function onMediaEncrypted() {
@@ -197,12 +200,12 @@ function PlaybackController() {
     // debug_.log('+Native video element event: durationchange' +
     //     ', getPosition: ' + media_.getPosition +
     //     ', duration: ' + media_.duration);
-    eventBus_.trigger(events_.MEDIA_DURATION_CHANGED);
+    eventBus_.trigger(Events.MEDIA_DURATION_CHANGED);
   }
 
   function onMediaEnded() {
     debug_.log('+Native video element event: ended');
-    eventBus_.trigger(events_.MEDIA_ENDED);
+    eventBus_.trigger(Events.MEDIA_ENDED);
   }
 
   function onMediaError(e) {
@@ -245,7 +248,7 @@ function PlaybackController() {
     }
 
     //debug_.log('hasAudio: ' + hasAudio());
-    eventBus_.trigger(events_.MEDIA_LOADEDDATA);
+    eventBus_.trigger(Events.MEDIA_LOADEDDATA);
   }
 
   function onMediaLoadedMetadata() {
@@ -255,7 +258,7 @@ function PlaybackController() {
       ', duration: ' + media_.duration);
     let width = media_.videoWidth;
     let height = media_.videoHeight;
-    eventBus_.trigger(events_.MEDIA_LOADEDMETADATA, {
+    eventBus_.trigger(Events.MEDIA_LOADEDMETADATA, {
       width: width,
       height: height
     });
@@ -267,7 +270,7 @@ function PlaybackController() {
 
   function onMediaPaused() {
     debug_.log('+Native video element event: pause');
-    eventBus_.trigger(events_.MEDIA_PAUSED);
+    eventBus_.trigger(Events.MEDIA_PAUSED);
   }
 
   function onMediaPlay() {
@@ -276,7 +279,7 @@ function PlaybackController() {
 
   function onMediaPlaying() {
     debug_.log('+Native video element event: playing');
-    eventBus_.trigger(events_.MEDIA_PLAYING);
+    eventBus_.trigger(Events.MEDIA_PLAYING);
   }
 
   function onMediaProgress(e) {
@@ -290,11 +293,11 @@ function PlaybackController() {
   }
 
   function onMediaSeeking() {
-    eventBus_.trigger(events_.MEDIA_SEEKING);
+    eventBus_.trigger(Events.MEDIA_SEEKING);
   }
 
   function onMediaSeeked() {
-    eventBus_.trigger(events_.MEDIA_SEEKED);
+    eventBus_.trigger(Events.MEDIA_SEEKED);
   }
 
   function onMediaSuspend() {
@@ -302,18 +305,18 @@ function PlaybackController() {
   }
 
   function onMediaTimeUpdated(e) {
-    eventBus_.trigger(events_.MEDIA_TIMEUPDATE);
+    eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
     //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', getPosition: ' + media.getPosition);
   }
 
   function onMediaVolumeChanged() {
     debug_.log('+Native video element event: volumechange, muted: ' + media_.muted + ', volume: ' + media_.volume);
-    eventBus_.trigger(events_.MEDIA_VOLUME_CHANGED);
+    eventBus_.trigger(Events.MEDIA_VOLUME_CHANGED);
   }
 
   function onMediaWaiting() {
     debug_.log('+Native video element event: waiting');
-    eventBus_.trigger(events_.MEDIA_WAITING);
+    eventBus_.trigger(Events.MEDIA_WAITING);
   }
   // End
 

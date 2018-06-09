@@ -1,4 +1,8 @@
 import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 import StringUtils from '../utils/string_utils';
 
 import {
@@ -11,9 +15,8 @@ import M3U8Parser from '../../third_party/hlsjs/src/loader/m3u8-parser';
 
 function HlsParser() {
   let context_ = this.context;
-  let debug_ = context_.debug
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   let streamInfo_;
 
@@ -22,7 +25,7 @@ function HlsParser() {
   let fragCurrent_;
 
   function setup() {
-    eventBus_.on(events_.MANIFEST_LOADED, onManifestLoaded);
+    eventBus_.on(Events.MANIFEST_LOADED, onManifestLoaded);
   }
 
   // event callbacks
@@ -41,7 +44,7 @@ function HlsParser() {
     streamInfo_.duration = track.levelDetails.totalduration;
     streamInfo_.tracks.push(track);
 
-    eventBus_.trigger(events_.MANIFEST_PARSED, streamInfo_);
+    eventBus_.trigger(Events.MANIFEST_PARSED, streamInfo_);
   }
 
   // public functions

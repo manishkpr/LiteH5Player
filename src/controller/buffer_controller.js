@@ -1,11 +1,15 @@
 ﻿import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 import TimeRanges from '../utils/timeRanges';
 
 function BufferController() {
   let context_ = this.context;
-  let debug_ = context_.debug;
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   let mediaSource_ = null;
   let media_;
@@ -16,14 +20,14 @@ function BufferController() {
   let appending_ = false;
 
   function setup() {
-    eventBus_.on(events_.MEDIA_ATTACHING, onMediaAttaching);
+    eventBus_.on(Events.MEDIA_ATTACHING, onMediaAttaching);
 
-    eventBus_.on(events_.BUFFER_CODEC, onBufferCodec);
-    eventBus_.on(events_.BUFFER_APPENDING, onBufferAppending);
-    eventBus_.on(events_.BUFFER_EOS, onBufferEOS);
+    eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
+    eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
+    eventBus_.on(Events.BUFFER_EOS, onBufferEOS);
 
     //
-    eventBus_.on(events_.TEST_MSG, onTestMsg);
+    eventBus_.on(Events.TEST_MSG, onTestMsg);
   }
 
   function createMediaSource() {
@@ -75,7 +79,7 @@ function BufferController() {
     mediaSource_.removeEventListener('webkitsourceopen', onMediaSourceOpen);
 
     URL.revokeObjectURL(media_.src);
-    eventBus_.trigger(events_.MEDIA_ATTACHED, {});
+    eventBus_.trigger(Events.MEDIA_ATTACHED, {});
   }
 
   function onMediaSourceEnded() {
@@ -190,7 +194,7 @@ function BufferController() {
 
     let pending = segments_.length;
     if (pending === 0) {
-      eventBus_.trigger(events_.BUFFER_APPENDED, { pending });
+      eventBus_.trigger(Events.BUFFER_APPENDED, { pending });
     } else {
       doAppending();
     }

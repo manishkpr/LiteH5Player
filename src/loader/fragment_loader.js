@@ -1,15 +1,19 @@
 import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 
 function FragmentLoader() {
   let context_ = this.context;
-  let debug_ = context_.debug;
-  let events_ = context_.events;
-  let eventBus_ = context_.eventBus;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
   let xhrLoader_ = context_.loader(context_).create();
   
   let request_;
   function setup() {
-    eventBus_.on(events_.FRAG_LOADING, onFragLoading);
+    eventBus_.on(Events.FRAG_LOADING, onFragLoading);
   }
 
   function onFragLoading(e) {
@@ -31,7 +35,7 @@ function FragmentLoader() {
   function loadsuccess(payload) {
     let frag = request_.frag;
     frag.data = payload;
-    eventBus_.trigger(events_.FRAG_LOADED, { frag });
+    eventBus_.trigger(Events.FRAG_LOADED, { frag });
   }
 
   let instance_ = {

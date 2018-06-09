@@ -2,6 +2,7 @@ import FactoryMaker from '../core/FactoryMaker';
 import Events from '../core/CoreEvents';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
+
 import StringUtils from '../utils/string_utils';
 
 // Begin from Dashjs
@@ -25,9 +26,9 @@ import {
 
 function DashParser() {
   let context_ = this.context;
-
-  let debug_ = Debug(context_).getInstance();
   let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
   let xhrLoader_ = context_.loader(context_).create();
   // parser reference variable
   let matchers_;
