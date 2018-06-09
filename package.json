@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "babel-node spec/run.js",
-    "build": "webpack"
+    "build": "webpack --devtool source-map"
   },
   "author": "oldmtn",
   "license": "BSD",
@@ -26,7 +26,6 @@
     "browserify": "^14.5.0",
     "browserify-derequire": "^0.9.4",
     "bundle-collapser": "^1.2.1",
-    "classnames": "^2.2.6",
     "codem-isoboxer": "^0.3.5",
     "css-loader": "^0.28.11",
     "grunt": "^0.4.5",

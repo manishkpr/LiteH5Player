@@ -155,10 +155,10 @@ function getMediaInfo() {
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
-    url: 'http://localhost/2/hls/videoonly01/test.m3u8',
+    //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
-    //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
+    url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
     //url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
     //url: 'http://localhost/6/dash1/project/verizon/envivio/2/clear/audio.m3u8',

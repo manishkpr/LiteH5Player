@@ -29,15 +29,12 @@ import CommonUtils from './utils/common_utils';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(media, adContainer) {
-  //let containerId_ = containerId;
-
   let context_ = oldmtn; //{ flag: 'player' };
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
-  //let uiEngine = new UIEngine(containerId_);
-  let media_ = media;// uiEngine.getVideo();
-  let adContainer_ = adContainer;//uiEngine.getAdContainer();
+  let media_ = media;
+  let adContainer_ = adContainer;
 
   let playlistLoader_;
 
