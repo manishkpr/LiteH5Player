@@ -81,7 +81,7 @@ function Player(containerId) {
     context_.eventBus = eventBus_;
     //context_.loader = FetchLoader;
 
-    let uiEngine = UIEngine(context_).getInstance();
+    let uiEngine = new UIEngine();
     uiEngine.initUI(containerId_);
     media_ = uiEngine.getVideo();
 
