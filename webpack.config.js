@@ -1,11 +1,27 @@
+var path = require('path');
+
 module.exports = {
-  entry:  __dirname + "/src/index.js",
+  entry: path.join(__dirname, "src/index.js"),
   output: {
-    path: __dirname + "/dist",
+    path: path.join(__dirname, "dist"),
     filename: "liteH5Player.debug.js"
   },
-  mode: 'development'
-}
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: path.join(__dirname, 'src'),
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+      }
+    ]
+  }
+};
+
+
+
 
 /*
 Reference1: webpack中文网 -- https://webpack.docschina.org
