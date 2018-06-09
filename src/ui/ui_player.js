@@ -7,8 +7,7 @@ class UIPlayer extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -84,6 +83,3 @@ class UIPlayer extends React.Component {
 };
 
 export default UIPlayer;
-
-
-

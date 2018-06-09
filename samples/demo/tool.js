@@ -1,111 +1,108 @@
 function isFullscreen() {
-    //printLog('+isFullscreen');
-    return document.fullscreenElement ||
+  //printLog('+isFullscreen');
+  return document.fullscreenElement ||
     document.msFullscreenElement ||
     document.mozFullScreen ||
     document.webkitIsFullScreen;
 }
 
 function isPtInElement(pt, element) {
-    var rect = element.getBoundingClientRect();
-    if ((rect.left <= pt.x && pt.x <= rect.right) &&
-        (rect.top <= pt.y && pt.y <= rect.bottom)) {
-        return true;
-    } else {
-        return false;
-    }
+  var rect = element.getBoundingClientRect();
+  if ((rect.left <= pt.x && pt.x <= rect.right) &&
+    (rect.top <= pt.y && pt.y <= rect.bottom)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function timeToString(seconds) {
-    function formatTime(time) {
-        return time < 10 ? '0' + time.toString() : time.toString();
-    }
+  function formatTime(time) {
+    return time < 10 ? '0' + time.toString() : time.toString();
+  }
 
-    seconds = Math.max(seconds, 0);
-    var h = Math.floor(seconds / 3600);
-    var m = Math.floor((seconds % 3600) / 60);
-    var s = Math.floor((seconds % 3600) % 60);
-    return (h === 0 ? '' : formatTime(h) + ':') + formatTime(m) + ':' + formatTime(s);
+  seconds = Math.max(seconds, 0);
+  var h = Math.floor(seconds / 3600);
+  var m = Math.floor((seconds % 3600) / 60);
+  var s = Math.floor((seconds % 3600) % 60);
+  return (h === 0 ? '' : formatTime(h) + ':') + formatTime(m) + ':' + formatTime(s);
 }
 
 function TimeRangesToString(r) {
-    let log = '', len = r.length;
-    for (let i=0; i < len; i ++) {
-      let beg = r.start(i);
-      let end = r.end(i);
+  let log = '',
+    len = r.length;
+  for (let i = 0; i < len; i++) {
+    let beg = r.start(i);
+    let end = r.end(i);
 
-      //console.log('start: ' + beg + ', end: ' + end);
-      log += '[' + r.start(i) + ',' + r.end(i) + ']';
-    }
-    return log;
+    //console.log('start: ' + beg + ', end: ' + end);
+    log += '[' + r.start(i) + ',' + r.end(i) + ']';
+  }
+  return log;
 }
 
 function genGradientColor(posList, colorList) {
-    var totalRange = posList[posList.length - 1];
+  var totalRange = posList[posList.length - 1];
 
-    var gradient = ['to right'];
-    for (var i = 0; i < posList.length; ++i) {
-        var range = posList[i] * 100 / totalRange;
+  var gradient = ['to right'];
+  for (var i = 0; i < posList.length; ++i) {
+    var range = posList[i] * 100 / totalRange;
 
-        if (i === 0) {
-            gradient.push(colorList[0] + ' 0%');
-            gradient.push(colorList[0] + ' ' + range + '%');
-        } else {
-            var lastRange = posList[i - 1] * 100 / totalRange;
-            gradient.push(colorList[i] + ' ' + lastRange + '%');
-            gradient.push(colorList[i] + ' ' + range + '%');
-        }
+    if (i === 0) {
+      gradient.push(colorList[0] + ' 0%');
+      gradient.push(colorList[0] + ' ' + range + '%');
+    } else {
+      var lastRange = posList[i - 1] * 100 / totalRange;
+      gradient.push(colorList[i] + ' ' + lastRange + '%');
+      gradient.push(colorList[i] + ' ' + range + '%');
     }
+  }
 
-    return 'linear-gradient(' + gradient.join(',') + ')';
+  return 'linear-gradient(' + gradient.join(',') + ')';
 }
 
-
 function h5EnterFullscreen() {
-    printLog('+h5EnterFullscreen');
-    var v = document.querySelector('.player');
-    //var v = document.querySelector('.vop-video-container');
-    //var v = document.querySelector('.vop-video');
-    //var v = document.querySelector('video');
-    // Refer to youtube player
-    //var v = document.querySelector('.html5-video-player');
+  printLog('+h5EnterFullscreen');
+  var v = document.querySelector('.player');
+  //var v = document.querySelector('.vop-video-container');
+  //var v = document.querySelector('.vop-video');
+  //var v = document.querySelector('video');
+  // Refer to youtube player
+  //var v = document.querySelector('.html5-video-player');
 
-    // Try to enter fullscreen mode in the browser
-    var requestFullscreen =
-        v.requestFullscreen ||
-        v.requestFullScreen ||
-        v.webkitRequestFullscreen ||
-        v.webkitRequestFullScreen ||
-        v.mozRequestFullscreen ||
-        v.mozRequestFullScreen ||
-        v.msRequestFullscreen ||
-        v.msRequestFullScreen;
+  // Try to enter fullscreen mode in the browser
+  var requestFullscreen =
+    v.requestFullscreen ||
+    v.requestFullScreen ||
+    v.webkitRequestFullscreen ||
+    v.webkitRequestFullScreen ||
+    v.mozRequestFullscreen ||
+    v.mozRequestFullScreen ||
+    v.msRequestFullscreen ||
+    v.msRequestFullScreen;
 
-    v.style.width = '100%';
-    v.style.height = '100%';
+  v.style.width = '100%';
+  v.style.height = '100%';
 
-    requestFullscreen.call(v);
+  requestFullscreen.call(v);
 }
 
 function h5LeaveFullscreen() {
-    printLog('+h5LeaveFullscreen');
+  printLog('+h5LeaveFullscreen');
 
-    var cancelFullscreen =
-        document.exitFullscreen ||
-        document.exitFullScreen ||
-        document.webkitCancelFullScreen ||
-        document.mozCancelFullScreen ||
-        document.msExitFullscreen ||
-        document.msExitFullscreen;
-    if (cancelFullscreen) {
-        cancelFullscreen.call(document);
-        var v = document.querySelector('.player');
-        v.style.width = 'auto';
-        v.style.height = 'auto';
-    }
+  var cancelFullscreen =
+    document.exitFullscreen ||
+    document.exitFullScreen ||
+    document.webkitCancelFullScreen ||
+    document.mozCancelFullScreen ||
+    document.msExitFullscreen ||
+    document.msExitFullscreen;
+  if (cancelFullscreen) {
+    cancelFullscreen.call(document);
+    var v = document.querySelector('.player');
+    v.style.width = 'auto';
+    v.style.height = 'auto';
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
-
-
-

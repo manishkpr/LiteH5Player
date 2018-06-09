@@ -7,10 +7,6 @@ var mediaCfg_ = getMediaInfo();
 
 var uiEngine = null;
 
-var playerUI = {};
-
-
-
 const LOG_DEBUG = undefined;
 const LOG_INFO = 1;
 const LOG_WARN = 2;
@@ -43,23 +39,22 @@ function onBtnUninit() {
 
 function onBtnOpen() {
   uiEngine.playerOpen(mediaCfg_);
-  //playerUI.playerOpen();
 }
 
 function onBtnClose() {
-  playerUI.playerClose();
+  uiEngine.playerClose();
 }
 
 function onBtnPlay() {
-  playerUI.vopPlayButton.click();
+  uiEngine.vopPlayButton.click();
 }
 
 function onBtnManualSchedule() {
-  playerUI.onBtnManualSchedule();
+  uiEngine.onBtnManualSchedule();
 }
 
 function onBtnInitAD() {
-  playerUI.playerRequestAds();
+  uiEngine.playerRequestAds();
 }
 
 function onBtnDelAll() {}
@@ -74,7 +69,7 @@ function onBtnTest() {
 
 function onBtnTest2() {
   printLog('--onBtnTest2--');
-  playerUI.player_.setAudioPlaybackSpeed(2);
+  uiEngine.player_.setAudioPlaybackSpeed(2);
 
   //this.player_.resize(1024, 768);
   //stopBufferingUI();
@@ -96,7 +91,7 @@ function onBtnTest2() {
 
 function onBtnSeek() {
   var time = document.getElementById('seekedTime').value;
-  playerUI.player_.setPosition(time);
+  uiEngine.player_.setPosition(time);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -114,7 +109,7 @@ function onBtnTmp1() {
 var castSender = null;
 
 function onUICmdCastInit() {
-  playerUI.castSender_.new_init(cfg_);
+  uiEngine.castSender_.new_init(cfg_);
 
   // new_init: new_init,
   // new_open: new_open,
@@ -127,17 +122,17 @@ function onUICmdCastInit() {
 }
 
 function onUICmdCastOpen() {
-  playerUI.castSender_.new_open(mediaCfg_);
+  uiEngine.castSender_.new_open(mediaCfg_);
 }
 
 function onUICmdCastAdd() {
-  playerUI.castSender_.new_add();
+  uiEngine.castSender_.new_add();
 }
 
 function onUICmdCastAddPD() {}
 
 function onUICmdCastPlay() {
-  playerUI.castSender_.new_play();
+  uiEngine.castSender_.new_play();
 }
 
 function onUICmdCastPause() {}
@@ -145,12 +140,12 @@ function onUICmdCastPause() {}
 function onUICmdCastPlayAd() {}
 
 function onUICmdCastTest() {
-  playerUI.castSender_.new_test();
+  uiEngine.castSender_.new_test();
 }
 
 function onUICmdCastSeek() {
   var time = document.getElementById('castSeekedTime').value;
-  playerUI.castSender_.new_setPosition(time);
+  uiEngine.castSender_.new_setPosition(time);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -161,25 +156,14 @@ window.onload = function() {
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
   uiEngine = new oldmtn.UIEngine('player-container');
-
-
-  // // old
-  // playerUI.initVariable();
-
-  // playerUI.playerInit();
-  // playerUI.initUIElements();
-  // playerUI.initUIEventListeners();
-
-  // new
-  // var player_ = new oldmtn.Player('player-container');
-  // player_.init(cfg_);
-
-  // BD
-  //onBtnTmp1();
-  //oldmtn.test();
-  // ED
+  uiEngine.playerInit(cfg_);
 };
 
 window.onunload = function() {
   //onBtnStop();
 };
+
+
+
+
+

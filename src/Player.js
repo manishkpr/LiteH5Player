@@ -448,7 +448,8 @@ function Player(media, adContainer) {
 
   function onFoundParser(data) {
     let parser = data.parser;
-    context_.parser = data.parser;
+
+    context_.parser = parser;
     switch(parser.type) {
       case 'dash':
       case 'hls': {

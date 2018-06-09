@@ -16,7 +16,6 @@ class UIEngine {
     this.initUI();
 
     // After
-    this.playerInit();
     this.initUIElements();
     this.initUIEventListeners();
   }
@@ -398,9 +397,9 @@ class UIEngine {
     }
   };
 
-  playerInit() {
+  playerInit(cfg) {
     this.player_ = new oldmtn.Player(this.video_, this.adContainer_);
-    this.player_.init(window.cfg_);
+    this.player_.init(cfg);
 
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
@@ -506,9 +505,7 @@ class UIEngine {
         }
         break;
       case 'closed':
-        {
-
-        }
+        {}
         break;
       default:
         break;
@@ -2041,7 +2038,3 @@ class UIEngine {
 };
 
 export default UIEngine;
-
-
-
-
