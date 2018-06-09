@@ -9,18 +9,6 @@
   },
   "author": "oldmtn",
   "license": "BSD",
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
-  },
   "dependencies": {
     "url-toolkit": "^2.1.2",
     "react": "15.3.0",
