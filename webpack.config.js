@@ -18,6 +18,12 @@ module.exports = {
         query: {
           presets: ['es2015', 'babel-preset-react']
         }
+      }, {
+        test: /\.css$/,
+        include: [
+          path.join(__dirname, "src/ui")
+        ],
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
       }
     ]
   }

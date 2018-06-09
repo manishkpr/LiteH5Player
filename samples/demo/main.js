@@ -2156,14 +2156,14 @@ window.onload = function() {
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
   playerUI.initVariable();
+
+  playerUI.playerInit();
   playerUI.initUIElements();
   playerUI.initUIEventListeners();
 
-  playerUI.playerInit();
-
   // BD
   //onBtnTmp1();
-  oldmtn.test();
+  //oldmtn.test();
   // ED
 };
 
