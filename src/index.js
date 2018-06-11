@@ -5,6 +5,7 @@ import CastSender from './cast/cast_sender';
 import CastReceiver from './cast/cast_receiver';
 
 import UIEngine from './ui/ui_engine';
+import test_subtitle_menu from './ui/ui_subtitlemenu';
 
 
 // Shove both of these into the global scope
@@ -23,7 +24,7 @@ oldmtn.CastReceiver = CastReceiver;
 oldmtn.CommonUtils = CommonUtils;
 
 oldmtn.UIEngine = UIEngine;
-
+oldmtn.test_subtitle_menu = test_subtitle_menu;
 
 /////////////////////////////////////////////////////////////////////////
 

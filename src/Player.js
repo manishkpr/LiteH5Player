@@ -48,10 +48,10 @@ function Player(media, adContainer) {
   let thumbnailController_;
   let fragmentLoader_;
 
-  // ads part
+  // Ads part
   let adsEngine_;
 
-  // autoplay reference
+  // Autoplay reference
   let autoplayAllowed_;
   let autoplayRequiresMuted_;
 
