@@ -158,7 +158,7 @@ window.onload = function() {
   uiEngine = new oldmtn.UIEngine('player-container');
   uiEngine.playerInit(cfg_);
 
-  oldmtn.test_subtitle_menu();
+  //oldmtn.test_subtitle_menu();
 };
 
 window.onunload = function() {
