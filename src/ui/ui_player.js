@@ -19,7 +19,11 @@ class UIPlayer extends React.Component {
 
   render() {
     return (
-      <div className="html5-video-player vop-autohide">
+      <div className="html5-video-player vop-autohide"
+      onClick={this.onPlayerClick.bind(this)}
+      onMouseEnter={this.onPlayerMouseEnter.bind(this)}
+      onMouseMove={this.onPlayerMouseMove.bind(this)}
+      onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
         <div className="vop-video-container">
           <video className="vop-video" playsInline="true" webkit-playsinline="true">
           </video>
@@ -31,15 +35,18 @@ class UIPlayer extends React.Component {
             <span className="vop-tooltip-text">00:00</span>
           </div>
         </div>
-        <div className="vop-popup vop-settings-menu">
+        <div className="vop-popup vop-settings-menu" onClick={this.onSettingsMenuClick.bind(this)}>
           <div className="vop-panel">
             <div className="vop-panel-menu">
             </div>
           </div>
         </div>
         <div className="vop-gradient-bottom"></div>
-        <div className="vop-control-bar">
-          <div className="vop-progress-bar">
+        <div className="vop-control-bar" onClick={this.onUICmdControlBarClick.bind(this)}>
+          <div className="vop-progress-bar"
+          onMouseDown={this.onProgressBarMouseDown.bind(this)}
+          onMouseMove={this.onProgressBarMouseMove.bind(this)}
+          onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
             <div className="vop-progress-list">
               <div className="vop-load-progress"></div>
               <div className="vop-play-progress"></div>
@@ -49,10 +56,14 @@ class UIPlayer extends React.Component {
           </div>
           <div className="vop-controls">
             <div className="vop-left-controls">
-              <button className="vop-button material-icons vop-play-button" title="play">&#xe037;</button>
-              <button className="vop-button material-icons vop-mute-button" title="mute">&#xe050;</button>
+              <button className="vop-button material-icons vop-play-button" title="play"
+              onClick={this.onUICmdPlay.bind(this)}
+              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe037;</button>
+              <button className="vop-button material-icons vop-mute-button" title="mute"
+              onClick={this.onUICmdMute.bind(this)}
+              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe050;</button>
               <div className="vop-volume-panel">
-                <div className="vop-volume-slider">
+                <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
                   <div className="vop-volume-slider-handle">
                   </div>
                 </div>
@@ -60,9 +71,15 @@ class UIPlayer extends React.Component {
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">
-              <button className="vop-button material-icons vop-subtitles-button" title="subtitles">&#xe048;</button>
-              <button className="vop-button material-icons vop-settings-button" title="settings">&#xe8b8;</button>
-              <button className="vop-button material-icons vop-fullscreen-button" title="fullscreen">&#xe5d0;</button>
+              <button className="vop-button material-icons vop-subtitles-button" title="subtitles"
+              onClick={this.onUICmdSwitchSubtitle.bind(this)}
+              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe048;</button>
+              <button className="vop-button material-icons vop-settings-button" title="settings"
+              onClick={this.onUICmdSetting.bind(this)}
+              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe8b8;</button>
+              <button className="vop-button material-icons vop-fullscreen-button" title="fullscreen"
+              onClick={this.onUICmdFullscreen.bind(this)}
+              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe5d0;</button>
             </div>
           </div>
         </div>
@@ -82,13 +99,12 @@ class UIPlayer extends React.Component {
             </div>
           </div>
         </div>
-        <div className="vop-giant-button-container" style={{display: 'none'}}>
+        <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
         </div>
       </div>
     )
   }
-
 
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
@@ -372,37 +388,37 @@ class UIPlayer extends React.Component {
   };
 
   initUIEventListeners() {
-    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter.bind(this));
-    this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
-    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave.bind(this));
+    // this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter.bind(this));
+    // this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
+    // this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave.bind(this));
 
-    this.vopPlayer.addEventListener('click', this.onPlayerClick.bind(this));
-    
-    this.vopControlBar.addEventListener('click', this.onUICmdControlBarClick.bind(this));
-    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown.bind(this));
-    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove.bind(this));
-    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave.bind(this));
-    this.vopPlayButton.addEventListener('click', this.onUICmdPlay.bind(this));
-    this.vopMuteButton.addEventListener('click', this.onUICmdMute.bind(this));
-    this.vopSubtitlesBtn.addEventListener('click', this.onUICmdSwitchSubtitle.bind(this));
-    this.vopSettingsBtn.addEventListener('click', this.onUICmdSetting.bind(this));
-    this.vopFullscreen.addEventListener('click', this.onUICmdFullscreen.bind(this));
+    //this.vopPlayer.addEventListener('click', this.onPlayerClick.bind(this));
 
-    this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMouseDown.bind(this));
+    //this.vopControlBar.addEventListener('click', this.onUICmdControlBarClick.bind(this));
+    //this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown.bind(this));
+    //this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove.bind(this));
+    //this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave.bind(this));
+    //this.vopPlayButton.addEventListener('click', this.onUICmdPlay.bind(this));
+    //this.vopMuteButton.addEventListener('click', this.onUICmdMute.bind(this));
+    //this.vopSubtitlesBtn.addEventListener('click', this.onUICmdSwitchSubtitle.bind(this));
+    //this.vopSettingsBtn.addEventListener('click', this.onUICmdSetting.bind(this));
+    //this.vopFullscreen.addEventListener('click', this.onUICmdFullscreen.bind(this));
 
-    this.vopPlayButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
-    this.vopMuteButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
-    this.vopSubtitlesBtn.addEventListener('mousemove', this.onControlMousemove.bind(this));
-    this.vopSettingsBtn.addEventListener('mousemove', this.onControlMousemove.bind(this));
-    this.vopFullscreen.addEventListener('mousemove', this.onControlMousemove.bind(this));
-    this.vopVolumeSlider.addEventListener('mousemove', this.onControlMousemove.bind(this));
+    //this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMouseDown.bind(this));
 
-    this.vopSettingsMenu.addEventListener('click', this.onSettingsMenuClick.bind(this));
+    // this.vopPlayButton.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+    // this.vopMuteButton.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+    // this.vopSubtitlesBtn.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+    // this.vopSettingsBtn.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+    // this.vopFullscreen.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+    // this.vopVolumeSlider.addEventListener('mousemove', this.onControlMouseMove.bind(this));
+
+    //this.vopSettingsMenu.addEventListener('click', this.onSettingsMenuClick.bind(this));
 
     // listen for animation end
-    this.uiGiantBtnContainer.addEventListener("animationend", function(e) {
-      this.uiGiantBtnContainer.style.display = 'none';
-    }.bind(this), false);
+    // this.uiGiantBtnContainer.addEventListener("animationend", function(e) {
+    //   this.uiGiantBtnContainer.style.display = 'none';
+    // }.bind(this), false);
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -450,7 +466,6 @@ class UIPlayer extends React.Component {
       }.bind(this));
     }
   };
-
 
   playerInit(cfg) {
     this.video_ = document.querySelector('.vop-video');
@@ -920,10 +935,14 @@ class UIPlayer extends React.Component {
     }
   };
 
-  onControlMousemove(e) {
+  onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
   };
+
+  onGiantAnimationEnd(e) {
+    this.uiGiantBtnContainer.style.display = 'none';
+  }
 
   onSettingsMenuClick(e) {
     // Don't route 'click' event from panel to its parent div
