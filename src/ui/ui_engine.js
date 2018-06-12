@@ -4,12 +4,6 @@ import ReactDOM from 'react-dom';
 import UISubtitleMenu from './ui_subtitlemenu';
 import UIPlayer from './ui_player';
 
-
-
-
-
-
-
 class UIEngine {
   constructor(idPlayerContainer) {
     this.playerContainer_ = document.getElementById(idPlayerContainer);
@@ -28,7 +22,7 @@ class UIEngine {
   }
 
   initUI() {
-    ReactDOM.render(<UIPlayer/>, this.playerContainer_);
+    this.uiPlayer_ = ReactDOM.render(<UIPlayer/>, this.playerContainer_);
 
     this.video_ = document.querySelector('.vop-video');
     this.adContainer_ = document.querySelector('.vop-ads-container');
@@ -112,7 +106,7 @@ class UIEngine {
     this.valueVolumeMovePosition = 0;
 
     // menu context
-    this.subtitlesMenuContext = {
+    this.subtitlesMenuUIData = {
       currMenu: 'none', // could be 'none'
       subtitleTracks: [{
         id: '1',
@@ -139,7 +133,7 @@ class UIEngine {
       currSubtitleId: ''
     };
 
-    this.settingMenuContext = {
+    this.settingMenuUIData = {
       currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu
 
       // main setting menu
@@ -324,24 +318,23 @@ class UIEngine {
   };
 
   initUIEventListeners() {
-    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseenter.bind(this));
-    this.vopPlayer.addEventListener('mousemove', this.onPlayerMousemove.bind(this));
-    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseleave.bind(this));
+    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter.bind(this));
+    this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
+    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave.bind(this));
 
     this.vopPlayer.addEventListener('click', this.onPlayerClick.bind(this));
-
-    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMousedown.bind(this));
-    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMousemove.bind(this));
-    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseleave.bind(this));
-
+    
     this.vopControlBar.addEventListener('click', this.onUICmdControlBarClick.bind(this));
+    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown.bind(this));
+    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove.bind(this));
+    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave.bind(this));
     this.vopPlayButton.addEventListener('click', this.onUICmdPlay.bind(this));
     this.vopMuteButton.addEventListener('click', this.onUICmdMute.bind(this));
     this.vopSubtitlesBtn.addEventListener('click', this.onUICmdSwitchSubtitle.bind(this));
     this.vopSettingsBtn.addEventListener('click', this.onUICmdSetting.bind(this));
     this.vopFullscreen.addEventListener('click', this.onUICmdFullscreen.bind(this));
 
-    this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMousedown.bind(this));
+    this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMouseDown.bind(this));
 
     this.vopPlayButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
     this.vopMuteButton.addEventListener('mousemove', this.onControlMousemove.bind(this));
@@ -793,7 +786,7 @@ class UIEngine {
       y: e.clientY
     };
     if (!isPtInElement(pt, this.vopPlayer)) {
-      this.onPlayerMouseleave();
+      this.onPlayerMouseLeave();
     }
   };
 
@@ -811,7 +804,7 @@ class UIEngine {
   };
 
   ///////////////////////////////////////////////////////////////////
-  onPlayerMouseenter() {
+  onPlayerMouseEnter() {
     // Don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
       return;
@@ -820,8 +813,8 @@ class UIEngine {
     $('.html5-video-player').removeClass('vop-autohide');
   };
 
-  onPlayerMousemove(e) {
-    //printLog('+onPlayerMousemove');
+  onPlayerMouseMove(e) {
+    //printLog('+onPlayerMouseMove');
     // don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
       return;
@@ -829,11 +822,11 @@ class UIEngine {
 
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
-      this.onPlayerMouseleave();
+      this.onPlayerMouseLeave();
     }.bind(this), 3000);
   };
 
-  onPlayerMouseleave() {
+  onPlayerMouseLeave() {
     var paused = this.player_.isPaused();
     var fullscreen = isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
@@ -934,16 +927,16 @@ class UIEngine {
   }
 
   onUICmdSwitchSubtitle() {
-    printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuContext.currSubtitleId);
+    printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuUIData.currSubtitleId);
 
     // Part - process
-    if (this.settingMenuContext.currMenu !== 'none') {
+    if (this.settingMenuUIData.currMenu !== 'none') {
       this.destroySettingsMenu();
     }
 
-    if (this.subtitlesMenuContext.currMenu === 'none') {
+    if (this.subtitlesMenuUIData.currMenu === 'none') {
       this.createSubtitlesMenu();
-    } else if (this.subtitlesMenuContext.currMenu === 'main_menu') {
+    } else if (this.subtitlesMenuUIData.currMenu === 'main_menu') {
       if (this.vopSettingsMenu.style.display === 'none') {
         this.vopSettingsMenu.style.display = 'block';
         var elem_child = this.vopPanelMenu.children;
@@ -955,17 +948,17 @@ class UIEngine {
   };
 
   onUICmdSetting(e) {
-    printLog('+onUICmdSetting, currMenu: ' + this.settingMenuContext.currMenu);
+    printLog('+onUICmdSetting, currMenu: ' + this.settingMenuUIData.currMenu);
 
     // Part - destroy subtitle menu first if it's visible
-    if (this.subtitlesMenuContext.currMenu !== 'none') {
+    if (this.subtitlesMenuUIData.currMenu !== 'none') {
       this.destroySettingsMenu();
     }
 
     // Part - process setting event
-    if (this.settingMenuContext.currMenu === 'none') {
+    if (this.settingMenuUIData.currMenu === 'none') {
       this.createSettingsMenu();
-    } else if (this.settingMenuContext.currMenu === 'main_menu') {
+    } else if (this.settingMenuUIData.currMenu === 'main_menu') {
       if (this.vopSettingsMenu.style.display === 'none') {
         this.vopSettingsMenu.style.display = 'block';
         var elem_child = this.vopPanelMenu.children;
@@ -973,10 +966,10 @@ class UIEngine {
       } else {
         this.vopSettingsMenu.style.display = 'none';
       }
-    } else if (this.settingMenuContext.currMenu === 'quality_menu' ||
-      this.settingMenuContext.currMenu === 'audio_track_menu' ||
-      this.settingMenuContext.currMenu === 'fcc_menu' ||
-      this.settingMenuContext.currMenu === 'fcc_property_menu') {
+    } else if (this.settingMenuUIData.currMenu === 'quality_menu' ||
+      this.settingMenuUIData.currMenu === 'audio_track_menu' ||
+      this.settingMenuUIData.currMenu === 'fcc_menu' ||
+      this.settingMenuUIData.currMenu === 'fcc_property_menu') {
       this.destroySettingsMenu();
     }
   };
@@ -1081,8 +1074,8 @@ class UIEngine {
     // for further action, you can add thumbnail ended event here.
   };
 
-  onProgressBarMousedown(e) {
-    printLog('+onProgressBarMousedown');
+  onProgressBarMouseDown(e) {
+    printLog('+onProgressBarMouseDown');
     this.captureProgressBarMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -1102,15 +1095,15 @@ class UIEngine {
     this.updateProgressBarHoverUI();
   };
 
-  onProgressBarMousemove(e) {
-    //printLog('+onProgressBarMousemove');
+  onProgressBarMouseMove(e) {
+    //printLog('+onProgressBarMouseMove');
     e.stopPropagation();
     this.removeAutohideAction();
 
     // if mouse down, just return
     if (this.progressBarContext.mousedown ||
-      this.settingMenuContext.currMenu !== 'none' ||
-      this.subtitlesMenuContext.currMenu !== 'none') {
+      this.settingMenuUIData.currMenu !== 'none' ||
+      this.subtitlesMenuUIData.currMenu !== 'none') {
       return;
     }
 
@@ -1120,8 +1113,8 @@ class UIEngine {
     this.updateTooltipUI(e);
   };
 
-  onProgressBarMouseleave() {
-    //printLog('+onProgressBarMouseleave');
+  onProgressBarMouseLeave() {
+    //printLog('+onProgressBarMouseLeave');
     this.vopTooltip.style.display = 'none';
   };
 
@@ -1183,8 +1176,8 @@ class UIEngine {
     this.progressBarContext.mousedown = false;
   };
 
-  onVolumeSliderMousedown(e) {
-    printLog('+onVolumeSliderMousedown');
+  onVolumeSliderMouseDown(e) {
+    printLog('+onVolumeSliderMouseDown');
     this.captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -1353,6 +1346,12 @@ class UIEngine {
   /////////////////////////////////////////////////////////////////////////
   // Title: Dynamic create UI
   createSubtitlesMenu() {
+    // new
+    ReactDOM.render(<UISubtitleMenu uiData={this.subtitlesMenuUIData}/>, this.vopPanel);
+    this.subtitlesMenuUIData.currMenu = 'main_menu';
+    return;
+
+    // old
     // The subtitle menu html:
     // <div class="vop-panel-header">
     //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
@@ -1396,15 +1395,15 @@ class UIEngine {
 
     // Part - input
     var firstMenuitem = null;
-    for (var i = 0; i < this.subtitlesMenuContext.subtitleTracks.length; i++) {
-      var subtitleTrack = this.subtitlesMenuContext.subtitleTracks[i];
+    for (var i = 0; i < this.subtitlesMenuUIData.subtitleTracks.length; i++) {
+      var subtitleTrack = this.subtitlesMenuUIData.subtitleTracks[i];
 
       var menuitem = document.createElement('div');
       menuitem.setAttribute('class', 'vop-menuitem');
       menuitem.setAttribute('role', 'menuitem');
       menuitem.setAttribute('tabindex', '0');
       menuitem.addEventListener('blur', this.onSubtitleItemBlur.bind(this));
-      if (subtitleTrack.id === this.subtitlesMenuContext.currSubtitleId) {
+      if (subtitleTrack.id === this.subtitlesMenuUIData.currSubtitleId) {
         menuitem.setAttribute('aria-checked', 'true');
       }
 
@@ -1435,7 +1434,7 @@ class UIEngine {
     this.vopSettingsMenu.style.display = 'block';
     firstMenuitem.focus();
 
-    this.subtitlesMenuContext.currMenu = 'main_menu';
+    this.subtitlesMenuUIData.currMenu = 'main_menu';
   };
 
   destroySettingsMenu() {
@@ -1448,8 +1447,8 @@ class UIEngine {
       this.vopPanelMenu.removeChild(this.vopPanelMenu.firstChild);
     }
 
-    this.settingMenuContext.currMenu = 'none';
-    this.subtitlesMenuContext.currMenu = 'none';
+    this.settingMenuUIData.currMenu = 'none';
+    this.subtitlesMenuUIData.currMenu = 'none';
   };
 
   createHeaderItemUI(text, cb) {
@@ -1511,10 +1510,10 @@ class UIEngine {
     // Part - input: current quality, current audio track, etc.
     function getQualityText() {
       var qualityText = '';
-      for (var i = 0; i < this.settingMenuContext.qualityList.length; i++) {
-        var qualityId = this.settingMenuContext.qualityList[i].id;
-        if (qualityId === this.settingMenuContext.currQualityId) {
-          qualityText = this.settingMenuContext.qualityList[i].bitrate;
+      for (var i = 0; i < this.settingMenuUIData.qualityList.length; i++) {
+        var qualityId = this.settingMenuUIData.qualityList[i].id;
+        if (qualityId === this.settingMenuUIData.currQualityId) {
+          qualityText = this.settingMenuUIData.qualityList[i].bitrate;
           break;
         }
       }
@@ -1523,10 +1522,10 @@ class UIEngine {
 
     function getLangText() {
       var langText = '';
-      for (var i = 0; i < this.settingMenuContext.audioTrackList.length; i++) {
-        var langId = this.settingMenuContext.audioTrackList[i].id;
-        if (langId === this.settingMenuContext.currAudioTrackId) {
-          langText = this.settingMenuContext.audioTrackList[i].lang;
+      for (var i = 0; i < this.settingMenuUIData.audioTrackList.length; i++) {
+        var langId = this.settingMenuUIData.audioTrackList[i].id;
+        if (langId === this.settingMenuUIData.currAudioTrackId) {
+          langText = this.settingMenuUIData.audioTrackList[i].lang;
           break;
         }
       }
@@ -1534,7 +1533,7 @@ class UIEngine {
     }
 
     // Part - process: created quality menu item
-    var qualityCnt = this.settingMenuContext.qualityList.length;
+    var qualityCnt = this.settingMenuUIData.qualityList.length;
     var qualityMenuitem = document.createElement('div');
     qualityMenuitem.setAttribute('class', 'vop-menuitem');
     qualityMenuitem.setAttribute('role', 'menuitem');
@@ -1551,7 +1550,7 @@ class UIEngine {
     var content = document.createElement('div');
     content.setAttribute('class', 'vop-menuitem-content');
 
-    if (this.settingMenuContext.isQualityAuto) {
+    if (this.settingMenuUIData.isQualityAuto) {
       var spanAuto = document.createElement('span');
       spanAuto.innerText = 'Auto';
       spanAuto.style.paddingRight = '6px';
@@ -1570,7 +1569,7 @@ class UIEngine {
     qualityMenuitem.addEventListener('click', this.onQualityMenuClick.bind(this));
 
     // create audio track menu item
-    var audioTrackCnt = this.settingMenuContext.audioTrackList.length;
+    var audioTrackCnt = this.settingMenuUIData.audioTrackList.length;
     var audioMenuitem = document.createElement('div');
     audioMenuitem.setAttribute('class', 'vop-menuitem');
     audioMenuitem.setAttribute('role', 'menuitem');
@@ -1630,7 +1629,7 @@ class UIEngine {
     this.vopSettingsMenu.style.display = 'block';
     qualityMenuitem.focus();
 
-    this.settingMenuContext.currMenu = 'main_menu';
+    this.settingMenuUIData.currMenu = 'main_menu';
   };
 
   createQualityMenu() {
@@ -1670,16 +1669,16 @@ class UIEngine {
 
     // add quality menuitem
     var focusItem = null;
-    for (var i = 0; i < this.settingMenuContext.qualityList.length; i++) {
-      var quality = this.settingMenuContext.qualityList[i].bitrate;
-      var id = this.settingMenuContext.qualityList[i].id;
+    for (var i = 0; i < this.settingMenuUIData.qualityList.length; i++) {
+      var quality = this.settingMenuUIData.qualityList[i].bitrate;
+      var id = this.settingMenuUIData.qualityList[i].id;
 
       var menuitem = this.createRadioMenuItem(quality, this.onQualityItemBlur.bind(this), this.onQualityItemClick.bind(this));
       menuitem.dataset.id = id;
-      if (id == this.settingMenuContext.currQualityId) {
+      if (id == this.settingMenuUIData.currQualityId) {
         menuitem.setAttribute('aria-checked', 'true');
       }
-      if (id == this.settingMenuContext.currQualityId) {
+      if (id == this.settingMenuUIData.currQualityId) {
         focusItem = menuitem;
       }
 
@@ -1690,7 +1689,7 @@ class UIEngine {
     this.vopSettingsMenu.style.display = 'block';
     focusItem.focus();
 
-    this.settingMenuContext.currMenu = 'quality_menu';
+    this.settingMenuUIData.currMenu = 'quality_menu';
   }
 
   createAudioTrackMenu() {
@@ -1725,13 +1724,13 @@ class UIEngine {
 
     // add quality menuitem
     var firstItem = null;
-    for (var i = 0; i < this.settingMenuContext.audioTrackList.length; i++) {
-      var audioLang = this.settingMenuContext.audioTrackList[i].lang;
-      var id = this.settingMenuContext.audioTrackList[i].id;
+    for (var i = 0; i < this.settingMenuUIData.audioTrackList.length; i++) {
+      var audioLang = this.settingMenuUIData.audioTrackList[i].lang;
+      var id = this.settingMenuUIData.audioTrackList[i].id;
 
       var menuitem = this.createRadioMenuItem(audioLang, this.onAudioTrackItemBlur.bind(this), this.onAudioTrackItemClick.bind(this));
       menuitem.dataset.id = id;
-      if (audioLang == this.settingMenuContext.currAudioTrackId) {
+      if (audioLang == this.settingMenuUIData.currAudioTrackId) {
         menuitem.setAttribute('aria-checked', 'true');
       }
       if (!firstItem) {
@@ -1745,7 +1744,7 @@ class UIEngine {
     this.vopSettingsMenu.style.display = 'block';
     firstItem.focus();
 
-    this.settingMenuContext.currMenu = 'audio_track_menu';
+    this.settingMenuUIData.currMenu = 'audio_track_menu';
   }
 
   createFccMenu() {
@@ -1778,8 +1777,8 @@ class UIEngine {
 
     // Part - fcc property item
     var firstItem = null;
-    for (var i = 0; i < this.settingMenuContext.fccPropertyList.length; i++) {
-      var fcc = this.settingMenuContext.fccPropertyList[i];
+    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
+      var fcc = this.settingMenuUIData.fccPropertyList[i];
 
       var menuitem = document.createElement('div');
       menuitem.setAttribute('class', 'vop-menuitem');
@@ -1808,7 +1807,7 @@ class UIEngine {
     }
 
     this.vopSettingsMenu.style.display = 'block';
-    this.settingMenuContext.currMenu = 'fcc_menu';
+    this.settingMenuUIData.currMenu = 'fcc_menu';
     firstItem.focus();
   }
 
@@ -1817,8 +1816,8 @@ class UIEngine {
     var header = this.createHeaderItemUI(name, this.onFccPropertyItemBack.bind(this));
     this.vopPanel.insertBefore(header, this.vopPanelMenu);
 
-    for (var i = 0; i < this.settingMenuContext.fccPropertyList.length; i++) {
-      var fccProperty = this.settingMenuContext.fccPropertyList[i];
+    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
+      var fccProperty = this.settingMenuUIData.fccPropertyList[i];
       if (fccProperty.name === name) {
         var firstItem = null;
         for (var j = 0; j < fccProperty.values.length; j++) {
@@ -1837,7 +1836,7 @@ class UIEngine {
           this.vopPanelMenu.dataset.fccProperty = name;
           this.vopPanelMenu.appendChild(menuitem);
 
-          this.settingMenuContext.currMenu = 'fcc_property_menu';
+          this.settingMenuUIData.currMenu = 'fcc_property_menu';
           firstItem.focus();
         }
         break;
@@ -1881,7 +1880,7 @@ class UIEngine {
       text = ', text: ' + e.relatedTarget.innerText;
     }
 
-    printLog('+onMainMenuBlur, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu + text);
+    printLog('+onMainMenuBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
 
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
@@ -1905,19 +1904,19 @@ class UIEngine {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
-    if (this.subtitlesMenuContext.currSubtitleId === id) {
-      this.subtitlesMenuContext.currSubtitleId = '';
+    if (this.subtitlesMenuUIData.currSubtitleId === id) {
+      this.subtitlesMenuUIData.currSubtitleId = '';
     } else {
-      this.subtitlesMenuContext.currSubtitleId = id;
+      this.subtitlesMenuUIData.currSubtitleId = id;
     }
 
-    this.updatePanelMenuUI(this.subtitlesMenuContext.currSubtitleId);
+    this.updatePanelMenuUI(this.subtitlesMenuUIData.currSubtitleId);
   }
 
   onSubtitleItemBlur(e) {
     if (e.relatedTarget) {
       if (e.relatedTarget === this.vopSubtitlesBtn) {
-        if (this.subtitlesMenuContext.currMenu === 'main_menu') {
+        if (this.subtitlesMenuUIData.currMenu === 'main_menu') {
           // do nothing
         }
       }
@@ -1937,12 +1936,12 @@ class UIEngine {
   };
 
   onQualityItemClick(e) {
-    printLog('+onQualityItemClick, this.settingMenuContext.currMenu: ' + this.settingMenuContext.currMenu +
+    printLog('+onQualityItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
     var nextFocus = e.currentTarget;
 
-    this.settingMenuContext.currQualityId = nextFocus.dataset.id;
-    this.updatePanelMenuUI(this.settingMenuContext.currQualityId);
+    this.settingMenuUIData.currQualityId = nextFocus.dataset.id;
+    this.updatePanelMenuUI(this.settingMenuUIData.currQualityId);
   };
 
   onQualityItemBlur(e) {
@@ -1971,8 +1970,8 @@ class UIEngine {
     printLog('+onAudioTrackItemClick');
     var nextFocus = e.currentTarget;
 
-    this.settingMenuContext.currAudioTrackId = nextFocus.dataset.id;
-    this.updatePanelMenuUI(this.settingMenuContext.currAudioTrackId);
+    this.settingMenuUIData.currAudioTrackId = nextFocus.dataset.id;
+    this.updatePanelMenuUI(this.settingMenuUIData.currAudioTrackId);
   };
 
   onAudioTrackItemBlur(e) {
@@ -2010,8 +2009,8 @@ class UIEngine {
     printLog('this.vopPanelMenu.dataset.fccProperty: ' + this.vopPanelMenu.dataset.fccProperty);
     printLog('new value: ' + e.currentTarget.dataset.id);
 
-    for (var i = 0; i < this.settingMenuContext.fccPropertyList.length; i++) {
-      var fccProperty = this.settingMenuContext.fccPropertyList[i];
+    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
+      var fccProperty = this.settingMenuUIData.fccPropertyList[i];
       if (fccProperty.name === this.vopPanelMenu.dataset.fccProperty) {
         fccProperty.currValue = e.currentTarget.dataset.id;
         this.updatePanelMenuUI(fccProperty.currValue);
