@@ -10,6 +10,7 @@ import UIQualityMenu from './ui_quality_menu';
 import UIAudioTrackMenu from './ui_audio_track_menu';
 import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
+import UIXSpeedMenu from './ui_xspeed_menu';
 
 class UIPlayer extends React.Component {
   constructor(props) {
@@ -73,6 +74,10 @@ class UIPlayer extends React.Component {
               onFccPropertyMenuBack={this.onFccPropertyMenuBack.bind(this)}
               onFccPropertyMenuItemClick={this.onFccPropertyMenuItemClick.bind(this)}
               onFccPropertyMenuItemBlur={this.onFccPropertyMenuItemBlur.bind(this)} />
+            <UIXSpeedMenu state={this.state}
+              onXSpeedMenuBack={this.onXSpeedMenuBack.bind(this)}
+              onXSpeedMenuItemClick={this.onXSpeedMenuItemClick.bind(this)}
+              onXSpeedMenuItemBlur={this.onXSpeedMenuItemBlur.bind(this)} />
           </div>
         </div>
         <div className="vop-gradient-bottom"></div>
@@ -211,18 +216,21 @@ class UIPlayer extends React.Component {
 
     // menu context
     this.settingMenuUIData = {
-      currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitle_menu
+      currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitle_menu, xspeed_menu
 
       // main setting menu
       mainList: [{
-        id: 1,
+        id: '1',
         text: 'Quality'
       }, {
-        id: 2,
+        id: '2',
         text: 'Language'
       }, {
-        id: 3,
+        id: '3',
         text: 'Subtitle'
+      }, {
+        id: '4',
+        text: 'XSpeed'
       }],
 
       // quality settings menu
@@ -375,6 +383,25 @@ class UIPlayer extends React.Component {
         name: 'vertical_position',
         values: ['top', 'middle', 'bottom'],
         currValue: 'top'
+      }],
+
+      // X-Speed
+      currSpeed: '3',
+      xspeedList: [{
+        id: '1',
+        value: 0.25
+      }, {
+        id: '2',
+        value: 0.5
+      }, {
+        id: '3',
+        value: 1.0
+      }, {
+        id: '4',
+        value: 1.5
+      }, {
+        id: '5',
+        value: 2.0
       }]
     };
 
@@ -422,7 +449,7 @@ class UIPlayer extends React.Component {
     //
     this.video_ = document.querySelector('.vop-video');
     this.adContainer_ = document.querySelector('.vop-ads-container');
-  };
+  }
 
   initUIEventListeners() {
     // resize listener
@@ -1407,6 +1434,11 @@ class UIPlayer extends React.Component {
     this.updateUIState();
   }
 
+  onXSpeedMenuClick(e) {
+    this.settingMenuUIData.currMenu = 'xspeed_menu';
+    this.updateUIState();
+  }
+
   onMainMenuItemBlur(e) {
     var text = '';
     if (e.relatedTarget) {
@@ -1489,6 +1521,8 @@ class UIPlayer extends React.Component {
       case '3':
       this.onFccMenuClick(e);
       break;
+      case '4':
+      this.onXSpeedMenuClick(e);
       default:
       break;
     }
@@ -1592,6 +1626,24 @@ class UIPlayer extends React.Component {
       this.settingMenuUIData.currMenu = 'none';
       this.updateUIState();
     }
+  }
+
+  onXSpeedMenuBack(e) {
+    this.settingMenuUIData.currMenu = 'main_menu';
+    this.updateUIState();
+  }
+
+  onXSpeedMenuItemClick(e) {
+    printLog('+onXSpeedMenuItemClick');
+    var nextFocus = e.currentTarget;
+
+    this.settingMenuUIData.currSpeed = nextFocus.dataset.id;
+    this.updateUIState();
+  }
+
+  onXSpeedMenuItemBlur(e) {
+    printLog('+onXSpeedMenuItemBlur');
+    this.onQualityMenuItemBlur(e);
   }
 
   playerTest() {
