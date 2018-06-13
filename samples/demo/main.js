@@ -38,7 +38,7 @@ function onBtnUninit() {
 }
 
 function onBtnOpen() {
-  uiEngine.playerOpen(mediaCfg_);
+  uiEngine.open(mediaCfg_);
 }
 
 function onBtnClose() {
@@ -64,7 +64,7 @@ function onBtnStop() {}
 function onBtnPlayAd() {}
 
 function onBtnTest() {
-  uiEngine.playerTest();
+  uiEngine.test();
 }
 
 function onBtnTest2() {
@@ -156,7 +156,7 @@ window.onload = function() {
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
   uiEngine = new oldmtn.UIEngine('player-container');
-  uiEngine.playerInit(cfg_);
+  uiEngine.init(cfg_);
 
   //oldmtn.test_subtitle_menu();
 };

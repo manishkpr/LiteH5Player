@@ -1,15 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ResizeSensor from 'resize-sensor';
 
 import "./ui_player.css";
+
+import UISubtitleMenu from './ui_subtitle_menu';
+import UISettingMenu from './ui_setting_menu';
+import UIQualityMenu from './ui_quality_menu';
+import UIAudioTrackMenu from './ui_audio_track_menu';
+import UIFccMenu from './ui_fcc_menu';
+import UIFccPropertyMenu from './ui_fcc_property_menu';
 
 class UIPlayer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.initVariable();
+
+    this.state = {
+      subtitlesMenuUIData: this.subtitlesMenuUIData,
+      settingMenuUIData: this.settingMenuUIData
+    };
   }
 
   componentWillMount() {
-    this.initVariable();
   }
 
   componentDidMount() {
@@ -20,10 +34,10 @@ class UIPlayer extends React.Component {
   render() {
     return (
       <div className="html5-video-player vop-autohide"
-      onClick={this.onPlayerClick.bind(this)}
-      onMouseEnter={this.onPlayerMouseEnter.bind(this)}
-      onMouseMove={this.onPlayerMouseMove.bind(this)}
-      onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
+        onClick={this.onPlayerClick.bind(this)}
+        onMouseEnter={this.onPlayerMouseEnter.bind(this)}
+        onMouseMove={this.onPlayerMouseMove.bind(this)}
+        onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
         <div className="vop-video-container">
           <video className="vop-video" playsInline="true" webkit-playsinline="true">
           </video>
@@ -37,16 +51,37 @@ class UIPlayer extends React.Component {
         </div>
         <div className="vop-popup vop-settings-menu" onClick={this.onSettingsMenuClick.bind(this)}>
           <div className="vop-panel">
-            <div className="vop-panel-menu">
-            </div>
+            <UISubtitleMenu state={this.state}
+              onSubtitleMenuBack={this.onSubtitleMenuBack.bind(this)}
+              onSubtitleMenuItemClick={this.onSubtitleMenuItemClick.bind(this)}
+              onSubtitleMenuItemBlur={this.onSubtitleMenuItemBlur.bind(this)} />
+            <UISettingMenu state={this.state}
+              onMainMenuItemClick={this.onMainMenuItemClick.bind(this)}
+              onMainMenuItemBlur={this.onMainMenuItemBlur.bind(this)} />
+            <UIQualityMenu state={this.state}
+              onQualityMenuBack={this.onQualityMenuBack.bind(this)}
+              onQualityMenuItemClick={this.onQualityMenuItemClick.bind(this)}
+              onQualityMenuItemBlur={this.onQualityMenuItemBlur.bind(this)} />
+            <UIAudioTrackMenu state={this.state}
+              onAudioTrackMenuBack={this.onAudioTrackMenuBack.bind(this)}
+              onAudioTrackMenuItemClick={this.onAudioTrackMenuItemClick.bind(this)}
+              onAudioTrackMenuItemBlur={this.onAudioTrackMenuItemBlur.bind(this)} />
+            <UIFccMenu state={this.state}
+              onFccMenuBack={this.onFccMenuBack.bind(this)}
+              onFccMenuItemClick={this.onFccMenuItemClick.bind(this)}
+              onFccMenuItemBlur={this.onFccMenuItemBlur.bind(this)} />
+            <UIFccPropertyMenu state={this.state}
+              onFccPropertyMenuBack={this.onFccPropertyMenuBack.bind(this)}
+              onFccPropertyMenuItemClick={this.onFccPropertyMenuItemClick.bind(this)}
+              onFccPropertyMenuItemBlur={this.onFccPropertyMenuItemBlur.bind(this)} />
           </div>
         </div>
         <div className="vop-gradient-bottom"></div>
         <div className="vop-control-bar" onClick={this.onUICmdControlBarClick.bind(this)}>
           <div className="vop-progress-bar"
-          onMouseDown={this.onProgressBarMouseDown.bind(this)}
-          onMouseMove={this.onProgressBarMouseMove.bind(this)}
-          onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
+            onMouseDown={this.onProgressBarMouseDown.bind(this)}
+            onMouseMove={this.onProgressBarMouseMove.bind(this)}
+            onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
             <div className="vop-progress-list">
               <div className="vop-load-progress"></div>
               <div className="vop-play-progress"></div>
@@ -72,7 +107,7 @@ class UIPlayer extends React.Component {
             </div>
             <div className="vop-right-controls">
               <button className="vop-button material-icons vop-subtitles-button" title="subtitles"
-              onClick={this.onUICmdSwitchSubtitle.bind(this)}
+              onClick={this.onUICmdSubtitleMenu.bind(this)}
               onMouseMove={this.onControlMouseMove.bind(this)}>&#xe048;</button>
               <button className="vop-button material-icons vop-settings-button" title="settings"
               onClick={this.onUICmdSetting.bind(this)}
@@ -267,6 +302,7 @@ class UIPlayer extends React.Component {
       currAudioTrackId: '1',
 
       // FCC settings menu
+      currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
       isEnableFCC: true,
       fccPropertyList: [{
         // white/black(default)/red/green/blue/yellow/magenta/cyan
@@ -385,41 +421,13 @@ class UIPlayer extends React.Component {
 
     this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
     this.uiGiantButton = document.querySelector('.vop-giant-button');
+
+    //
+    this.video_ = document.querySelector('.vop-video');
+    this.adContainer_ = document.querySelector('.vop-ads-container');
   };
 
   initUIEventListeners() {
-    // this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter.bind(this));
-    // this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
-    // this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave.bind(this));
-
-    //this.vopPlayer.addEventListener('click', this.onPlayerClick.bind(this));
-
-    //this.vopControlBar.addEventListener('click', this.onUICmdControlBarClick.bind(this));
-    //this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown.bind(this));
-    //this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove.bind(this));
-    //this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave.bind(this));
-    //this.vopPlayButton.addEventListener('click', this.onUICmdPlay.bind(this));
-    //this.vopMuteButton.addEventListener('click', this.onUICmdMute.bind(this));
-    //this.vopSubtitlesBtn.addEventListener('click', this.onUICmdSwitchSubtitle.bind(this));
-    //this.vopSettingsBtn.addEventListener('click', this.onUICmdSetting.bind(this));
-    //this.vopFullscreen.addEventListener('click', this.onUICmdFullscreen.bind(this));
-
-    //this.vopVolumeSlider.addEventListener('mousedown', this.onVolumeSliderMouseDown.bind(this));
-
-    // this.vopPlayButton.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-    // this.vopMuteButton.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-    // this.vopSubtitlesBtn.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-    // this.vopSettingsBtn.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-    // this.vopFullscreen.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-    // this.vopVolumeSlider.addEventListener('mousemove', this.onControlMouseMove.bind(this));
-
-    //this.vopSettingsMenu.addEventListener('click', this.onSettingsMenuClick.bind(this));
-
-    // listen for animation end
-    // this.uiGiantBtnContainer.addEventListener("animationend", function(e) {
-    //   this.uiGiantBtnContainer.style.display = 'none';
-    // }.bind(this), false);
-
     // resize listener
     //if (window.ResizeObserver) {
     if (false) {
@@ -465,12 +473,9 @@ class UIPlayer extends React.Component {
         this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
       }.bind(this));
     }
-  };
+  }
 
   playerInit(cfg) {
-    this.video_ = document.querySelector('.vop-video');
-    this.adContainer_ = document.querySelector('.vop-ads-container');
-
     this.player_ = new oldmtn.Player(this.video_, this.adContainer_);
     this.player_.init(cfg);
 
@@ -996,52 +1001,27 @@ class UIPlayer extends React.Component {
     this.player_ = null;
   }
 
-  onUICmdSwitchSubtitle() {
-    printLog('+onUICmdSwitchSubtitle, currMenu: ' + this.subtitlesMenuUIData.currSubtitleId);
+  onUICmdSubtitleMenu() {
+    printLog('+onUICmdSubtitleMenu, currMenu: ' + this.subtitlesMenuUIData.currSubtitleId);
 
-    // Part - process
-    if (this.settingMenuUIData.currMenu !== 'none') {
-      this.destroySettingsMenu();
+    if (this.state.subtitlesMenuUIData.currMenu !== 'subtitle') {
+      this.subtitlesMenuUIData.currMenu = 'subtitle';
+    } else {
+      this.subtitlesMenuUIData.currMenu = 'none';
     }
-
-    if (this.subtitlesMenuUIData.currMenu === 'none') {
-      this.createSubtitlesMenu();
-    } else if (this.subtitlesMenuUIData.currMenu === 'main_menu') {
-      if (this.vopSettingsMenu.style.display === 'none') {
-        this.vopSettingsMenu.style.display = 'block';
-        var elem_child = this.vopPanelMenu.children;
-        elem_child[0].focus();
-      } else {
-        this.vopSettingsMenu.style.display = 'none';
-      }
-    }
+    this.updateUIState();
   };
 
   onUICmdSetting(e) {
     printLog('+onUICmdSetting, currMenu: ' + this.settingMenuUIData.currMenu);
 
-    // Part - destroy subtitle menu first if it's visible
-    if (this.subtitlesMenuUIData.currMenu !== 'none') {
-      this.destroySettingsMenu();
+    if (this.settingMenuUIData.currMenu !== 'none') {
+      this.settingMenuUIData.currMenu = 'none';
+    } else {
+      this.settingMenuUIData.currMenu = 'main_menu';
     }
 
-    // Part - process setting event
-    if (this.settingMenuUIData.currMenu === 'none') {
-      this.createSettingsMenu();
-    } else if (this.settingMenuUIData.currMenu === 'main_menu') {
-      if (this.vopSettingsMenu.style.display === 'none') {
-        this.vopSettingsMenu.style.display = 'block';
-        var elem_child = this.vopPanelMenu.children;
-        elem_child[0].focus();
-      } else {
-        this.vopSettingsMenu.style.display = 'none';
-      }
-    } else if (this.settingMenuUIData.currMenu === 'quality_menu' ||
-      this.settingMenuUIData.currMenu === 'audio_track_menu' ||
-      this.settingMenuUIData.currMenu === 'fcc_menu' ||
-      this.settingMenuUIData.currMenu === 'fcc_property_menu') {
-      this.destroySettingsMenu();
-    }
+    this.updateUIState();
   };
 
   onUICmdFullscreen() {
@@ -1414,543 +1394,30 @@ class UIPlayer extends React.Component {
   };
 
   /////////////////////////////////////////////////////////////////////////
-  // Title: Dynamic create UI
-  createSubtitlesMenu() {
-    // new
-    ReactDOM.render(<UISubtitleMenu uiData={this.subtitlesMenuUIData}/>, this.vopPanel);
-    this.subtitlesMenuUIData.currMenu = 'main_menu';
-    return;
-
-    // old
-    // The subtitle menu html:
-    // <div class="vop-panel-header">
-    //     <button class="vop-panel-title" onclick="onSubitlesBack(event)">Subtitles</button>
-    // </div>
-    // <div class="vop-panel-menu">
-    //     <div class="vop-menuitem" role="menuitem" aria-checked="true">
-    //         <div class="vop-menuitem-label">
-    //             English
-    //         </div>
-    //         <div class="vop-menuitem-content">
-    //             <div class="vop-menuitem-toggle-checkbox">
-    //             </div>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitem" aria-checked="true">
-    //         <div class="vop-menuitem-label">
-    //             Svenska
-    //         </div>
-    //         <div class="vop-menuitem-content">
-    //             <div class="vop-menuitem-toggle-checkbox">
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
-
-    // Part - process, remove all children of this.vopPanelMenu
-    this.destroySettingsMenu();
-
-    // Part - input
-    var header = document.createElement('div');
-    header.setAttribute('class', 'vop-panel-header');
-
-    var title = document.createElement('button');
-    title.setAttribute('class', 'vop-panel-title');
-    title.innerText = 'Subtitles';
-    title.addEventListener('click', this.onSubitlesBack.bind(this));
-    title.setAttribute('role', 'plain');
-
-    header.appendChild(title);
-    this.vopPanel.insertBefore(header, this.vopPanelMenu);
-
-    // Part - input
-    var firstMenuitem = null;
-    for (var i = 0; i < this.subtitlesMenuUIData.subtitleTracks.length; i++) {
-      var subtitleTrack = this.subtitlesMenuUIData.subtitleTracks[i];
-
-      var menuitem = document.createElement('div');
-      menuitem.setAttribute('class', 'vop-menuitem');
-      menuitem.setAttribute('role', 'menuitem');
-      menuitem.setAttribute('tabindex', '0');
-      menuitem.addEventListener('blur', this.onSubtitleItemBlur.bind(this));
-      if (subtitleTrack.id === this.subtitlesMenuUIData.currSubtitleId) {
-        menuitem.setAttribute('aria-checked', 'true');
-      }
-
-      var label = document.createElement('div');
-      label.setAttribute('class', 'vop-menuitem-label');
-      label.innerText = subtitleTrack.lang;
-
-      var content = document.createElement('div');
-      content.setAttribute('class', 'vop-menuitem-content');
-
-      var checkBox = document.createElement('div');
-      checkBox.setAttribute('class', 'vop-menuitem-toggle-checkbox');
-      content.appendChild(checkBox);
-
-      menuitem.appendChild(label);
-      menuitem.appendChild(content);
-
-      menuitem.dataset.id = subtitleTrack.id;
-      menuitem.addEventListener('click', this.onSubtitleItemClick.bind(this));
-
-      if (firstMenuitem === null) {
-        firstMenuitem = menuitem;
-      }
-      this.vopPanelMenu.appendChild(menuitem);
-    }
-
-    //
-    this.vopSettingsMenu.style.display = 'block';
-    firstMenuitem.focus();
-
-    this.subtitlesMenuUIData.currMenu = 'main_menu';
-  };
-
-  destroySettingsMenu() {
-    var v = document.querySelector('.vop-panel-header');
-    if (v) {
-      this.vopPanel.removeChild(v);
-    }
-    while (this.vopPanelMenu.firstChild) {
-      this.vopPanelMenu.firstChild.onblur = null;
-      this.vopPanelMenu.removeChild(this.vopPanelMenu.firstChild);
-    }
-
-    this.settingMenuUIData.currMenu = 'none';
-    this.subtitlesMenuUIData.currMenu = 'none';
-  };
-
-  createHeaderItemUI(text, cb) {
-    var header = document.createElement('div');
-    header.setAttribute('class', 'vop-panel-header');
-
-    var title = document.createElement('button');
-    title.innerText = text;
-    title.setAttribute('class', 'vop-panel-title');
-
-    header.appendChild(title);
-    header.addEventListener('click', cb);
-
-    return header;
-  };
-
-  createRadioMenuItem(text, cbBlur, cbClick) {
-    var menuitem = document.createElement('div');
-    menuitem.setAttribute('class', 'vop-menuitem');
-    menuitem.setAttribute('role', 'menuitemradio');
-
-    menuitem.setAttribute('tabindex', '0');
-    menuitem.addEventListener('blur', cbBlur);
-    menuitem.addEventListener('click', cbClick);
-
-    var label = document.createElement('div');
-    label.innerText = text;
-    label.setAttribute('class', 'vop-menuitem-label');
-
-    menuitem.appendChild(label);
-    return menuitem;
-  };
-
-  createSettingsMenu() {
-    // The main menu html:
-    // <div class="vop-panel-menu">
-    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onQualityItemClick(event)">
-    //        <div class="vop-menuitem-label">
-    //            Quality
-    //        </div>
-    //        <div class="vop-menuitem-content">
-    //            <span class="vop-menuitem-content-text">360p</span>
-    //        </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onAudioTrackMenuClick(event)">
-    //         <div class="vop-menuitem-label">
-    //             Language
-    //         </div>
-    //         <div class="vop-menuitem-content">
-    //             <span>Auto</span>
-    //             <span class="vop-menuitem-content-text">Bipbop1</span>
-    //         </div>
-    //     </div>
-    // </div>
-
-    // Part - process, remove all children of this.vopPanelMenu
-    this.destroySettingsMenu();
-
-    // Part - input: current quality, current audio track, etc.
-    function getQualityText() {
-      var qualityText = '';
-      for (var i = 0; i < this.settingMenuUIData.qualityList.length; i++) {
-        var qualityId = this.settingMenuUIData.qualityList[i].id;
-        if (qualityId === this.settingMenuUIData.currQualityId) {
-          qualityText = this.settingMenuUIData.qualityList[i].bitrate;
-          break;
-        }
-      }
-      return qualityText;
-    }
-
-    function getLangText() {
-      var langText = '';
-      for (var i = 0; i < this.settingMenuUIData.audioTrackList.length; i++) {
-        var langId = this.settingMenuUIData.audioTrackList[i].id;
-        if (langId === this.settingMenuUIData.currAudioTrackId) {
-          langText = this.settingMenuUIData.audioTrackList[i].lang;
-          break;
-        }
-      }
-      return langText;
-    }
-
-    // Part - process: created quality menu item
-    var qualityCnt = this.settingMenuUIData.qualityList.length;
-    var qualityMenuitem = document.createElement('div');
-    qualityMenuitem.setAttribute('class', 'vop-menuitem');
-    qualityMenuitem.setAttribute('role', 'menuitem');
-    if (qualityCnt > 1) {
-      qualityMenuitem.setAttribute('aria-haspopup', 'true');
-    }
-    qualityMenuitem.setAttribute('tabindex', '0');
-    qualityMenuitem.onblur = this.onMainMenuBlur.bind(this);
-
-    var label = document.createElement('div');
-    label.setAttribute('class', 'vop-menuitem-label');
-    label.innerText = 'Quality';
-
-    var content = document.createElement('div');
-    content.setAttribute('class', 'vop-menuitem-content');
-
-    if (this.settingMenuUIData.isQualityAuto) {
-      var spanAuto = document.createElement('span');
-      spanAuto.innerText = 'Auto';
-      spanAuto.style.paddingRight = '6px';
-
-      content.appendChild(spanAuto);
-    }
-
-    var contentText = document.createElement('span');
-    contentText.innerText = getQualityText.call(this);
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
-    content.appendChild(contentText);
-
-    qualityMenuitem.appendChild(label);
-    qualityMenuitem.appendChild(content);
-
-    qualityMenuitem.addEventListener('click', this.onQualityMenuClick.bind(this));
-
-    // create audio track menu item
-    var audioTrackCnt = this.settingMenuUIData.audioTrackList.length;
-    var audioMenuitem = document.createElement('div');
-    audioMenuitem.setAttribute('class', 'vop-menuitem');
-    audioMenuitem.setAttribute('role', 'menuitem');
-    if (audioTrackCnt > 1) {
-      audioMenuitem.setAttribute('aria-haspopup', 'true');
-    }
-    audioMenuitem.setAttribute('tabindex', '0');
-    audioMenuitem.onblur = this.onMainMenuBlur.bind(this);
-
-    label = document.createElement('div');
-    label.innerText = 'Language';
-    label.setAttribute('class', 'vop-menuitem-label');
-
-    content = document.createElement('div');
-    content.setAttribute('class', 'vop-menuitem-content');
-
-    contentText = document.createElement('span');
-    contentText.innerText = getLangText.call(this);
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
-    content.appendChild(contentText);
-
-    audioMenuitem.appendChild(label);
-    audioMenuitem.appendChild(content);
-    audioMenuitem.addEventListener('click', this.onAudioTrackMenuClick.bind(this));
-
-    // create fcc menuitem
-    var fccMenuitem = document.createElement('div');
-    fccMenuitem.setAttribute('class', 'vop-menuitem');
-    fccMenuitem.setAttribute('role', 'menuitem');
-    fccMenuitem.setAttribute('aria-haspopup', 'true');
-    fccMenuitem.setAttribute('tabindex', '0');
-    fccMenuitem.onblur = this.onMainMenuBlur.bind(this);
-
-    label = document.createElement('div');
-    label.innerText = 'Subtitle';
-    label.setAttribute('class', 'vop-menuitem-label');
-
-    content = document.createElement('div');
-    content.setAttribute('class', 'vop-menuitem-content');
-
-    contentText = document.createElement('span');
-    contentText.innerText = 'Options';
-    contentText.setAttribute('class', 'vop-menuitem-content-text');
-
-    content.appendChild(contentText);
-
-    fccMenuitem.appendChild(label);
-    fccMenuitem.appendChild(content);
-    fccMenuitem.addEventListener('click', this.onFccMenuClick.bind(this));
-
-    // Part post process
-    this.vopPanelMenu.appendChild(qualityMenuitem);
-    this.vopPanelMenu.appendChild(audioMenuitem);
-    this.vopPanelMenu.appendChild(fccMenuitem);
-
-    //
-    this.vopSettingsMenu.style.display = 'block';
-    qualityMenuitem.focus();
-
-    this.settingMenuUIData.currMenu = 'main_menu';
-  };
-
-  createQualityMenu() {
-    // The quality menu html:
-    // <div class="vop-panel-header">
-    //     <button class="vop-panel-title" onclick="onQualityBack(event)">Quality</button>
-    // </div>
-    // <div class="vop-panel-menu">
-    //     <div class="vop-menuitem" role="menuitemradio">
-    //         <div class="vop-menuitem-label">
-    //             <span>720p</span>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitemradio">
-    //         <div class="vop-menuitem-label">
-    //             <span>480p</span>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitemradio">
-    //         <div class="vop-menuitem-label">
-    //             <span>360p</span>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
-    //         <div class="vop-menuitem-label">
-    //             <span>Auto</span>
-    //         </div>
-    //     </div>
-    // </div>
-
-    // Part - process, remove all children of this.vopPanelMenu
-    this.destroySettingsMenu();
-
-    // add quality back menu
-    var header = this.createHeaderItemUI('Quality', this.onQualityBack.bind(this));
-    this.vopPanel.insertBefore(header, this.vopPanelMenu);
-
-    // add quality menuitem
-    var focusItem = null;
-    for (var i = 0; i < this.settingMenuUIData.qualityList.length; i++) {
-      var quality = this.settingMenuUIData.qualityList[i].bitrate;
-      var id = this.settingMenuUIData.qualityList[i].id;
-
-      var menuitem = this.createRadioMenuItem(quality, this.onQualityItemBlur.bind(this), this.onQualityItemClick.bind(this));
-      menuitem.dataset.id = id;
-      if (id == this.settingMenuUIData.currQualityId) {
-        menuitem.setAttribute('aria-checked', 'true');
-      }
-      if (id == this.settingMenuUIData.currQualityId) {
-        focusItem = menuitem;
-      }
-
-      this.vopPanelMenu.appendChild(menuitem);
-    }
-
-    //
-    this.vopSettingsMenu.style.display = 'block';
-    focusItem.focus();
-
-    this.settingMenuUIData.currMenu = 'quality_menu';
-  }
-
-  createAudioTrackMenu() {
-    // The audio track menu html:
-    // <div class="vop-panel-header">
-    //     <button class="vop-panel-title" onclick="onAudioTrackBack(event)">Audio</button>
-    // </div>
-    // <div class="vop-panel-menu">
-    //     <div class="vop-menuitem" role="menuitemradio">
-    //         <div class="vop-menuitem-label">
-    //             <span>Bipbop1</span>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitemradio">
-    //         <div class="vop-menuitem-label">
-    //             <span>Bipbop2</span>
-    //         </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitemradio" aria-checked="true">
-    //         <div class="vop-menuitem-label">
-    //             <span>Auto</span>
-    //         </div>
-    //     </div>
-    // </div>
-
-    // Part - process, remove all children of this.vopPanelMenu
-    this.destroySettingsMenu();
-
-    // add quality back menu
-    var header = this.createHeaderItemUI('Audio', this.onAudioTrackBack.bind(this));
-    this.vopPanel.insertBefore(header, this.vopPanelMenu);
-
-    // add quality menuitem
-    var firstItem = null;
-    for (var i = 0; i < this.settingMenuUIData.audioTrackList.length; i++) {
-      var audioLang = this.settingMenuUIData.audioTrackList[i].lang;
-      var id = this.settingMenuUIData.audioTrackList[i].id;
-
-      var menuitem = this.createRadioMenuItem(audioLang, this.onAudioTrackItemBlur.bind(this), this.onAudioTrackItemClick.bind(this));
-      menuitem.dataset.id = id;
-      if (audioLang == this.settingMenuUIData.currAudioTrackId) {
-        menuitem.setAttribute('aria-checked', 'true');
-      }
-      if (!firstItem) {
-        firstItem = menuitem;
-      }
-
-      this.vopPanelMenu.appendChild(menuitem);
-    }
-
-    //
-    this.vopSettingsMenu.style.display = 'block';
-    firstItem.focus();
-
-    this.settingMenuUIData.currMenu = 'audio_track_menu';
-  }
-
-  createFccMenu() {
-    // The fcc menu html:
-    // <div class="vop-panel-menu">
-    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
-    //        <div class="vop-menuitem-label">
-    //            Font Family
-    //        </div>
-    //        <div class="vop-menuitem-content">
-    //           Default
-    //        </div>
-    //     </div>
-    //     <div class="vop-menuitem" role="menuitem" aria-haspopup="true" onclick="onFccItemClick(event)">
-    //         <div class="vop-menuitem-label">
-    //             Font Color
-    //         </div>
-    //         <div class="vop-menuitem-content">
-    //           Yellow
-    //         </div>
-    //     </div>
-    // </div>
-
-    // Part - process, remove all children of this.vopPanelMenu
-    this.destroySettingsMenu();
-
-    // Part - fcc property title
-    var header = this.createHeaderItemUI('Subtitles Optoins', this.onFccBack.bind(this));
-    this.vopPanel.insertBefore(header, this.vopPanelMenu);
-
-    // Part - fcc property item
-    var firstItem = null;
-    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
-      var fcc = this.settingMenuUIData.fccPropertyList[i];
-
-      var menuitem = document.createElement('div');
-      menuitem.setAttribute('class', 'vop-menuitem');
-      menuitem.setAttribute('aria-haspopup', 'true');
-      menuitem.setAttribute('tabindex', '0');
-      menuitem.addEventListener('blur', this.onFccItemBlur.bind(this));
-
-      var label = document.createElement('div');
-      label.setAttribute('class', 'vop-menuitem-label');
-      label.innerText = fcc.name;
-
-      var content = document.createElement('div');
-      content.setAttribute('class', 'vop-menuitem-content');
-      content.innerText = fcc.currValue;
-
-      menuitem.appendChild(label);
-      menuitem.appendChild(content);
-      menuitem.dataset.name = fcc.name;
-      menuitem.addEventListener('click', this.onFccItemClick.bind(this));
-
-      if (!firstItem) {
-        firstItem = menuitem;
-      }
-
-      this.vopPanelMenu.appendChild(menuitem);
-    }
-
-    this.vopSettingsMenu.style.display = 'block';
-    this.settingMenuUIData.currMenu = 'fcc_menu';
-    firstItem.focus();
-  }
-
-  createFccItemMenu(name) {
-    // Part - fcc property title
-    var header = this.createHeaderItemUI(name, this.onFccPropertyItemBack.bind(this));
-    this.vopPanel.insertBefore(header, this.vopPanelMenu);
-
-    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
-      var fccProperty = this.settingMenuUIData.fccPropertyList[i];
-      if (fccProperty.name === name) {
-        var firstItem = null;
-        for (var j = 0; j < fccProperty.values.length; j++) {
-          var propertyValue = fccProperty.values[j];
-
-          var menuitem = this.createRadioMenuItem(propertyValue, this.onFccPropertyItemBlur.bind(this), this.onFccPropertyItemClick.bind(this));
-          menuitem.dataset.id = propertyValue;
-          if (propertyValue == fccProperty.currValue) {
-            menuitem.setAttribute('aria-checked', 'true');
-          }
-
-          if (!firstItem) {
-            firstItem = menuitem;
-          }
-
-          this.vopPanelMenu.dataset.fccProperty = name;
-          this.vopPanelMenu.appendChild(menuitem);
-
-          this.settingMenuUIData.currMenu = 'fcc_property_menu';
-          firstItem.focus();
-        }
-        break;
-      }
-    }
-  }
-
-  updatePanelMenuUI(id) {
-    var elem_child = this.vopPanelMenu.children;
-    for (var i = 0; i < elem_child.length; i++) {
-      var menuitem = elem_child[i];
-
-      if (menuitem.dataset.id === id) {
-        menuitem.setAttribute('aria-checked', 'true');
-      } else {
-        menuitem.removeAttribute('aria-checked');
-      }
-    }
-  }
-
+  // Title: Sub Components Callbacks
   onQualityMenuClick(e) {
     printLog('+onQualityMenuClick: ' + e.target.innerText);
-
-    this.destroySettingsMenu();
-    this.createQualityMenu();
+    this.settingMenuUIData.currMenu = 'quality_menu';
+    this.updateUIState();
   }
 
   onAudioTrackMenuClick(e) {
-    this.destroySettingsMenu();
-    this.createAudioTrackMenu();
+    this.settingMenuUIData.currMenu = 'audio_track_menu';
+    this.updateUIState();
   }
 
   onFccMenuClick(e) {
-    this.destroySettingsMenu();
-    this.createFccMenu();
+    this.settingMenuUIData.currMenu = 'fcc_menu';
+    this.updateUIState();
   }
 
-  onMainMenuBlur(e) {
+  onMainMenuItemBlur(e) {
     var text = '';
     if (e.relatedTarget) {
       text = ', text: ' + e.relatedTarget.innerText;
     }
 
-    printLog('+onMainMenuBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
+    printLog('+onMainMenuItemBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
 
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
@@ -1966,11 +1433,18 @@ class UIPlayer extends React.Component {
         } else {}
       }
     } else {
-      this.destroySettingsMenu();
+      this.settingMenuUIData.currMenu = 'none';
+      this.updateUIState();
     }
   }
 
-  onSubtitleItemClick(e) {
+  onSubtitleMenuBack(e) {
+    printLog('+onSubtitleMenuBack');
+    this.subtitlesMenuUIData.currMenu = 'none';
+    this.updateUIState();
+  }
+
+  onSubtitleMenuItemClick(e) {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
@@ -1980,10 +1454,10 @@ class UIPlayer extends React.Component {
       this.subtitlesMenuUIData.currSubtitleId = id;
     }
 
-    this.updatePanelMenuUI(this.subtitlesMenuUIData.currSubtitleId);
+    this.updateUIState();
   }
 
-  onSubtitleItemBlur(e) {
+  onSubtitleMenuItemBlur(e) {
     if (e.relatedTarget) {
       if (e.relatedTarget === this.vopSubtitlesBtn) {
         if (this.subtitlesMenuUIData.currMenu === 'main_menu') {
@@ -1991,31 +1465,50 @@ class UIPlayer extends React.Component {
         }
       }
     } else {
-      this.destroySettingsMenu();
+      this.subtitlesMenuUIData.currMenu = 'none';
+      this.updateUIState();
     }
-  };
 
-  onSubitlesBack(e) {
-    printLog('+onSubitlesBack');
-  };
+  }
 
-  onQualityBack(e) {
-    printLog('+onQualityBack');
-    this.destroySettingsMenu();
-    this.createSettingsMenu();
-  };
+  onQualityMenuBack(e) {
+    this.settingMenuUIData.currMenu = 'main_menu';
+    this.updateUIState();
+  }
 
-  onQualityItemClick(e) {
-    printLog('+onQualityItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
+  onMainMenuItemClick(e) {
+    printLog('+onMainMenuItemClick, '
+      + ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu
+      + ', text: ' + e.target.innerText);
+    var nextFocus = e.currentTarget;
+
+    printLog('id: ' + nextFocus.dataset.id);
+    switch (nextFocus.dataset.id) {
+      case '1':
+      this.onQualityMenuClick(e);
+      break;
+      case '2':
+      this.onAudioTrackMenuClick(e);
+      break;
+      case '3':
+      this.onFccMenuClick(e);
+      break;
+      default:
+      break;
+    }
+  }
+
+  onQualityMenuItemClick(e) {
+    printLog('+onQualityMenuItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
     var nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currQualityId = nextFocus.dataset.id;
-    this.updatePanelMenuUI(this.settingMenuUIData.currQualityId);
-  };
+    this.updateUIState();
+  }
 
-  onQualityItemBlur(e) {
-    printLog('+onQualityItemBlur');
+  onQualityMenuItemBlur(e) {
+    printLog('+onQualityMenuItemBlur');
     var nextFocus = e.relatedTarget;
     if (nextFocus) {
       printLog('className: ' + nextFocus.className);
@@ -2023,73 +1516,69 @@ class UIPlayer extends React.Component {
         nextFocus.className.indexOf('vop-menuitem') !== -1) {
         // click on quality menu, do nothing
       } else {
-        this.destroySettingsMenu();
+        this.settingMenuUIData.currMenu = 'none';
+        this.updateUIState();
       }
     } else {
-      this.destroySettingsMenu();
+      this.settingMenuUIData.currMenu = 'none';
+      this.updateUIState();
     }
   };
 
-  onAudioTrackBack(e) {
-    printLog('+onAudioTrackBack');
-    this.destroySettingsMenu();
-    this.createSettingsMenu();
+  onAudioTrackMenuBack(e) {
+    printLog('+onAudioTrackMenuBack');
+    this.settingMenuUIData.currMenu = 'main_menu';
+    this.updateUIState();
   };
 
-  onAudioTrackItemClick(e) {
-    printLog('+onAudioTrackItemClick');
+  onAudioTrackMenuItemClick(e) {
+    printLog('+onAudioTrackMenuItemClick');
     var nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currAudioTrackId = nextFocus.dataset.id;
-    this.updatePanelMenuUI(this.settingMenuUIData.currAudioTrackId);
-  };
+    this.updateUIState();
+  }
 
-  onAudioTrackItemBlur(e) {
-    printLog('+onAudioTrackItemBlur');
-    this.onQualityItemBlur(e);
-  };
+  onAudioTrackMenuItemBlur(e) {
+    printLog('+onAudioTrackMenuItemBlur');
+    this.onQualityMenuItemBlur(e);
+  }
 
-  onFccBack(e) {
-    this.destroySettingsMenu();
-    this.createSettingsMenu();
-  };
+  onFccMenuBack(e) {
+    this.settingMenuUIData.currMenu = 'main_menu';
+    this.updateUIState();
+  }
 
-  onFccItemClick(e) {
-    printLog('+onFccItemClick, e.currentTarget.dataset.name: ' + e.currentTarget.dataset.name);
+  onFccMenuItemClick(e) {
+    printLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
-    // Part - destroy old ui
-    this.destroySettingsMenu();
+    this.settingMenuUIData.currMenu = 'fcc_property_menu';
+    this.settingMenuUIData.currFccPropertyName = e.currentTarget.dataset.id;
+    this.updateUIState();
+  }
 
-    // Part - fcc item ui
-    var nextFocus = e.currentTarget;
-    this.createFccItemMenu(nextFocus.dataset.name);
-  };
+  onFccMenuItemBlur(e) {
+  }
 
-  onFccItemBlur(e) {
+  onFccPropertyMenuBack(e) {
+    this.settingMenuUIData.currMenu = 'fcc_menu';
+    this.updateUIState();
+  }
 
-  };
-
-  onFccPropertyItemBack(e) {
-    this.destroySettingsMenu();
-    this.createFccMenu();
-  };
-
-  onFccPropertyItemClick(e) {
-    printLog('+onFccPropertyItemClick');
-    printLog('this.vopPanelMenu.dataset.fccProperty: ' + this.vopPanelMenu.dataset.fccProperty);
-    printLog('new value: ' + e.currentTarget.dataset.id);
+  onFccPropertyMenuItemClick(e) {
+    printLog('+onFccPropertyMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
     for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
       var fccProperty = this.settingMenuUIData.fccPropertyList[i];
-      if (fccProperty.name === this.vopPanelMenu.dataset.fccProperty) {
+      if (fccProperty.name === this.settingMenuUIData.currFccPropertyName) {
         fccProperty.currValue = e.currentTarget.dataset.id;
-        this.updatePanelMenuUI(fccProperty.currValue);
+        this.updateUIState();
         break;
       }
     }
-  };
+  }
 
-  onFccPropertyItemBlur(e) {
+  onFccPropertyMenuItemBlur(e) {
     var prevFocus = e.target;
     var nextFocus = e.relatedTarget;
 
@@ -2104,14 +1593,21 @@ class UIPlayer extends React.Component {
         } else {}
       }
     } else {
-      this.destroySettingsMenu();
+      this.settingMenuUIData.currMenu = 'none';
+      this.updateUIState();
     }
-  };
+  }
 
   playerTest() {
     this.player_.test();
-  };
+  }
 
-};
+  updateUIState() {
+    this.setState({
+      subtitlesMenuUIData: this.subtitlesMenuUIData,
+      settingMenuUIData: this.settingMenuUIData
+    });
+  }
+}
 
 export default UIPlayer;

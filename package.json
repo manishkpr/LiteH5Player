@@ -39,6 +39,7 @@
     "jasmine": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
     "load-grunt-tasks": "^3.1.0",
+    "resize-sensor": "0.0.6",
     "style-loader": "^0.21.0",
     "time-grunt": "^1.2.0",
     "uglify-js": "~2.6.0",
