@@ -18,7 +18,6 @@ class UIPlayer extends React.Component {
     this.initVariable();
 
     this.state = {
-      subtitlesMenuUIData: this.subtitlesMenuUIData,
       settingMenuUIData: this.settingMenuUIData
     };
   }
@@ -92,11 +91,11 @@ class UIPlayer extends React.Component {
           <div className="vop-controls">
             <div className="vop-left-controls">
               <button className="vop-button material-icons vop-play-button" title="play"
-              onClick={this.onUICmdPlay.bind(this)}
-              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe037;</button>
+                onClick={this.onUICmdPlay.bind(this)}
+                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe037;</button>
               <button className="vop-button material-icons vop-mute-button" title="mute"
-              onClick={this.onUICmdMute.bind(this)}
-              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe050;</button>
+                onClick={this.onUICmdMute.bind(this)}
+                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe050;</button>
               <div className="vop-volume-panel">
                 <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
                   <div className="vop-volume-slider-handle">
@@ -107,14 +106,14 @@ class UIPlayer extends React.Component {
             </div>
             <div className="vop-right-controls">
               <button className="vop-button material-icons vop-subtitles-button" title="subtitles"
-              onClick={this.onUICmdSubtitleMenu.bind(this)}
-              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe048;</button>
+                onClick={this.onUICmdSubtitleMenu.bind(this)}
+                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe048;</button>
               <button className="vop-button material-icons vop-settings-button" title="settings"
-              onClick={this.onUICmdSetting.bind(this)}
-              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe8b8;</button>
+                onClick={this.onUICmdSetting.bind(this)}
+                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe8b8;</button>
               <button className="vop-button material-icons vop-fullscreen-button" title="fullscreen"
-              onClick={this.onUICmdFullscreen.bind(this)}
-              onMouseMove={this.onControlMouseMove.bind(this)}>&#xe5d0;</button>
+                onClick={this.onUICmdFullscreen.bind(this)}
+                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe5d0;</button>
             </div>
           </div>
         </div>
@@ -211,35 +210,8 @@ class UIPlayer extends React.Component {
     this.valueVolumeMovePosition = 0;
 
     // menu context
-    this.subtitlesMenuUIData = {
-      currMenu: 'none', // could be 'none'
-      subtitleTracks: [{
-        id: '1',
-        lang: 'English'
-      }, {
-        id: '2',
-        lang: 'France'
-      }, {
-        id: '3',
-        lang: 'Chinese'
-      }, {
-        id: '4',
-        lang: '444'
-      }, {
-        id: '5',
-        lang: '5555'
-      }, {
-        id: '6',
-        lang: '666'
-      }, {
-        id: '7',
-        lang: '777'
-      }],
-      currSubtitleId: ''
-    };
-
     this.settingMenuUIData = {
-      currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu
+      currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitle_menu
 
       // main setting menu
       mainList: [{
@@ -300,6 +272,31 @@ class UIPlayer extends React.Component {
         lang: 'Bipbop6'
       }],
       currAudioTrackId: '1',
+
+      // subtitle menu
+      subtitleTracks: [{
+        id: '1',
+        lang: 'English'
+      }, {
+        id: '2',
+        lang: 'France'
+      }, {
+        id: '3',
+        lang: 'Chinese'
+      }, {
+        id: '4',
+        lang: '444'
+      }, {
+        id: '5',
+        lang: '5555'
+      }, {
+        id: '6',
+        lang: '666'
+      }, {
+        id: '7',
+        lang: '777'
+      }],
+      currSubtitleId: '',
 
       // FCC settings menu
       currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
@@ -982,19 +979,19 @@ class UIPlayer extends React.Component {
       }
     }
     this.updateContentVolumeBarUI(muted, volume);
-  };
+  }
 
   onBtnManualSchedule() {
     this.player_.manualSchedule();
-  };
+  }
 
   onBtnInitAD() {
     this.player_.test();
-  };
+  }
 
   onBtnDelAll() {
     this.player_.dellAll();
-  };
+  }
 
   onBtnStop() {
     this.player_.close();
@@ -1002,15 +999,15 @@ class UIPlayer extends React.Component {
   }
 
   onUICmdSubtitleMenu() {
-    printLog('+onUICmdSubtitleMenu, currMenu: ' + this.subtitlesMenuUIData.currSubtitleId);
+    printLog('+onUICmdSubtitleMenu, currMenu: ' + this.settingMenuUIData.currSubtitleId);
 
-    if (this.state.subtitlesMenuUIData.currMenu !== 'subtitle') {
-      this.subtitlesMenuUIData.currMenu = 'subtitle';
+    if (this.settingMenuUIData.currMenu !== 'subtitle_menu') {
+      this.settingMenuUIData.currMenu = 'subtitle_menu';
     } else {
-      this.subtitlesMenuUIData.currMenu = 'none';
+      this.settingMenuUIData.currMenu = 'none';
     }
     this.updateUIState();
-  };
+  }
 
   onUICmdSetting(e) {
     printLog('+onUICmdSetting, currMenu: ' + this.settingMenuUIData.currMenu);
@@ -1022,7 +1019,7 @@ class UIPlayer extends React.Component {
     }
 
     this.updateUIState();
-  };
+  }
 
   onUICmdFullscreen() {
     printLog('+onBtnFullscreen');
@@ -1152,8 +1149,7 @@ class UIPlayer extends React.Component {
 
     // if mouse down, just return
     if (this.progressBarContext.mousedown ||
-      this.settingMenuUIData.currMenu !== 'none' ||
-      this.subtitlesMenuUIData.currMenu !== 'none') {
+      this.settingMenuUIData.currMenu !== 'none') {
       return;
     }
 
@@ -1440,7 +1436,7 @@ class UIPlayer extends React.Component {
 
   onSubtitleMenuBack(e) {
     printLog('+onSubtitleMenuBack');
-    this.subtitlesMenuUIData.currMenu = 'none';
+    this.settingMenuUIData.currMenu = 'none';
     this.updateUIState();
   }
 
@@ -1448,10 +1444,10 @@ class UIPlayer extends React.Component {
     e.stopPropagation();
 
     var id = e.currentTarget.dataset.id;
-    if (this.subtitlesMenuUIData.currSubtitleId === id) {
-      this.subtitlesMenuUIData.currSubtitleId = '';
+    if (this.settingMenuUIData.currSubtitleId === id) {
+      this.settingMenuUIData.currSubtitleId = '';
     } else {
-      this.subtitlesMenuUIData.currSubtitleId = id;
+      this.settingMenuUIData.currSubtitleId = id;
     }
 
     this.updateUIState();
@@ -1460,12 +1456,12 @@ class UIPlayer extends React.Component {
   onSubtitleMenuItemBlur(e) {
     if (e.relatedTarget) {
       if (e.relatedTarget === this.vopSubtitlesBtn) {
-        if (this.subtitlesMenuUIData.currMenu === 'main_menu') {
+        if (this.settingMenuUIData.currMenu === 'main_menu') {
           // do nothing
         }
       }
     } else {
-      this.subtitlesMenuUIData.currMenu = 'none';
+      this.settingMenuUIData.currMenu = 'none';
       this.updateUIState();
     }
 
@@ -1604,7 +1600,6 @@ class UIPlayer extends React.Component {
 
   updateUIState() {
     this.setState({
-      subtitlesMenuUIData: this.subtitlesMenuUIData,
       settingMenuUIData: this.settingMenuUIData
     });
   }

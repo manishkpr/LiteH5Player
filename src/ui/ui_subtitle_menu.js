@@ -9,7 +9,7 @@ class UISubtitleMenu extends React.Component {
   componentDidMount(e) {}
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'main_menu') {
+    if (this.props.state.settingMenuUIData.currMenu === 'subtitle_menu') {
       var v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -18,11 +18,9 @@ class UISubtitleMenu extends React.Component {
   }
 
   render() {
-    if (this.props.state.subtitlesMenuUIData.currMenu === 'none') {
-      return (<div></div>);
-    } else {
-      const menuitems = this.props.state.subtitlesMenuUIData.subtitleTracks.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.props.state.subtitlesMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
+    if (this.props.state.settingMenuUIData.currMenu === 'subtitle_menu') {
+      const menuitems = this.props.state.settingMenuUIData.subtitleTracks.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.props.state.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
         data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
         tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">
@@ -45,6 +43,8 @@ class UISubtitleMenu extends React.Component {
           </div>
         </div>
       );
+    } else {
+      return (<div></div>);
     }
   }
 
