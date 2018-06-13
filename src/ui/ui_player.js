@@ -1639,6 +1639,22 @@ class UIPlayer extends React.Component {
 
     this.settingMenuUIData.currSpeed = nextFocus.dataset.id;
     this.updateUIState();
+
+    //
+    function getXSpeedValue(id) {
+      let value = '';
+      for (let i = 0; i < this.settingMenuUIData.xspeedList.length; i ++) {
+        let item = this.settingMenuUIData.xspeedList[i];
+        if (item.id === id) {
+          value = item.value;
+          break;
+        }
+      }
+
+      return value;
+    }
+    let value = getXSpeedValue.call(this, this.settingMenuUIData.currSpeed);
+    this.player_.setAudioPlaybackSpeed(parseFloat(value));
   }
 
   onXSpeedMenuItemBlur(e) {
