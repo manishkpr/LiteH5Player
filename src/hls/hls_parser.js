@@ -8,7 +8,7 @@ import StringUtils from '../utils/string_utils';
 import {
   Fragment,
   TrackInfo,
-  StreamInfo
+  PeriodInfo
 } from '../common/common';
 
 import M3U8Parser from '../../third_party/hlsjs/src/loader/m3u8-parser';
@@ -40,7 +40,7 @@ function HlsParser() {
     track.type = 'stream';
     track.levelDetails = M3U8Parser.parseLevelPlaylist(content, url, 0, 'main');
 
-    streamInfo_ = new StreamInfo();
+    streamInfo_ = new PeriodInfo();
     streamInfo_.duration = track.levelDetails.totalduration;
     streamInfo_.tracks.push(track);
 

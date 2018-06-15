@@ -86,8 +86,8 @@ function Stream(config) {
         eventBus.on(Events.DATA_UPDATE_COMPLETED, onDataUpdateCompleted, instance);
     }
 
-    function initialize(StreamInfo, ProtectionController) {
-        streamInfo = StreamInfo;
+    function initialize(PeriodInfo, ProtectionController) {
+        streamInfo = PeriodInfo;
         protectionController = ProtectionController;
         if (protectionController) {
             eventBus.on(Events.KEY_ERROR, onProtectionError, instance);

@@ -32,7 +32,7 @@
 import Constants from '../streaming/constants/Constants';
 import RepresentationInfo from '../streaming/vo/RepresentationInfo';
 import MediaInfo from '../streaming/vo/MediaInfo';
-import StreamInfo from '../streaming/vo/StreamInfo';
+import PeriodInfo from '../streaming/vo/PeriodInfo';
 import ManifestInfo from '../streaming/vo/ManifestInfo';
 import Event from './vo/Event';
 import FactoryMaker from '../core/FactoryMaker';
@@ -161,7 +161,7 @@ function DashAdapter() {
     }
 
     function convertPeriodToStreamInfo(period) {
-        let streamInfo = new StreamInfo();
+        let streamInfo = new PeriodInfo();
         const THRESHOLD = 1;
 
         streamInfo.id = period.id;
@@ -499,7 +499,7 @@ function DashAdapter() {
 
         const manifest = voPeriods[0].mpd.manifest;
 
-        if (info instanceof StreamInfo) {
+        if (info instanceof PeriodInfo) {
             events = dashManifestModel.getEventsForPeriod(getPeriodForStreamInfo(info, voPeriods));
         } else if (info instanceof MediaInfo) {
             events = dashManifestModel.getEventStreamForAdaptationSet(manifest, getAdaptationForMediaInfo(info));

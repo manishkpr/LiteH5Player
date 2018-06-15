@@ -6,7 +6,7 @@ import Debug from '../core/Debug';
 import {
   Fragment,
   TrackInfo,
-  StreamInfo
+  PeriodInfo
 } from '../common/common';
 
 function PDParser() {
@@ -22,7 +22,7 @@ function PDParser() {
   }
 
   function loadManifest(url) {
-    streamInfo_ = new StreamInfo();
+    streamInfo_ = new PeriodInfo();
     streamInfo_.url = url;
     eventBus_.trigger(Events.MANIFEST_PARSED);
   }

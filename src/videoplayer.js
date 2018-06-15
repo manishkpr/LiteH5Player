@@ -9,7 +9,7 @@ function VideoPlayer() {
     context_.media.src = url;
 
     let media_ = context_.media;
-    console.log(`timeupdate, main buffered: ${TimeRanges.toString(media_.buffered)}, position: ${media_.currentTime}, duration: ${media_.duration}`);
+    //console.log(`timeupdate, main buffered: ${TimeRanges.toString(media_.buffered)}, position: ${media_.currentTime}, duration: ${media_.duration}`);
   }
 
   let instance_ = {

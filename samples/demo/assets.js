@@ -152,14 +152,14 @@ function getMediaInfo() {
     //url: 'http://localhost/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
     //url: 'http://localhost/2/pd/mp4/trailer/test.mp4',
     //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
-    //url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
+    url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
     //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
-    url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
+    //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
     //url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
     //url: 'http://localhost/6/dash1/project/verizon/envivio/2/clear/audio.m3u8',
@@ -178,6 +178,8 @@ function getMediaInfo() {
     // },
     //--Item: Error
     //url: 'http://localhost/2/hls/error/MEDIA_ERROR/2/master.m3u8',
+    //--Item: Task
+    //url: 'http://localhost/tasklink/2017/65275/index_1_av.m3u8',
 
 
     // vContents.push('http://localhost/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');

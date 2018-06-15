@@ -30,11 +30,11 @@ import CommonUtils from './utils/common_utils';
 //////////////////////////////////////////////////////////////////////////////
 function Player(media, adContainer) {
   let context_ = oldmtn; //{ flag: 'player' };
-  let eventBus_ = EventBus(context_).getInstance();
-  let debug_ = Debug(context_).getInstance();
-
   let media_ = media;
   let adContainer_ = adContainer;
+
+  let eventBus_;
+  let debug_;
 
   let playlistLoader_;
 
@@ -71,24 +71,15 @@ function Player(media, adContainer) {
   function setup() {
     // init internal configuration
     context_.loader = XHRLoader;
-    context_.fragLoader = FragmentLoader;
     //context_.loader = FetchLoader;
 
     context_.media = media_;
-
-    initComponent();
   }
 
   function init(cfg) {
     context_.cfg = cfg;
 
-    if (context_.cfg.poster) {
-      media_.poster = context_.cfg.poster;
-    }
-    if (context_.cfg.advertising) {
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
-    }
-
+    initComponent();
     initData();
     addEventListeners();
     addResizeListener();
@@ -150,10 +141,6 @@ function Player(media, adContainer) {
     }
 
     context_.mediaCfg = null;
-  }
-
-  function dellAll() {
-    bufferController_.removeBuffer();
   }
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -387,6 +374,9 @@ function Player(media, adContainer) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
+    eventBus_ = EventBus(context_).getInstance();
+    debug_ = Debug(context_).getInstance();
+
     playlistLoader_ = PlaylistLoader(context_).getInstance();
     playbackController_ = PlaybackController(context_).getInstance();
     textEngine_ = new TextEngine(media_);
@@ -398,6 +388,13 @@ function Player(media, adContainer) {
     thumbnailController_ = ThumbnailController(context_).getInstance();
 
     fragmentLoader_ = FragmentLoader(context_).create();
+
+    if (context_.cfg.poster) {
+      media_.poster = context_.cfg.poster;
+    }
+    if (context_.cfg.advertising) {
+      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
+    }
   }
 
   function initData() {

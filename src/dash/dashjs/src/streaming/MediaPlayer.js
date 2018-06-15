@@ -2092,7 +2092,7 @@ function MediaPlayer() {
     /**
      * This method returns the list of all available streams from a given manifest
      * @param {Object} manifest
-     * @returns {Array} list of {@link StreamInfo}
+     * @returns {Array} list of {@link PeriodInfo}
      * @memberof module:MediaPlayer
      * @instance
      */

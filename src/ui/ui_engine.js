@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import UIPlayer from './ui_player';
 
 class UIEngine {
-  constructor(idPlayerContainer) {
-    this.playerContainer_ = document.getElementById(idPlayerContainer);
+  constructor(idContainer) {
+    this.playerContainer_ = document.getElementById(idContainer);
 
     this.initUI();
   }

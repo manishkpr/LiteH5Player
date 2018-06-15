@@ -15,7 +15,7 @@ export class TrackInfo {
   }
 }
 
-export class StreamInfo {
+export class PeriodInfo {
   constructor() {
     this.url = null; // dash/hls/pd ulr
     this.duration = null; // current stream total duration

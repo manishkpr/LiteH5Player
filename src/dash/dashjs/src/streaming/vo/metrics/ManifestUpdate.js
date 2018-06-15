@@ -88,7 +88,7 @@ class ManifestUpdate {
          */
         this.latency = 0;
         /**
-         * Array holding list of StreamInfo VO Objects
+         * Array holding list of PeriodInfo VO Objects
          * @public
          */
         this.streamInfo = [];

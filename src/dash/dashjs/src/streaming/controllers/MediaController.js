@@ -70,7 +70,7 @@ function MediaController() {
 
     /**
      * @param {string} type
-     * @param {StreamInfo} streamInfo
+     * @param {PeriodInfo} streamInfo
      * @memberof MediaController#
      */
     function checkInitialMediaSettingsForType(type, streamInfo) {
@@ -143,7 +143,7 @@ function MediaController() {
 
     /**
      * @param {string} type
-     * @param {StreamInfo} streamInfo
+     * @param {PeriodInfo} streamInfo
      * @returns {Array}
      * @memberof MediaController#
      */
@@ -159,7 +159,7 @@ function MediaController() {
 
     /**
      * @param {string} type
-     * @param {StreamInfo} streamInfo
+     * @param {PeriodInfo} streamInfo
      * @returns {Object|null}
      * @memberof MediaController#
      */

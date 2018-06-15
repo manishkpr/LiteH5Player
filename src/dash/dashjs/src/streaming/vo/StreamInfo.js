@@ -32,7 +32,7 @@
  * @class
  * @ignore
  */
-class StreamInfo {
+class PeriodInfo {
     constructor() {
         this.id = null;
         this.index = null;
@@ -43,4 +43,4 @@ class StreamInfo {
     }
 }
 
-export default StreamInfo;
+export default PeriodInfo;

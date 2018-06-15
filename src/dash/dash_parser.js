@@ -21,7 +21,7 @@ import NumericMatcher from './dashjs/src/dash/parser/matchers/NumericMatcher';
 import {
   Fragment,
   TrackInfo,
-  StreamInfo
+  PeriodInfo
 } from '../common/common';
 
 function DashParser() {
@@ -83,7 +83,7 @@ function DashParser() {
     //
     let mediaPresentationDuration = manifest.mediaPresentationDuration;
 
-    streamInfo_ = new StreamInfo();
+    streamInfo_ = new PeriodInfo();
     streamInfo_.duration = mediaPresentationDuration;
 
     let period = manifest.Period_asArray[0];

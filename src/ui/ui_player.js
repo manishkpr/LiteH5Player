@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
-import "./ui_player.css";
+import "./css/ui_player.scss";
 
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';
@@ -647,7 +647,7 @@ class UIPlayer extends React.Component {
     // update time progress scrubber button
     var duration = this.player_.getDuration();
     return (offsetX / rect.width) * duration;
-  };
+  }
 
   updateProgressBarUI(position, duration) {
     // part - input
@@ -688,7 +688,7 @@ class UIPlayer extends React.Component {
 
     var tDisplay = document.querySelector('.vop-time-text');
     tDisplay.innerText = timeText;
-  };
+  }
 
   updateProgressBarHoverUI() {
     var position = this.player_.getPosition();
@@ -702,7 +702,7 @@ class UIPlayer extends React.Component {
       this.vopHoverProgress.style.left = offsetX + 'px';
       this.vopHoverProgress.style.transform = 'scaleX(' + (this.progressBarContext.movePos - position) / duration + ')';
     }
-  };
+  }
 
   updateTooltipUI(e) {
     var thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
@@ -910,7 +910,7 @@ class UIPlayer extends React.Component {
   }
 
   onPlayerMouseMove(e) {
-    //printLog('+onPlayerMouseMove');
+    printLog('+onPlayerMouseMove');
     // don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
       return;
@@ -1185,12 +1185,12 @@ class UIPlayer extends React.Component {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarHoverUI();
     this.updateTooltipUI(e);
-  };
+  }
 
   onProgressBarMouseLeave() {
     //printLog('+onProgressBarMouseLeave');
     this.vopTooltip.style.display = 'none';
-  };
+  }
 
   captureProgressBarMouseEvents() {
     this.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
@@ -1198,12 +1198,12 @@ class UIPlayer extends React.Component {
 
     document.addEventListener('mousemove', this.newProgressBarMousemove, true);
     document.addEventListener('mouseup', this.newProgressBarMouseup, true);
-  };
+  }
 
   releaseProgressBarMouseEvents() {
     document.removeEventListener('mousemove', this.newProgressBarMousemove, true);
     document.removeEventListener('mouseup', this.newProgressBarMouseup, true);
-  };
+  }
 
   docProgressBarMousemove(e) {
     printLog('+docProgressBarMousemove');

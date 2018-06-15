@@ -68,8 +68,8 @@ function PlaybackController() {
         reset();
     }
 
-    function initialize(StreamInfo) {
-        streamInfo = StreamInfo;
+    function initialize(PeriodInfo) {
+        streamInfo = PeriodInfo;
         addAllListeners();
         isDynamic = streamInfo.manifestInfo.isDynamic;
         liveStartTime = streamInfo.start;

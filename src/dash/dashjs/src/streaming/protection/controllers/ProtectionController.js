@@ -83,12 +83,12 @@ function ProtectionController(config) {
      * Initialize this protection system with a given audio
      * or video stream information.
      *
-     * @param {StreamInfo} [mediaInfo] Media information
+     * @param {PeriodInfo} [mediaInfo] Media information
      * @memberof module:ProtectionController
      * @instance
      * @todo This API will change when we have better support for allowing applications
      * to select different adaptation sets for playback.  Right now it is clunky for
-     * applications to create {@link StreamInfo} with the right information,
+     * applications to create {@link PeriodInfo} with the right information,
      */
     function initializeForMedia(mediaInfo) {
         // Not checking here if a session for similar KS/KID combination is already created
