@@ -15,12 +15,16 @@ function BufferController() {
   let media_;
   let sourceBuffer_ = {};
 
+  let streamInfo_;
+
   let segments_ = null;
   // flag
   let appending_ = false;
 
   function setup() {
     eventBus_.on(Events.MEDIA_ATTACHING, onMediaAttaching);
+
+    eventBus_.on(Events.STREAM_UPDATED, onStreamUpdated);
 
     eventBus_.on(Events.BUFFER_CODEC, onBufferCodec);
     eventBus_.on(Events.BUFFER_APPENDING, onBufferAppending);
@@ -88,6 +92,10 @@ function BufferController() {
 
   function onMediaSourceClose() {
     debug_.log('+onMediaSourceClose');
+  }
+
+  function onStreamUpdated(e) {
+    streamInfo_ = e.streamInfo;
   }
 
   function onMediaAttaching(data) {
@@ -217,6 +225,10 @@ function BufferController() {
       if (sourceBuffer_[type].updating === true) {
         return;
       }
+    }
+
+    if (mediaSource_ && mediaSource_.duration !== streamInfo_.duration) {
+      mediaSource_.duration = streamInfo_.duration;
     }
   }
 

@@ -17,7 +17,7 @@ function LevelController() {
   function onManifestParsed(streamInfo) {
     streamInfo_ = streamInfo;
 
-    eventBus_.trigger(Events.STREAM_UPDATED);
+    eventBus_.trigger(Events.STREAM_UPDATED, {streamInfo: streamInfo_});
   }
 
   let instance_ = {

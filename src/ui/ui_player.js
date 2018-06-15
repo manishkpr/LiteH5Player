@@ -855,7 +855,9 @@ class UIPlayer extends React.Component {
 
     var muted = this.player_.isMuted();
     var volume = this.valueVolumeMovePosition;
-    if (volume === 0) {} else {
+    if (volume === 0) {
+      // do nothing
+    } else {
       if (muted === true) {
         this.player_.unmute();
       }
@@ -864,9 +866,8 @@ class UIPlayer extends React.Component {
     }
 
     this.player_.setVolume(this.valueVolumeMovePosition);
-
     this.updateContentVolumeBarUI(muted, volume);
-  };
+  }
 
   docVolumeSliderMouseup(e) {
     printLog('+docVolumeSliderMouseup');
@@ -883,20 +884,20 @@ class UIPlayer extends React.Component {
     if (!isPtInElement(pt, this.vopPlayer)) {
       this.onPlayerMouseLeave();
     }
-  };
+  }
 
   captureVolumeSliderMouseEvents() {
-    newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
-    newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
+    this.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
+    this.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
 
-    document.addEventListener('mousemove', newVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', newVolumeSliderMouseup, true);
-  };
+    document.addEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', this.newVolumeSliderMouseup, true);
+  }
 
   releaseVolumeSliderMouseEvents() {
-    document.removeEventListener('mousemove', newVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', newVolumeSliderMouseup, true);
-  };
+    document.removeEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
+  }
 
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter() {
@@ -906,7 +907,7 @@ class UIPlayer extends React.Component {
     }
 
     $('.html5-video-player').removeClass('vop-autohide');
-  };
+  }
 
   onPlayerMouseMove(e) {
     //printLog('+onPlayerMouseMove');
@@ -919,7 +920,7 @@ class UIPlayer extends React.Component {
     this.timerHideControlBar = setTimeout(function() {
       this.onPlayerMouseLeave();
     }.bind(this), 3000);
-  };
+  }
 
   onPlayerMouseLeave() {
     var paused = this.player_.isPaused();
@@ -927,7 +928,7 @@ class UIPlayer extends React.Component {
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
       $('.html5-video-player').addClass('vop-autohide');
     }
-  };
+  }
 
   onPlayerClick() {
     if (this.flagAdStarted && this.flagIsLinearAd) {
@@ -935,7 +936,7 @@ class UIPlayer extends React.Component {
     }
 
     this.onUICmdPlay();
-  };
+  }
 
   // browser & UI callback functions
   onUICmdPlay() {
@@ -962,12 +963,12 @@ class UIPlayer extends React.Component {
       this.updatePlayBtnUI(newPaused, currEnded);
       this.updateGiantPlayBtnUI(newPaused);
     }
-  };
+  }
 
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
-  };
+  }
 
   onGiantAnimationEnd(e) {
     this.uiGiantBtnContainer.style.display = 'none';
@@ -976,11 +977,11 @@ class UIPlayer extends React.Component {
   onSettingsMenuClick(e) {
     // Don't route 'click' event from panel to its parent div
     e.stopPropagation();
-  };
+  }
 
   onUICmdControlBarClick(e) {
     e.stopPropagation();
-  };
+  }
 
   onUICmdMute() {
     var muted = this.player_.isMuted();
@@ -1055,49 +1056,49 @@ class UIPlayer extends React.Component {
     } else {
       h5EnterFullscreen();
     }
-  };
+  }
 
   onBtnSeek() {
     var time = document.getElementById('seekedTime').value;
     this.player_.setPosition(time);
-  };
+  }
 
   onBtnAddTextTrack() {
     if (this.player_) {
       this.player_.addTextTrack();
     }
-  };
+  }
 
   onBtnRemoveTextTrack() {
     this.player_.removeTextTrack();
-  };
+  }
 
   setTextTrackHidden() {
     this.player_.setTextTrackHidden();
-  };
+  }
 
   setCueAlign(align) {
     this.player_.setCueAlign(align);
-  };
+  }
 
   onFruitClick() {
     alert('aaaa');
-  };
+  }
 
   onBtnAttribute() {
     //this.player_.attribute();
-  };
+  }
 
   //
   onUICmdCastInit() {
     var cfg = getInitConfig();
     this.castSender.new_init(cfg);
-  };
+  }
 
   onUICmdCastOpen() {
     var info = getMediaInfo();
     this.castSender.new_open(info);
-  };
+  }
 
   onUICmdCastAddV() {
     this.castSender.new_addV();
@@ -1105,23 +1106,23 @@ class UIPlayer extends React.Component {
 
   onUICmdCastAddPD() {
     this.castSender.new_addPD();
-  };
+  }
 
   onUICmdCastPlay() {
     this.castSender.new_play();
-  };
+  }
 
   onUICmdCastPause() {
     this.castSender.new_pause();
-  };
+  }
 
   onUICmdCastPlayAd() {
     this.castSender.new_playAd();
-  };
+  }
 
   onUICmdCastTest() {
     this.castSender.new_test();
-  };
+  }
 
   doEnterThumbnailMode() {
     printLog('+doEnterThumbnailMode');
@@ -1138,15 +1139,15 @@ class UIPlayer extends React.Component {
       this.progressBarContext.timer = null;
       this.flagThumbnailMode = true;
     }
-  };
+  }
 
   doProcessThumbnailMove() {
     // for further action, you can add thumbnail popup here.
-  };
+  }
 
   doProcessThumbnailUp() {
     // for further action, you can add thumbnail ended event here.
-  };
+  }
 
   onProgressBarMouseDown(e) {
     printLog('+onProgressBarMouseDown');
@@ -1167,7 +1168,7 @@ class UIPlayer extends React.Component {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
-  };
+  }
 
   onProgressBarMouseMove(e) {
     //printLog('+onProgressBarMouseMove');

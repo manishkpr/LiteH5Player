@@ -5,7 +5,6 @@ import Debug from '../core/Debug';
 
 import TimeRanges from '../utils/timeRanges';
 
-// from 
 import Demuxer from '../../third_party/hlsjs/src/demux/demuxer';
 import {
   hlsDefaultConfig
@@ -31,7 +30,6 @@ function StreamController() {
   let debug_ = Debug(context_).getInstance();
 
   let streamInfo_;
-  let currentStream_ = -1;
 
   let hls_;
   let demuxer_;
@@ -53,7 +51,7 @@ function StreamController() {
     eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
 
     eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed);
-    eventBus_.on(Events.STREAM_UPDATED, onStreamLoaded);
+    eventBus_.on(Events.STREAM_UPDATED, onStreamUpdated);
 
     eventBus_.on(Events.FRAG_LOADED, onFragLoaded);
 
@@ -87,13 +85,12 @@ function StreamController() {
     eventBus_.trigger(Events.MANIFEST_LOADING, { url: context_.mediaCfg.url });
   }
 
-  function onManifestParsed(streamInfo) {
-    streamInfo_ = streamInfo;
-    tick();
+  function onManifestParsed() {
   }
 
-  function onStreamLoaded() {
-    currentStream_ = 0;
+  function onStreamUpdated(e) {
+    streamInfo_ = e.streamInfo;
+    tick();
   }
 
   function onTestMsg() {
@@ -183,17 +180,8 @@ function StreamController() {
   function _checkBuffer() {}
 
   function _findFragment() {
-    if (currentStream_ === -1) {
-      return;
-    }
-
     let parser = context_.parser;
     let frag = parser.getNextFragment();
-    if (frag && frag.type === 'pd') {
-      eventBus_.trigger(Events.PD_DOWNLOADED, frag);
-      return;
-    }
-
     return frag;
   }
 

@@ -94,8 +94,7 @@ function Player(media, adContainer) {
     addResizeListener();
   }
 
-  function uninit() {
-  }
+  function uninit() {}
 
   function open(mediaCfg) {
     debug_.log('Player, +open');
@@ -114,11 +113,15 @@ function Player(media, adContainer) {
       context_.mediaCfg = mediaCfg;
 
       emeController_.setDrmInfo(mediaCfg);
-      // detech parser type
-      eventBus_.trigger(Events.FINDING_PARSER, { url: mediaCfg.url });
+      // detect parser type
+      eventBus_.trigger(Events.FINDING_PARSER, {
+        url: mediaCfg.url
+      });
 
       // load webvtt thumbnail
-      eventBus_.trigger(Events.THUMBNAIL_LOADING, { url: mediaCfg.thumbnailUrl });
+      eventBus_.trigger(Events.THUMBNAIL_LOADING, {
+        url: mediaCfg.thumbnailUrl
+      });
 
       if (adsEngine_) {
         adsEngine_.requestAds();
@@ -410,7 +413,6 @@ function Player(media, adContainer) {
     eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
-    eventBus_.on(Events.PD_DOWNLOADED, onPdDownloaded);
 
     // ads events
     eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
@@ -447,22 +449,20 @@ function Player(media, adContainer) {
     let parser = data.parser;
 
     context_.parser = parser;
-    switch(parser.type) {
+    switch (parser.type) {
       case 'dash':
-      case 'hls': {
-        eventBus_.trigger(Events.MEDIA_ATTACHING, { media: media_ });
-      } break;
-      case 'pd': {
+      case 'hls':
+        eventBus_.trigger(Events.MEDIA_ATTACHING, {
+          media: media_
+        });
+        break;
+      case 'pd':
         let vPlayer = VideoPlayer(context_).getInstance();
         vPlayer.setSrc(context_.mediaCfg.url);
-      } break;
+        break;
       default:
-      break;
+        break;
     }
-  }
-
-  function onPdDownloaded(frag) {
-    playbackController_.setSrc(frag.url);
   }
 
   function onAdContentPauseRequested() {
@@ -593,5 +593,3 @@ function Player(media, adContainer) {
 };
 
 export default Player;
-
-

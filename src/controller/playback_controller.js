@@ -176,7 +176,7 @@ function PlaybackController() {
     debug_.log('+Native video element event: audioavailable');
   }
 
-  function onMediaAbort() {
+  function onMediaAbort(e) {
     debug_.log('+Native video element event: abort');
   }
 
@@ -305,8 +305,8 @@ function PlaybackController() {
   }
 
   function onMediaTimeUpdated(e) {
+    debug_.log(`timeupdate, main buffered: ${TimeRanges.toString(media_.buffered)}, position: ${media_.currentTime}, duration: ${media_.duration}`);
     eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
-    //debug_.log(`main buffered : ${TimeRanges.toString(media.buffered)}` + ', getPosition: ' + media.getPosition);
   }
 
   function onMediaVolumeChanged() {
@@ -360,7 +360,7 @@ function PlaybackController() {
     media_.removeEventListener('interruptbegin', onMediaInterruptBegin);
     media_.removeEventListener('interruptend', onMediaInterruptEnd);
     media_.removeEventListener('loadeddata', onMediaLoadedData);
-    media_.removeEventListener('loadedmetadata', onMediaMetadata);
+    media_.removeEventListener('loadedmetadata', onMediaLoadedMetadata);
     media_.removeEventListener('loadstart', onMediaLoadStart);
     media_.removeEventListener('pause', onMediaPaused);
     media_.removeEventListener('play', onMediaPlay);
