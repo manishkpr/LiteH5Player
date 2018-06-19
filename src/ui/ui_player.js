@@ -803,7 +803,7 @@ class UIPlayer extends React.Component {
     } else {
       this.uiGiantButton.innerHTML = this.iconPlay;
     }
-    this.uiGiantBtnContainer.style = '';
+    this.uiGiantBtnContainer.style.display = 'block';
   };
 
   updateContentVolumeBarUI(muted, volume) {
@@ -910,7 +910,7 @@ class UIPlayer extends React.Component {
   }
 
   onPlayerMouseMove(e) {
-    printLog('+onPlayerMouseMove');
+    //printLog('+onPlayerMouseMove');
     // don't show control bar if the stream is not initialized.
     if (this.playerState_ !== 'opened') {
       return;

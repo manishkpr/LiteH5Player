@@ -305,7 +305,6 @@ function PlaybackController() {
   }
 
   function onMediaTimeUpdated(e) {
-    debug_.log(`timeupdate, main buffered: ${TimeRanges.toString(media_.buffered)}, position: ${media_.currentTime}, duration: ${media_.duration}`);
     eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
   }
 
