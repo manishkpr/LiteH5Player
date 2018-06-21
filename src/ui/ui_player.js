@@ -33,16 +33,17 @@ class UIPlayer extends React.Component {
 
   render() {
     return (
-      <div className="html5-video-player vop-autohide"
-        onClick={this.onPlayerClick.bind(this)}
-        onMouseEnter={this.onPlayerMouseEnter.bind(this)}
-        onMouseMove={this.onPlayerMouseMove.bind(this)}
-        onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
+      <div className="html5-video-player vop-autohide">
         <div className="vop-video-container">
           <video className="vop-video" playsInline="true" webkit-playsinline="true">
           </video>
         </div>
         <div className="vop-ads-container"></div>
+        <div className="vop-overlay-top"
+          onClick={this.onPlayerClick.bind(this)}
+          onMouseEnter={this.onPlayerMouseEnter.bind(this)}
+          onMouseMove={this.onPlayerMouseMove.bind(this)}
+          onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
         <div className="vop-tooltip">
           <div className="vop-tooltip-bg"></div>
           <div className="vop-tooltip-text-wrapper">
@@ -140,6 +141,7 @@ class UIPlayer extends React.Component {
         </div>
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
+        </div>
         </div>
       </div>
     )

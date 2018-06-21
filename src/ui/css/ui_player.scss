@@ -1,5 +1,7 @@
 $videoContainer_bkClr: black;
 
+$zIndex_top: 100;
+
 
 .html5-video-player {
   position: relative;
@@ -36,6 +38,14 @@ $videoContainer_bkClr: black;
   width: 100%;
   height: 100%;
   background: transparent;
+}
+
+.vop-overlay-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: $zIndex_top;
 }
 
 /******** Begin Tooltip ********/
@@ -481,6 +491,9 @@ $videoContainer_bkClr: black;
 
 /************ Begin bottom bar auto hide ************/
 .vop-autohide { cursor:none }
+.vop-autohide .vop-overlay-top {
+  cursor:none
+}
 .vop-autohide .vop-gradient-bottom {
   display: none;
 }
