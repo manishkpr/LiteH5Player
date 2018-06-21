@@ -11,7 +11,8 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       include: [
-        path.join(__dirname, 'src')
+        path.join(__dirname, 'src'),
+        path.join(__dirname, 'third_party/hlsjs/src')
       ],
       loader: 'babel-loader',
       query: {
@@ -50,6 +51,8 @@ https://blog.zfanw.com/webpack-tutorial/#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6
 1. webpack配置sass模块的加载 -- https://www.cnblogs.com/ww03/p/6037710.html
 2. Webpack 4 config.js (SCSS to CSS and Babel) ok_hand The Simplest Usage -- https://gist.github.com/mburakerman/629783c16acf5e5f03de60528d3139af
 
+// Webpack integrate TypeScript
+1. https://webpack.js.org/guides/typescript/
 
 
 

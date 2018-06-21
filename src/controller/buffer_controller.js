@@ -176,28 +176,30 @@ function BufferController() {
 
   function onTestMsg() {
     var media = context_.media;
-    var a = sourceBuffer_.audio;
-    var v = sourceBuffer_.video;
-    if (a) {
-      debug_.log(`audio buffered: ${TimeRanges.toString(a.buffered)}`);
-    }
-    if (v) {
-      debug_.log(`video buffered: ${TimeRanges.toString(v.buffered)}`);
-    }
-    debug_.log(`media buffered: ${TimeRanges.toString(media.buffered)}`);
+    // BD
+    // var a = sourceBuffer_.audio;
+    // var v = sourceBuffer_.video;
+    // if (a) {
+    //   debug_.log(`audio buffered: ${TimeRanges.toString(a.buffered)}`);
+    // }
+    // if (v) {
+    //   debug_.log(`video buffered: ${TimeRanges.toString(v.buffered)}`);
+    // }
+    // debug_.log(`media buffered: ${TimeRanges.toString(media.buffered)}`);
+    // ED
   }
 
   // Begin source buffer event
   function sourceBuffer_updatestart() {
-    //debug_.log('--sourceBuffer_updatestart--');
+    debug_.log('--sourceBuffer_updatestart--');
   }
 
   function sourceBuffer_update() {
-    //debug_.log('--sourceBuffer_update--');
+    debug_.log('--sourceBuffer_update--');
   }
 
   function sourceBuffer_updateend() {
-    //debug_.log('+sourceBuffer_updateend');
+    debug_.log('+sourceBuffer_updateend');
     appending_ = false;
 
     let pending = segments_.length;

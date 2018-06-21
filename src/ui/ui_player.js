@@ -503,6 +503,9 @@ class UIPlayer extends React.Component {
     this.player_ = new oldmtn.Player(this.video_, this.adContainer_);
     this.player_.init(cfg);
 
+    this.player_.on(oldmtn.Events.OPENING, this.onOpening.bind(this), {});
+    this.player_.on(oldmtn.Events.OPENED, this.onOpened.bind(this), {});
+
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData.bind(this), {});
@@ -537,38 +540,29 @@ class UIPlayer extends React.Component {
 
     // update state machine
     this.updateUIStateMachine('inited');
-  };
+  }
 
   playerOpen(mediaCfg) {
-    var p = this.player_.open(mediaCfg);
-    p.then(function(v) {
-        printLog('open ret: ' + v);
-        this.onOpenComplete();
-      }.bind(this))
-      .catch(function(e) {
-        printLog('e: ' + e);
-      });
-    // since open is an async operation, we transition it to opening state.
-    this.updateUIStateMachine('opening');
-  };
+    this.player_.open(mediaCfg);
+  }
 
   playerClose() {
     printLog('+onBtnClose');
     this.player_.close();
     this.updateUIStateMachine('closed');
-  };
+  }
 
   playerRequestAds() {
     this.player_.playAd();
-  };
+  }
 
   onBtnInit() {
     this.player_.init(cfg_);
-  };
+  }
 
   onBtnUninit() {
     this.player_.uninit(cfg_);
-  };
+  }
 
   ///////////////////////////////////////////////////////////////////////////
   // Title: UI reference functions
@@ -1263,6 +1257,23 @@ class UIPlayer extends React.Component {
 
   ////////////////////////////////////////////////////////////////////////////////////
   // this.player_ event callback
+  onOpening() {
+    this.updateUIStateMachine('opening');
+  }
+
+  onOpened() {
+    if (this.playerState_ === 'opening') {
+      printLog('+onOpenComplete');
+      this.updateUIStateMachine('opened');
+
+      // update volume here
+      var muted = this.player_.isMuted();
+      var volume = this.player_.getVolume();
+
+      this.updateContentVolumeBarUI(muted, volume);
+    }
+  }
+
   onMediaDurationChanged() {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
   };
@@ -1278,19 +1289,6 @@ class UIPlayer extends React.Component {
 
     //
     this.updateUIStateMachine('ended');
-  };
-
-  onOpenComplete() {
-    if (this.playerState_ === 'opening') {
-      printLog('+onOpenComplete');
-      this.updateUIStateMachine('opened');
-
-      // update volume here
-      var muted = this.player_.isMuted();
-      var volume = this.player_.getVolume();
-
-      this.updateContentVolumeBarUI(muted, volume);
-    }
   };
 
   onMediaLoadedMetaData(e) {

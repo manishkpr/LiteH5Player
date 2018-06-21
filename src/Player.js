@@ -64,9 +64,6 @@ function Player(media, adContainer) {
   let flagPlayedOnce_;
 
   // Promise part
-  let openPromise_;
-  let openPromiseResolve_;
-  let openPromiseReject_;
 
   function setup() {
     // init internal configuration
@@ -89,41 +86,69 @@ function Player(media, adContainer) {
 
   function open(mediaCfg) {
     debug_.log('Player, +open');
-    openPromise_ = new Promise((resolve, reject) => {
-      openPromiseResolve_ = resolve;
-      openPromiseReject_ = reject;
 
-      if (mediaCfg.url === '') {
-        openPromiseReject_('failed');
-        return;
-      }
+    // preprocess the mediaCfg
+    mediaCfg.drm = mediaCfg.drm || {};
 
-      // preprocess the mediaCfg
-      mediaCfg.drm = mediaCfg.drm || {};
+    context_.mediaCfg = mediaCfg;
 
-      context_.mediaCfg = mediaCfg;
-
-      emeController_.setDrmInfo(mediaCfg);
-      // detect parser type
-      eventBus_.trigger(Events.FINDING_PARSER, {
-        url: mediaCfg.url
-      });
-
-      // load webvtt thumbnail
-      eventBus_.trigger(Events.THUMBNAIL_LOADING, {
-        url: mediaCfg.thumbnailUrl
-      });
-
-      if (adsEngine_) {
-        adsEngine_.requestAds();
-      } else {
-        flagAdOpenComplete_ = true;
-      }
-      flagPlayedOnce_ = false;
+    emeController_.setDrmInfo(mediaCfg);
+    // detect parser type
+    eventBus_.trigger(Events.FINDING_PARSER, {
+      url: mediaCfg.url
     });
 
+    // load webvtt thumbnail
+    eventBus_.trigger(Events.THUMBNAIL_LOADING, {
+      url: mediaCfg.thumbnailUrl
+    });
+
+    if (adsEngine_) {
+      adsEngine_.requestAds();
+    } else {
+      flagAdOpenComplete_ = true;
+    }
+    flagPlayedOnce_ = false;
+
     playerState_ = 'opening';
-    return openPromise_;
+    eventBus_.trigger(Events.OPENING, {});
+    
+    // old
+    // openPromise_ = new Promise((resolve, reject) => {
+    //   openPromiseResolve_ = resolve;
+    //   openPromiseReject_ = reject;
+
+    //   if (mediaCfg.url === '') {
+    //     openPromiseReject_('failed');
+    //     return;
+    //   }
+
+    //   // preprocess the mediaCfg
+    //   mediaCfg.drm = mediaCfg.drm || {};
+
+    //   context_.mediaCfg = mediaCfg;
+
+    //   emeController_.setDrmInfo(mediaCfg);
+    //   // detect parser type
+    //   eventBus_.trigger(Events.FINDING_PARSER, {
+    //     url: mediaCfg.url
+    //   });
+
+    //   // load webvtt thumbnail
+    //   eventBus_.trigger(Events.THUMBNAIL_LOADING, {
+    //     url: mediaCfg.thumbnailUrl
+    //   });
+
+    //   if (adsEngine_) {
+    //     adsEngine_.requestAds();
+    //   } else {
+    //     flagAdOpenComplete_ = true;
+    //   }
+    //   flagPlayedOnce_ = false;
+    // });
+
+    // playerState_ = 'opening';
+    // return openPromise_;
   }
 
   function close() {
@@ -490,9 +515,8 @@ function Player(media, adContainer) {
       if (context_.cfg.autoplay) {
         play();
       }
-      //
-      openPromiseResolve_('ok');
       playerState_ = 'opened';
+      eventBus_.trigger(Events.OPENED, {});
     }
   }
 

@@ -5,6 +5,7 @@ var cfg_ = getInitConfig();
 var mediaCfg_ = getMediaInfo();
 //
 
+var omPlayer = null;
 var uiEngine = null;
 
 const LOG_DEBUG = undefined;
@@ -155,6 +156,11 @@ window.onload = function() {
   browserInfo = oldmtn.CommonUtils.getBrowserInfo();
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
+  // Init with Player
+  // omPlayer = new oldmtn.Player('player-container');
+  // omPlayer.init(cfg_);
+
+  // Init with UIEngine
   uiEngine = new oldmtn.UIEngine('player-container');
   uiEngine.init(cfg_);
 
