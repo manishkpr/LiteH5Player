@@ -865,23 +865,30 @@ class UIPlayer extends React.Component {
   };
 
   updatePlayBtnUI(paused, ended) {
+    let icon;
     if (ended) {
-      this.vopPlayButton.innerHTML = this.iconReplay;
+      icon = this.iconReplay;
     } else {
       if (paused) {
-        this.vopPlayButton.innerHTML = this.iconPlay;
+        icon = this.iconPlay;
       } else {
-        this.vopPlayButton.innerHTML = this.iconPause;
+        icon = this.iconPause;
       }
     }
-  };
+
+    this.vopPlayButton.innerHTML = icon;
+    this.vopPlayButton.dataset.id = icon;
+  }
 
   updateGiantPlayBtnUI(paused) {
+    let icon;
     if (paused) {
-      this.uiGiantButton.innerHTML = this.iconPause;
+      icon = this.iconPause;
     } else {
-      this.uiGiantButton.innerHTML = this.iconPlay;
+      icon = this.iconPlay;
     }
+    this.uiGiantButton.innerHTML = icon;
+    this.uiGiantButton.dataset.id = icon;
     this.uiGiantBtnContainer.style.display = 'block';
   };
 
@@ -1009,28 +1016,49 @@ class UIPlayer extends React.Component {
 
   // browser & UI callback functions
   onUICmdPlay() {
-    var currPaused = this.player_.isPaused();
-    var currEnded = this.player_.isEnded();
+    // Get current play/pause state from UI.
+    let currPaused;
+    let currEnded;
+    if (this.vopPlayButton.dataset.id === this.iconPlay) {
+      currPaused = true;
+      currEnded = false;
+    } else if (this.vopPlayButton.dataset.id === this.iconPause) {
+      currPaused = false;
+      currEnded = false;
+    } else if (this.vopPlayButton.dataset.id === this.iconReplay) {
+      currPaused = false;
+      currEnded = true;
+    } else {
+      console.log('PlayBtn can\'t have this style');
+    }
+
+    // Compute new play/pause state and apply it to player.
     if (currEnded) {
       this.progressBarContext.pausedBeforeMousedown = true;
       this.progressBarContext.endedBeforeMousedown = true;
       this.player_.setPosition(0);
     } else {
-      var newPaused;
+      let newPaused;
       // execute ui cmd
       if (currPaused) {
-        this.player_.play();
-
         newPaused = false;
       } else {
-        this.player_.pause();
-
         newPaused = true;
       }
 
       // update ui
       this.updatePlayBtnUI(newPaused, currEnded);
       this.updateGiantPlayBtnUI(newPaused);
+
+      // update logic
+      let currState = this.player_.getState();
+      if (this.player_ && currState !== 'none' && currState !== 'inited') {
+        if (newPaused) {
+          this.player_.pause();
+        } else {
+          this.player_.play();
+        }
+      }
     }
   }
 
@@ -1405,6 +1433,10 @@ class UIPlayer extends React.Component {
   }
 
   onAdStarted(e) {
+    // Hide all popup menu.
+    this.settingMenuUIData.currMenu = 'none';
+    this.updateUIState();
+
     // BD
     var videos = document.getElementsByTagName('video');
     // ED
@@ -1419,7 +1451,7 @@ class UIPlayer extends React.Component {
       var v = document.querySelector('.vop-ads-container');
       v.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
     }
-  };
+  }
 
   onAdComplete() {
     printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
@@ -1429,7 +1461,7 @@ class UIPlayer extends React.Component {
     this.vopProgressBar.style.display = 'block';
     this.vopSubtitlesBtn.style.display = 'inline-block';
     this.vopSettingsBtn.style.display = 'inline-block';
-  };
+  }
 
   onAdTimeUpdate() {
     var position = this.player_.getPosition();

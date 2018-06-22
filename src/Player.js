@@ -64,7 +64,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_; // 'none', 'opening', 'opened', 'playing', 'waiting', 'ended'
+  let playerState_; // 'none', 'inited', 'opening', 'opened', 'playing', 'waiting', 'ended'
 
   // open completed flag
   let flagContentOpenComplete_;
@@ -86,6 +86,8 @@ function Player(idContainer) {
     initData();
     addEventListeners();
     addResizeListener();
+
+    updateState('inited');
   }
 
   function uninit() {}
@@ -421,10 +423,8 @@ function Player(idContainer) {
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
 
     // ads events
-    eventBus_.on(Events.AD_COMPLETE, onAdComplete, {});
     eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
-    eventBus_.on(Events.AD_STARTED, onAdStarted, {});
     eventBus_.on(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
   }
 
@@ -492,10 +492,6 @@ function Player(idContainer) {
       playbackController_.play();
     }
   }
-
-  function onAdStarted() {}
-
-  function onAdComplete() {}
 
   function onAdLoadingComplete() {
     if (playerState_ === 'opening') {

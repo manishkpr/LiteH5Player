@@ -46,6 +46,7 @@ function AdsController(adContainer, media, advertising) {
   // flag
   let isPlayingAd_ = false;
   let isLinearAd_ = false;
+  let isVpaid_ = false;
   let isPaused_ = false;
 
   let adsLoaded_ = false;
@@ -382,7 +383,6 @@ function AdsController(adContainer, media, advertising) {
           if (!ad.isLinear()) {
             // Position AdDisplayContainer correctly for overlay.
             // Use ad.width and ad.height.
-
           }
         }
         break;
@@ -485,6 +485,7 @@ function AdsController(adContainer, media, advertising) {
     //
     isPlayingAd_ = true;
     isLinearAd_ = ad.isLinear();
+    isVpaid_ = ad.g.vpaid;
 
     position_ = 0;
     duration_ = ad.getDuration();
@@ -493,6 +494,7 @@ function AdsController(adContainer, media, advertising) {
 
     eventBus_.trigger(Events.AD_STARTED, {
       isLinearAd: isLinearAd_,
+      vpaid: isVpaid_,
       width: adWidth_,
       height: adHeight_
     });
