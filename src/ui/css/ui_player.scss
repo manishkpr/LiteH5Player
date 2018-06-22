@@ -1,6 +1,7 @@
 $videoContainer_bkClr: black;
 
-$zIndex_top: 100;
+$zIndex_video: 1;
+$zIndex_overlay: 100;
 
 
 .html5-video-player {
@@ -23,6 +24,8 @@ $zIndex_top: 100;
   position: absolute;
   width: 100%;
   height: 100%;
+  controls: true;
+  z-index: $zIndex_video;
 }
 
 .vop-caption-container {
@@ -45,7 +48,7 @@ $zIndex_top: 100;
   width: 100%;
   height: 100%;
   background: transparent;
-  z-index: $zIndex_top;
+  z-index: $zIndex_overlay;
 }
 
 /******** Begin Tooltip ********/

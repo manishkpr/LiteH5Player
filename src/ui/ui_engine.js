@@ -4,41 +4,28 @@ import ReactDOM from 'react-dom';
 import UIPlayer from './ui_player';
 
 class UIEngine {
-  constructor(idContainer) {
-    this.playerContainer_ = document.getElementById(idContainer);
+  constructor(player) {
+    this.player_ = player;
 
-    this.initUI();
+    this.h5VideoPlayer_ = document.querySelector('.html5-video-player');
+    this.vopVideo = document.querySelector('.vop-video');
+
+    this.skinContainer_ = document.createElement('div');
+    this.h5VideoPlayer_.appendChild(this.skinContainer_);
   }
 
-  initUI() {
-    this.uiPlayer_ = ReactDOM.render(<UIPlayer/>, this.playerContainer_);
+  installSkin() {
+    this.vopVideo.removeAttribute('controls');
+    this.uiPlayer_ = ReactDOM.render(<UIPlayer player={this.player_}/>, this.skinContainer_);
   }
 
-  // A series of API similar to oldmtn.Player class.
-  init(cfg) {
-    this.uiPlayer_.playerInit(cfg);
-  }
-
-  open(mediaCfg) {
-    this.uiPlayer_.playerOpen(mediaCfg);
-  }
-
-  uninitPlayer() {
-    if (this.player_) {
-      this.player_.close();
-      this.player_ = null;
-    }
-  }
-
-  test() {
-    this.uiPlayer_.playerTest();
+  uninstallSkin() {
+    ReactDOM.unmountComponentAtNode(this.skinContainer_);
+    this.vopVideo.setAttribute('controls', 'true');
   }
 }
 
 export default UIEngine;
-
-
-
 
 
 

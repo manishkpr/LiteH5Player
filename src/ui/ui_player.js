@@ -17,33 +17,36 @@ class UIPlayer extends React.Component {
     super(props);
 
     this.initVariable();
-
+    this.player_ = props.player;
     this.state = {
       settingMenuUIData: this.settingMenuUIData
     };
   }
 
   componentWillMount() {
+    console.log('+componentWillMount');
   }
 
   componentDidMount() {
+    console.log('+componentDidMount');
+
     this.initUIElements();
     this.initUIEventListeners();
+    this.initPlayerListeners();
+  }
+
+  componentWillUnmount() {
+    console.log('+componentWillUnmount');
+    this.uninitPlayerListeners();
   }
 
   render() {
     return (
-      <div className="html5-video-player vop-autohide">
-        <div className="vop-video-container">
-          <video className="vop-video" playsInline="true" webkit-playsinline="true">
-          </video>
-        </div>
-        <div className="vop-ads-container"></div>
-        <div className="vop-overlay-top"
-          onClick={this.onPlayerClick.bind(this)}
-          onMouseEnter={this.onPlayerMouseEnter.bind(this)}
-          onMouseMove={this.onPlayerMouseMove.bind(this)}
-          onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
+      <div className="vop-overlay-top"
+        onClick={this.onPlayerClick.bind(this)}
+        onMouseEnter={this.onPlayerMouseEnter.bind(this)}
+        onMouseMove={this.onPlayerMouseMove.bind(this)}
+        onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
         <div className="vop-tooltip">
           <div className="vop-tooltip-bg"></div>
           <div className="vop-tooltip-text-wrapper">
@@ -141,7 +144,6 @@ class UIPlayer extends React.Component {
         </div>
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
-        </div>
         </div>
       </div>
     )
@@ -410,6 +412,32 @@ class UIPlayer extends React.Component {
     // reference variable of ad
     this.flagAdStarted = false;
     this.flagIsLinearAd = false;
+
+    //
+    this.onOpening = this.onOpening.bind(this);
+    this.onOpened = this.onOpened.bind(this);
+
+    this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
+    this.onMediaEnded = this.onMediaEnded.bind(this);
+    this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
+    this.onMediaPaused = this.onMediaPaused.bind(this);
+    this.onMediaPlaying = this.onMediaPlaying.bind(this);
+    this.onMediaSeeking = this.onMediaSeeking.bind(this);
+    this.onMediaSeeked = this.onMediaSeeked.bind(this);
+    this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
+    this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
+    this.onMediaWaiting = this.onMediaWaiting.bind(this);
+
+    this.onLog = this.onLog.bind(this);
+
+    // ad callback event
+    this.onAdStarted = this.onAdStarted.bind(this);
+    this.onAdComplete = this.onAdComplete.bind(this);
+    this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
+    this.onAdCompanions = this.onAdCompanions.bind(this);
+
+    //
+    this.onFullscreenChanged = this.onFullscreenChanged.bind(this);
   }
 
   // Title: init part
@@ -501,34 +529,31 @@ class UIPlayer extends React.Component {
     }
   }
 
-  playerInit(cfg) {
-    this.player_ = new oldmtn.Player(this.video_, this.adContainer_);
-    this.player_.init(cfg);
+  initPlayerListeners() {
+    this.player_.on(oldmtn.Events.OPENING, this.onOpening);
+    this.player_.on(oldmtn.Events.OPENED, this.onOpened);
 
-    this.player_.on(oldmtn.Events.OPENING, this.onOpening.bind(this), {});
-    this.player_.on(oldmtn.Events.OPENED, this.onOpened.bind(this), {});
+    this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
+    this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
+    this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
+    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+    this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
+    this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
 
-    this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged.bind(this), {});
-    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting.bind(this), {});
-
-    this.player_.on(oldmtn.Events.LOG, this.onLog.bind(this), {});
+    this.player_.on(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
-    this.player_.on(oldmtn.Events.AD_STARTED, this.onAdStarted.bind(this), {});
-    this.player_.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete.bind(this), {});
-    this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate.bind(this), {});
-    this.player_.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions.bind(this), {});
+    this.player_.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
+    this.player_.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+    this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+    this.player_.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
     //
-    this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged.bind(this), {});
+    this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
 
     // chrome cast part
     if (0) {
@@ -542,6 +567,33 @@ class UIPlayer extends React.Component {
 
     // update state machine
     this.updateUIStateMachine('inited');
+  }
+
+  uninitPlayerListeners() {
+    this.player_.off(oldmtn.Events.OPENING, this.onOpening);
+    this.player_.off(oldmtn.Events.OPENED, this.onOpened);
+
+    this.player_.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
+    this.player_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
+    this.player_.off(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
+    this.player_.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+    this.player_.off(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
+    this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+
+    this.player_.off(oldmtn.Events.LOG, this.onLog);
+
+    // ad callback event
+    this.player_.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
+    this.player_.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+    this.player_.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+    this.player_.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
+
+    //
+    this.player_.off(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
   }
 
   playerOpen(mediaCfg) {

@@ -10,7 +10,6 @@ import FetchLoader from './utils/fetch_loader';
 import FragmentLoader from './loader/fragment_loader';
 import PlaylistLoader from './loader/playlist_loader';
 
-import UIEngine from './ui/ui_engine';
 import TextEngine from './text_engine';
 import PlaybackController from './controller/playback_controller';
 import EMEController from './controller/eme_controller';
@@ -27,11 +26,20 @@ import VideoPlayer from './videoplayer';
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
+// UI
+import React from 'react';
+import ReactDOM from 'react-dom';
+import UIBasic from './ui/ui_basic';
+import UIEngine from './ui/ui_engine';
 //////////////////////////////////////////////////////////////////////////////
-function Player(media, adContainer) {
+function Player(idContainer) {
   let context_ = oldmtn; //{ flag: 'player' };
-  let media_ = media;
-  let adContainer_ = adContainer;
+  let playerContainer_ = document.getElementById(idContainer);
+
+  let uiBasic_ = ReactDOM.render(<UIBasic/>, playerContainer_);
+
+  let media_ = document.querySelector('.vop-video');
+  let adContainer_ = document.querySelector('.vop-ads-container');
 
   let eventBus_;
   let debug_;

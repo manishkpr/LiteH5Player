@@ -39,7 +39,8 @@ function onBtnUninit() {
 }
 
 function onBtnOpen() {
-  uiEngine.open(mediaCfg_);
+  //uiEngine.open(mediaCfg_);
+  omPlayer.open(mediaCfg_);
 }
 
 function onBtnClose() {
@@ -65,7 +66,8 @@ function onBtnStop() {}
 function onBtnPlayAd() {}
 
 function onBtnTest() {
-  uiEngine.test();
+  //uiEngine.test();
+  omPlayer.test();
 }
 
 function onBtnTest2() {
@@ -88,6 +90,14 @@ function onBtnTest2() {
   // v.webkitEnterFullScreen();
 
   //v.setAttribute('aria-hidden', true);
+}
+
+function onBtnInstallSkin() {
+  uiEngine.installSkin();
+}
+
+function onBtnUninstallSkin() {
+  uiEngine.uninstallSkin();
 }
 
 function onBtnSeek() {
@@ -157,12 +167,14 @@ window.onload = function() {
   console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
   // Init with Player
-  // omPlayer = new oldmtn.Player('player-container');
-  // omPlayer.init(cfg_);
+  omPlayer = new oldmtn.Player('player-container');
+  omPlayer.init(cfg_);
+
+  uiEngine = new oldmtn.UIEngine(omPlayer);
 
   // Init with UIEngine
-  uiEngine = new oldmtn.UIEngine('player-container');
-  uiEngine.init(cfg_);
+  // uiEngine = new oldmtn.UIEngine('player-container');
+  // uiEngine.init(cfg_);
 
   //oldmtn.test_subtitle_menu();
 };
