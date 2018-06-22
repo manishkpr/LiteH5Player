@@ -13,7 +13,7 @@ import PlaylistLoader from './loader/playlist_loader';
 import TextEngine from './text_engine';
 import PlaybackController from './controller/playback_controller';
 import EMEController from './controller/eme_controller';
-import AdsEngine from './ads/ads_engine';
+import AdsController from './controller/ads_controller';
 
 import ParserController from './controller/parser_controller';
 import LevelController from './controller/level_controller';
@@ -398,7 +398,7 @@ function Player(idContainer) {
       media_.poster = context_.cfg.poster;
     }
     if (context_.cfg.advertising) {
-      adsEngine_ = AdsEngine(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
+      adsEngine_ = AdsController(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
     }
   }
 

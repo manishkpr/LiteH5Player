@@ -22,7 +22,7 @@ function getVMAPItem(breakId, offset, tag) {
   return item;
 }
 
-function AdsEngine(adContainer, media, advertising) {
+function AdsController(adContainer, media, advertising) {
   let context_ = this.context;
 
   let eventBus_ = EventBus(context_).getInstance();
@@ -82,7 +82,8 @@ function AdsEngine(adContainer, media, advertising) {
       new google.ima.AdDisplayContainer(
         adContainer_,
         media_,
-        advertising_.companions[0] ? advertising_.companions[0].div : null);
+        null);
+    //advertising_.companions[0] ? advertising_.companions[0].div : null);
 
     adsLoader_ = new google.ima.AdsLoader(adDisplayContainer_);
     // Mobile Skippable Ads
@@ -160,7 +161,7 @@ function AdsEngine(adContainer, media, advertising) {
     adsLoader_.requestAds(adsRequest);
   }
 
-  // AdsEngine public functions
+  // AdsController public functions
   function playAd() {
     // sometimes, requestAds may be caught an error, so we return here directly.
     if (!adsManager_) {
@@ -406,54 +407,7 @@ function AdsEngine(adContainer, media, advertising) {
           // This event indicates the ad has started - the video player
           // can adjust the UI, for example display a pause button and
           // remaining time.
-          isPlayingAd_ = true;
-          isLinearAd_ = ad.isLinear();
-
-          position_ = 0;
-          duration_ = ad.getDuration();
-          adWidth_ = ad.getWidth();
-          adHeight_ = ad.getHeight();
-
-          eventBus_.trigger(Events.AD_STARTED, {
-            isLinearAd: isLinearAd_,
-            width: adWidth_,
-            height: adHeight_
-          });
-          if (isLinearAd_) {
-            startAdTimer();
-            eventBus_.trigger(Events.AD_TIMEUPDATE);
-          } else {
-            eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
-          }
-
-          // report companion
-          let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
-          selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
-          selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
-          selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
-
-          // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
-          let companionAds = ad.getCompanionAds(width_, height_, selectionCriteria);
-          let companions = [];
-          for (let i = 0; i < companionAds.length; i++) {
-            let companionAd = companionAds[i];
-
-            let width = companionAd.getWidth();
-            let height = companionAd.getHeight();
-            let content = companionAd.getContent();
-            companions.push({
-              width: width,
-              height: height,
-              content: content
-            });
-
-            debug_.log(`companion[${i}], type:${companionAd.getContentType()} width:${companionAd.getWidth()}, height:${companionAd.getHeight()}`);
-          }
-          if (companions.length > 0) {
-            eventBus_.trigger(Events.AD_COMPANIONS, {
-              companions: companions
-            });
-          }
+          processWhenAdStart(ad);
         }
         break;
       case google.ima.AdEvent.Type.THIRD_QUARTILE:
@@ -524,7 +478,65 @@ function AdsEngine(adContainer, media, advertising) {
     }
   }
 
+  function processWhenAdStart(ad) {
+    // UI Operation
+    adContainer_.style.zIndex = '1';
+
+    //
+    isPlayingAd_ = true;
+    isLinearAd_ = ad.isLinear();
+
+    position_ = 0;
+    duration_ = ad.getDuration();
+    adWidth_ = ad.getWidth();
+    adHeight_ = ad.getHeight();
+
+    eventBus_.trigger(Events.AD_STARTED, {
+      isLinearAd: isLinearAd_,
+      width: adWidth_,
+      height: adHeight_
+    });
+    if (isLinearAd_) {
+      startAdTimer();
+      eventBus_.trigger(Events.AD_TIMEUPDATE);
+    } else {
+      eventBus_.trigger(Events.AD_CONTENT_RESUME_REQUESTED);
+    }
+
+    // report companion
+    let selectionCriteria = new google.ima.CompanionAdSelectionSettings();
+    selectionCriteria.resourceType = google.ima.CompanionAdSelectionSettings.ResourceType.STATIC;
+    selectionCriteria.creativeType = google.ima.CompanionAdSelectionSettings.CreativeType.IMAGE;
+    selectionCriteria.sizeCriteria = google.ima.CompanionAdSelectionSettings.SizeCriteria.IGNORE;
+
+    // Get a list of companion ads for an ad slot size and CompanionAdSelectionSettings
+    let companionAds = ad.getCompanionAds(width_, height_, selectionCriteria);
+    let companions = [];
+    for (let i = 0; i < companionAds.length; i++) {
+      let companionAd = companionAds[i];
+
+      let width = companionAd.getWidth();
+      let height = companionAd.getHeight();
+      let content = companionAd.getContent();
+      companions.push({
+        width: width,
+        height: height,
+        content: content
+      });
+
+      debug_.log(`companion[${i}], type:${companionAd.getContentType()} width:${companionAd.getWidth()}, height:${companionAd.getHeight()}`);
+    }
+    if (companions.length > 0) {
+      eventBus_.trigger(Events.AD_COMPANIONS, {
+        companions: companions
+      });
+    }
+  }
+
   function processWhenAdComplete() {
+    // UI Operation
+    adContainer_.style.zIndex = 'auto';
+    //
     isPlayingAd_ = false;
     stopAdTimer();
     position_ = duration_;
@@ -574,5 +586,5 @@ function AdsEngine(adContainer, media, advertising) {
   return instance;
 }
 
-AdsEngine.__h5player_factory_name = 'AdsEngine';
-export default FactoryMaker.getSingletonFactory(AdsEngine);
+AdsController.__h5player_factory_name = 'AdsController';
+export default FactoryMaker.getSingletonFactory(AdsController);
