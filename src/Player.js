@@ -64,7 +64,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_; // 'none', 'opening', 'opened', 'ended'
+  let playerState_; // 'none', 'opening', 'opened', 'playing', 'waiting', 'ended'
 
   // open completed flag
   let flagContentOpenComplete_;
@@ -412,6 +412,8 @@ function Player(idContainer) {
     // html5 event
     eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
     eventBus_.on(Events.MEDIA_ENDED, onMediaEnded, {});
+    eventBus_.on(Events.MEDIA_WAITING, onMediaWaiting, {});
+    eventBus_.on(Events.MEDIA_PLAYING, onMediaPlaying, {});
 
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
@@ -449,6 +451,14 @@ function Player(idContainer) {
 
   function onMediaEnded() {
     updateState('ended');
+  }
+
+  function onMediaWaiting() {
+    updateState('waiting');
+  }
+
+  function onMediaPlaying() {
+    updateState('playing');
   }
 
   function onFoundParser(data) {

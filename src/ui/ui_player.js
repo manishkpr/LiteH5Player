@@ -421,12 +421,12 @@ class UIPlayer extends React.Component {
     this.onMediaEnded = this.onMediaEnded.bind(this);
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
     this.onMediaPaused = this.onMediaPaused.bind(this);
-    this.onMediaPlaying = this.onMediaPlaying.bind(this);
     this.onMediaSeeking = this.onMediaSeeking.bind(this);
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
     this.onMediaWaiting = this.onMediaWaiting.bind(this);
+    this.onMediaPlaying = this.onMediaPlaying.bind(this);
 
     this.onLog = this.onLog.bind(this);
 
@@ -518,12 +518,12 @@ class UIPlayer extends React.Component {
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
     this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
-    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
     this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
     this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
     this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
     this.player_.on(oldmtn.Events.LOG, this.onLog);
 
@@ -622,7 +622,9 @@ class UIPlayer extends React.Component {
     this.player_.resize(dstWidth, dstHeight);
 
     printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
   }
 
   // This function is mainly focus on:
@@ -635,21 +637,18 @@ class UIPlayer extends React.Component {
         {}
         break;
       case 'opening':
-        {
-          this.startBufferingUI();
-        }
+        {}
         break;
       case 'opened':
         {
-          this.stopBufferingUI();
-
-          this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+          let position = this.player_.getPosition();
+          let duration = this.player_.getDuration();
+          this.updateProgressBarUI(position, duration);
           this.vopControlBar.style.display = 'block';
 
           // update volume here
           let muted = this.player_.isMuted();
           let volume = this.player_.getVolume();
-
           this.updateContentVolumeBarUI(muted, volume);
         }
         break;
@@ -660,8 +659,10 @@ class UIPlayer extends React.Component {
           this.updatePlayBtnUI(paused, ended);
 
           //
-          this.progressBarContext.movePos = this.player_.getPosition();
-          this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+          let position = this.player_.getPosition();
+          let duration = this.player_.getDuration();
+          this.progressBarContext.movePos = position;
+          this.updateProgressBarUI(position, duration);
 
           $('.html5-video-player').removeClass('vop-autohide');
         }
@@ -669,18 +670,28 @@ class UIPlayer extends React.Component {
       case 'closed':
         {}
         break;
+      case 'waiting':
+        this.startBufferingUI();
+        break;
+      case 'playing':
+        let paused = this.player_.isPaused();
+        let ended = this.player_.isEnded();
+        this.updatePlayBtnUI(paused, ended);
+
+        this.stopBufferingUI();
+        break;
       default:
         break;
     }
-  };
+  }
 
   startBufferingUI() {
     this.vopSpinner.style.display = 'block';
-  };
+  }
 
   stopBufferingUI() {
     this.vopSpinner.style.display = 'none';
-  };
+  }
 
   // begin progress bar
   updateVolumeMovePosition(e) {
@@ -697,7 +708,7 @@ class UIPlayer extends React.Component {
 
     // update time progress scrubber button
     this.valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
-  };
+  }
 
   getProgressMovePosition(e) {
     // part - input
@@ -968,21 +979,11 @@ class UIPlayer extends React.Component {
 
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter() {
-    // Don't show control bar if the stream is not initialized.
-    if (this.playerState_ !== 'opened') {
-      return;
-    }
-
     $('.html5-video-player').removeClass('vop-autohide');
   }
 
   onPlayerMouseMove(e) {
     //printLog('+onPlayerMouseMove');
-    // don't show control bar if the stream is not initialized.
-    if (this.playerState_ !== 'opened') {
-      return;
-    }
-
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
       this.onPlayerMouseLeave();
@@ -1340,8 +1341,7 @@ class UIPlayer extends React.Component {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
   }
 
-  onMediaEnded() {
-  }
+  onMediaEnded() {}
 
   onMediaLoadedMetaData(e) {
     // update external div's dimensions
@@ -1361,13 +1361,9 @@ class UIPlayer extends React.Component {
 
   onMediaPaused() {};
 
-  onMediaPlaying() {
-    var paused = this.player_.isPaused();
-    var ended = this.player_.isEnded();
-    this.updatePlayBtnUI(paused, ended);
+  onMediaWaiting() {}
 
-    this.stopBufferingUI();
-  }
+  onMediaPlaying() {}
 
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
@@ -1402,10 +1398,6 @@ class UIPlayer extends React.Component {
     var volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
   };
-
-  onMediaWaiting() {
-    this.startBufferingUI();
-  }
 
   onLog(e) {
     printLogUI(e.message);
@@ -1556,26 +1548,26 @@ class UIPlayer extends React.Component {
   }
 
   onMainMenuItemClick(e) {
-    printLog('+onMainMenuItemClick, '
-      + ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu
-      + ', text: ' + e.target.innerText);
+    printLog('+onMainMenuItemClick, ' +
+      ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
+      ', text: ' + e.target.innerText);
     var nextFocus = e.currentTarget;
 
     printLog('id: ' + nextFocus.dataset.id);
     switch (nextFocus.dataset.id) {
       case '1':
-      this.onQualityMenuClick(e);
-      break;
+        this.onQualityMenuClick(e);
+        break;
       case '2':
-      this.onAudioTrackMenuClick(e);
-      break;
+        this.onAudioTrackMenuClick(e);
+        break;
       case '3':
-      this.onFccMenuClick(e);
-      break;
+        this.onFccMenuClick(e);
+        break;
       case '4':
-      this.onXSpeedMenuClick(e);
+        this.onXSpeedMenuClick(e);
       default:
-      break;
+        break;
     }
   }
 
@@ -1638,8 +1630,7 @@ class UIPlayer extends React.Component {
     this.updateUIState();
   }
 
-  onFccMenuItemBlur(e) {
-  }
+  onFccMenuItemBlur(e) {}
 
   onFccPropertyMenuBack(e) {
     this.settingMenuUIData.currMenu = 'fcc_menu';
@@ -1694,7 +1685,7 @@ class UIPlayer extends React.Component {
     //
     function getXSpeedValue(id) {
       let value = '';
-      for (let i = 0; i < this.settingMenuUIData.xspeedList.length; i ++) {
+      for (let i = 0; i < this.settingMenuUIData.xspeedList.length; i++) {
         let item = this.settingMenuUIData.xspeedList[i];
         if (item.id === id) {
           value = item.value;

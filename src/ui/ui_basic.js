@@ -25,7 +25,6 @@ class UIBasic extends React.Component {
       </div>
     );
   }
-
 }
 
 export default UIBasic;
