@@ -620,13 +620,16 @@ class UIPlayer extends React.Component {
 
     this.vopPlayer.style.width = dstWidth.toString() + 'px';
     this.vopPlayer.style.height = dstHeight.toString() + 'px';
-    //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
-    this.player_.resize(dstWidth, dstHeight);
 
-    printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
+    if (this.isPlayerActive()) {
+      //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
+      this.player_.resize(dstWidth, dstHeight);
+
+      printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
+      let position = this.player_.getPosition();
+      let duration = this.player_.getDuration();
+      this.updateProgressBarUI(position, duration);
+    }
   }
 
   // This function is mainly focus on:
@@ -1051,8 +1054,7 @@ class UIPlayer extends React.Component {
       this.updateGiantPlayBtnUI(newPaused);
 
       // update logic
-      let currState = this.player_.getState();
-      if (this.player_ && currState !== 'none' && currState !== 'inited') {
+      if (this.isPlayerActive()) {
         if (newPaused) {
           this.player_.pause();
         } else {
@@ -1767,6 +1769,15 @@ class UIPlayer extends React.Component {
     let muted = this.player_.isMuted();
     let volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
+  }
+
+  isPlayerActive() {
+    let currState = this.player_.getState();
+    if (this.player_ && currState !== 'none' && currState !== 'inited') {
+      return true;
+    }
+
+    return false;
   }
 }
 

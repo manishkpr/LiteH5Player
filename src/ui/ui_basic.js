@@ -12,6 +12,9 @@ class UIBasic extends React.Component {
   }
 
   componentDidMount() {
+    // Set video tag default UI here.
+    // let video = document.querySelector('.vop-video');
+    // video.setAttribute('controls', 'true');
   }
 
   render() {
