@@ -24,6 +24,7 @@ class UIEngine {
   uninstallSkin() {
     ReactDOM.unmountComponentAtNode(this.skinContainer_);
     this.vopVideo.setAttribute('controls', 'true');
+    $('.html5-video-player').removeClass('vop-autohide');
   }
 }
 

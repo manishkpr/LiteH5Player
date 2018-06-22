@@ -16,7 +16,7 @@ class UIAudioTrackMenu extends React.Component {
   }
 
   render() {
-    console.log('+render, UIAudioTrackMenu');
+    console.log('+render, UIAudioTrackMenu: ' + this.props.state.settingMenuUIData.currMenu);
 
     if (this.props.state.settingMenuUIData.currMenu === 'audio_track_menu') {
       const menuitems = this.props.state.settingMenuUIData.audioTrackList.map((item, index) =>

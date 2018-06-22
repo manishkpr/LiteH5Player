@@ -20,7 +20,7 @@ class UIQualityMenu extends React.Component {
   }
 
   render() {
-    console.log('+render, UIQualityMenu');
+    console.log('+render, UIQualityMenu: ' + this.props.state.settingMenuUIData.currMenu);
 
     if (this.props.state.settingMenuUIData.currMenu === 'quality_menu') {
       const menuitems = this.props.state.settingMenuUIData.qualityList.map((item, index) =>

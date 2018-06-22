@@ -16,6 +16,8 @@ class UIXSpeedMenu extends React.Component {
   }
 
   render() {
+    console.log('+render, UIXSpeedMenu: ' + this.props.state.settingMenuUIData.currMenu);
+
     if (this.props.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.props.state.settingMenuUIData.xspeedList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.props.state.settingMenuUIData.currSpeed === item.id}

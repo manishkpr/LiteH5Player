@@ -16,7 +16,7 @@ class UIFccMenu extends React.Component {
   }
 
   render() {
-    console.log('+render, UIFccMenu');
+    console.log('+render, UIFccMenu: ' + this.props.state.settingMenuUIData.currMenu);
 
     if (this.props.state.settingMenuUIData.currMenu === 'fcc_menu') {
       const menuitems = this.props.state.settingMenuUIData.fccPropertyList.map((item, index) =>

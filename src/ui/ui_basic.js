@@ -12,8 +12,6 @@ class UIBasic extends React.Component {
   }
 
   componentDidMount() {
-    let video = document.querySelector('.vop-video');
-    video.setAttribute('controls', 'true');
   }
 
   render() {

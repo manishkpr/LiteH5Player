@@ -1,7 +1,7 @@
 $videoContainer_bkClr: black;
 
 $zIndex_video: 1;
-$zIndex_ads_container: 1; /*  */
+$zIndex_ads_container: 1;
 $zIndex_gradient_bottom: 2;
 $zIndex_caption_window: 3;
 $zIndex_tooltip: 10;
@@ -30,7 +30,6 @@ $zIndex_control_bar: 50;
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: $zIndex_video;
 }
 
 .vop-caption-container {

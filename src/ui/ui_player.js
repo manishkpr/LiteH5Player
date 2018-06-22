@@ -1137,10 +1137,14 @@ class UIPlayer extends React.Component {
   onUICmdSetting(e) {
     printLog('+onUICmdSetting, currMenu: ' + this.settingMenuUIData.currMenu);
 
-    if (this.settingMenuUIData.currMenu !== 'none') {
-      this.settingMenuUIData.currMenu = 'none';
-    } else {
+    if (this.settingMenuUIData.currMenu === 'subtitle_menu') {
       this.settingMenuUIData.currMenu = 'main_menu';
+    } else {
+      if (this.settingMenuUIData.currMenu !== 'none') {
+        this.settingMenuUIData.currMenu = 'none';
+      } else {
+        this.settingMenuUIData.currMenu = 'main_menu';
+      }
     }
 
     this.updateUIState();
@@ -1619,8 +1623,10 @@ class UIPlayer extends React.Component {
     if (nextFocus) {
       printLog('className: ' + nextFocus.className);
       if (nextFocus.className.indexOf('vop-panel-title') !== -1 ||
-        nextFocus.className.indexOf('vop-menuitem') !== -1) {
+        nextFocus.className.indexOf('vop-menuitem') !== -1 ||
+        nextFocus.className.indexOf('vop-settings-button') !== -1) {
         // click on quality menu, do nothing
+        // click on settings menu, do nothing, since onUICmdSetting will do it for us.
       } else {
         this.settingMenuUIData.currMenu = 'none';
         this.updateUIState();
@@ -1629,13 +1635,13 @@ class UIPlayer extends React.Component {
       this.settingMenuUIData.currMenu = 'none';
       this.updateUIState();
     }
-  };
+  }
 
   onAudioTrackMenuBack(e) {
     printLog('+onAudioTrackMenuBack');
     this.settingMenuUIData.currMenu = 'main_menu';
     this.updateUIState();
-  };
+  }
 
   onAudioTrackMenuItemClick(e) {
     printLog('+onAudioTrackMenuItemClick');

@@ -46,7 +46,7 @@ function AdsController(adContainer, media, advertising) {
   // flag
   let isPlayingAd_ = false;
   let isLinearAd_ = false;
-  let isVpaid_ = false;
+  let isVpaidAd_ = false;
   let isPaused_ = false;
 
   let adsLoaded_ = false;
@@ -479,13 +479,10 @@ function AdsController(adContainer, media, advertising) {
   }
 
   function processWhenAdStart(ad) {
-    // UI Operation
-    adContainer_.style.zIndex = '1';
-
     //
     isPlayingAd_ = true;
     isLinearAd_ = ad.isLinear();
-    isVpaid_ = ad.g.vpaid;
+    isVpaidAd_ = ad.g.vpaid;
 
     position_ = 0;
     duration_ = ad.getDuration();
@@ -494,7 +491,7 @@ function AdsController(adContainer, media, advertising) {
 
     eventBus_.trigger(Events.AD_STARTED, {
       isLinearAd: isLinearAd_,
-      vpaid: isVpaid_,
+      vpaid: isVpaidAd_,
       width: adWidth_,
       height: adHeight_
     });
@@ -536,8 +533,6 @@ function AdsController(adContainer, media, advertising) {
   }
 
   function processWhenAdComplete() {
-    // UI Operation
-    adContainer_.style.zIndex = 'auto';
     //
     isPlayingAd_ = false;
     stopAdTimer();
