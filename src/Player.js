@@ -71,8 +71,6 @@ function Player(idContainer) {
   let flagAdOpenComplete_;
   let flagPlayedOnce_;
 
-  // Promise part
-
   function setup() {
     // init internal configuration
     context_.loader = XHRLoader;
@@ -334,6 +332,10 @@ function Player(idContainer) {
     }
   }
 
+  function getState() {
+    return playerState_;
+  }
+
   function isFullscreen() {
     return document.fullscreenElement ||
       document.msFullscreenElement ||
@@ -505,7 +507,6 @@ function Player(idContainer) {
 
   function processOpenComplete() {
     if (flagContentOpenComplete_ && flagAdOpenComplete_) {
-      //
       if (context_.cfg.autoplay) {
         play();
       }
@@ -595,6 +596,8 @@ function Player(idContainer) {
     playAd: playAd,
     // thumbnail
     getThumbnail: getThumbnail,
+    // State Machine
+    getState: getState,
     // debug
     manualSchedule: manualSchedule,
     test: test,

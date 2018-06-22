@@ -33,6 +33,8 @@ class UIPlayer extends React.Component {
     this.initUIElements();
     this.initUIEventListeners();
     this.initPlayerListeners();
+
+    this.syncUIState();
   }
 
   componentWillUnmount() {
@@ -654,11 +656,10 @@ class UIPlayer extends React.Component {
         break;
       case 'ended':
         {
-          var paused = this.player_.isPaused();
-          var ended = this.player_.isEnded();
+          let paused = this.player_.isPaused();
+          let ended = this.player_.isEnded();
           this.updatePlayBtnUI(paused, ended);
 
-          //
           let position = this.player_.getPosition();
           let duration = this.player_.getDuration();
           this.progressBarContext.movePos = position;
@@ -1708,10 +1709,26 @@ class UIPlayer extends React.Component {
     this.player_.test();
   }
 
+  // When data changed, needs to update UI.
   updateUIState() {
     this.setState({
       settingMenuUIData: this.settingMenuUIData
     });
+  }
+
+  // When the skin installed to UI, needs to update UI
+  syncUIState() {
+    let currState = this.player_.getState();
+    this.playerState_ = currState;
+    
+    let paused = this.player_.isPaused();
+    let ended = this.player_.isEnded();
+    this.updatePlayBtnUI(paused, ended);
+
+    // update volume here
+    let muted = this.player_.isMuted();
+    let volume = this.player_.getVolume();
+    this.updateContentVolumeBarUI(muted, volume);
   }
 }
 
