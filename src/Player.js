@@ -64,7 +64,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_; // 'none', 'opening', 'opened'
+  let playerState_; // 'none', 'opening', 'opened', 'ended'
 
   // open completed flag
   let flagContentOpenComplete_;
@@ -118,45 +118,7 @@ function Player(idContainer) {
     }
     flagPlayedOnce_ = false;
 
-    playerState_ = 'opening';
-    eventBus_.trigger(Events.OPENING, {});
-    
-    // old
-    // openPromise_ = new Promise((resolve, reject) => {
-    //   openPromiseResolve_ = resolve;
-    //   openPromiseReject_ = reject;
-
-    //   if (mediaCfg.url === '') {
-    //     openPromiseReject_('failed');
-    //     return;
-    //   }
-
-    //   // preprocess the mediaCfg
-    //   mediaCfg.drm = mediaCfg.drm || {};
-
-    //   context_.mediaCfg = mediaCfg;
-
-    //   emeController_.setDrmInfo(mediaCfg);
-    //   // detect parser type
-    //   eventBus_.trigger(Events.FINDING_PARSER, {
-    //     url: mediaCfg.url
-    //   });
-
-    //   // load webvtt thumbnail
-    //   eventBus_.trigger(Events.THUMBNAIL_LOADING, {
-    //     url: mediaCfg.thumbnailUrl
-    //   });
-
-    //   if (adsEngine_) {
-    //     adsEngine_.requestAds();
-    //   } else {
-    //     flagAdOpenComplete_ = true;
-    //   }
-    //   flagPlayedOnce_ = false;
-    // });
-
-    // playerState_ = 'opening';
-    // return openPromise_;
+    updateState('opening');
   }
 
   function close() {
@@ -174,6 +136,14 @@ function Player(idContainer) {
     }
 
     context_.mediaCfg = null;
+  }
+
+  function updateState(state) {
+    let oldState = playerState_;
+    let newState = state;
+
+    playerState_ = newState;
+    eventBus_.trigger(Events.STATE_CHANGE, {oldState: oldState, newState: newState});
   }
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -383,25 +353,25 @@ function Player(idContainer) {
   // Begin - TextEngine
   function addTextTrack() {
     textEngine_.addTextTrack();
-  };
+  }
 
   function removeTextTrack() {};
 
   function setTextTrackHidden() {
     textEngine_.setTextTrackHidden();
-  };
+  }
 
   function setCueAlign(align) {
     textEngine_.setCueAlign(align);
-  };
+  }
 
   function setCueLine(line) {
     textEngine_.setCueLine(line);
-  };
+  }
 
   function setCueLineAlign(lineAlign) {
     textEngine_.setCueLineAlign(lineAlign);
-  };
+  }
   // End - TextEngine
 
   /////////////////////////////////////////////////////////////////////////////////
@@ -441,6 +411,8 @@ function Player(idContainer) {
   function addEventListeners() {
     // html5 event
     eventBus_.on(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
+    eventBus_.on(Events.MEDIA_ENDED, onMediaEnded, {});
+
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
 
@@ -473,6 +445,10 @@ function Player(idContainer) {
       flagContentOpenComplete_ = true;
       processOpenComplete();
     }
+  }
+
+  function onMediaEnded() {
+    updateState('ended');
   }
 
   function onFoundParser(data) {
@@ -523,8 +499,7 @@ function Player(idContainer) {
       if (context_.cfg.autoplay) {
         play();
       }
-      playerState_ = 'opened';
-      eventBus_.trigger(Events.OPENED, {});
+      updateState('opened');
     }
   }
 
@@ -622,3 +597,4 @@ function Player(idContainer) {
 };
 
 export default Player;
+

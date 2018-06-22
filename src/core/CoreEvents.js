@@ -41,8 +41,8 @@ class CoreEvents {
     this.FULLSCREEN_CHANGE = 'fullscreenChange';
 
     // controller events
-    this.OPENING = 'opening';
-    this.OPENED = 'opened';
+    this.STATE_CHANGE = 'stateChange';
+
     this.FINDING_PARSER = 'findingParser';
     this.FOUND_PARSER = 'foundParser';
     this.STREAM_UPDATED = 'streamUpdated'; // Loaded a stream has a specified bitrate.

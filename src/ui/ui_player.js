@@ -37,6 +37,7 @@ class UIPlayer extends React.Component {
 
   componentWillUnmount() {
     console.log('+componentWillUnmount');
+    this.uninitUIEventListeners();
     this.uninitPlayerListeners();
   }
 
@@ -414,8 +415,7 @@ class UIPlayer extends React.Component {
     this.flagIsLinearAd = false;
 
     //
-    this.onOpening = this.onOpening.bind(this);
-    this.onOpened = this.onOpened.bind(this);
+    this.onStateChange = this.onStateChange.bind(this);
 
     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaEnded = this.onMediaEnded.bind(this);
@@ -437,11 +437,13 @@ class UIPlayer extends React.Component {
     this.onAdCompanions = this.onAdCompanions.bind(this);
 
     //
+    this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
     this.onFullscreenChanged = this.onFullscreenChanged.bind(this);
   }
 
   // Title: init part
   initUIElements() {
+    this.playerContainer = document.querySelector('.player');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
@@ -501,37 +503,16 @@ class UIPlayer extends React.Component {
       var v = document.querySelector('.html5-video-player');
       ro.observe(v);
     } else {
-      var v = document.querySelector('.player');
-      new ResizeSensor(v, function(e) {
-        var dstWidth = 0;
-        var dstHeight = 0;
-        if (isFullscreen()) {
-          dstWidth = v.clientWidth;
-          dstHeight = v.clientHeight;
-        } else {
-          if (v.clientWidth > 720) {
-            dstWidth = 720;
-            dstHeight = dstWidth * 0.5625;
-          } else {
-            dstWidth = v.clientWidth;
-            dstHeight = dstWidth * 0.5625;
-          }
-        }
-
-        this.vopPlayer.style.width = dstWidth.toString() + 'px';
-        this.vopPlayer.style.height = dstHeight.toString() + 'px';
-        //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
-        this.player_.resize(dstWidth, dstHeight);
-
-        printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
-        this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-      }.bind(this));
+      this.playerResizeSensor_ = new ResizeSensor(this.playerContainer, this.onResizeSensorCb);
     }
   }
 
+  uninitUIEventListeners() {
+    this.playerResizeSensor_ = null;
+  }
+
   initPlayerListeners() {
-    this.player_.on(oldmtn.Events.OPENING, this.onOpening);
-    this.player_.on(oldmtn.Events.OPENED, this.onOpened);
+    this.player_.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
@@ -570,8 +551,7 @@ class UIPlayer extends React.Component {
   }
 
   uninitPlayerListeners() {
-    this.player_.off(oldmtn.Events.OPENING, this.onOpening);
-    this.player_.off(oldmtn.Events.OPENED, this.onOpened);
+    this.player_.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player_.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
@@ -620,6 +600,31 @@ class UIPlayer extends React.Component {
 
   ///////////////////////////////////////////////////////////////////////////
   // Title: UI reference functions
+  onResizeSensorCb(e) {
+    var dstWidth = 0;
+    var dstHeight = 0;
+    if (isFullscreen()) {
+      dstWidth = this.playerContainer.clientWidth;
+      dstHeight = this.playerContainer.clientHeight;
+    } else {
+      if (this.playerContainer.clientWidth > 720) {
+        dstWidth = 720;
+        dstHeight = dstWidth * 0.5625;
+      } else {
+        dstWidth = this.playerContainer.clientWidth;
+        dstHeight = dstWidth * 0.5625;
+      }
+    }
+
+    this.vopPlayer.style.width = dstWidth.toString() + 'px';
+    this.vopPlayer.style.height = dstHeight.toString() + 'px';
+    //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
+    this.player_.resize(dstWidth, dstHeight);
+
+    printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
+    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+  }
+
   // This function is mainly focus on:
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
@@ -640,10 +645,24 @@ class UIPlayer extends React.Component {
 
           this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
           this.vopControlBar.style.display = 'block';
+
+          // update volume here
+          let muted = this.player_.isMuted();
+          let volume = this.player_.getVolume();
+
+          this.updateContentVolumeBarUI(muted, volume);
         }
         break;
       case 'ended':
         {
+          var paused = this.player_.isPaused();
+          var ended = this.player_.isEnded();
+          this.updatePlayBtnUI(paused, ended);
+
+          //
+          this.progressBarContext.movePos = this.player_.getPosition();
+          this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+
           $('.html5-video-player').removeClass('vop-autohide');
         }
         break;
@@ -1296,7 +1315,7 @@ class UIPlayer extends React.Component {
     }
 
     this.progressBarContext.mousedown = false;
-  };
+  }
 
   onVolumeSliderMouseDown(e) {
     printLog('+onVolumeSliderMouseDown');
@@ -1307,43 +1326,22 @@ class UIPlayer extends React.Component {
     this.flagVolumeSliderMousedown = true;
 
     this.docVolumeSliderMousemove(e);
-  };
+  }
 
   ////////////////////////////////////////////////////////////////////////////////////
   // this.player_ event callback
-  onOpening() {
-    this.updateUIStateMachine('opening');
-  }
-
-  onOpened() {
-    if (this.playerState_ === 'opening') {
-      printLog('+onOpenComplete');
-      this.updateUIStateMachine('opened');
-
-      // update volume here
-      var muted = this.player_.isMuted();
-      var volume = this.player_.getVolume();
-
-      this.updateContentVolumeBarUI(muted, volume);
-    }
+  onStateChange(e) {
+    let newState = e.newState;
+    printLog(`onStateChange, newState: ${newState}`);
+    this.updateUIStateMachine(newState);
   }
 
   onMediaDurationChanged() {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-  };
+  }
 
   onMediaEnded() {
-    var paused = this.player_.isPaused();
-    var ended = this.player_.isEnded();
-    this.updatePlayBtnUI(paused, ended);
-
-    //
-    this.progressBarContext.movePos = this.player_.getPosition();
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
-
-    //
-    this.updateUIStateMachine('ended');
-  };
+  }
 
   onMediaLoadedMetaData(e) {
     // update external div's dimensions
@@ -1359,7 +1357,7 @@ class UIPlayer extends React.Component {
     h5Player.style.width = dstWidth.toString() + 'px';
     h5Player.style.height = dstHeight.toString() + 'px';
     this.player_.resize(dstWidth, dstHeight);
-  };
+  }
 
   onMediaPaused() {};
 
@@ -1369,11 +1367,11 @@ class UIPlayer extends React.Component {
     this.updatePlayBtnUI(paused, ended);
 
     this.stopBufferingUI();
-  };
+  }
 
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
-  };
+  }
 
   onMediaSeeked() {
     printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
@@ -1407,11 +1405,11 @@ class UIPlayer extends React.Component {
 
   onMediaWaiting() {
     this.startBufferingUI();
-  };
+  }
 
   onLog(e) {
     printLogUI(e.message);
-  };
+  }
 
   onAdStarted(e) {
     // BD

@@ -1,8 +1,13 @@
 $videoContainer_bkClr: black;
 
 $zIndex_video: 1;
-$zIndex_overlay: 100;
-
+$zIndex_gradient_bottom: 2;
+$zIndex_caption_window: 3;
+$zIndex_tooltip: 10;
+$zIndex_spinner: 20;
+$zIndex_giant_button_container: 30;
+$zIndex_overlay: 40;
+$zIndex_control_bar: 50;
 
 .html5-video-player {
   position: relative;
@@ -56,7 +61,7 @@ $zIndex_overlay: 100;
   position: absolute;
 
   bottom: 50px;
-  z-index: 15;
+  z-index: $zIndex_tooltip;
   display: none;
 }
 
@@ -119,7 +124,7 @@ $zIndex_overlay: 100;
   height: 49px;
   padding-top: 49px;
   bottom: 0;
-  z-index: 2;
+  z-index: $zIndex_gradient_bottom;
   background-position: bottom;
 }
 
@@ -129,7 +134,7 @@ $zIndex_overlay: 100;
   right: 12px;
   bottom: 0px;
   height: 41px;
-  z-index: 2000;
+  z-index: $zIndex_control_bar;
   text-align: left;
   direction: ltr;
   text-shadow: 0 0 2px rgba(0,0,0,.5);
@@ -523,7 +528,7 @@ $zIndex_overlay: 100;
   display: none;
 
   line-height: normal;
-  z-index: 10;
+  z-index: $zIndex_caption_window;
   cursor: move;
   cursor: -webkit-grab;
   cursor: grab;
@@ -540,7 +545,7 @@ $zIndex_overlay: 100;
   top: 50%;
   width: 64px;
   margin-left: -32px;
-  z-index: 18;
+  z-index: $zIndex_spinner;
   pointer-events: none;
   display: none;
 }
@@ -765,7 +770,7 @@ $zIndex_overlay: 100;
   top: 50%;
   margin-left: -24px;
   margin-top: -24px;
-  z-index: 19;
+  z-index: $zIndex_giant_button_container;
   background: transparent;
   -moz-animation: vop-bezel-fadeout .5s linear 1 normal forwards;
   -webkit-animation: vop-bezel-fadeout .5s linear 1 normal forwards;

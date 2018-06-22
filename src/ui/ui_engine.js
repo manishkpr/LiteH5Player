@@ -9,13 +9,15 @@ class UIEngine {
 
     this.h5VideoPlayer_ = document.querySelector('.html5-video-player');
     this.vopVideo = document.querySelector('.vop-video');
-
-    this.skinContainer_ = document.createElement('div');
-    this.h5VideoPlayer_.appendChild(this.skinContainer_);
   }
 
   installSkin() {
     this.vopVideo.removeAttribute('controls');
+
+    if (!this.skinContainer_) {
+      this.skinContainer_ = document.createElement('div');
+      this.h5VideoPlayer_.appendChild(this.skinContainer_);
+    }
     this.uiPlayer_ = ReactDOM.render(<UIPlayer player={this.player_}/>, this.skinContainer_);
   }
 
