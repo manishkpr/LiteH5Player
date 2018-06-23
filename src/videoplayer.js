@@ -3,6 +3,10 @@ import FactoryMaker from './core/FactoryMaker';
 function VideoPlayer() {
   let context_ = this.context;
 
+  function setup() {
+    
+  }
+
   function setSrc(url) {
     // mediaElement.pause();
     // mediaElement.src='';
@@ -15,6 +19,8 @@ function VideoPlayer() {
   let instance_ = {
     setSrc: setSrc
   };
+
+  setup();
 
   return instance_;
 }

@@ -125,7 +125,7 @@ function Player(idContainer) {
 
   function close() {
     if (streamController_) {
-      streamController_.stop();
+      streamController_.close();
     }
     if (adsEngine_) {
       adsEngine_.close();
@@ -138,6 +138,8 @@ function Player(idContainer) {
     }
 
     context_.mediaCfg = null;
+
+    updateState('closed');
   }
 
   function updateState(state) {
@@ -423,7 +425,8 @@ function Player(idContainer) {
 
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
-
+    eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
+    
     // ads events
     eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
@@ -483,6 +486,10 @@ function Player(idContainer) {
       default:
         break;
     }
+  }
+
+  function onMediaAttached() {
+    eventBus_.trigger(Events.MANIFEST_LOADING, { url: context_.mediaCfg.url });
   }
 
   function onAdContentPauseRequested() {

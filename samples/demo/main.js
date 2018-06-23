@@ -44,7 +44,9 @@ function onBtnOpen() {
 }
 
 function onBtnClose() {
-  uiEngine.playerClose();
+  omPlayer.close();
+
+  //uiEngine.playerClose();
 }
 
 function onBtnPlay() {

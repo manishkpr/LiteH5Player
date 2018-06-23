@@ -48,8 +48,6 @@ function StreamController() {
 
     demuxer_ = new Demuxer(hls_, 'main');
 
-    eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
-
     eventBus_.on(Events.MANIFEST_PARSED, onManifestParsed);
     eventBus_.on(Events.STREAM_UPDATED, onStreamUpdated);
 
@@ -81,10 +79,6 @@ function StreamController() {
   }
 
   // Begin events functions
-  function onMediaAttached() {
-    eventBus_.trigger(Events.MANIFEST_LOADING, { url: context_.mediaCfg.url });
-  }
-
   function onManifestParsed() {
   }
 
@@ -207,9 +201,14 @@ function StreamController() {
     tick();
   }
 
+  function close() {
+
+  }
+
   let instance_ = {
     // for debug
-    manualSchedule: manualSchedule
+    manualSchedule: manualSchedule,
+    close: close
   };
   setup();
   return instance_;
