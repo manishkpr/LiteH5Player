@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
 import "./css/ui_player.scss";
+import Logo from './img/logo.png'
 
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';
@@ -147,6 +148,11 @@ class UIPlayer extends React.Component {
         </div>
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
+        </div>
+        <div className="vop-logo" onClick={this.onLogoClick.bind(this)}>
+          <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
+            <img src="../../src/ui/img/logo.png"></img>
+          </a>
         </div>
       </div>
     )
@@ -1067,6 +1073,10 @@ class UIPlayer extends React.Component {
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
+  }
+
+  onLogoClick(e) {
+    e.stopPropagation();
   }
 
   onGiantAnimationEnd(e) {

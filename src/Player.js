@@ -107,9 +107,11 @@ function Player(idContainer) {
     });
 
     // load webvtt thumbnail
-    eventBus_.trigger(Events.THUMBNAIL_LOADING, {
-      url: mediaCfg.thumbnailUrl
-    });
+    if (mediaCfg.thumbnailUrl) {
+      eventBus_.trigger(Events.THUMBNAIL_LOADING, {
+        url: mediaCfg.thumbnailUrl
+      });
+    }
 
     if (adsEngine_) {
       adsEngine_.requestAds();

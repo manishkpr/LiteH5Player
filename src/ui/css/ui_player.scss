@@ -498,9 +498,7 @@ $zIndex_control_bar: 50;
 
 /************ Begin bottom bar auto hide ************/
 .vop-autohide { cursor:none }
-.vop-autohide .vop-overlay-top {
-  cursor:none
-}
+
 .vop-autohide .vop-gradient-bottom {
   display: none;
 }
@@ -805,3 +803,12 @@ $zIndex_control_bar: 50;
   border-radius: 24px;
 }
 /************ End giant button ************/
+
+/************ Begin Logo ************/
+.vop-logo {
+  float: right;
+  cursor: pointer;
+}
+
+/************ End Logo ************/
+
