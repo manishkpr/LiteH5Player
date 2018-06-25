@@ -73,7 +73,7 @@ function getInitConfig() {
   var cfg = {
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
-    autoplay: true,
+    //autoplay: true,
     mutedAutoplay: true,
 
     // advertising: {
@@ -157,6 +157,7 @@ function getMediaInfo() {
     //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
+    url: 'http://localhost/2/pd/mp4/metrics/test.mp4',
     //url: 'http://localhost/2/error/1/audio_128kbps/playlist.m3u8',
     //url: 'http://localhost/2/error/1/audio_48kbps.m3u8',
     //--Item: hls part
@@ -165,7 +166,7 @@ function getMediaInfo() {
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
-    url: 'http://localhost/2/dash/test2_main_index/Video1/test1.m3u8',
+    //url: 'http://localhost/2/dash/test2_main_index/Video1/test1.m3u8',
     //url: 'http://localhost/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://localhost/2/hls/live/02/chunks-enabled-false.m3u8',
     //url: 'http://localhost/6/dash1/project/verizon/envivio/2/clear/audio.m3u8',

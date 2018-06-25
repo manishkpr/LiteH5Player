@@ -168,6 +168,7 @@ class UIPlayer extends React.Component {
   initVariable() {
     this.player_ = null;
     this.castSender_ = null;
+    this.ratio = 0.5625;
 
     // Google Material Icon
     this.iconPlay = '&#xe037';
@@ -456,7 +457,7 @@ class UIPlayer extends React.Component {
 
   // Title: init part
   initUIElements() {
-    this.playerContainer = document.querySelector('.player');
+    this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
@@ -615,6 +616,8 @@ class UIPlayer extends React.Component {
   ///////////////////////////////////////////////////////////////////////////
   // Title: UI reference functions
   onResizeSensorCb(e) {
+    // PlayerContainer's width change, need to update its height
+    // and player's metrics.
     var dstWidth = 0;
     var dstHeight = 0;
     if (isFullscreen()) {
@@ -623,12 +626,13 @@ class UIPlayer extends React.Component {
     } else {
       if (this.playerContainer.clientWidth > 720) {
         dstWidth = 720;
-        dstHeight = dstWidth * 0.5625;
       } else {
         dstWidth = this.playerContainer.clientWidth;
-        dstHeight = dstWidth * 0.5625;
       }
+      dstHeight = dstWidth * this.ratio;
     }
+
+    this.playerContainer.style.height = dstHeight.toString() + 'px';
 
     this.vopPlayer.style.width = dstWidth.toString() + 'px';
     this.vopPlayer.style.height = dstHeight.toString() + 'px';
@@ -1392,18 +1396,20 @@ class UIPlayer extends React.Component {
   onMediaEnded() {}
 
   onMediaLoadedMetaData(e) {
-    // update external div's dimensions
+    // update external div's height only.
     this.metaWidth = e.width;
     this.metaHeight = e.height;
 
-    var ratio = (this.metaHeight / this.metaWidth);
+    this.ratio = (this.metaHeight / this.metaWidth);
 
-    var v = document.querySelector('.player');
+    var v = this.playerContainer;
     var dstWidth = v.clientWidth;
-    var dstHeight = dstWidth * ratio;
-    var h5Player = document.querySelector('.html5-video-player');
-    h5Player.style.width = dstWidth.toString() + 'px';
-    h5Player.style.height = dstHeight.toString() + 'px';
+    var dstHeight = dstWidth * this.ratio;
+
+    //this.playerContainer.style.width = dstWidth.toString() + 'px';
+    this.playerContainer.style.height = dstHeight.toString() + 'px';
+    this.vopPlayer.style.width = dstWidth.toString() + 'px';
+    this.vopPlayer.style.height = dstHeight.toString() + 'px';
     this.player_.resize(dstWidth, dstHeight);
   }
 
