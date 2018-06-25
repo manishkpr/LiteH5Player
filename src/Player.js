@@ -31,6 +31,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import UIBasic from './ui/ui_basic';
 import UIEngine from './ui/ui_engine';
+
 //////////////////////////////////////////////////////////////////////////////
 function Player(idContainer) {
   let context_ = oldmtn; //{ flag: 'player' };
@@ -64,12 +65,12 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_; // 'idle', 'inited', 'opened', 'playing', 'waiting', 'ended'
+  let playerState_ = 'idle'; // 'idle', opened', 'playing', 'waiting', 'ended'
 
   // open completed flag
-  let flagContentOpenComplete_;
-  let flagAdOpenComplete_;
-  let flagPlayedOnce_;
+  let flagContentOpenComplete_ = false;
+  let flagAdOpenComplete_ = false;
+  let flagPlayedOnce_ = false;
 
   function setup() {
     // init internal configuration
@@ -83,11 +84,8 @@ function Player(idContainer) {
     context_.cfg = cfg;
 
     initComponent();
-    initData();
     addEventListeners();
     addResizeListener();
-
-    updateState('inited');
   }
 
   function uninit() {}
@@ -405,14 +403,6 @@ function Player(idContainer) {
     if (context_.cfg.advertising) {
       adsEngine_ = AdsController(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
     }
-  }
-
-  function initData() {
-    playerState_ = 'idle';
-    flagContentOpenComplete_ = false;
-    flagAdOpenComplete_ = false;
-    flagPlayedOnce_ = false;
-    context_.mediaCfg = null;
   }
 
   function addEventListeners() {

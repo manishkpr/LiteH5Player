@@ -43,6 +43,7 @@ class UIPlayer extends React.Component {
     this.uninitUIEventListeners();
     this.uninitPlayerListeners();
 
+    this.removeAutohideAction();
     $('.html5-video-player').removeClass('vop-autohide');
     // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
     // it the video control will never shown, because ads-container is on top of it.
@@ -1004,6 +1005,7 @@ class UIPlayer extends React.Component {
     //printLog('+onPlayerMouseMove');
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
+      printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
       this.onPlayerMouseLeave();
     }.bind(this), 3000);
   }
