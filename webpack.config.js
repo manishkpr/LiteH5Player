@@ -3,19 +3,25 @@ var path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = false;
 
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   entry: path.join(__dirname, "src/index.js"),
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "liteH5Player.debug.js"
+    filename: "js/liteH5Player.debug.js"
   },
   mode: 'development',
   plugins: [
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: 'liteH5Player.css',
+      filename: 'css/liteH5Player.css',
       chunkFilename: "[id].css"
+    }),
+    new HtmlWebpackPlugin({  // Also generate a test.html
+      filename: 'index.html',
+      template: 'samples/demo/index.html'
     })
   ],
   module: {
@@ -36,16 +42,20 @@ module.exports = {
       include: [
         path.join(__dirname, "src/ui")
       ],
-      use: [
-        devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
-        'css-loader', // translates CSS into CommonJS
-        'sass-loader' // compiles Sass to CSS
-      ]
+      use: [{
+        loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
+      }, {
+        loader: 'css-loader', // translates CSS into CommonJS
+      }, {
+        loader: 'sass-loader' // compiles Sass to CSS
+      }]
     }, {
       test: /\.(png|jpg|gif)$/,
       use: [{
         loader: 'file-loader',
-        options: {}
+        options: {
+          name: 'img/[name].[ext]'
+        }
       }]
     }]
   }

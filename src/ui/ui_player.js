@@ -157,7 +157,7 @@ class UIPlayer extends React.Component {
         </div>
         <div className="vop-logo" onClick={this.onLogoClick.bind(this)}>
           <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
-            <img src="../../src/ui/img/logo.png"></img>
+            <img src="./img/logo.png"></img>
           </a>
         </div>
       </div>
