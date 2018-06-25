@@ -9,7 +9,10 @@ $zIndex_spinner: 20;
 $zIndex_giant_button_container: 30;
 $zIndex_overlay: 40;
 $zIndex_control_bar: 50;
+$zIndex_logo: 60;
 
+
+/************ Begin containers ************/
 .html5-video-player {
   position: relative;
   margin-left: auto;
@@ -54,8 +57,9 @@ $zIndex_control_bar: 50;
   background: transparent;
   z-index: $zIndex_overlay;
 }
+/************ End containers ************/
 
-/******** Begin Tooltip ********/
+/************ Begin Tooltip ************/
 .vop-tooltip {
   position: absolute;
 
@@ -106,7 +110,7 @@ $zIndex_control_bar: 50;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0
 }
-/******** End Tooltip ********/
+/************ End Tooltip ************/
 
 .vop-gradient-bottom {
   width: 100%;
@@ -221,7 +225,7 @@ $zIndex_control_bar: 50;
   float: right;
 }
 
-/******** Begin custom button ********/
+/************ Begin custom button ************/
 /* for Google material-icons styles */
 .vop-button {
   width: 36px;
@@ -287,7 +291,7 @@ $zIndex_control_bar: 50;
   display: table-cell;
   vertical-align: middle;
 }
-/******** End custom button ********/
+/************ End custom button ************/
 
 /************ Begin volume bar ************/
 .vop-volume-panel {
@@ -496,7 +500,7 @@ $zIndex_control_bar: 50;
 
 /************ End vop popup menu ************/
 
-/************ Begin bottom bar auto hide ************/
+/************ Begin auto-hide ************/
 .vop-autohide { cursor:none }
 
 .vop-autohide .vop-gradient-bottom {
@@ -513,7 +517,7 @@ $zIndex_control_bar: 50;
   cursor: none;
 }
 
-/************ End bottom bar auto hide ************/
+/************ End auto-hide ************/
 
 /************ Begin caption window ************/
 .vop-caption-window {
@@ -804,11 +808,15 @@ $zIndex_control_bar: 50;
 }
 /************ End giant button ************/
 
-/************ Begin Logo ************/
+/************ Begin logo ************/
 .vop-logo {
-  float: right;
+  position: absolute;
+  z-index: $zIndex_logo;
+  top: 6px;
+  right: 6px;
   cursor: pointer;
 }
+/************ End logo ************/
 
-/************ End Logo ************/
+
 

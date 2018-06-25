@@ -687,7 +687,6 @@ class UIPlayer extends React.Component {
         {}
         break;
       case 'waiting':
-        this.startBufferingUI();
         break;
       case 'playing':
         let paused = this.player_.isPaused();
@@ -1415,9 +1414,13 @@ class UIPlayer extends React.Component {
 
   onMediaPaused() {};
 
-  onMediaWaiting() {}
+  onMediaWaiting() {
+    this.startBufferingUI();
+  }
 
-  onMediaPlaying() {}
+  onMediaPlaying() {
+    this.stopBufferingUI();
+  }
 
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());

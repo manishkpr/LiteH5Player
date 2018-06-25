@@ -65,7 +65,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_ = 'idle'; // 'idle', opened', 'playing', 'waiting', 'ended'
+  let playerState_ = 'idle'; // 'idle', opened', 'playing', ended'
 
   // open completed flag
   let flagContentOpenComplete_ = false;
@@ -85,7 +85,6 @@ function Player(idContainer) {
 
     initComponent();
     addEventListeners();
-    addResizeListener();
   }
 
   function uninit() {}
@@ -420,15 +419,36 @@ function Player(idContainer) {
     eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
     eventBus_.on(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
-  }
 
-  function addResizeListener() {
     // fullscreen listener
     document.addEventListener("fullscreenchange", onFullScreenChange);
     document.addEventListener("mozfullscreenchange", onFullScreenChange);
     document.addEventListener("webkitfullscreenchange", onFullScreenChange);
     document.addEventListener("msfullscreenchange", onFullScreenChange);
     document.addEventListener("MSFullscreenChange", onFullScreenChange);
+  }
+
+  function removeEventListeners() {
+    // html5 event
+    eventBus_.off(Events.MEDIA_CANPLAY, onMediaCanPlay, {});
+    eventBus_.off(Events.MEDIA_ENDED, onMediaEnded, {});
+    eventBus_.off(Events.MEDIA_WAITING, onMediaWaiting, {});
+    eventBus_.off(Events.MEDIA_PLAYING, onMediaPlaying, {});
+
+    // controller events
+    eventBus_.off(Events.FOUND_PARSER, onFoundParser);
+    eventBus_.off(Events.MEDIA_ATTACHED, onMediaAttached);
+
+    // ads events
+    eventBus_.off(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
+    eventBus_.off(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
+    eventBus_.off(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
+
+    document.removeEventListener("fullscreenchange", onFullScreenChange);
+    document.removeEventListener("mozfullscreenchange", onFullScreenChange);
+    document.removeEventListener("webkitfullscreenchange", onFullScreenChange);
+    document.removeEventListener("msfullscreenchange", onFullScreenChange);
+    document.removeEventListener("MSFullscreenChange", onFullScreenChange);
   }
 
   function onFullScreenChange() {
@@ -450,7 +470,6 @@ function Player(idContainer) {
   }
 
   function onMediaWaiting() {
-    updateState('waiting');
   }
 
   function onMediaPlaying() {

@@ -82,9 +82,6 @@ function h5EnterFullscreen() {
     v.msRequestFullscreen ||
     v.msRequestFullScreen;
 
-  // v.style.width = '100%';
-  // v.style.height = '100%';
-
   requestFullscreen.call(v);
 }
 
@@ -100,9 +97,6 @@ function h5LeaveFullscreen() {
     document.msExitFullscreen;
   if (cancelFullscreen) {
     cancelFullscreen.call(document);
-    var v = document.getElementById('player-container');
-    // v.style.width = 'auto';
-    // v.style.height = 'auto';
   }
 }
 
