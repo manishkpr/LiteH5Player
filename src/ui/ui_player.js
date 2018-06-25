@@ -200,7 +200,6 @@ class UIPlayer extends React.Component {
     this.vopPanel;
     this.vopPanelMenu;
     this.vopFullscreen;
-    this.vopSpinner;
     this.uiGiantBtnContainer;
     this.uiGiantButton;
 
@@ -487,8 +486,6 @@ class UIPlayer extends React.Component {
     this.vopPanel = this.vopSettingsMenu.querySelector('.vop-panel');
     this.vopPanelMenu = this.vopSettingsMenu.querySelector('.vop-panel-menu');
 
-    this.vopSpinner = document.querySelector('.vop-spinner');
-
     this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
     this.uiGiantButton = document.querySelector('.vop-giant-button');
 
@@ -701,11 +698,11 @@ class UIPlayer extends React.Component {
   }
 
   startBufferingUI() {
-    this.vopSpinner.style.display = 'block';
+    $('.html5-video-player').addClass('vop-buffering');
   }
 
   stopBufferingUI() {
-    this.vopSpinner.style.display = 'none';
+    $('.html5-video-player').removeClass('vop-buffering');
   }
 
   // begin progress bar
