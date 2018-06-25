@@ -35,13 +35,18 @@ class UIPlayer extends React.Component {
     this.initUIEventListeners();
     this.initPlayerListeners();
 
-    this.syncUIState();
+    this.syncPlayerStateToUI();
   }
 
   componentWillUnmount() {
     console.log('+componentWillUnmount');
     this.uninitUIEventListeners();
     this.uninitPlayerListeners();
+
+    $('.html5-video-player').removeClass('vop-autohide');
+    // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
+    // it the video control will never shown, because ads-container is on top of it.
+    //this.vopVideo.setAttribute('controls', 'true');
   }
 
   render() {
@@ -161,7 +166,6 @@ class UIPlayer extends React.Component {
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
     this.player_ = null;
-    this.playerState_ = 'none'; // none, inited, opening, opened, failed, ended
     this.castSender_ = null;
 
     // Google Material Icon
@@ -487,8 +491,9 @@ class UIPlayer extends React.Component {
     this.uiGiantButton = document.querySelector('.vop-giant-button');
 
     //
-    this.video_ = document.querySelector('.vop-video');
-    this.adContainer_ = document.querySelector('.vop-ads-container');
+    this.vopVideo = document.querySelector('.vop-video');
+    this.vopVideo.removeAttribute('controls');
+    this.vopAdContainer = document.querySelector('.vop-ads-container');
   }
 
   initUIEventListeners() {
@@ -641,13 +646,9 @@ class UIPlayer extends React.Component {
   // This function is mainly focus on:
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
-    printLog('oldState: ' + this.playerState_ + ', newState: ' + state);
-    this.playerState_ = state;
-    switch (this.playerState_) {
-      case 'inited':
-        {}
-        break;
-      case 'opening':
+    printLog('updateUIStateMachine, state: ' + state);
+    switch (state) {
+      case 'idle':
         {}
         break;
       case 'opened':
@@ -1766,11 +1767,12 @@ class UIPlayer extends React.Component {
     });
   }
 
-  // When the skin installed to UI, needs to update UI
-  syncUIState() {
-    let currState = this.player_.getState();
-    this.playerState_ = currState;
-    
+  // When the skin installed, needs to update UI
+  syncPlayerStateToUI() {
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
+
     let paused = this.player_.isPaused();
     let ended = this.player_.isEnded();
     this.updatePlayBtnUI(paused, ended);
@@ -1783,7 +1785,7 @@ class UIPlayer extends React.Component {
 
   isPlayerActive() {
     let currState = this.player_.getState();
-    if (this.player_ && currState !== 'none' && currState !== 'inited') {
+    if (this.player_ && currState !== 'idle' && currState !== 'inited') {
       return true;
     }
 
@@ -1792,3 +1794,7 @@ class UIPlayer extends React.Component {
 }
 
 export default UIPlayer;
+
+
+
+

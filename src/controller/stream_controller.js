@@ -35,6 +35,7 @@ function StreamController() {
   let demuxer_;
 
   // flag
+  let startLoaded_;
   let manualMode_ = false;
   // state machine
   let state_;
@@ -166,7 +167,7 @@ function StreamController() {
     debug_.log(`+onBufferAppended, main buffered: ${TimeRanges.toString(media.buffered)}, duration:${media.duration}`);
     if (state_ === State.PARSED && e.pending === 0) {
       state_ = State.IDLE;
-      //tick();
+      tick();
     }
   }
 
@@ -192,6 +193,8 @@ function StreamController() {
           }
         }
         break;
+      case State.STOPPED:
+        break;
     }
 
     _checkBuffer();
@@ -201,14 +204,19 @@ function StreamController() {
     tick();
   }
 
-  function close() {
+  function startLoad() {
+    eventBus_.trigger(Events.MANIFEST_LOADING, { url: context_.mediaCfg.url });
+  }
 
+  function stopLoad() {
+    state_ = State.STOPPED;
   }
 
   let instance_ = {
     // for debug
     manualSchedule: manualSchedule,
-    close: close
+    startLoad: startLoad,
+    stopLoad: stopLoad
   };
   setup();
   return instance_;

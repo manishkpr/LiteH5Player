@@ -8,27 +8,26 @@ class UIEngine {
     this.player_ = player;
 
     this.h5VideoPlayer_ = document.querySelector('.html5-video-player');
-    this.vopVideo = document.querySelector('.vop-video');
   }
 
   installSkin() {
-    this.vopVideo.removeAttribute('controls');
-
-    if (!this.skinContainer_) {
-      this.skinContainer_ = document.createElement('div');
-      this.h5VideoPlayer_.appendChild(this.skinContainer_);
+    this.skinContainer101 = document.querySelector('.vop-skin-default');
+    if (!this.skinContainer101) {
+      this.skinContainer101 = document.createElement('div');
+      this.skinContainer101.setAttribute('class', 'vop-skin-default');
+      this.h5VideoPlayer_.appendChild(this.skinContainer101);
     }
-    this.uiPlayer_ = ReactDOM.render(<UIPlayer player={this.player_}/>, this.skinContainer_);
+
+    this.uiPlayer_ = ReactDOM.render(<UIPlayer player={this.player_}/>, this.skinContainer101);
   }
 
   uninstallSkin() {
-    ReactDOM.unmountComponentAtNode(this.skinContainer_);
-    this.vopVideo.setAttribute('controls', 'true');
-    $('.html5-video-player').removeClass('vop-autohide');
+    ReactDOM.unmountComponentAtNode(this.skinContainer101);
   }
 }
 
 export default UIEngine;
+
 
 
 

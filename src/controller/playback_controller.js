@@ -402,7 +402,7 @@ function PlaybackController() {
   }
 
   function close() {
-    debug_.log('+media_engine.js, close');
+    debug_.log('+PlaybackController.js, close');
     // Detach properly the MediaSource from the HTMLMediaElement as
     // suggested in https://github.com/w3c/media-source/issues/53
     if (media_) {

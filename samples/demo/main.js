@@ -45,12 +45,19 @@ function onBtnOpen() {
 
 function onBtnClose() {
   omPlayer.close();
-
-  //uiEngine.playerClose();
 }
 
 function onBtnPlay() {
-  uiEngine.vopPlayButton.click();
+  var v = document.getElementById('idPlayOrPause');
+  if (omPlayer.isPaused()) {
+    omPlayer.play();
+
+    v.innerText = "pause";
+  } else {
+    omPlayer.pause();
+
+    v.innerText = "play";
+  }
 }
 
 function onBtnManualSchedule() {

@@ -56,8 +56,13 @@ function BufferController() {
   }
 
   function close() {
-    removeBuffer();
-    mediaSource_ = null;
+    debug_.log('BufferController, +close');
+    if (sourceBuffer_.audio) {
+      mediaSource_.removeSourceBuffer(sourceBuffer_.audio);
+    }
+    if (sourceBuffer_.video) {
+      mediaSource_.removeSourceBuffer(sourceBuffer_.video);
+    }
   }
 
   function setDuration(value) {

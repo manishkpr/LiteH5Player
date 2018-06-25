@@ -64,7 +64,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_; // 'none', 'inited', 'opening', 'opened', 'playing', 'waiting', 'ended'
+  let playerState_; // 'idle', 'inited', 'opened', 'playing', 'waiting', 'ended'
 
   // open completed flag
   let flagContentOpenComplete_;
@@ -119,25 +119,24 @@ function Player(idContainer) {
       flagAdOpenComplete_ = true;
     }
     flagPlayedOnce_ = false;
-
-    updateState('opening');
+    flagContentOpenComplete_ = false;
   }
 
   function close() {
-    if (streamController_) {
-      streamController_.close();
-    }
-    if (adsEngine_) {
-      adsEngine_.close();
-    }
-    if (bufferController_) {
-      bufferController_.close();
-    }
-    if (playbackController_) {
-      playbackController_.close();
-    }
+    // if (adsEngine_) {
+    //   adsEngine_.close();
+    // }
+    // if (streamController_) {
+    //   streamController_.stopLoad();
+    // }
+    // if (bufferController_) {
+    //   bufferController_.close();
+    // }
+    // if (playbackController_) {
+    //   playbackController_.close();
+    // }
 
-    context_.mediaCfg = null;
+    // context_.mediaCfg = null;
 
     updateState('closed');
   }
@@ -409,7 +408,7 @@ function Player(idContainer) {
   }
 
   function initData() {
-    playerState_ = 'none';
+    playerState_ = 'idle';
     flagContentOpenComplete_ = false;
     flagAdOpenComplete_ = false;
     flagPlayedOnce_ = false;
@@ -450,7 +449,7 @@ function Player(idContainer) {
   //////////////////////////////////////////////////////////////////////////////////////////
   // Begin -- internal events listener functions
   function onMediaCanPlay() {
-    if (playerState_ === 'opening') {
+    if (!flagContentOpenComplete_) {
       flagContentOpenComplete_ = true;
       processOpenComplete();
     }
@@ -489,7 +488,7 @@ function Player(idContainer) {
   }
 
   function onMediaAttached() {
-    eventBus_.trigger(Events.MANIFEST_LOADING, { url: context_.mediaCfg.url });
+    streamController_.startLoad();
   }
 
   function onAdContentPauseRequested() {
@@ -503,18 +502,18 @@ function Player(idContainer) {
   }
 
   function onAdLoadingComplete() {
-    if (playerState_ === 'opening') {
-      flagAdOpenComplete_ = true;
-      processOpenComplete();
-    }
+    flagAdOpenComplete_ = true;
+    processOpenComplete();
   }
   // End -- internal events listener functions
 
   function processOpenComplete() {
     if (flagContentOpenComplete_ && flagAdOpenComplete_) {
+      // Do internal process first.
       if (context_.cfg.autoplay) {
         play();
       }
+      // Emit event to outer.
       updateState('opened');
     }
   }
