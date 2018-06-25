@@ -2,12 +2,6 @@ body {
   background-color: lightgray;
 }
 
-.player {
-  /*padding-bottom: 56.25%;*/
-}
-
-
-
 #idBtnController {
   position: relative;
 }
@@ -28,7 +22,6 @@ body {
 }
 
 /****************************************************************************************/
-/** Test **/
 
 
 

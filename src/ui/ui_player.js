@@ -1493,7 +1493,7 @@ class UIPlayer extends React.Component {
     var duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
-  };
+  }
 
   onAdCompanions(e) {
     var v = document.getElementById('idCompanionAd');
@@ -1503,19 +1503,18 @@ class UIPlayer extends React.Component {
         v.innerHTML = companion.content;
       }
     }
-  };
+  }
 
   onFullscreenChanged() {
-    var v = this.player_.isFullscreen();
-    var v1 = document.querySelector('.player');
-    printLog('fullscreen changed, ret: ' + v + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
-    printLog('player, width: ' + v1.clientWidth + ', height: ' + v1.clientHeight);
-    if (v) {
+    let flagIsFullscreen = this.player_.isFullscreen();
+    printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
+    printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
+    if (flagIsFullscreen) {
       this.vopFullscreen.innerText = 'fullscreen_exit';
     } else {
       this.vopFullscreen.innerText = 'fullscreen';
     }
-  };
+  }
 
   /////////////////////////////////////////////////////////////////////////
   // Title: Sub Components Callbacks

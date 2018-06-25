@@ -63,7 +63,8 @@ function genGradientColor(posList, colorList) {
 
 function h5EnterFullscreen() {
   printLog('+h5EnterFullscreen');
-  var v = document.querySelector('.player');
+  var v = document.getElementById('player-container');
+  //var v = document.querySelector('.html5-video-player');
   //var v = document.querySelector('.vop-video-container');
   //var v = document.querySelector('.vop-video');
   //var v = document.querySelector('video');
@@ -81,8 +82,8 @@ function h5EnterFullscreen() {
     v.msRequestFullscreen ||
     v.msRequestFullScreen;
 
-  v.style.width = '100%';
-  v.style.height = '100%';
+  // v.style.width = '100%';
+  // v.style.height = '100%';
 
   requestFullscreen.call(v);
 }
@@ -99,9 +100,9 @@ function h5LeaveFullscreen() {
     document.msExitFullscreen;
   if (cancelFullscreen) {
     cancelFullscreen.call(document);
-    var v = document.querySelector('.player');
-    v.style.width = 'auto';
-    v.style.height = 'auto';
+    var v = document.getElementById('player-container');
+    // v.style.width = 'auto';
+    // v.style.height = 'auto';
   }
 }
 
