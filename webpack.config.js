@@ -1,5 +1,8 @@
 var path = require('path');
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = false;
+
 module.exports = {
   entry: path.join(__dirname, "src/index.js"),
   output: {
@@ -7,6 +10,14 @@ module.exports = {
     filename: "liteH5Player.debug.js"
   },
   mode: 'development',
+  plugins: [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'liteH5Player.css',
+      chunkFilename: "[id].css"
+    })
+  ],
   module: {
     rules: [{
       test: /\.js$/,
@@ -14,29 +25,27 @@ module.exports = {
         path.join(__dirname, 'src'),
         path.join(__dirname, 'third_party/hlsjs/src')
       ],
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'babel-preset-react']
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015', 'babel-preset-react']
+        }
       }
     }, {
-      test: /\.scss$/,
+      test: /\.(sa|sc|c)ss$/,
       include: [
         path.join(__dirname, "src/ui")
       ],
-      use: [{
-        loader: 'style-loader' // creates style nodes from JS strings
-      }, {
-        loader: 'css-loader' // translates CSS into CommonJS
-      }, {
-        loader: 'sass-loader' // compiles Sass to CSS
-      }]
+      use: [
+        devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
+        'css-loader', // translates CSS into CommonJS
+        'sass-loader' // compiles Sass to CSS
+      ]
     }, {
       test: /\.(png|jpg|gif)$/,
-      use: [
-      {
+      use: [{
         loader: 'file-loader',
-        options: {
-        }
+        options: {}
       }]
     }]
   }
@@ -62,7 +71,8 @@ https://blog.zfanw.com/webpack-tutorial/#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6
 // Webpack integrate TypeScript
 1. https://webpack.js.org/guides/typescript/
 
-
+// Webpack4 extracs css
+1. https://github.com/webpack-contrib/mini-css-extract-plugin
 
 // Title: Configure webpack to allow browser debugging?
 see: https://stackoverflow.com/questions/27626764/configure-webpack-to-allow-browser-debugging
