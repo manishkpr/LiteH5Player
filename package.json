@@ -46,6 +46,7 @@
     "resize-sensor": "0.0.6",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
+    "svg-url-loader": "^2.3.2",
     "time-grunt": "^1.2.0",
     "ts-loader": "^4.4.1",
     "typescript": "^2.9.2",

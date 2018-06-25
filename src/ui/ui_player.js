@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
-import "./css/ui_player.scss";
-import Logo from './img/logo.png'
+import './css/ui_player.scss';
+import './img/logo.png';
 
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';
@@ -109,9 +109,9 @@ class UIPlayer extends React.Component {
           </div>
           <div className="vop-controls">
             <div className="vop-left-controls">
-              <button className="vop-button material-icons vop-play-button" title="play"
+              <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe037;</button>
+                onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <button className="vop-button material-icons vop-mute-button" title="mute"
                 onClick={this.onUICmdMute.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}>&#xe050;</button>
@@ -882,12 +882,20 @@ class UIPlayer extends React.Component {
     } else {
       if (paused) {
         icon = this.iconPlay;
+
+        $('.vop-play-button').removeClass('vop-style-pause');
+        $('.vop-play-button').addClass('vop-style-play');
       } else {
         icon = this.iconPause;
+
+        $('.vop-play-button').removeClass('vop-style-play');
+        $('.vop-play-button').addClass('vop-style-pause');
       }
     }
 
-    this.vopPlayButton.innerHTML = icon;
+    //this.vopPlayButton.innerHTML = icon;
+
+
     this.vopPlayButton.dataset.id = icon;
   }
 
