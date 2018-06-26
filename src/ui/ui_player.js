@@ -124,15 +124,15 @@ class UIPlayer extends React.Component {
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">
-              <button className="vop-button material-icons vop-subtitles-button" title="subtitles"
+              <button className="vop-button vop-subtitles-button vop-style-subtitles" title="subtitles"
                 onClick={this.onUICmdSubtitleMenu.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe048;</button>
-              <button className="vop-button material-icons vop-settings-button" title="settings"
+                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <button className="vop-button vop-settings-button vop-style-settings" title="settings"
                 onClick={this.onUICmdSetting.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe8b8;</button>
-              <button className="vop-button material-icons vop-fullscreen-button" title="fullscreen"
+                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <button className="vop-button vop-fullscreen-button vop-style-fullscreen" title="fullscreen"
                 onClick={this.onUICmdFullscreen.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe5d0;</button>
+                onMouseMove={this.onControlMouseMove.bind(this)}></button>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@ class UIPlayer extends React.Component {
           </div>
         </div>
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
-          <div className="material-icons vop-giant-button" style={{color: 'white', fontSize: '48px'}}>&#xe037;</div>
+          <div className="vop-giant-button"></div>
         </div>
         <div className="vop-logo" onClick={this.onLogoClick.bind(this)}>
           <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
@@ -197,7 +197,6 @@ class UIPlayer extends React.Component {
     this.vopSettingsMenu;
     this.vopPanel;
     this.vopPanelMenu;
-    this.vopFullscreen;
     this.uiGiantBtnContainer;
     this.uiGiantButton;
 
@@ -475,7 +474,6 @@ class UIPlayer extends React.Component {
 
     this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
     this.vopSettingsBtn = document.querySelector('.vop-settings-button');
-    this.vopFullscreen = document.querySelector('.vop-fullscreen-button');
 
     // setting panel
     this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
@@ -1509,10 +1507,13 @@ class UIPlayer extends React.Component {
     let flagIsFullscreen = this.player_.isFullscreen();
     printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
     printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
+    
+    $('.vop-fullscreen-button').removeClass('.vop-style-fullscreen');
+    $('.vop-fullscreen-button').removeClass('.vop-style-fullscreen-exit');
     if (flagIsFullscreen) {
-      this.vopFullscreen.innerText = 'fullscreen_exit';
+      $('.vop-fullscreen-button').addClass('.vop-style-fullscreen');
     } else {
-      this.vopFullscreen.innerText = 'fullscreen';
+      $('.vop-fullscreen-button').addClass('.vop-style-fullscreen-exit');
     }
   }
 
