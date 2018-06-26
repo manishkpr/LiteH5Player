@@ -824,25 +824,19 @@ class UIPlayer extends React.Component {
 
     if (thumbnail) {
       UITools.addClass(this.vopTooltip, 'vop-preview');
-      if (thumbnail) {
-        printLog('thumbnail info: ', thumbnail);
-        var isSprite = (thumbnail.data.w && thumbnail.data.h);
-        if (isSprite) {
-          this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
-          this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
-          this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')' +
-            ' -' + thumbnail.data.x.toString() + 'px' +
-            ' -' + thumbnail.data.y.toString() + 'px';
-        } else {
-          this.vopTooltipBg.style.width = '158px';
-          this.vopTooltipBg.style.height = '90px';
-          this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ') no-repeat';
-          this.vopTooltipBg.style.backgroundSize = '100% 100%';
-        }
+      printLog('thumbnail info: ', thumbnail);
+      var isSprite = (thumbnail.data.w && thumbnail.data.h);
+      if (isSprite) {
+        this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
+        this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
+        this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')' +
+          ' -' + thumbnail.data.x.toString() + 'px' +
+          ' -' + thumbnail.data.y.toString() + 'px';
       } else {
         this.vopTooltipBg.style.width = '158px';
         this.vopTooltipBg.style.height = '90px';
-        this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
+        this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ') no-repeat';
+        this.vopTooltipBg.style.backgroundSize = '100% 100%';
       }
     } else {
       UITools.removeClass(this.vopTooltip, 'vop-preview');
@@ -853,6 +847,7 @@ class UIPlayer extends React.Component {
     this.vopTooltipText.innerText = strTime;
 
     // calculate metrics first
+    // A very large offset to hide tooltip.
     this.vopTooltip.style.left = '10000px';
     this.vopTooltip.style.display = 'block';
 
