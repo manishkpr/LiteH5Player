@@ -56,6 +56,35 @@ UITools.removeClass = function(elements, cName) {
   }
 };
 
+UITools.genGradientColor = function(posList, colorList) {
+  var totalRange = posList[posList.length - 1];
+
+  var gradient = ['to right'];
+  for (var i = 0; i < posList.length; ++i) {
+    var range = posList[i] * 100 / totalRange;
+
+    if (i === 0) {
+      gradient.push(colorList[0] + ' 0%');
+      gradient.push(colorList[0] + ' ' + range + '%');
+    } else {
+      var lastRange = posList[i - 1] * 100 / totalRange;
+      gradient.push(colorList[i] + ' ' + lastRange + '%');
+      gradient.push(colorList[i] + ' ' + range + '%');
+    }
+  }
+
+  return 'linear-gradient(' + gradient.join(',') + ')';
+};
+
+UITools.isPtInElement = function(pt, element) {
+  var rect = element.getBoundingClientRect();
+  if ((rect.left <= pt.x && pt.x <= rect.right) &&
+    (rect.top <= pt.y && pt.y <= rect.bottom)) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 
 

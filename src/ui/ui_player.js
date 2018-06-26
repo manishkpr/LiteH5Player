@@ -485,7 +485,7 @@ class UIPlayer extends React.Component {
     this.vopFullscreenBtn = this.vopSkinContainer.querySelector('.vop-fullscreen-button');
 
     // setting panel
-    this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
+    this.vopSettingsMenu = this.vopSkinContainer.querySelector('.vop-settings-menu');
     this.vopPanel = this.vopSettingsMenu.querySelector('.vop-panel');
     this.vopPanelMenu = this.vopSettingsMenu.querySelector('.vop-panel-menu');
 
@@ -619,7 +619,7 @@ class UIPlayer extends React.Component {
     // and player's metrics.
     var dstWidth = 0;
     var dstHeight = 0;
-    if (isFullscreen()) {
+    if (this.player_.isFullscreen()) {
       dstWidth = this.playerContainer.clientWidth;
       dstHeight = this.playerContainer.clientHeight;
     } else {
@@ -849,7 +849,7 @@ class UIPlayer extends React.Component {
     }
 
     // update tooltip offset
-    var strTime = timeToString(this.progressBarContext.movePos);
+    var strTime = oldmtn.CommonUtils.timeToString(this.progressBarContext.movePos);
     this.vopTooltipText.innerText = strTime;
 
     // calculate metrics first
@@ -936,7 +936,7 @@ class UIPlayer extends React.Component {
     UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeoff');
     UITools.addClass(this.vopVolumeButton, uiVolumeIcon);
     // update volume slider background
-    this.vopVolumeSlider.style.background = genGradientColor(uiVolumeList, this.colorList_volume);
+    this.vopVolumeSlider.style.background = UITools.genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle
     this.vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
   };
@@ -982,7 +982,7 @@ class UIPlayer extends React.Component {
       x: e.clientX,
       y: e.clientY
     };
-    if (!isPtInElement(pt, this.vopPlayer)) {
+    if (!UITools.isPtInElement(pt, this.vopPlayer)) {
       this.onPlayerMouseLeave();
     }
   }
@@ -1016,7 +1016,7 @@ class UIPlayer extends React.Component {
 
   onPlayerMouseLeave() {
     var paused = this.player_.isPaused();
-    var fullscreen = isFullscreen();
+    var fullscreen = this.player_.isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
       UITools.addClass(this.vopPlayer, 'vop-autohide');
     }
@@ -1172,7 +1172,7 @@ class UIPlayer extends React.Component {
 
   onUICmdFullscreen() {
     printLog('+onBtnFullscreen');
-    if (isFullscreen()) {
+    if (this.player_.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
       UITools.enterFullscreen();
