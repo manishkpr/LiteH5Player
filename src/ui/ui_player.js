@@ -52,7 +52,7 @@ class UIPlayer extends React.Component {
 
   render() {
     return (
-      <div className="vop-overlay-top"
+      <div className="vop-skin-container"
         onClick={this.onPlayerClick.bind(this)}
         onMouseEnter={this.onPlayerMouseEnter.bind(this)}
         onMouseMove={this.onPlayerMouseMove.bind(this)}
@@ -112,9 +112,9 @@ class UIPlayer extends React.Component {
               <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <button className="vop-button material-icons vop-mute-button" title="mute"
+              <button className="vop-button vop-mute-button vop-style-volumeup" title="mute"
                 onClick={this.onUICmdMute.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}>&#xe050;</button>
+                onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <div className="vop-volume-panel">
                 <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
                   <div className="vop-volume-slider-handle">
@@ -189,8 +189,6 @@ class UIPlayer extends React.Component {
     this.vopPlayProgress = null;
     this.vopHoverProgress = null;
     this.vopScrubberContainer = null;
-    this.vopPlayButton = null;
-    this.vopMuteButton = null;
     this.vopVolumeSlider = null;
     this.vopVolumeSliderHandle = null;
 
@@ -470,8 +468,6 @@ class UIPlayer extends React.Component {
     this.vopHoverProgress = document.querySelector('.vop-hover-progress');
 
     this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
-    this.vopPlayButton = document.querySelector('.vop-play-button');
-    this.vopMuteButton = document.querySelector('.vop-mute-button');
     this.vopVolumeSlider = document.querySelector('.vop-volume-slider');
     this.vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
 
@@ -904,19 +900,19 @@ class UIPlayer extends React.Component {
   }
 
   updateContentVolumeBarUI(muted, volume) {
-    var uiMutedIcon;
+    var uiVolumeIcon;
     var uiVolumeList;
     var uiVolumeHandleLeft;
 
     if (volume === 0 || muted) {
-      uiMutedIcon = this.iconVolumeOff;
+      uiVolumeIcon = 'vop-style-volumeoff';
       uiVolumeList = [0, 1];
       uiVolumeHandleLeft = '0px';
     } else {
       if (volume >= 0.5) {
-        uiMutedIcon = this.iconVolumeUp;
+        uiVolumeIcon = 'vop-style-volumeup';
       } else {
-        uiMutedIcon = this.iconVolumeDown;
+        uiVolumeIcon = 'vop-style-volumedown';
       }
 
       uiVolumeList = [volume, 1];
@@ -930,7 +926,10 @@ class UIPlayer extends React.Component {
     }
 
     // update muted button
-    this.vopMuteButton.innerHTML = uiMutedIcon;
+    $('.vop-mute-button').removeClass('vop-style-volumedown');
+    $('.vop-mute-button').removeClass('vop-style-volumeup');
+    $('.vop-mute-button').removeClass('vop-style-volumeoff');
+    $('.vop-mute-button').addClass(uiVolumeIcon);
     // update volume slider background
     this.vopVolumeSlider.style.background = genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle

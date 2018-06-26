@@ -7,7 +7,7 @@ $zIndex_caption_window: 3;
 $zIndex_tooltip: 10;
 $zIndex_spinner: 20;
 $zIndex_giant_button_container: 30;
-$zIndex_overlay: 40;
+$zIndex_skin_container: 40;
 $zIndex_control_bar: 50;
 $zIndex_logo: 60;
 
@@ -50,12 +50,12 @@ $zIndex_logo: 60;
   background: transparent;
 }
 
-.vop-overlay-top {
+.vop-skin-container {
   position: absolute;
   width: 100%;
   height: 100%;
   background: transparent;
-  z-index: $zIndex_overlay;
+  z-index: $zIndex_skin_container;
 }
 /************ End containers ************/
 
@@ -828,21 +828,37 @@ $zIndex_logo: 60;
 
 /************ Begin button icons ************/
 .vop-style-play {
-  background-image: url(../img/ic_play_arrow_24px.svg);
+  background-image: url(../img/play.svg);
 }
 
 .vop-style-pause {
-  background-image: url(../img/ic_pause_24px.svg);
+  background-image: url(../img/pause.svg);
 }
 
 .vop-style-replay {
-  background-image: url(../img/ic_replay_24px.svg);
+  background-image: url(../img/replay.svg);
+}
+
+.vop-style-volumedown {
+  background-image: url(../img/volume_down.svg)
+}
+
+.vop-style-volumeup {
+  background-image: url(../img/volume_up.svg)
+}
+
+.vop-style-volumeoff {
+  background-image: url(../img/volume_off.svg)
 }
 
 .vop-style-play,
 .vop-style-pause,
-.vop-style-replay {
+.vop-style-replay,
+.vop-style-volumedown,
+.vop-style-volumeup,
+.vop-style-volumeoff {
   background-position: center;
   background-repeat: no-repeat;
 }
 /************ End button icons ************/
+
