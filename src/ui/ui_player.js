@@ -13,6 +13,9 @@ import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 
+import UITools from './ui_tools';
+
+
 class UIPlayer extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +47,7 @@ class UIPlayer extends React.Component {
     this.uninitPlayerListeners();
 
     this.removeAutohideAction();
-    $('.html5-video-player').removeClass('vop-autohide');
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
     // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
     // it the video control will never shown, because ads-container is on top of it.
     //this.vopVideo.setAttribute('controls', 'true');
@@ -456,6 +459,8 @@ class UIPlayer extends React.Component {
     this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
+    this.vopSkinContainer = document.querySelector('.vop-skin-container');
+
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
     this.vopTooltipText = document.querySelector('.vop-tooltip-text');
@@ -472,8 +477,12 @@ class UIPlayer extends React.Component {
 
     this.uiLog = document.getElementById('idLog');
 
-    this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
-    this.vopSettingsBtn = document.querySelector('.vop-settings-button');
+    this.vopPlayButton = this.vopSkinContainer.querySelector('.vop-play-button');
+    this.vopVolumeButton = this.vopSkinContainer.querySelector('.vop-mute-button');
+    this.vopPauseButton = this.vopSkinContainer.querySelector('.vop-pause-button');
+    this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
+    this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
+    this.vopFullscreenBtn = this.vopSkinContainer.querySelector('.vop-fullscreen-button');
 
     // setting panel
     this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
@@ -506,8 +515,7 @@ class UIPlayer extends React.Component {
       var ro = new ResizeObserver(onPlayerSize.bind(this));
 
       // Observer one or multiple elements
-      var v = document.querySelector('.html5-video-player');
-      ro.observe(v);
+      ro.observe(this.vopPlayer);
     } else {
       this.playerResizeSensor_ = new ResizeSensor(this.playerContainer, this.onResizeSensorCb);
     }
@@ -671,7 +679,7 @@ class UIPlayer extends React.Component {
           this.progressBarContext.movePos = position;
           this.updateProgressBarUI(position, duration);
 
-          $('.html5-video-player').removeClass('vop-autohide');
+          UITools.removeClass(this.vopPlayer, 'vop-autohide');
         }
         break;
       case 'closed':
@@ -692,11 +700,11 @@ class UIPlayer extends React.Component {
   }
 
   startBufferingUI() {
-    $('.html5-video-player').addClass('vop-buffering');
+    UITools.addClass(this.vopPlayer, 'vop-buffering');
   }
 
   stopBufferingUI() {
-    $('.html5-video-player').removeClass('vop-buffering');
+    UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 
   // begin progress bar
@@ -815,7 +823,7 @@ class UIPlayer extends React.Component {
     }
 
     if (thumbnail) {
-      $('.vop-tooltip').addClass('vop-preview');
+      UITools.addClass(this.vopTooltip, 'vop-preview');
       if (thumbnail) {
         printLog('thumbnail info: ', thumbnail);
         var isSprite = (thumbnail.data.w && thumbnail.data.h);
@@ -837,7 +845,7 @@ class UIPlayer extends React.Component {
         this.vopTooltipBg.style.background = 'url("https://i9.ytimg.com/sb/pQ9eej56xbU/storyboard3_L2/M1.jpg?sigh=rs%24AOn4CLDgQvL4F2LQ1qWeY-hwNqbP3xWkPw") -180px -0px';
       }
     } else {
-      $('.vop-tooltip').removeClass('vop-preview');
+      UITools.removeClass(this.vopTooltip, 'vop-preview');
     }
 
     // update tooltip offset
@@ -870,30 +878,29 @@ class UIPlayer extends React.Component {
   };
 
   updatePlayBtnUI(paused, ended) {
-    $('.vop-play-button').removeClass('vop-style-play');
-    $('.vop-play-button').removeClass('vop-style-pause');
-    $('.vop-play-button').removeClass('vop-style-replay');
+    UITools.removeClass(this.vopPlayButton, 'vop-style-play');
+    UITools.removeClass(this.vopPlayButton, 'vop-style-pause');
+    UITools.removeClass(this.vopPlayButton, 'vop-style-replay');
 
     if (ended) {
-      $('.vop-play-button').addClass('vop-style-replay');
+      UITools.addClass(this.vopPlayButton, 'vop-style-replay');
     } else {
       if (paused) {
-        $('.vop-play-button').addClass('vop-style-play');
+        UITools.addClass(this.vopPlayButton, 'vop-style-play');
       } else {
-        $('.vop-play-button').addClass('vop-style-pause');
+        UITools.addClass(this.vopPlayButton, 'vop-style-pause');
       }
     }
   }
 
   updateGiantPlayBtnUI(paused) {
-    let icon;
+    UITools.removeClass(this.uiGiantButton, 'vop-style-play-giant');
+    UITools.removeClass(this.uiGiantButton, 'vop-style-pause-giant');
     if (paused) {
-      icon = this.iconPause;
+      UITools.addClass(this.uiGiantButton, 'vop-style-pause-giant');
     } else {
-      icon = this.iconPlay;
+      UITools.addClass(this.uiGiantButton, 'vop-style-play-giant');
     }
-    this.uiGiantButton.innerHTML = icon;
-    this.uiGiantButton.dataset.id = icon;
     this.uiGiantBtnContainer.style.display = 'block';
   }
 
@@ -924,10 +931,10 @@ class UIPlayer extends React.Component {
     }
 
     // update muted button
-    $('.vop-mute-button').removeClass('vop-style-volumedown');
-    $('.vop-mute-button').removeClass('vop-style-volumeup');
-    $('.vop-mute-button').removeClass('vop-style-volumeoff');
-    $('.vop-mute-button').addClass(uiVolumeIcon);
+    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumedown');
+    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeup');
+    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeoff');
+    UITools.addClass(this.vopVolumeButton, uiVolumeIcon);
     // update volume slider background
     this.vopVolumeSlider.style.background = genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle
@@ -937,7 +944,7 @@ class UIPlayer extends React.Component {
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
   removeAutohideAction() {
-    $('.html5-video-player').removeClass('vop-autohide');
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
     if (this.timerHideControlBar) {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
@@ -995,7 +1002,7 @@ class UIPlayer extends React.Component {
 
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter() {
-    $('.html5-video-player').removeClass('vop-autohide');
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
   }
 
   onPlayerMouseMove(e) {
@@ -1011,7 +1018,7 @@ class UIPlayer extends React.Component {
     var paused = this.player_.isPaused();
     var fullscreen = isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
-      $('.html5-video-player').addClass('vop-autohide');
+      UITools.addClass(this.vopPlayer, 'vop-autohide');
     }
   }
 
@@ -1029,13 +1036,13 @@ class UIPlayer extends React.Component {
     let currPaused;
     let currEnded;
 
-    if ($('.vop-play-button').hasClass('vop-style-play')) {
+    if (UITools.hasClass(this.vopPlayButton, 'vop-style-play')) {
       currPaused = true;
       currEnded = false;
-    } else if ($('.vop-play-button').hasClass('vop-style-pause')) {
+    } else if (UITools.hasClass(this.vopPlayButton, 'vop-style-pause')) {
       currPaused = false;
       currEnded = false;
-    } else if ($('.vop-play-button').hasClass('vop-style-replay')) {
+    } else if (UITools.hasClass(this.vopPlayButton, 'vop-style-replay')) {
       currPaused = false;
       currEnded = true;
     } else {
@@ -1166,9 +1173,9 @@ class UIPlayer extends React.Component {
   onUICmdFullscreen() {
     printLog('+onBtnFullscreen');
     if (isFullscreen()) {
-      h5LeaveFullscreen();
+      UITools.leaveFullscreen();
     } else {
-      h5EnterFullscreen();
+      UITools.enterFullscreen();
     }
   }
 
@@ -1508,12 +1515,12 @@ class UIPlayer extends React.Component {
     printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
     printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
     
-    $('.vop-fullscreen-button').removeClass('.vop-style-fullscreen');
-    $('.vop-fullscreen-button').removeClass('.vop-style-fullscreen-exit');
+    UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
+    UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
     if (flagIsFullscreen) {
-      $('.vop-fullscreen-button').addClass('.vop-style-fullscreen');
+      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
     } else {
-      $('.vop-fullscreen-button').addClass('.vop-style-fullscreen-exit');
+      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
     }
   }
 

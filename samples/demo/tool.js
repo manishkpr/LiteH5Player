@@ -61,43 +61,4 @@ function genGradientColor(posList, colorList) {
   return 'linear-gradient(' + gradient.join(',') + ')';
 }
 
-function h5EnterFullscreen() {
-  printLog('+h5EnterFullscreen');
-  var v = document.getElementById('player-container');
-  //var v = document.querySelector('.html5-video-player');
-  //var v = document.querySelector('.vop-video-container');
-  //var v = document.querySelector('.vop-video');
-  //var v = document.querySelector('video');
-  // Refer to youtube player
-  //var v = document.querySelector('.html5-video-player');
-
-  // Try to enter fullscreen mode in the browser
-  var requestFullscreen =
-    v.requestFullscreen ||
-    v.requestFullScreen ||
-    v.webkitRequestFullscreen ||
-    v.webkitRequestFullScreen ||
-    v.mozRequestFullscreen ||
-    v.mozRequestFullScreen ||
-    v.msRequestFullscreen ||
-    v.msRequestFullScreen;
-
-  requestFullscreen.call(v);
-}
-
-function h5LeaveFullscreen() {
-  printLog('+h5LeaveFullscreen');
-
-  var cancelFullscreen =
-    document.exitFullscreen ||
-    document.exitFullScreen ||
-    document.webkitCancelFullScreen ||
-    document.mozCancelFullScreen ||
-    document.msExitFullscreen ||
-    document.msExitFullscreen;
-  if (cancelFullscreen) {
-    cancelFullscreen.call(document);
-  }
-}
-
 ///////////////////////////////////////////////////////////////////

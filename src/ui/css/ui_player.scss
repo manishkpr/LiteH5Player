@@ -831,11 +831,19 @@ $zIndex_logo: 60;
 
 /************ Begin button icons ************/
 .vop-style-play {
-  background-image: url(../img/ic_play_24px.svg);
+  background-image: url(../img/ic_play_arrow_24px.svg);
 }
 
 .vop-style-pause {
   background-image: url(../img/ic_pause_24px.svg);
+}
+
+.vop-style-play-giant {
+  background-image: url(../img/ic_play_arrow_48px.svg);
+}
+
+.vop-style-pause-giant {
+  background-image: url(../img/ic_pause_48px.svg);
 }
 
 .vop-style-replay {
@@ -872,6 +880,8 @@ $zIndex_logo: 60;
 
 .vop-style-play,
 .vop-style-pause,
+.vop-style-play-giant,
+.vop-style-pause-giant,
 .vop-style-replay,
 .vop-style-volumedown,
 .vop-style-volumeup,
