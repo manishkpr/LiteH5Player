@@ -876,27 +876,19 @@ class UIPlayer extends React.Component {
   };
 
   updatePlayBtnUI(paused, ended) {
-    let icon;
+    $('.vop-play-button').removeClass('vop-style-play');
+    $('.vop-play-button').removeClass('vop-style-pause');
+    $('.vop-play-button').removeClass('vop-style-replay');
+
     if (ended) {
-      icon = this.iconReplay;
+      $('.vop-play-button').addClass('vop-style-replay');
     } else {
       if (paused) {
-        icon = this.iconPlay;
-
-        $('.vop-play-button').removeClass('vop-style-pause');
         $('.vop-play-button').addClass('vop-style-play');
       } else {
-        icon = this.iconPause;
-
-        $('.vop-play-button').removeClass('vop-style-play');
         $('.vop-play-button').addClass('vop-style-pause');
       }
     }
-
-    //this.vopPlayButton.innerHTML = icon;
-
-
-    this.vopPlayButton.dataset.id = icon;
   }
 
   updateGiantPlayBtnUI(paused) {
@@ -909,7 +901,7 @@ class UIPlayer extends React.Component {
     this.uiGiantButton.innerHTML = icon;
     this.uiGiantButton.dataset.id = icon;
     this.uiGiantBtnContainer.style.display = 'block';
-  };
+  }
 
   updateContentVolumeBarUI(muted, volume) {
     var uiMutedIcon;
@@ -1039,17 +1031,18 @@ class UIPlayer extends React.Component {
     // Get current play/pause state from UI.
     let currPaused;
     let currEnded;
-    if (this.vopPlayButton.dataset.id === this.iconPlay) {
+
+    if ($('.vop-play-button').hasClass('vop-style-play')) {
       currPaused = true;
       currEnded = false;
-    } else if (this.vopPlayButton.dataset.id === this.iconPause) {
+    } else if ($('.vop-play-button').hasClass('vop-style-pause')) {
       currPaused = false;
       currEnded = false;
-    } else if (this.vopPlayButton.dataset.id === this.iconReplay) {
+    } else if ($('.vop-play-button').hasClass('vop-style-replay')) {
       currPaused = false;
       currEnded = true;
     } else {
-      console.log('PlayBtn can\'t have this style');
+      console.log('Play button can\'t have this style');
     }
 
     // Compute new play/pause state and apply it to player.

@@ -253,18 +253,6 @@ $zIndex_logo: 60;
 .vop-button {outline:0}
 .vop-button::-moz-focus-inner {padding:0;border:0}
 
-.vop-style-play {
-  background-image: url(../img/ic_play_arrow_24px.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.vop-style-pause {
-  background-image: url(../img/ic_pause_24px.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .vop-play-button,
 .vop-mute-button,
 .vop-volume-panel,
@@ -838,4 +826,23 @@ $zIndex_logo: 60;
 /************ End logo ************/
 
 
+/************ Begin button icons ************/
+.vop-style-play {
+  background-image: url(../img/ic_play_arrow_24px.svg);
+}
 
+.vop-style-pause {
+  background-image: url(../img/ic_pause_24px.svg);
+}
+
+.vop-style-replay {
+  background-image: url(../img/ic_replay_24px.svg);
+}
+
+.vop-style-play,
+.vop-style-pause,
+.vop-style-replay {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/************ End button icons ************/
