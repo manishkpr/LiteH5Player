@@ -129,10 +129,10 @@ class UISkinYoutube extends React.Component {
             </div>
             <div className="vop-right-controls">
               <button className="vop-button vop-subtitles-button vop-style-subtitles" title="subtitles"
-                onClick={this.onUICmdSubtitleMenu.bind(this)}
+                onClick={this.onUICmdSubtitles.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <button className="vop-button vop-settings-button vop-style-settings" title="settings"
-                onClick={this.onUICmdSetting.bind(this)}
+                onClick={this.onUICmdSettings.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <button className="vop-button vop-fullscreen-button vop-style-fullscreen" title="fullscreen"
                 onClick={this.onUICmdFullscreen.bind(this)}
@@ -1051,6 +1051,11 @@ class UISkinYoutube extends React.Component {
 
     // Compute new play/pause state and apply it to player.
     if (currEnded) {
+      // call play method when video is ended will trigger 'seeking' event and the target position is 0.
+      // this.progressBarContext.pausedBeforeMousedown = false;
+      // this.progressBarContext.endedBeforeMousedown = false;
+      // this.player_.play();
+      // old
       this.progressBarContext.pausedBeforeMousedown = true;
       this.progressBarContext.endedBeforeMousedown = true;
       this.player_.setPosition(0);
@@ -1143,8 +1148,8 @@ class UISkinYoutube extends React.Component {
     this.player_ = null;
   }
 
-  onUICmdSubtitleMenu() {
-    printLog('+onUICmdSubtitleMenu, currMenu: ' + this.settingMenuUIData.currSubtitleId);
+  onUICmdSubtitles() {
+    printLog('+onUICmdSubtitles, currMenu: ' + this.settingMenuUIData.currSubtitleId);
 
     if (this.settingMenuUIData.currMenu !== 'subtitle_menu') {
       this.settingMenuUIData.currMenu = 'subtitle_menu';
@@ -1154,8 +1159,8 @@ class UISkinYoutube extends React.Component {
     this.updateUIState();
   }
 
-  onUICmdSetting(e) {
-    printLog('+onUICmdSetting, currMenu: ' + this.settingMenuUIData.currMenu);
+  onUICmdSettings(e) {
+    printLog('+onUICmdSettings, currMenu: ' + this.settingMenuUIData.currMenu);
 
     if (this.settingMenuUIData.currMenu === 'subtitle_menu') {
       this.settingMenuUIData.currMenu = 'main_menu';
@@ -1568,7 +1573,7 @@ class UISkinYoutube extends React.Component {
 
     if (nextFocus) {
       if (nextFocus === this.vopSettingsBtn) {
-        // means we click 'setting' button, do nothing here, onUICmdSetting will handle for us.
+        // means we click 'setting' button, do nothing here, onUICmdSettings will handle for us.
       } else {
         if (prevFocus) {
           if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
@@ -1662,7 +1667,7 @@ class UISkinYoutube extends React.Component {
         nextFocus.className.indexOf('vop-menuitem') !== -1 ||
         nextFocus.className.indexOf('vop-settings-button') !== -1) {
         // click on quality menu, do nothing
-        // click on settings menu, do nothing, since onUICmdSetting will do it for us.
+        // click on settings menu, do nothing, since onUICmdSettings will do it for us.
       } else {
         this.settingMenuUIData.currMenu = 'none';
         this.updateUIState();
@@ -1731,7 +1736,7 @@ class UISkinYoutube extends React.Component {
 
     if (nextFocus) {
       if (nextFocus === this.vopSettingsBtn) {
-        // means we click 'setting' button, do nothing here, onUICmdSetting will handle for us.
+        // means we click 'setting' button, do nothing here, onUICmdSettings will handle for us.
       } else {
         if (prevFocus) {
           if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
