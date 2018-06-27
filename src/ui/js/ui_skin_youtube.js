@@ -5,6 +5,8 @@ import ResizeSensor from 'resize-sensor';
 import '../css/ui_skin_youtube.scss';
 import '../assets/img/logo.png';
 
+import UITools from './ui_tools';
+
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';
 import UIQualityMenu from './ui_quality_menu';
@@ -13,8 +15,7 @@ import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 
-import UITools from './ui_tools';
-
+import UIVolumeToggleButton from './components/volumetogglebutton';
 
 class UISkinYoutube extends React.Component {
   constructor(props) {
@@ -116,9 +117,7 @@ class UISkinYoutube extends React.Component {
               <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <button className="vop-button vop-volume-button vop-style-volumeup" title="mute"
-                onClick={this.onUICmdMute.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <UIVolumeToggleButton player={this.player_} onControlMouseMove={this.onControlMouseMove.bind(this)}/>
               <div className="vop-volume-panel">
                 <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
                   <div className="vop-volume-slider-handle">
@@ -1103,31 +1102,6 @@ class UISkinYoutube extends React.Component {
 
   onUICmdControlBarClick(e) {
     e.stopPropagation();
-  }
-
-  onUICmdMute() {
-    var muted = this.player_.isMuted();
-    var volume = this.player_.getVolume();
-
-    if (volume === 0) {
-      if (muted) {
-        this.player_.unmute();
-        muted = false;
-      }
-
-      // If the this.player_ is muted, and volume is 0,
-      // in this situation, we will restore volume to 0.2
-      volume = 0.1;
-      this.player_.setVolume(volume);
-    } else {
-      if (muted) {
-        this.player_.unmute();
-        muted = false;
-      } else {
-        this.player_.mute();
-        muted = true;
-      }
-    }
   }
 
   onBtnManualSchedule() {
