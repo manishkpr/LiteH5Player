@@ -1470,16 +1470,20 @@ class UISkinYoutube extends React.Component {
     // BD
     var videos = document.getElementsByTagName('video');
     // ED
-    printLog('onAdStarted, linear: ' + e.isLinearAd + ', videos length: ' + videos.length);
+    printLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
     this.flagAdStarted = true;
-    this.flagIsLinearAd = e.isLinearAd;
+    this.flagIsLinearAd = e.linear;
+    this.flagIsVpaidAd = e.vpaid;
     // update control bar ui
     if (this.flagIsLinearAd) {
       this.vopSubtitlesBtn.style.display = 'none';
       this.vopSettingsBtn.style.display = 'none';
     } else {
-      var v = document.querySelector('.vop-ads-container');
-      v.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
+      this.vopAdContainer.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
+    }
+    
+    if (this.flagIsVpaidAd) {
+      this.vopAdContainer.style.zIndex = 100;
     }
   }
 
@@ -1491,6 +1495,10 @@ class UISkinYoutube extends React.Component {
     this.vopProgressBar.style.display = 'block';
     this.vopSubtitlesBtn.style.display = 'inline-block';
     this.vopSettingsBtn.style.display = 'inline-block';
+
+    if (this.flagIsVpaidAd) {
+      this.vopAdContainer.style.zIndex = 'auto';
+    }
   }
 
   onAdTimeUpdate() {

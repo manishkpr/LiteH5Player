@@ -482,15 +482,20 @@ function AdsController(adContainer, media, advertising) {
     //
     isPlayingAd_ = true;
     isLinearAd_ = ad.isLinear();
-    isVpaidAd_ = ad.g.vpaid;
-
+    
+    // How to know the ad is VPAID or not?
+    // Method1
+    // isVpaidAd_ = ad.g.vpaid;
+    // Method2
+    let apiFw = ad.getApiFramework();
+    isVpaidAd_ = (apiFw === 'VPAID') ? true : false;
     position_ = 0;
     duration_ = ad.getDuration();
     adWidth_ = ad.getWidth();
     adHeight_ = ad.getHeight();
 
     eventBus_.trigger(Events.AD_STARTED, {
-      isLinearAd: isLinearAd_,
+      linear: isLinearAd_,
       vpaid: isVpaidAd_,
       width: adWidth_,
       height: adHeight_
