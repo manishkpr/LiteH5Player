@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
 import './css/ui_skin_youtube.scss';
-import './img/logo.png';
+import './assets/img/logo.png';
 
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';
@@ -161,7 +161,7 @@ class UISkinYoutube extends React.Component {
         </div>
         <div className="vop-logo" onClick={this.onLogoClick.bind(this)}>
           <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
-            <img src="./img/logo.png"></img>
+            <img src="./assets/img/logo.png"></img>
           </a>
         </div>
       </div>
