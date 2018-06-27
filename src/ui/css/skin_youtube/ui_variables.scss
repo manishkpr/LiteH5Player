@@ -1,5 +1,5 @@
 /* Skin name class */
-$prefix: 'vop-skin-youtube' !default;
+$skinYoutube: 'vop-skin-youtube' !default;
 
 
 $zIndex_gradient_bottom: 2;
@@ -13,7 +13,7 @@ $zIndex_logo: 60;
 
 
 /************ Begin containers ************/
-.#{$prefix} {
+.#{$skinYoutube} {
   position: absolute;
   width: 100%;
   height: 100%;
