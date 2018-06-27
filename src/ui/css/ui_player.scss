@@ -495,19 +495,19 @@ $zIndex_logo: 60;
 /************ End vop popup menu ************/
 
 /************ Begin auto-hide ************/
-.vop-skin-container .vop-autohide { cursor:none }
+.vop-autohide { cursor:none }
 
-.vop-skin-container .vop-autohide .vop-gradient-bottom {
+.vop-autohide .vop-gradient-bottom {
   display: none;
 }
-.vop-skin-container .vop-autohide .vop-control-bar {
+.vop-autohide .vop-control-bar {
   opacity: 0;
   -moz-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
 
-.vop-skin-container .vop-autohide:not(.vop-giant-button-container) {
+.vop-autohide:not(.vop-giant-button-container) {
   cursor: none;
 }
 /************ End auto-hide ************/

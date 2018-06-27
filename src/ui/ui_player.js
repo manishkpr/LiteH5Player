@@ -854,7 +854,7 @@ class UIPlayer extends React.Component {
     // set the correct offset of tooltip.
     var offsetX = getTooltipOffsetX.call(this, e, this.vopTooltip.clientWidth);
     this.vopTooltip.style.left = offsetX.toString() + 'px';
-  };
+  }
 
   updateAdProgressUI() {
     var position = this.player_.getPosition();
@@ -870,7 +870,7 @@ class UIPlayer extends React.Component {
 
     var tDisplay = document.querySelector('.vop-time-text');
     tDisplay.innerText = fmtTime;
-  };
+  }
 
   updatePlayBtnUI(paused, ended) {
     UITools.removeClass(this.vopPlayButton, 'vop-style-play');
@@ -934,7 +934,7 @@ class UIPlayer extends React.Component {
     this.vopVolumeSlider.style.background = UITools.genGradientColor(uiVolumeList, this.colorList_volume);
     // update volume slider handle
     this.vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
-  };
+  }
 
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
@@ -944,7 +944,7 @@ class UIPlayer extends React.Component {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-  };
+  }
 
   docVolumeSliderMousemove(e) {
     this.updateVolumeMovePosition(e);
@@ -1170,7 +1170,7 @@ class UIPlayer extends React.Component {
     if (this.player_.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
-      UITools.enterFullscreen();
+      UITools.enterFullscreen(this.playerContainer);
     }
   }
 

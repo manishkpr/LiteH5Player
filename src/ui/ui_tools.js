@@ -1,18 +1,9 @@
 var UITools = {};
 
 
-UITools.enterFullscreen = function() {
-  printLog('+h5EnterFullscreen');
-  var v = document.getElementById('player-container');
-  //var v = document.querySelector('.html5-video-player');
-  //var v = document.querySelector('.vop-video-container');
-  //var v = document.querySelector('.vop-video');
-  //var v = document.querySelector('video');
-  // Refer to youtube player
-  //var v = document.querySelector('.html5-video-player');
-
+UITools.enterFullscreen = function(v) {
   // Try to enter fullscreen mode in the browser
-  var requestFullscreen =
+  let requestFullscreen =
     v.requestFullscreen ||
     v.requestFullScreen ||
     v.webkitRequestFullscreen ||
@@ -26,9 +17,7 @@ UITools.enterFullscreen = function() {
 }
 
 UITools.leaveFullscreen = function() {
-  printLog('+h5LeaveFullscreen');
-
-  var cancelFullscreen =
+  let cancelFullscreen =
     document.exitFullscreen ||
     document.exitFullScreen ||
     document.webkitCancelFullScreen ||
@@ -57,17 +46,17 @@ UITools.removeClass = function(elements, cName) {
 };
 
 UITools.genGradientColor = function(posList, colorList) {
-  var totalRange = posList[posList.length - 1];
+  let totalRange = posList[posList.length - 1];
 
-  var gradient = ['to right'];
-  for (var i = 0; i < posList.length; ++i) {
-    var range = posList[i] * 100 / totalRange;
+  let gradient = ['to right'];
+  for (let i = 0; i < posList.length; ++i) {
+    let range = posList[i] * 100 / totalRange;
 
     if (i === 0) {
       gradient.push(colorList[0] + ' 0%');
       gradient.push(colorList[0] + ' ' + range + '%');
     } else {
-      var lastRange = posList[i - 1] * 100 / totalRange;
+      let lastRange = posList[i - 1] * 100 / totalRange;
       gradient.push(colorList[i] + ' ' + lastRange + '%');
       gradient.push(colorList[i] + ' ' + range + '%');
     }
@@ -77,7 +66,7 @@ UITools.genGradientColor = function(posList, colorList) {
 };
 
 UITools.isPtInElement = function(pt, element) {
-  var rect = element.getBoundingClientRect();
+  let rect = element.getBoundingClientRect();
   if ((rect.left <= pt.x && pt.x <= rect.right) &&
     (rect.top <= pt.y && pt.y <= rect.bottom)) {
     return true;
