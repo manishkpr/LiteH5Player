@@ -29,8 +29,7 @@ import CommonUtils from './utils/common_utils';
 // UI
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UIBasic from './ui/ui_basic';
-import UIEngine from './ui/ui_engine';
+import UIBasic from './ui/js/ui_basic';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(idContainer) {

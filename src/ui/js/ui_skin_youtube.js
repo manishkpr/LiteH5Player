@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
-import './css/ui_skin_youtube.scss';
-import './assets/img/logo.png';
+import '../css/ui_skin_youtube.scss';
+import '../assets/img/logo.png';
 
 import UISubtitleMenu from './ui_subtitle_menu';
 import UISettingMenu from './ui_setting_menu';

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import "./css/ui_basic.scss";
+import "../css/ui_basic.scss";
 
 class UIBasic extends React.Component {
   constructor(props) {
