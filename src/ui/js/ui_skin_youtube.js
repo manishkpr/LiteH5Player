@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
 import '../css/ui_skin_youtube.scss';
@@ -16,6 +15,7 @@ import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 
 import UIVolumeToggleButton from './components/volumetogglebutton';
+import UIVolumeBar from './components/volumebar';
 
 class UISkinYoutube extends React.Component {
   constructor(props) {
@@ -117,13 +117,8 @@ class UISkinYoutube extends React.Component {
               <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <UIVolumeToggleButton player={this.player_} onControlMouseMove={this.onControlMouseMove.bind(this)}/>
-              <div className="vop-volume-panel">
-                <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
-                  <div className="vop-volume-slider-handle">
-                  </div>
-                </div>
-              </div>
+              <UIVolumeToggleButton player={this.player_} onControlMouseMove={this.onControlMouseMove.bind(this)} />
+              <UIVolumeBar onVolumeSliderMouseDown={this.onVolumeSliderMouseDown.bind(this)} />
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">
@@ -966,7 +961,6 @@ class UISkinYoutube extends React.Component {
     }
 
     this.player_.setVolume(this.valueVolumeMovePosition);
-    this.updateContentVolumeBarUI(muted, volume);
   }
 
   docVolumeSliderMouseup(e) {
