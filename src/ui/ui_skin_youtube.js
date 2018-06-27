@@ -1128,7 +1128,6 @@ class UISkinYoutube extends React.Component {
         muted = true;
       }
     }
-    this.updateContentVolumeBarUI(muted, volume);
   }
 
   onBtnManualSchedule() {
