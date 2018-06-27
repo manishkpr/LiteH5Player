@@ -1,10 +1,10 @@
 
 
-.vop-skin-container .vop-style-play {
+#{$prefix} .vop-style-play {
   background-image: url(../img/ic_play_arrow_24px.svg);
 }
 
-.vop-skin-container .vop-style-pause {
+#{$prefix} .vop-style-pause {
   background-image: url(../img/ic_pause_24px.svg);
 }
 

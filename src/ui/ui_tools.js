@@ -35,13 +35,13 @@ UITools.hasClass = function(elements, cName) {
 
 UITools.addClass = function(elements, cName) {
   if (!UITools.hasClass(elements, cName)) {
-    elements.className += " " + cName;
+    elements.className = (elements.className + " " + cName).trim();
   }
 };
 
 UITools.removeClass = function(elements, cName) {
   if (UITools.hasClass(elements, cName)) {
-    elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
+    elements.className = (elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ")).trim();
   }
 };
 
