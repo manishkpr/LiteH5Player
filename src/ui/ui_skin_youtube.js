@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ResizeSensor from 'resize-sensor';
 
-import './css/ui_player.scss';
+import './css/ui_skin_youtube.scss';
 import './img/logo.png';
 
 import UISubtitleMenu from './ui_subtitle_menu';
@@ -16,7 +16,7 @@ import UIXSpeedMenu from './ui_xspeed_menu';
 import UITools from './ui_tools';
 
 
-class UIPlayer extends React.Component {
+class UISkinYoutube extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,6 +35,7 @@ class UIPlayer extends React.Component {
     console.log('+componentDidMount');
 
     this.initUIElements();
+    this.initUIElementsStyles();
     this.initUIEventListeners();
     this.initPlayerListeners();
 
@@ -496,6 +497,10 @@ class UIPlayer extends React.Component {
     this.vopVideo = document.querySelector('.vop-video');
     this.vopVideo.removeAttribute('controls');
     this.vopAdContainer = document.querySelector('.vop-ads-container');
+  }
+
+  initUIElementsStyles() {
+    //this.vopPlayProgress.style.backgroundColor = '#FA12FF';
   }
 
   initUIEventListeners() {
@@ -1803,7 +1808,7 @@ class UIPlayer extends React.Component {
   }
 }
 
-export default UIPlayer;
+export default UISkinYoutube;
 
 
 

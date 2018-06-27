@@ -244,9 +244,14 @@ $zIndex_logo: 60;
 }
 
 .vop-skin-container .vop-button:focus,
-.vop-button { outline:0 }
+.vop-skin-container .vop-button {
+  outline:0
+}
 
-.vop-skin-container .vop-button::-moz-focus-inner { padding:0; border:0 }
+.vop-skin-container .vop-button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
 
 .vop-skin-container .vop-play-button,
 .vop-skin-container .vop-mute-button,
@@ -496,7 +501,6 @@ $zIndex_logo: 60;
 
 /************ Begin auto-hide ************/
 .vop-autohide { cursor:none }
-
 .vop-autohide .vop-gradient-bottom {
   display: none;
 }
@@ -506,7 +510,6 @@ $zIndex_logo: 60;
   -webkit-transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
-
 .vop-autohide:not(.vop-giant-button-container) {
   cursor: none;
 }
@@ -819,69 +822,4 @@ $zIndex_logo: 60;
 /************ End logo ************/
 
 
-/************ Begin button icons ************/
-.vop-skin-container .vop-style-play {
-  background-image: url(../img/ic_play_arrow_24px.svg);
-}
-
-.vop-skin-container .vop-style-pause {
-  background-image: url(../img/ic_pause_24px.svg);
-}
-
-.vop-skin-container .vop-style-play-giant {
-  background-image: url(../img/ic_play_arrow_48px.svg);
-}
-
-.vop-skin-container .vop-style-pause-giant {
-  background-image: url(../img/ic_pause_48px.svg);
-}
-
-.vop-skin-container .vop-style-replay {
-  background-image: url(../img/ic_replay_24px.svg);
-}
-
-.vop-skin-container .vop-style-volumedown {
-  background-image: url(../img/ic_volume_down_24px.svg)
-}
-
-.vop-skin-container .vop-style-volumeup {
-  background-image: url(../img/ic_volume_up_24px.svg)
-}
-
-.vop-skin-container .vop-style-volumeoff {
-  background-image: url(../img/ic_volume_off_24px.svg)
-}
-
-.vop-skin-container .vop-style-subtitles {
-  background-image: url(../img/ic_subtitles_24px.svg)
-}
-
-.vop-skin-container .vop-style-settings {
-  background-image: url(../img/ic_settings_24px.svg)
-}
-
-.vop-skin-container .vop-style-fullscreen {
-  background-image: url(../img/ic_fullscreen_24px.svg)
-}
-
-.vop-skin-container .vop-style-fullscreen-exit {
-  background-image: url(../img/ic_fullscreen_exit_24px.svg)
-}
-
-.vop-skin-container .vop-style-play,
-.vop-skin-container .vop-style-pause,
-.vop-skin-container .vop-style-play-giant,
-.vop-skin-container .vop-style-pause-giant,
-.vop-skin-container .vop-style-replay,
-.vop-skin-container .vop-style-volumedown,
-.vop-skin-container .vop-style-volumeup,
-.vop-skin-container .vop-style-volumeoff,
-.vop-skin-container .vop-style-subtitles,
-.vop-skin-container .vop-style-settings,
-.vop-skin-container .vop-style-fullscreen,
-.vop-skin-container .vop-style-fullscreen-exit {
-  background-position: center;
-  background-repeat: no-repeat;
-}
-/************ End button icons ************/
 

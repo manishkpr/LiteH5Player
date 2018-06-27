@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import UIPlayer from './ui_player';
+import UISkinYoutube from './ui_skin_youtube';
 
 class UIEngine {
   constructor(player) {
@@ -11,18 +11,18 @@ class UIEngine {
   }
 
   installSkin() {
-    this.skinContainer101 = document.querySelector('.vop-skin-default');
-    if (!this.skinContainer101) {
-      this.skinContainer101 = document.createElement('div');
-      this.skinContainer101.setAttribute('class', 'vop-skin-default');
-      this.h5VideoPlayer_.appendChild(this.skinContainer101);
+    this.skinContainerYb_ = document.querySelector('.vop-skin-default');
+    if (!this.skinContainerYb_) {
+      this.skinContainerYb_ = document.createElement('div');
+      this.skinContainerYb_.setAttribute('class', 'vop-skin-default');
+      this.h5VideoPlayer_.appendChild(this.skinContainerYb_);
     }
 
-    this.uiPlayer_ = ReactDOM.render(<UIPlayer player={this.player_}/>, this.skinContainer101);
+    this.uiPlayer_ = ReactDOM.render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_);
   }
 
   uninstallSkin() {
-    ReactDOM.unmountComponentAtNode(this.skinContainer101);
+    ReactDOM.unmountComponentAtNode(this.skinContainerYb_);
   }
 }
 
