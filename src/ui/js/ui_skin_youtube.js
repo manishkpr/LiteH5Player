@@ -116,7 +116,7 @@ class UISkinYoutube extends React.Component {
               <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <button className="vop-button vop-mute-button vop-style-volumeup" title="mute"
+              <button className="vop-button vop-volume-button vop-style-volumeup" title="mute"
                 onClick={this.onUICmdMute.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <div className="vop-volume-panel">
@@ -479,7 +479,7 @@ class UISkinYoutube extends React.Component {
     this.uiLog = document.getElementById('idLog');
 
     this.vopPlayButton = this.vopSkinContainer.querySelector('.vop-play-button');
-    this.vopVolumeButton = this.vopSkinContainer.querySelector('.vop-mute-button');
+    this.vopVolumeButton = this.vopSkinContainer.querySelector('.vop-volume-button');
     this.vopPauseButton = this.vopSkinContainer.querySelector('.vop-pause-button');
     this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
     this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
