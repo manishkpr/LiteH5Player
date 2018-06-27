@@ -1,65 +1,65 @@
+@import 'ui_variables';
 
-
-#{$prefix} .vop-style-play {
+.#{$prefix} .vop-style-play {
   background-image: url(../img/ic_play_arrow_24px.svg);
 }
 
-#{$prefix} .vop-style-pause {
+.#{$prefix} .vop-style-pause {
   background-image: url(../img/ic_pause_24px.svg);
 }
 
-.vop-skin-container .vop-style-play-giant {
+.#{$prefix} .vop-style-play-giant {
   background-image: url(../img/ic_play_arrow_48px.svg);
 }
 
-.vop-skin-container .vop-style-pause-giant {
+.#{$prefix} .vop-style-pause-giant {
   background-image: url(../img/ic_pause_48px.svg);
 }
 
-.vop-skin-container .vop-style-replay {
+.#{$prefix} .vop-style-replay {
   background-image: url(../img/ic_replay_24px.svg);
 }
 
-.vop-skin-container .vop-style-volumedown {
+.#{$prefix} .vop-style-volumedown {
   background-image: url(../img/ic_volume_down_24px.svg)
 }
 
-.vop-skin-container .vop-style-volumeup {
+.#{$prefix} .vop-style-volumeup {
   background-image: url(../img/ic_volume_up_24px.svg)
 }
 
-.vop-skin-container .vop-style-volumeoff {
+.#{$prefix} .vop-style-volumeoff {
   background-image: url(../img/ic_volume_off_24px.svg)
 }
 
-.vop-skin-container .vop-style-subtitles {
+.#{$prefix} .vop-style-subtitles {
   background-image: url(../img/ic_subtitles_24px.svg)
 }
 
-.vop-skin-container .vop-style-settings {
+.#{$prefix} .vop-style-settings {
   background-image: url(../img/ic_settings_24px.svg)
 }
 
-.vop-skin-container .vop-style-fullscreen {
+.#{$prefix} .vop-style-fullscreen {
   background-image: url(../img/ic_fullscreen_24px.svg)
 }
 
-.vop-skin-container .vop-style-fullscreen-exit {
+.#{$prefix} .vop-style-fullscreen-exit {
   background-image: url(../img/ic_fullscreen_exit_24px.svg)
 }
 
-.vop-skin-container .vop-style-play,
-.vop-skin-container .vop-style-pause,
-.vop-skin-container .vop-style-play-giant,
-.vop-skin-container .vop-style-pause-giant,
-.vop-skin-container .vop-style-replay,
-.vop-skin-container .vop-style-volumedown,
-.vop-skin-container .vop-style-volumeup,
-.vop-skin-container .vop-style-volumeoff,
-.vop-skin-container .vop-style-subtitles,
-.vop-skin-container .vop-style-settings,
-.vop-skin-container .vop-style-fullscreen,
-.vop-skin-container .vop-style-fullscreen-exit {
+.#{$prefix} .vop-style-play,
+.#{$prefix} .vop-style-pause,
+.#{$prefix} .vop-style-play-giant,
+.#{$prefix} .vop-style-pause-giant,
+.#{$prefix} .vop-style-replay,
+.#{$prefix} .vop-style-volumedown,
+.#{$prefix} .vop-style-volumeup,
+.#{$prefix} .vop-style-volumeoff,
+.#{$prefix} .vop-style-subtitles,
+.#{$prefix} .vop-style-settings,
+.#{$prefix} .vop-style-fullscreen,
+.#{$prefix} .vop-style-fullscreen-exit {
   background-position: center;
   background-repeat: no-repeat;
 }

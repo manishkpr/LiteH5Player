@@ -1,0 +1,64 @@
+$prefix: 'vop-skin-youtube' !default;
+
+/* variables */
+$videoContainer_bkClr: black;
+
+$zIndex_video: 1;
+$zIndex_ads_container: 1;
+$zIndex_gradient_bottom: 2;
+$zIndex_caption_window: 3;
+$zIndex_tooltip: 10;
+$zIndex_spinner: 20;
+$zIndex_giant_button_container: 30;
+$zIndex_skin_container: 40;
+$zIndex_control_bar: 50;
+$zIndex_logo: 60;
+
+
+/************ Begin containers ************/
+.html5-video-player {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 640px;
+  height: 360px;
+  font-size: 11px; /* set the font-size of html5 player*/
+}
+
+.vop-video-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: $videoContainer_bkClr;
+}
+
+.vop-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.vop-caption-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.vop-ads-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.vop-skin-youtube {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: $zIndex_skin_container;
+}
+/************ End containers ************/
+

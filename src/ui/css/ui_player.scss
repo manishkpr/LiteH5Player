@@ -1,66 +1,7 @@
-$videoContainer_bkClr: black;
-
-$zIndex_video: 1;
-$zIndex_ads_container: 1;
-$zIndex_gradient_bottom: 2;
-$zIndex_caption_window: 3;
-$zIndex_tooltip: 10;
-$zIndex_spinner: 20;
-$zIndex_giant_button_container: 30;
-$zIndex_skin_container: 40;
-$zIndex_control_bar: 50;
-$zIndex_logo: 60;
-
-
-/************ Begin containers ************/
-.html5-video-player {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 640px;
-  height: 360px;
-  font-size: 11px; /* set the font-size of html5 player*/
-}
-
-.vop-video-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: $videoContainer_bkClr;
-}
-
-.vop-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.vop-caption-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  pointer-events: none;
-}
-
-.vop-ads-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-}
-
-.vop-skin-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  z-index: $zIndex_skin_container;
-}
-/************ End containers ************/
+@import 'ui_variables';
 
 /************ Begin Tooltip ************/
-.vop-skin-container .vop-tooltip {
+.#{$prefix} .vop-tooltip {
   position: absolute;
 
   bottom: 50px;
@@ -68,18 +9,18 @@ $zIndex_logo: 60;
   display: none;
 }
 
-.vop-skin-container .vop-tooltip-bg {
+.#{$prefix} .vop-tooltip-bg {
   position: relative;
   background-color: #000;
   display: none;
 }
 
-.vop-skin-container .vop-tooltip-text-wrapper {
+.#{$prefix} .vop-tooltip-text-wrapper {
   /*background-color: orange;*/
   border-radius: 3px;
 }
 
-.vop-skin-container .vop-tooltip-text {
+.#{$prefix} .vop-tooltip-text {
   display: block;
   color: white;
   border-radius: 2px;
@@ -87,17 +28,17 @@ $zIndex_logo: 60;
   background-color: rgba(28,28,28,0.9);
 }
 
-.vop-skin-container .vop-preview {
+.#{$prefix} .vop-preview {
   padding: 2px;
   background-color: rgba(28,28,28,0.9);
   border-radius: 2px
 }
 
-.vop-skin-container .vop-preview .vop-tooltip-bg {
+.#{$prefix} .vop-preview .vop-tooltip-bg {
   display: block;
 }
 
-.vop-skin-container .vop-preview .vop-tooltip-text-wrapper {
+.#{$prefix} .vop-preview .vop-tooltip-text-wrapper {
   position: absolute;
   bottom: 5px;
   left: 0;
@@ -105,14 +46,14 @@ $zIndex_logo: 60;
   text-align: center;
 }
 
-.vop-skin-container .vop-preview .vop-tooltip-text {
+.#{$prefix} .vop-preview .vop-tooltip-text {
   display: inline;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0
 }
 /************ End Tooltip ************/
 
-.vop-skin-container .vop-gradient-bottom {
+.#{$prefix} .vop-gradient-bottom {
   width: 100%;
   position: absolute;
   background-repeat: repeat-x;
@@ -123,7 +64,7 @@ $zIndex_logo: 60;
   pointer-events:none;
 }
 
-.vop-skin-container .vop-gradient-bottom {
+.#{$prefix} .vop-gradient-bottom {
   height: 49px;
   padding-top: 49px;
   bottom: 0;
@@ -131,7 +72,7 @@ $zIndex_logo: 60;
   background-position: bottom;
 }
 
-.vop-skin-container .vop-control-bar {
+.#{$prefix} .vop-control-bar {
   position: absolute;
   left: 12px;
   right: 12px;
@@ -147,22 +88,22 @@ $zIndex_logo: 60;
   transition:opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
 
-.vop-skin-container .vop-progress-bar {
+.#{$prefix} .vop-progress-bar {
   position: relative;
   height: 5px;
   cursor: pointer;
   outline: none;
 }
 
-.vop-skin-container .vop-progress-list {
+.#{$prefix} .vop-progress-list {
   background: rgba(255,255,255,.2);
   height: 100%;
   width: 100%;
 }
 
-.vop-skin-container .vop-load-progress,
-.vop-skin-container .vop-play-progress,
-.vop-skin-container .vop-hover-progress {
+.#{$prefix} .vop-load-progress,
+.#{$prefix} .vop-play-progress,
+.#{$prefix} .vop-hover-progress {
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -175,17 +116,17 @@ $zIndex_logo: 60;
   transform-origin: 0 0;
 }
 
-.vop-skin-container .vop-load-progress {
+.#{$prefix} .vop-load-progress {
   background: rgba(255,255,255,.4);
   transform: scaleX(0.4);
 }
 
-.vop-skin-container .vop-play-progress {
+.#{$prefix} .vop-play-progress {
   background-color: red;
   transform: scaleX(0.5);
 }
 
-.vop-skin-container .vop-hover-progress {
+.#{$prefix} .vop-hover-progress {
   background: rgba(255,255,255,.5);
   opacity: 0;
   -moz-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
@@ -193,11 +134,11 @@ $zIndex_logo: 60;
   transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
 }
 
-.vop-skin-container .vop-progress-bar:hover .vop-hover-progress {
+.#{$prefix} .vop-progress-bar:hover .vop-hover-progress {
   opacity: 1;
 }
 
-.vop-skin-container .vop-scrubber-container {
+.#{$prefix} .vop-scrubber-container {
   position:absolute;
   height:13px;
   width:13px;
@@ -209,24 +150,24 @@ $zIndex_logo: 60;
   pointer-events: none;
 }
 
-.vop-skin-container .vop-controls {
+.#{$prefix} .vop-controls {
   position: relative;
   height: 36px;
   overflow: hidden; /*Hide controls if the rectangle is too small.*/
 }
 
-.vop-skin-container .vop-left-controls {
+.#{$prefix} .vop-left-controls {
   height: 100%;
   float: left;
 }
 
-.vop-skin-container .vop-right-controls {
+.#{$prefix} .vop-right-controls {
   height: 100%;
   float: right;
 }
 
 /************ Begin custom button ************/
-.vop-skin-container .vop-button {
+.#{$prefix} .vop-button {
   width: 36px;
   height: 36px;
   border: 0;
@@ -243,24 +184,24 @@ $zIndex_logo: 60;
   user-select: none;
 }
 
-.vop-skin-container .vop-button:focus,
-.vop-skin-container .vop-button {
+.#{$prefix} .vop-button:focus,
+.#{$prefix} .vop-button {
   outline:0
 }
 
-.vop-skin-container .vop-button::-moz-focus-inner {
+.#{$prefix} .vop-button::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
 
-.vop-skin-container .vop-play-button,
-.vop-skin-container .vop-mute-button,
-.vop-skin-container .vop-volume-panel,
-.vop-skin-container .vop-time-display {
+.#{$prefix} .vop-play-button,
+.#{$prefix} .vop-mute-button,
+.#{$prefix} .vop-volume-panel,
+.#{$prefix} .vop-time-display {
   float: left;
 }
 
-.vop-skin-container .vop-play-button::before {
+.#{$prefix} .vop-play-button::before {
   content: '';
   display: block;
   height: 100%;
@@ -271,7 +212,7 @@ $zIndex_logo: 60;
 }
 
 /* time unit */
-.vop-skin-container .vop-time-display {
+.#{$prefix} .vop-time-display {
   padding-left: 6px;
   width: auto;
   height: 100%;
@@ -286,7 +227,7 @@ $zIndex_logo: 60;
   user-select: none;
 }
 
-.vop-skin-container .vop-time-text {
+.#{$prefix} .vop-time-text {
   color: white;
   display: table-cell;
   vertical-align: middle;
@@ -294,20 +235,20 @@ $zIndex_logo: 60;
 /************ End custom button ************/
 
 /************ Begin volume bar ************/
-.vop-skin-container .vop-volume-panel {
+.#{$prefix} .vop-volume-panel {
   width: 52px;
   height: 100%;
   cursor: pointer;
 }
 
-.vop-skin-container .vop-volume-slider {
+.#{$prefix} .vop-volume-slider {
   position:relative;
   top:50%;
   height:3px;
   background-color: #fff;
 }
 
-.vop-skin-container .vop-volume-slider-handle {
+.#{$prefix} .vop-volume-slider-handle {
   position: absolute;
   top: 50%;
   width: 10px;
@@ -319,7 +260,7 @@ $zIndex_logo: 60;
 /************ End volume bar ************/
 
 /************ Begin vop popup menu ************/
-.vop-skin-container .vop-popup {
+.#{$prefix} .vop-popup {
   position: absolute;
   overflow-x: auto;
   max-height: 240px;
@@ -334,19 +275,19 @@ $zIndex_logo: 60;
   -webkit-user-select: none;
 }
 
-.vop-skin-container .vop-settings-menu {
+.#{$prefix} .vop-settings-menu {
   right: 11px;
   bottom: 45px;
 }
 
-.vop-skin-container .vop-panel {
+.#{$prefix} .vop-panel {
   bottom: 0;
   right: 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.vop-skin-container .vop-panel-header {
+.#{$prefix} .vop-panel-header {
   border-bottom: 1px solid rgba(255,255,255,0.2);
   line-height: inherit;
   font-size: 109%;
@@ -356,7 +297,7 @@ $zIndex_logo: 60;
   white-space: nowrap;
 }
 
-.vop-skin-container .vop-panel-title {
+.#{$prefix} .vop-panel-title {
   font-weight: 500;
   padding: 0 10px 0 35px;
   width: 100%;
@@ -375,13 +316,13 @@ $zIndex_logo: 60;
   outline: 0px;
 }
 
-.vop-skin-container .vop-panel-title[role=plain] {
+.#{$prefix} .vop-panel-title[role=plain] {
   background-image: none;
   padding: 0;
   font-size: 18px;
 }
 
-.vop-skin-container .vop-panel-menu {
+.#{$prefix} .vop-panel-menu {
   padding: 6px 0;
   box-sizing: border-box;
   color: #eee;
@@ -389,7 +330,7 @@ $zIndex_logo: 60;
   display: table;
 }
 
-.vop-skin-container .vop-menuitem {
+.#{$prefix} .vop-menuitem {
   width: 100%;
   height: 33px;
   cursor: pointer;
@@ -398,11 +339,11 @@ $zIndex_logo: 60;
   outline: 0px;
 }
 
-.vop-skin-container .vop-menuitem:hover {
+.#{$prefix} .vop-menuitem:hover {
   background-color: rgba(255,255,255,.1);
 }
 
-.vop-skin-container .vop-menuitem-label {
+.#{$prefix} .vop-menuitem-label {
   display: table-cell;
   vertical-align: middle;
   padding: 0 15px;
@@ -411,7 +352,7 @@ $zIndex_logo: 60;
   font-weight: 500;
 }
 
-.vop-skin-container .vop-menuitem-content {
+.#{$prefix} .vop-menuitem-content {
   display: table-cell;
   vertical-align: middle;
   padding: 0 15px;
@@ -419,12 +360,12 @@ $zIndex_logo: 60;
   text-align: right;
 }
 
-.vop-skin-container .vop-menuitem-content-text {
+.#{$prefix} .vop-menuitem-content-text {
   font-size: 80%;
   color: #ccc;
 }
 
-.vop-skin-container .vop-menuitem-toggle-checkbox {
+.#{$prefix} .vop-menuitem-toggle-checkbox {
   height: 14px;
   width: 36px;
   float: right;
@@ -440,7 +381,7 @@ $zIndex_logo: 60;
   transform: scale(1)
 }
 
-.vop-skin-container .vop-menuitem-toggle-checkbox:after {
+.#{$prefix} .vop-menuitem-toggle-checkbox:after {
   content: '';
   position: absolute;
   top: 0;
@@ -456,14 +397,14 @@ $zIndex_logo: 60;
   transition: all .08s cubic-bezier(0.4,0.0,1,1)
 }
 
-.vop-skin-container .vop-menuitem[role=menuitemradio]
+.#{$prefix} .vop-menuitem[role=menuitemradio]
  .vop-menuitem-label {
   padding-left: 35px;
   padding-right: 20px;
   border-bottom: none;
 }
 
-.vop-skin-container .vop-menuitem[role=menuitemradio][aria-checked=true]
+.#{$prefix} .vop-menuitem[role=menuitemradio][aria-checked=true]
   .vop-menuitem-label {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJNOSAxNi4yTDQuOCAxMmwtMS40IDEuNEw5IDE5IDIxIDdsLTEuNC0xLjRMOSAxNi4yeiIgZmlsbD0iI2ZmZiIgLz48L3N2Zz4=);
   background-repeat: no-repeat;
@@ -473,7 +414,7 @@ $zIndex_logo: 60;
   background-position: left 10px center;
 }
 
-.vop-skin-container .vop-menuitem[aria-haspopup=true]
+.#{$prefix} .vop-menuitem[aria-haspopup=true]
   .vop-menuitem-content {
   background-repeat: no-repeat;
   background-position: right 9px center;
@@ -484,12 +425,12 @@ $zIndex_logo: 60;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwJSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIxMDAlIj48cGF0aCBkPSJtIDEyLjU5LDIwLjM0IDQuNTgsLTQuNTkgLTQuNTgsLTQuNTkgMS40MSwtMS40MSA2LDYgLTYsNiB6IiBmaWxsPSIjZmZmIiAvPjwvc3ZnPg==);
 }
 
-.vop-skin-container .vop-menuitem[aria-checked="true"]
+.#{$prefix} .vop-menuitem[aria-checked="true"]
   .vop-menuitem-toggle-checkbox {
   background: #f00
 }
 
-.vop-skin-container .vop-menuitem[aria-checked="true"]
+.#{$prefix} .vop-menuitem[aria-checked="true"]
   .vop-menuitem-toggle-checkbox:after {
   background-color: #fff;
   -moz-transform: translateX(16px);
@@ -516,7 +457,7 @@ $zIndex_logo: 60;
 /************ End auto-hide ************/
 
 /************ Begin caption window ************/
-.vop-skin-container .vop-caption-window {
+.#{$prefix} .vop-caption-window {
   position: absolute;
   top: 128px;
   width: 100%;
@@ -536,7 +477,7 @@ $zIndex_logo: 60;
 /************ End caption window ************/
 
 /************ Begin loading animation ************/
-.vop-skin-container .vop-spinner {
+.#{$prefix} .vop-spinner {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -547,7 +488,7 @@ $zIndex_logo: 60;
   display: none;
 }
 
-.vop-skin-container .vop-spinner-container {
+.#{$prefix} .vop-spinner-container {
   pointer-events: none;
   position: absolute;
   width: 100%;
@@ -560,7 +501,7 @@ $zIndex_logo: 60;
   -webkit-animation: vop-spinner-linspin 1568.23529647ms linear infinite;
 }
 
-.vop-skin-container .vop-spinner-rotator {
+.#{$prefix} .vop-spinner-rotator {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -568,7 +509,7 @@ $zIndex_logo: 60;
   animation: vop-spinner-easespin 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both;
 }
 
-.vop-skin-container .vop-spinner-left {
+.#{$prefix} .vop-spinner-left {
   position: absolute;
   top: 0;
   left: 0;
@@ -576,7 +517,7 @@ $zIndex_logo: 60;
   overflow: hidden
 }
 
-.vop-skin-container .vop-spinner-right {
+.#{$prefix} .vop-spinner-right {
   position: absolute;
   top: 0;
   right: 0;
@@ -584,15 +525,15 @@ $zIndex_logo: 60;
   overflow: hidden
 }
 
-.vop-skin-container .vop-spinner-left {
+.#{$prefix} .vop-spinner-left {
   right: 49%
 }
 
-.vop-skin-container .vop-spinner-right {
+.#{$prefix} .vop-spinner-right {
   left: 49%
 }
 
-.vop-skin-container .vop-spinner-circle {
+.#{$prefix} .vop-spinner-circle {
   box-sizing: border-box;
   position: absolute;
   width: 200%;
@@ -603,7 +544,7 @@ $zIndex_logo: 60;
   border-width: 6px
 }
 
-.vop-skin-container .vop-spinner-left .vop-spinner-circle {
+.#{$prefix} .vop-spinner-left .vop-spinner-circle {
   left: 0;
   right: -100%;
   border-right-color: transparent;
@@ -611,7 +552,7 @@ $zIndex_logo: 60;
   animation: vop-spinner-left-spin 1333ms cubic-bezier(0.4,0.0,0.2,1) infinite both;
 }
 
-.vop-skin-container .vop-spinner-right .vop-spinner-circle {
+.#{$prefix} .vop-spinner-right .vop-spinner-circle {
   left: -100%;
   right: 0;
   border-left-color: transparent;
@@ -755,7 +696,7 @@ $zIndex_logo: 60;
   }
 }
 
-.vop-skin-container .vop-buffering .vop-spinner {
+.#{$prefix} .vop-buffering .vop-spinner {
   display: block;
 }
 
@@ -764,7 +705,7 @@ $zIndex_logo: 60;
 /************ End loading animation ************/
 
 /************ Begin giant button ************/
-.vop-skin-container .vop-giant-button-container {
+.#{$prefix} .vop-giant-button-container {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -800,7 +741,7 @@ $zIndex_logo: 60;
   }
 }
 
-.vop-skin-container .vop-giant-button {
+.#{$prefix} .vop-giant-button {
   width: 48px;
   height: 48px;
   background-image: url(../img/ic_play_arrow_48px.svg);
@@ -812,7 +753,7 @@ $zIndex_logo: 60;
 /************ End giant button ************/
 
 /************ Begin logo ************/
-.vop-skin-container .vop-logo {
+.#{$prefix} .vop-logo {
   position: absolute;
   z-index: $zIndex_logo;
   top: 6px;
@@ -820,6 +761,5 @@ $zIndex_logo: 60;
   cursor: pointer;
 }
 /************ End logo ************/
-
 
 

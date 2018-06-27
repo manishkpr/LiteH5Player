@@ -56,7 +56,7 @@ class UISkinYoutube extends React.Component {
 
   render() {
     return (
-      <div className="vop-skin-container"
+      <div className="vop-skin-youtube"
         onClick={this.onPlayerClick.bind(this)}
         onMouseEnter={this.onPlayerMouseEnter.bind(this)}
         onMouseMove={this.onPlayerMouseMove.bind(this)}
@@ -460,7 +460,7 @@ class UISkinYoutube extends React.Component {
     this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
-    this.vopSkinContainer = document.querySelector('.vop-skin-container');
+    this.vopSkinContainer = document.querySelector('.vop-skin-youtube');
 
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
