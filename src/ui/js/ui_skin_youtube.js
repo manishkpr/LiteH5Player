@@ -5,13 +5,14 @@ import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
 
-import UISubtitleMenu from './ui_subtitle_menu';
-import UISettingMenu from './ui_setting_menu';
-import UIQualityMenu from './ui_quality_menu';
-import UIAudioTrackMenu from './ui_audio_track_menu';
-import UIFccMenu from './ui_fcc_menu';
-import UIFccPropertyMenu from './ui_fcc_property_menu';
-import UIXSpeedMenu from './ui_xspeed_menu';
+// Menu Part
+import UISubtitleMenu from './components/ui_subtitle_menu';
+import UISettingMenu from './components/ui_setting_menu';
+import UIQualityMenu from './components/ui_quality_menu';
+import UIAudioTrackMenu from './components/ui_audio_track_menu';
+import UIFccMenu from './components/ui_fcc_menu';
+import UIFccPropertyMenu from './components/ui_fcc_property_menu';
+import UIXSpeedMenu from './components/ui_xspeed_menu';
 
 import UIVolumeToggleButton from './components/ui_volumetogglebutton';
 import UIVolumeBar from './components/ui_volumebar';
