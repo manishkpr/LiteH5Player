@@ -15,6 +15,7 @@ class CoreEvents {
     this.MEDIA_LOADEDDATA = 'mediaLoadedData';
     this.MEDIA_LOADEDMETADATA = 'mediaLoadedMetadata';
     this.MEDIA_PAUSED = 'mediaPaused';
+    this.MEDIA_PLAY = 'mediaPlay';
     this.MEDIA_PLAYING = 'mediaPlaying';
     this.MEDIA_SEEKING = 'mediaSeeking';
     this.MEDIA_SEEKED = 'mediaSeeked';

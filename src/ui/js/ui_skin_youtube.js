@@ -13,11 +13,13 @@ import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 
-import UIVolumeToggleButton from './components/volumetogglebutton';
-import UIVolumeBar from './components/volumebar';
+import UIVolumeToggleButton from './components/ui_volumetogglebutton';
+import UIVolumeBar from './components/ui_volumebar';
 
-import UIBufferingOverlay from './components/bufferingoverlay';
-import UILogo from './components/logo';
+import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
+import UIBufferingOverlay from './components/ui_bufferingoverlay';
+import UILogo from './components/ui_logo';
+
 
 class UISkinYoutube extends React.Component {
   constructor(props) {
@@ -144,9 +146,7 @@ class UISkinYoutube extends React.Component {
         <div className="vop-caption-window">
         </div>
         <UIBufferingOverlay main={this}/>
-        <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
-          <div className="vop-giant-button"></div>
-        </div>
+        <UIGiantButtonOverlay main={this}/>
         <UILogo />
       </div>
     )
@@ -185,8 +185,6 @@ class UISkinYoutube extends React.Component {
     this.vopSettingsMenu;
     this.vopPanel;
     this.vopPanelMenu;
-    this.uiGiantBtnContainer;
-    this.uiGiantButton;
 
     this.uiLog = null;
 
@@ -471,9 +469,6 @@ class UISkinYoutube extends React.Component {
     this.vopSettingsMenu = this.vopSkinContainer.querySelector('.vop-settings-menu');
     this.vopPanel = this.vopSettingsMenu.querySelector('.vop-panel');
     this.vopPanelMenu = this.vopSettingsMenu.querySelector('.vop-panel-menu');
-
-    this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
-    this.uiGiantButton = document.querySelector('.vop-giant-button');
 
     //
     this.vopVideo = document.querySelector('.vop-video');
@@ -858,17 +853,6 @@ class UISkinYoutube extends React.Component {
     }
   }
 
-  updateGiantPlayBtnUI(paused) {
-    UITools.removeClass(this.uiGiantButton, 'vop-style-play-giant');
-    UITools.removeClass(this.uiGiantButton, 'vop-style-pause-giant');
-    if (paused) {
-      UITools.addClass(this.uiGiantButton, 'vop-style-pause-giant');
-    } else {
-      UITools.addClass(this.uiGiantButton, 'vop-style-play-giant');
-    }
-    this.uiGiantBtnContainer.style.display = 'block';
-  }
-
   updateContentVolumeBarUI(muted, volume) {
     var uiVolumeIcon;
     var uiVolumeList;
@@ -1000,7 +984,6 @@ class UISkinYoutube extends React.Component {
 
       // update ui
       this.updatePlayBtnUI(newPaused, currEnded);
-      this.updateGiantPlayBtnUI(newPaused);
 
       // update logic
       if (this.isPlayerActive()) {
@@ -1016,10 +999,6 @@ class UISkinYoutube extends React.Component {
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
-  }
-
-  onGiantAnimationEnd(e) {
-    this.uiGiantBtnContainer.style.display = 'none';
   }
 
   onPopupMenuMouseDown(e) {

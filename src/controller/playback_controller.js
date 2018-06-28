@@ -275,6 +275,7 @@ function PlaybackController() {
 
   function onMediaPlay() {
     debug_.log('+Native video element event: play');
+    eventBus_.trigger(Events.MEDIA_PLAY);
   }
 
   function onMediaPlaying() {
