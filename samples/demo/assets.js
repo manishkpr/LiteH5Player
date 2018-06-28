@@ -152,9 +152,9 @@ function getMediaInfo() {
     //url: 'http://localhost/2/dash/testpic_2s/video.mpd',
     //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
-    //url: 'http://localhost/2/dash/features/av_nonmuxed/V300_with_cc1_and_cc3/first20.mp4',
+    url: 'http://localhost/2/dash/testpic_2s/V300_with_cc1_and_cc3/first200.mp4',
     //url: 'http://localhost/2/pd/mp4/trailer/test.mp4',
-    url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
+    //url: 'http://localhost/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
     //url: 'http://localhost/2/pd/fmp4/pure_audio_01.mp4',
     //url: 'http://localhost/2/pd/mp4/metrics/test.mp4',
