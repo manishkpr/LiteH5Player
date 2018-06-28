@@ -578,9 +578,6 @@
       transform: rotate(-130deg)
     }
   }
-  .vop-buffering .vop-spinner {
-    display: block;
-  }
   /************ End loading animation ************/
   /************ Begin giant button ************/
   .vop-giant-button-container {
@@ -635,6 +632,11 @@
   /************ End logo ************/
 }
 
+/************ Begin buffering ************/
+.vop-buffering .vop-spinner {
+  display: block;
+}
+/************ End buffering ************/
 
 /************ Begin auto-hide ************/
 .vop-autohide {

@@ -2,7 +2,6 @@ import React from 'react';
 import ResizeSensor from 'resize-sensor';
 
 import '../css/ui_skin_youtube.scss';
-import '../assets/img/logo.png';
 
 import UITools from './ui_tools';
 
@@ -16,6 +15,8 @@ import UIXSpeedMenu from './ui_xspeed_menu';
 
 import UIVolumeToggleButton from './components/volumetogglebutton';
 import UIVolumeBar from './components/volumebar';
+
+import UILogo from './components/logo';
 
 class UISkinYoutube extends React.Component {
   constructor(props) {
@@ -158,13 +159,7 @@ class UISkinYoutube extends React.Component {
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="vop-giant-button"></div>
         </div>
-        <div className="vop-logo"
-          onClick={this.onLogoClick.bind(this)}
-          onMouseDown={this.onLogoMouseDown.bind(this)}>
-          <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
-            <img src="./assets/img/logo.png"></img>
-          </a>
-        </div>
+        <UILogo />
       </div>
     )
   }
@@ -565,9 +560,6 @@ class UISkinYoutube extends React.Component {
       // init chromecast sender
       this.castSender_ = new oldmtn.CastSender(receiverAppId);
     }
-
-    // update state machine
-    this.updateUIStateMachine('inited');
   }
 
   uninitPlayerListeners() {
@@ -706,11 +698,11 @@ class UISkinYoutube extends React.Component {
   }
 
   startBufferingUI() {
-    UITools.addClass(this.vopPlayer, 'vop-buffering');
+    UITools.addClass(this.vopSkinContainer, 'vop-buffering');
   }
 
   stopBufferingUI() {
-    UITools.removeClass(this.vopPlayer, 'vop-buffering');
+    UITools.removeClass(this.vopSkinContainer, 'vop-buffering');
   }
 
   // begin progress bar
@@ -1052,14 +1044,6 @@ class UISkinYoutube extends React.Component {
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
-  }
-
-  onLogoClick(e) {
-    e.stopPropagation();
-  }
-
-  onLogoMouseDown(e) {
-    e.stopPropagation();
   }
 
   onGiantAnimationEnd(e) {
