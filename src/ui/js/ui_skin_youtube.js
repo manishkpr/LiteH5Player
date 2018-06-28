@@ -17,8 +17,10 @@ import UIVolumeToggleButton from './components/ui_volumetogglebutton';
 import UIVolumeBar from './components/ui_volumebar';
 
 import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
-import UIBufferingOverlay from './components/ui_bufferingoverlay';
+import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogo from './components/ui_logo';
+
+import UIFullscreenToggleButton from './components/ui_fullscreentogglebutton';
 
 
 class UISkinYoutube extends React.Component {
@@ -137,9 +139,7 @@ class UISkinYoutube extends React.Component {
               <button className="vop-button vop-settings-button vop-style-settings" title="settings"
                 onClick={this.onUICmdSettings.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <button className="vop-button vop-fullscreen-button vop-style-fullscreen" title="fullscreen"
-                onClick={this.onUICmdFullscreen.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <UIFullscreenToggleButton main={this} />
             </div>
           </div>
         </div>
@@ -1052,15 +1052,6 @@ class UISkinYoutube extends React.Component {
     }
 
     this.updateUIState();
-  }
-
-  onUICmdFullscreen() {
-    printLog('+onBtnFullscreen');
-    if (this.player_.isFullscreen()) {
-      UITools.leaveFullscreen();
-    } else {
-      UITools.enterFullscreen(this.playerContainer);
-    }
   }
 
   onBtnSeek() {
