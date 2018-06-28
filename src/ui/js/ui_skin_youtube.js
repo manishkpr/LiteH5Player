@@ -16,6 +16,7 @@ import UIXSpeedMenu from './ui_xspeed_menu';
 import UIVolumeToggleButton from './components/volumetogglebutton';
 import UIVolumeBar from './components/volumebar';
 
+import UIBufferingOverlay from './components/bufferingoverlay';
 import UILogo from './components/logo';
 
 class UISkinYoutube extends React.Component {
@@ -142,20 +143,7 @@ class UISkinYoutube extends React.Component {
         </div>
         <div className="vop-caption-window">
         </div>
-        <div className="vop-spinner">
-          <div className="vop-spinner-container">
-            <div className="vop-spinner-rotator">
-              <div className="vop-spinner-left">
-                <div className="vop-spinner-circle">
-                </div>
-              </div>
-              <div className="vop-spinner-right">
-                <div className="vop-spinner-circle">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <UIBufferingOverlay main={this}/>
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="vop-giant-button"></div>
         </div>
@@ -435,9 +423,7 @@ class UISkinYoutube extends React.Component {
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
-    this.onMediaWaiting = this.onMediaWaiting.bind(this);
-    this.onMediaPlaying = this.onMediaPlaying.bind(this);
-
+    
     this.onLog = this.onLog.bind(this);
 
     // ad callback event
@@ -537,8 +523,6 @@ class UISkinYoutube extends React.Component {
     this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
-    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
     this.player_.on(oldmtn.Events.LOG, this.onLog);
 
@@ -569,12 +553,10 @@ class UISkinYoutube extends React.Component {
     this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
     this.player_.off(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
-    this.player_.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
     this.player_.off(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
     this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
-    this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
 
     this.player_.off(oldmtn.Events.LOG, this.onLog);
 
@@ -689,20 +671,10 @@ class UISkinYoutube extends React.Component {
         let paused = this.player_.isPaused();
         let ended = this.player_.isEnded();
         this.updatePlayBtnUI(paused, ended);
-
-        this.stopBufferingUI();
         break;
       default:
         break;
     }
-  }
-
-  startBufferingUI() {
-    UITools.addClass(this.vopSkinContainer, 'vop-buffering');
-  }
-
-  stopBufferingUI() {
-    UITools.removeClass(this.vopSkinContainer, 'vop-buffering');
   }
 
   // begin progress bar
@@ -748,7 +720,7 @@ class UISkinYoutube extends React.Component {
     if (isLive) {
       var seekable = this.player_.getSeekableRange();
       var buffered = this.player_.getBufferedRanges();
-      printLog('seekable: ' + TimeRangesToString(seekable) + ', buffered: ' + TimeRangesToString(buffered));
+      printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
 
       // update time display label
       timeText = 'Live';
@@ -1403,14 +1375,6 @@ class UISkinYoutube extends React.Component {
   }
 
   onMediaPaused() {};
-
-  onMediaWaiting() {
-    this.startBufferingUI();
-  }
-
-  onMediaPlaying() {
-    this.stopBufferingUI();
-  }
 
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
