@@ -58,10 +58,11 @@ class UISkinYoutube extends React.Component {
   render() {
     return (
       <div className="vop-skin-youtube"
-        onClick={this.onPlayerClick.bind(this)}
         onMouseEnter={this.onPlayerMouseEnter.bind(this)}
         onMouseMove={this.onPlayerMouseMove.bind(this)}
-        onMouseLeave={this.onPlayerMouseLeave.bind(this)}>
+        onMouseLeave={this.onPlayerMouseLeave.bind(this)}
+        onMouseDown={this.onPlayerMouseDown.bind(this)}
+        onMouseUp={this.onPlayerMouseUp.bind(this)}>
         <div className="vop-tooltip">
           <div className="vop-tooltip-bg"></div>
           <div className="vop-tooltip-text-wrapper">
@@ -100,7 +101,8 @@ class UISkinYoutube extends React.Component {
           </div>
         </div>
         <div className="vop-gradient-bottom"></div>
-        <div className="vop-control-bar" onClick={this.onUICmdControlBarClick.bind(this)}>
+        <div className="vop-control-bar"
+          onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
           <div className="vop-progress-bar"
             onMouseDown={this.onProgressBarMouseDown.bind(this)}
             onMouseMove={this.onProgressBarMouseMove.bind(this)}
@@ -994,7 +996,9 @@ class UISkinYoutube extends React.Component {
   }
 
   ///////////////////////////////////////////////////////////////////
-  onPlayerMouseEnter() {
+  onPlayerMouseEnter(e) {
+    // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
+    //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
     UITools.removeClass(this.vopPlayer, 'vop-autohide');
   }
 
@@ -1007,7 +1011,8 @@ class UISkinYoutube extends React.Component {
     }.bind(this), 3000);
   }
 
-  onPlayerMouseLeave() {
+  onPlayerMouseLeave(e) {
+    //printLog('+onPlayerMouseLeave');
     var paused = this.player_.isPaused();
     var fullscreen = this.player_.isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
@@ -1015,12 +1020,22 @@ class UISkinYoutube extends React.Component {
     }
   }
 
-  onPlayerClick() {
-    if (this.flagAdStarted && this.flagIsLinearAd) {
-      return;
-    }
+  onPlayerMouseDown(e) {
+    printLog('+onPlayerMouseDown');
+    this.flagPlayerMouseDown = true;
+  }
 
-    this.onUICmdPlay();
+  onPlayerMouseUp(e) {
+    printLog('+onPlayerMouseUp');
+    if (this.flagPlayerMouseDown) {
+      this.flagPlayerMouseDown = false;
+
+      if (this.flagAdStarted && this.flagIsLinearAd) {
+        return;
+      }
+
+      this.onUICmdPlay();
+    }
   }
 
   // browser & UI callback functions
@@ -1094,7 +1109,7 @@ class UISkinYoutube extends React.Component {
     e.stopPropagation();
   }
 
-  onUICmdControlBarClick(e) {
+  onUICmdControlBarMouseDown(e) {
     e.stopPropagation();
   }
 

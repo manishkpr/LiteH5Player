@@ -309,7 +309,7 @@ function PlaybackController() {
   }
 
   function onMediaVolumeChanged() {
-    debug_.log('+Native video element event: volumechange, muted: ' + media_.muted + ', volume: ' + media_.volume);
+    //debug_.log('+Native video element event: volumechange, muted: ' + media_.muted + ', volume: ' + media_.volume);
     eventBus_.trigger(Events.MEDIA_VOLUME_CHANGED);
   }
 
