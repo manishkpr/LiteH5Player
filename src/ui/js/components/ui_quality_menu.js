@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 class UIQualityMenu extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   componentDidMount(e) {
@@ -11,7 +13,7 @@ class UIQualityMenu extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'quality_menu') {
+    if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
       var v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -20,11 +22,11 @@ class UIQualityMenu extends React.Component {
   }
 
   render() {
-    console.log('+render, UIQualityMenu: ' + this.props.state.settingMenuUIData.currMenu);
+    console.log('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
-    if (this.props.state.settingMenuUIData.currMenu === 'quality_menu') {
-      const menuitems = this.props.state.settingMenuUIData.qualityList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.props.state.settingMenuUIData.currQualityId === item.id}
+    if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
+      const menuitems = this.main.state.settingMenuUIData.qualityList.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currQualityId === item.id}
           data-id={item.id} onClick={this.onQualityMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onQualityMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">
@@ -49,15 +51,15 @@ class UIQualityMenu extends React.Component {
   }
 
   onQualityMenuBack(e) {
-    this.props.onQualityMenuBack(e);
+    this.main.onQualityMenuBack(e);
   }
 
   onQualityMenuItemClick(e) {
-    this.props.onQualityMenuItemClick(e);
+    this.main.onQualityMenuItemClick(e);
   }
 
   onQualityMenuItemBlur(e) {
-    this.props.onQualityMenuItemBlur(e);
+    this.main.onQualityMenuItemBlur(e);
   }
 }
 

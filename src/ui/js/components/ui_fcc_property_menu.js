@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom';
 class UIFccPropertyMenu extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
+    if (this.main.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
       var v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -16,12 +18,12 @@ class UIFccPropertyMenu extends React.Component {
   }
 
   render() {
-    let currFccPropertyName = this.props.state.settingMenuUIData.currFccPropertyName;
+    let currFccPropertyName = this.main.state.settingMenuUIData.currFccPropertyName;
 
-    if (this.props.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
+    if (this.main.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
       let fccProperty = null;
-      for (let i = 0; i < this.props.state.settingMenuUIData.fccPropertyList.length; i++) {
-        let fccPropertyTmp = this.props.state.settingMenuUIData.fccPropertyList[i];
+      for (let i = 0; i < this.main.state.settingMenuUIData.fccPropertyList.length; i++) {
+        let fccPropertyTmp = this.main.state.settingMenuUIData.fccPropertyList[i];
         if (fccPropertyTmp.name === currFccPropertyName) {
           fccProperty = fccPropertyTmp;
           break;
@@ -61,15 +63,15 @@ class UIFccPropertyMenu extends React.Component {
   }
 
   onMenuBack(e) {
-    this.props.onFccPropertyMenuBack(e);
+    this.main.onFccPropertyMenuBack(e);
   }
 
   onMenuItemClick(e) {
-    this.props.onFccPropertyMenuItemClick(e);
+    this.main.onFccPropertyMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {
-    this.props.onFccPropertyMenuItemBlur(e);
+    this.main.onFccPropertyMenuItemBlur(e);
   }
 }
 

@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 class UISettingMenu extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   componentDidMount(e) {
@@ -11,7 +13,7 @@ class UISettingMenu extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'main_menu') {
+    if (this.main.state.settingMenuUIData.currMenu === 'main_menu') {
       var v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -20,8 +22,8 @@ class UISettingMenu extends React.Component {
   }
 
   render() {
-    if (this.props.state.settingMenuUIData.currMenu === 'main_menu') {
-      const menuitems = this.props.state.settingMenuUIData.mainList.map((item, index) =>
+    if (this.main.state.settingMenuUIData.currMenu === 'main_menu') {
+      const menuitems = this.main.state.settingMenuUIData.mainList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
           data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
@@ -45,11 +47,11 @@ class UISettingMenu extends React.Component {
   }
 
   onMenuItemClick(e) {
-    this.props.onMainMenuItemClick(e);
+    this.main.onMainMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {
-    this.props.onMainMenuItemBlur(e);
+    this.main.onMainMenuItemBlur(e);
   }
 }
 

@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom';
 class UIFccMenu extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'fcc_menu') {
-      var v = document.querySelector('.vop-menuitem');
+    if (this.main.state.settingMenuUIData.currMenu === 'fcc_menu') {
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
@@ -16,10 +18,10 @@ class UIFccMenu extends React.Component {
   }
 
   render() {
-    console.log('+render, UIFccMenu: ' + this.props.state.settingMenuUIData.currMenu);
+    console.log('+render, UIFccMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
-    if (this.props.state.settingMenuUIData.currMenu === 'fcc_menu') {
-      const menuitems = this.props.state.settingMenuUIData.fccPropertyList.map((item, index) =>
+    if (this.main.state.settingMenuUIData.currMenu === 'fcc_menu') {
+      const menuitems = this.main.state.settingMenuUIData.fccPropertyList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
           data-id={item.name} onClick={this.onMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
@@ -48,15 +50,15 @@ class UIFccMenu extends React.Component {
   }
 
   onMenuBack(e) {
-    this.props.onFccMenuBack(e);
+    this.main.onFccMenuBack(e);
   }
 
   onMenuItemClick(e) {
-    this.props.onFccMenuItemClick(e);
+    this.main.onFccMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {
-    this.props.onFccMenuItemBlur(e);
+    this.main.onFccMenuItemBlur(e);
   }
 }
 

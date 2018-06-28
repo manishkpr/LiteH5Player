@@ -6,13 +6,7 @@ import '../css/ui_skin_youtube.scss';
 import UITools from './ui_tools';
 
 // Menu Part
-import UISubtitleMenu from './components/ui_subtitle_menu';
-import UISettingMenu from './components/ui_setting_menu';
-import UIQualityMenu from './components/ui_quality_menu';
-import UIAudioTrackMenu from './components/ui_audio_track_menu';
-import UIFccMenu from './components/ui_fcc_menu';
-import UIFccPropertyMenu from './components/ui_fcc_property_menu';
-import UIXSpeedMenu from './components/ui_xspeed_menu';
+import UIPopupMenu from './components/ui_popup_menu';
 
 import UIVolumeToggleButton from './components/ui_volumetogglebutton';
 import UIVolumeBar from './components/ui_volumebar';
@@ -76,38 +70,7 @@ class UISkinYoutube extends React.Component {
             <span className="vop-tooltip-text">00:00</span>
           </div>
         </div>
-        <div className="vop-popup vop-settings-menu"
-          onMouseDown={this.onPopupMenuMouseDown.bind(this)}>
-          <div className="vop-panel">
-            <UISubtitleMenu state={this.state}
-              onSubtitleMenuBack={this.onSubtitleMenuBack.bind(this)}
-              onSubtitleMenuItemClick={this.onSubtitleMenuItemClick.bind(this)}
-              onSubtitleMenuItemBlur={this.onSubtitleMenuItemBlur.bind(this)} />
-            <UISettingMenu state={this.state}
-              onMainMenuItemClick={this.onMainMenuItemClick.bind(this)}
-              onMainMenuItemBlur={this.onMainMenuItemBlur.bind(this)} />
-            <UIQualityMenu state={this.state}
-              onQualityMenuBack={this.onQualityMenuBack.bind(this)}
-              onQualityMenuItemClick={this.onQualityMenuItemClick.bind(this)}
-              onQualityMenuItemBlur={this.onQualityMenuItemBlur.bind(this)} />
-            <UIAudioTrackMenu state={this.state}
-              onAudioTrackMenuBack={this.onAudioTrackMenuBack.bind(this)}
-              onAudioTrackMenuItemClick={this.onAudioTrackMenuItemClick.bind(this)}
-              onAudioTrackMenuItemBlur={this.onAudioTrackMenuItemBlur.bind(this)} />
-            <UIFccMenu state={this.state}
-              onFccMenuBack={this.onFccMenuBack.bind(this)}
-              onFccMenuItemClick={this.onFccMenuItemClick.bind(this)}
-              onFccMenuItemBlur={this.onFccMenuItemBlur.bind(this)} />
-            <UIFccPropertyMenu state={this.state}
-              onFccPropertyMenuBack={this.onFccPropertyMenuBack.bind(this)}
-              onFccPropertyMenuItemClick={this.onFccPropertyMenuItemClick.bind(this)}
-              onFccPropertyMenuItemBlur={this.onFccPropertyMenuItemBlur.bind(this)} />
-            <UIXSpeedMenu state={this.state}
-              onXSpeedMenuBack={this.onXSpeedMenuBack.bind(this)}
-              onXSpeedMenuItemClick={this.onXSpeedMenuItemClick.bind(this)}
-              onXSpeedMenuItemBlur={this.onXSpeedMenuItemBlur.bind(this)} />
-          </div>
-        </div>
+        <UIPopupMenu main={this} />
         <div className="vop-gradient-bottom"></div>
         <div className="vop-control-bar"
           onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
@@ -183,9 +146,6 @@ class UISkinYoutube extends React.Component {
 
     this.vopSubtitlesBtn;
     this.vopSettingsBtn;
-    this.vopSettingsMenu;
-    this.vopPanel;
-    this.vopPanelMenu;
 
     this.uiLog = null;
 
@@ -465,11 +425,6 @@ class UISkinYoutube extends React.Component {
     this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
     this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
     this.vopFullscreenBtn = this.vopSkinContainer.querySelector('.vop-fullscreen-button');
-
-    // setting panel
-    this.vopSettingsMenu = this.vopSkinContainer.querySelector('.vop-settings-menu');
-    this.vopPanel = this.vopSettingsMenu.querySelector('.vop-panel');
-    this.vopPanelMenu = this.vopSettingsMenu.querySelector('.vop-panel-menu');
 
     //
     this.vopVideo = document.querySelector('.vop-video');
@@ -1000,11 +955,6 @@ class UISkinYoutube extends React.Component {
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
-  }
-
-  onPopupMenuMouseDown(e) {
-    // Don't route 'click' event from panel to its parent div
-    e.stopPropagation();
   }
 
   onUICmdControlBarMouseDown(e) {

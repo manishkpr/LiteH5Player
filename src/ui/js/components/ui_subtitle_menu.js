@@ -4,13 +4,15 @@ import ReactDOM from 'react-dom';
 class UISubtitleMenu extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   componentDidMount(e) {}
 
   componentDidUpdate() {
-    if (this.props.state.settingMenuUIData.currMenu === 'subtitle_menu') {
-      var v = document.querySelector('.vop-menuitem');
+    if (this.main.state.settingMenuUIData.currMenu === 'subtitle_menu') {
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
@@ -18,9 +20,9 @@ class UISubtitleMenu extends React.Component {
   }
 
   render() {
-    if (this.props.state.settingMenuUIData.currMenu === 'subtitle_menu') {
-      const menuitems = this.props.state.settingMenuUIData.subtitleTracks.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.props.state.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
+    if (this.main.state.settingMenuUIData.currMenu === 'subtitle_menu') {
+      const menuitems = this.main.state.settingMenuUIData.subtitleTracks.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.main.state.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
         data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
         tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">
@@ -50,17 +52,17 @@ class UISubtitleMenu extends React.Component {
 
   onMenuBack() {
     console.log('+onMenuBack');
-    this.props.onSubtitleMenuBack();
+    this.main.onSubtitleMenuBack();
   }
 
   onMenuItemClick(e) {
     console.log('+onMenuItemClick');
-    this.props.onSubtitleMenuItemClick(e);
+    this.main.onSubtitleMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {
     console.log('+onMenuItemBlur');
-    this.props.onSubtitleMenuItemBlur(e);
+    this.main.onSubtitleMenuItemBlur(e);
   }
 }
 
