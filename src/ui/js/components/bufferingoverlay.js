@@ -1,6 +1,5 @@
 import React from 'react';
 
-import '../../css/ui_skin_youtube.scss';
 import UITools from '../ui_tools';
 
 class UIBufferingOverlay extends React.Component {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import '../../css/ui_skin_youtube.scss';
 import '../../assets/img/logo.png';
 
 class UILogo extends React.Component {
