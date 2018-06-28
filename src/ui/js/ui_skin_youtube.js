@@ -59,8 +59,8 @@ class UISkinYoutube extends React.Component {
     return (
       <div className="vop-skin-youtube"
         onMouseEnter={this.onPlayerMouseEnter.bind(this)}
-        onMouseMove={this.onPlayerMouseMove.bind(this)}
         onMouseLeave={this.onPlayerMouseLeave.bind(this)}
+        onMouseMove={this.onPlayerMouseMove.bind(this)}
         onMouseDown={this.onPlayerMouseDown.bind(this)}
         onMouseUp={this.onPlayerMouseUp.bind(this)}>
         <div className="vop-tooltip">
@@ -69,7 +69,8 @@ class UISkinYoutube extends React.Component {
             <span className="vop-tooltip-text">00:00</span>
           </div>
         </div>
-        <div className="vop-popup vop-settings-menu" onClick={this.onSettingsMenuClick.bind(this)}>
+        <div className="vop-popup vop-settings-menu"
+          onMouseDown={this.onPopupMenuMouseDown.bind(this)}>
           <div className="vop-panel">
             <UISubtitleMenu state={this.state}
               onSubtitleMenuBack={this.onSubtitleMenuBack.bind(this)}
@@ -120,7 +121,9 @@ class UISkinYoutube extends React.Component {
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <UIVolumeToggleButton player={this.player_} onControlMouseMove={this.onControlMouseMove.bind(this)} />
-              <UIVolumeBar onVolumeSliderMouseDown={this.onVolumeSliderMouseDown.bind(this)} />
+              <UIVolumeBar
+                onVolumeSliderMouseDown={this.onVolumeSliderMouseDown.bind(this)}
+                onVolumePanelMouseMove={this.onControlMouseMove.bind(this)}/>
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">
@@ -155,7 +158,9 @@ class UISkinYoutube extends React.Component {
         <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="vop-giant-button"></div>
         </div>
-        <div className="vop-logo" onClick={this.onLogoClick.bind(this)}>
+        <div className="vop-logo"
+          onClick={this.onLogoClick.bind(this)}
+          onMouseDown={this.onLogoMouseDown.bind(this)}>
           <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">
             <img src="./assets/img/logo.png"></img>
           </a>
@@ -947,63 +952,16 @@ class UISkinYoutube extends React.Component {
     }
   }
 
-  docVolumeSliderMousemove(e) {
-    this.updateVolumeMovePosition(e);
-
-    var muted = this.player_.isMuted();
-    var volume = this.valueVolumeMovePosition;
-    if (volume === 0) {
-      // do nothing
-    } else {
-      if (muted === true) {
-        this.player_.unmute();
-      }
-
-      muted = false;
-    }
-
-    this.player_.setVolume(this.valueVolumeMovePosition);
-  }
-
-  docVolumeSliderMouseup(e) {
-    printLog('+docVolumeSliderMouseup');
-    this.releaseVolumeSliderMouseEvents();
-    e.preventDefault();
-
-    this.flagVolumeSliderMousedown = false;
-
-    // if mouse up out of 'vop-shade', hide control bar directly
-    var pt = {
-      x: e.clientX,
-      y: e.clientY
-    };
-    if (!UITools.isPtInElement(pt, this.vopPlayer)) {
-      this.onPlayerMouseLeave();
-    }
-  }
-
-  captureVolumeSliderMouseEvents() {
-    this.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
-    this.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
-
-    document.addEventListener('mousemove', this.newVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', this.newVolumeSliderMouseup, true);
-  }
-
-  releaseVolumeSliderMouseEvents() {
-    document.removeEventListener('mousemove', this.newVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
-  }
-
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter(e) {
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
-    //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
+    printLog('+onPlayerMouseEnter, element: ' + e.target.className);
     UITools.removeClass(this.vopPlayer, 'vop-autohide');
   }
 
   onPlayerMouseMove(e) {
-    //printLog('+onPlayerMouseMove');
+    let element_name = (e && e.target) ? e.target.className : 'null';
+    printLog('+onPlayerMouseMove, element: ' + element_name);
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
       printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
@@ -1100,11 +1058,15 @@ class UISkinYoutube extends React.Component {
     e.stopPropagation();
   }
 
+  onLogoMouseDown(e) {
+    e.stopPropagation();
+  }
+
   onGiantAnimationEnd(e) {
     this.uiGiantBtnContainer.style.display = 'none';
   }
 
-  onSettingsMenuClick(e) {
+  onPopupMenuMouseDown(e) {
     // Don't route 'click' event from panel to its parent div
     e.stopPropagation();
   }
@@ -1367,6 +1329,61 @@ class UISkinYoutube extends React.Component {
     this.flagVolumeSliderMousedown = true;
 
     this.docVolumeSliderMousemove(e);
+  }
+
+  docVolumeSliderMousemove(e) {
+    this.updateVolumeMovePosition(e);
+
+    var muted = this.player_.isMuted();
+    var volume = this.valueVolumeMovePosition;
+    if (volume === 0) {
+      // do nothing
+    } else {
+      if (muted === true) {
+        this.player_.unmute();
+      }
+
+      muted = false;
+    }
+
+    this.player_.setVolume(this.valueVolumeMovePosition);
+  }
+
+  docVolumeSliderMouseup(e) {
+    printLog('+docVolumeSliderMouseup');
+    this.releaseVolumeSliderMouseEvents();
+    e.preventDefault();
+
+    this.flagVolumeSliderMousedown = false;
+
+    var pt = {
+      x: e.clientX,
+      y: e.clientY
+    };
+
+    if (UITools.isPtInElement(pt, this.vopPlayer)) {
+      if (UITools.isPtInElement(pt, this.vopControlBar)) {
+        // do nothing
+        this.removeAutohideAction();
+      } else {
+        this.onPlayerMouseMove();
+      }
+    } else {
+      this.onPlayerMouseMove();
+    }
+  }
+
+  captureVolumeSliderMouseEvents() {
+    this.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
+    this.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
+
+    document.addEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.addEventListener('mouseup', this.newVolumeSliderMouseup, true);
+  }
+
+  releaseVolumeSliderMouseEvents() {
+    document.removeEventListener('mousemove', this.newVolumeSliderMousemove, true);
+    document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////

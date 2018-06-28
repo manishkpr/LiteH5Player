@@ -7,7 +7,7 @@ class UIVolumeBar extends React.Component {
 
   render() {
     return (
-      <div className="vop-volume-panel">
+      <div className="vop-volume-panel" onMouseMove={this.onVolumePanelMouseMove.bind(this)}>
         <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
           <div className="vop-volume-slider-handle">
           </div>
@@ -18,6 +18,10 @@ class UIVolumeBar extends React.Component {
 
   onVolumeSliderMouseDown(e) {
     this.props.onVolumeSliderMouseDown(e);
+  }
+
+  onVolumePanelMouseMove(e) {
+    this.props.onVolumePanelMouseMove(e);
   }
 }
 
