@@ -7,10 +7,12 @@ class UIVolumeToggleButton extends React.Component {
 
     this.main = this.props.main;
     this.player_ = this.main.player_;
+
+    this.vopVolumeBtnStyle = 'vop-style-volumeup';
   }
 
   componentDidMount() {
-    this.vopVolumeButton = document.querySelector('.vop-volume-button');
+    this.vopVolumeBtn = document.querySelector('.vop-volume-button');
 
     //
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
@@ -22,39 +24,46 @@ class UIVolumeToggleButton extends React.Component {
   }
 
   render() {
+    this.vopVolumeBtnStyle = this.getNewVolumeBtnStyle();
+
     return (
-      <button className="vop-button vop-volume-button vop-style-volumeup" title="mute"
+      <button className={"vop-button vop-volume-button" + " " + this.vopVolumeBtnStyle} title="mute"
         onClick={this.onUICmdVolume.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>
     );
   }
 
-  onMediaVolumeChanged() {
+  getNewVolumeBtnStyle() {
+    let newVolumeBtnStyle = '';
+
     let muted = this.player_.isMuted();
     let volume = this.player_.getVolume();
-
-    let uiVolumeIcon;
     if (volume === 0 || muted) {
-      uiVolumeIcon = 'vop-style-volumeoff';
+      newVolumeBtnStyle = 'vop-style-volumeoff';
     } else {
       if (volume >= 0.5) {
-        uiVolumeIcon = 'vop-style-volumeup';
+        newVolumeBtnStyle = 'vop-style-volumeup';
       } else {
-        uiVolumeIcon = 'vop-style-volumedown';
+        newVolumeBtnStyle = 'vop-style-volumedown';
       }
     }
 
+    return newVolumeBtnStyle;
+  }
+
+  onMediaVolumeChanged() {
+    let oldVolumeBtnStyle = this.vopVolumeBtnStyle;
+    this.vopVolumeBtnStyle = this.getNewVolumeBtnStyle();
+
     // update volume button
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumedown');
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeup');
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeoff');
-    UITools.addClass(this.vopVolumeButton, uiVolumeIcon);
+    UITools.removeClass(this.vopVolumeBtn, oldVolumeBtnStyle);
+    UITools.addClass(this.vopVolumeBtn, this.vopVolumeBtnStyle);
   }
 
   onUICmdVolume() {
-    var muted = this.player_.isMuted();
-    var volume = this.player_.getVolume();
+    let muted = this.player_.isMuted();
+    let volume = this.player_.getVolume();
 
     if (volume === 0) {
       if (muted) {

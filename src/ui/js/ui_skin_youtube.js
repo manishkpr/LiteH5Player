@@ -116,7 +116,7 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
     this.player_ = null;
-    this.playerState_ = '';
+    this.playerState = '';
     this.castSender_ = null;
     this.ratio = 0.5625;
 
@@ -582,12 +582,16 @@ class UISkinYoutube extends React.Component {
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
     printLog('updateUIStateMachine, state: ' + state);
-        //
-    UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState_);
+    
+    //
+    UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState);
     UITools.addClass(this.vopPlayer, 'vop-player-' + state);
 
-    this.playerState_ = state;
+    // Update all child components.
+    this.playerState = state;
+    this.updateUIState();
 
+    // Update current component.
     switch (state) {
       case 'idle':
         break;
@@ -1565,7 +1569,8 @@ class UISkinYoutube extends React.Component {
   // When data changed, needs to update UI.
   updateUIState() {
     this.setState({
-      settingMenuUIData: this.settingMenuUIData
+      settingMenuUIData: this.settingMenuUIData,
+      playerState: this.playerState
     });
   }
 

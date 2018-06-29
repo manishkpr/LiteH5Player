@@ -10,6 +10,8 @@ class UIVolumeBar extends React.Component {
 
     //
     this.colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
+    this.vopVolumeSliderWidth = 52;
+    this.vopVolumeSliderHandleWidth = 10;
   }
 
   componentDidMount() {
@@ -28,20 +30,25 @@ class UIVolumeBar extends React.Component {
   }
 
   render() {
+    let info = this.getVolumeInfo();
+    let background = UITools.genGradientColor(info.uiVolumeList, this.colorList_volume);
+    let left = info.uiVolumeHandleLeft;
+
     return (
       <div className="vop-volume-panel" onMouseMove={this.onVolumeBarMouseMove.bind(this)}>
-        <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
-          <div className="vop-volume-slider-handle">
+        <div className="vop-volume-slider" style={{background: background}}
+          onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
+          <div className="vop-volume-slider-handle" style={{left: left}}>
           </div>
         </div>
       </div>
     );
   }
 
-  onMediaVolumeChanged() {
+  getVolumeInfo() {
     let muted = this.player_.isMuted();
     let volume = this.player_.getVolume();
-    
+
     // Process
     let uiVolumeList;
     let uiVolumeHandleLeft;
@@ -52,18 +59,24 @@ class UIVolumeBar extends React.Component {
     } else {
       uiVolumeList = [volume, 1];
 
-      let vLeft = (volume / 1) * this.vopVolumeSlider.clientWidth;
-      if (vLeft + this.vopVolumeSliderHandle.clientWidth > this.vopVolumeSlider.clientWidth) {
-        vLeft = this.vopVolumeSlider.clientWidth - this.vopVolumeSliderHandle.clientWidth;
+      let vLeft = (volume / 1) * this.vopVolumeSliderWidth;
+      if (vLeft + this.vopVolumeSliderHandleWidth > this.vopVolumeSliderWidth) {
+        vLeft = this.vopVolumeSliderWidth - this.vopVolumeSliderHandleWidth;
       }
 
       uiVolumeHandleLeft = vLeft.toString() + 'px';
     }
 
+    return { uiVolumeList: uiVolumeList, uiVolumeHandleLeft: uiVolumeHandleLeft};
+  }
+
+  onMediaVolumeChanged() {
+    let info = this.getVolumeInfo();
+
     // update volume slider background
-    this.vopVolumeSlider.style.background = UITools.genGradientColor(uiVolumeList, this.colorList_volume);
+    this.vopVolumeSlider.style.background = UITools.genGradientColor(info.uiVolumeList, this.colorList_volume);
     // update volume slider handle
-    this.vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
+    this.vopVolumeSliderHandle.style.left = info.uiVolumeHandleLeft;
   }
 
   onVolumeSliderMouseDown(e) {
@@ -78,7 +91,7 @@ class UIVolumeBar extends React.Component {
   }
 
   docVolumeSliderMousemove(e) {
-    let valueVolumeMovePosition = this.updateVolumeMovePosition(e);
+    let valueVolumeMovePosition = this.getVolumeMovePosition(e);
 
     let muted = this.player_.isMuted();
     let volume = valueVolumeMovePosition;
@@ -118,7 +131,7 @@ class UIVolumeBar extends React.Component {
     document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
   }
 
-  updateVolumeMovePosition(e) {
+  getVolumeMovePosition(e) {
     // part - input
     let rect = this.vopVolumeSlider.getBoundingClientRect();
 
@@ -126,7 +139,7 @@ class UIVolumeBar extends React.Component {
     let offsetX = e.clientX - rect.left;
     if (offsetX < 0) {
       offsetX = 0;
-    } else if (offsetX + this.vopVolumeSliderHandle.clientWidth > rect.width) {
+    } else if (offsetX + this.vopVolumeSliderHandleWidth > rect.width) {
       offsetX = rect.width;
     }
 
