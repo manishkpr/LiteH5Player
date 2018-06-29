@@ -73,7 +73,7 @@ function getInitConfig() {
   var cfg = {
     // Media
     //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
-    autoplay: true,
+    //autoplay: true,
     mutedAutoplay: true,
 
     // advertising: {

@@ -108,7 +108,7 @@ class UISkinYoutube extends React.Component {
         <UIBufferingOverlay main={this} />
         <UIGiantButtonOverlay main={this} />
         <UILogoOverlay />
-        <UIPlayOverlay />
+        <UIPlayOverlay main={this} />
       </div>
     )
   }
