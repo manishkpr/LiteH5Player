@@ -591,24 +591,24 @@
     -moz-animation: vop-bezel-fadeout .5s linear 1 normal forwards;
     -webkit-animation: vop-bezel-fadeout .5s linear 1 normal forwards;
     animation: vop-bezel-fadeout .5s linear 1 normal forwards;
-    pointer-events: none
+    pointer-events: none;
   }
   @-webkit-keyframes vop-bezel-fadeout {
     0% {
-      opacity: 1
+      opacity: 1;
     }
     to {
       opacity: 0;
-      transform: scale(2)
+      transform: scale(2);
     }
   }
   @keyframes vop-bezel-fadeout {
     0% {
-      opacity: 1
+      opacity: 1;
     }
     to {
       opacity: 0;
-      transform: scale(2)
+      transform: scale(2);
     }
   }
   .vop-giant-button {
@@ -621,6 +621,25 @@
     border: 0px;
   }
   /************ End giant button ************/
+  /************ Begin Play Overlay ************/
+  .vop-play-overlay-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -48px;
+    margin-top: -48px;
+    z-index: $zIndex_giant_button_container;
+    display: block;
+  }
+  .vop-play-overlay {
+    width: 96px;
+    height: 96px;
+    background-image: url(../assets/svg/ic_play_arrow_96px.svg);
+    cursor: pointer;
+    border-radius: 24px;
+    border: 0px;
+  }
+  /************ End Play Overlay ************/
   /************ Begin logo ************/
   .vop-logo {
     position: absolute;
