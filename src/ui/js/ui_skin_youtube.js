@@ -53,7 +53,7 @@ class UISkinYoutube extends React.Component {
     this.uninitPlayerListeners();
 
     this.removeAutohideAction();
-    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
     // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
     // it the video control will never shown, because ads-container is on top of it.
     //this.vopVideo.setAttribute('controls', 'true');
@@ -381,6 +381,9 @@ class UISkinYoutube extends React.Component {
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
     
+    this.onMediaPlaying = this.onMediaPlaying.bind(this);
+    this.onMediaWaiting = this.onMediaWaiting.bind(this);
+
     this.onLog = this.onLog.bind(this);
 
     // ad callback event
@@ -586,10 +589,19 @@ class UISkinYoutube extends React.Component {
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
     printLog('updateUIStateMachine, state: ' + state);
+        //
+    UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState_);
+    UITools.addClass(this.vopPlayer, 'vop-player-' + state);
+
+    this.playerState_ = state;
+
     switch (state) {
       case 'idle':
         break;
       case 'opened':
+        let muted = this.player_.isMuted();
+        let volume = this.player_.getVolume();
+        this.updateContentVolumeBarUI(muted, volume);
         break;
       case 'ended':
         let paused = this.player_.isPaused();
@@ -601,7 +613,7 @@ class UISkinYoutube extends React.Component {
         this.progressBarContext.movePos = position;
         this.updateProgressBarUI(position, duration);
 
-        UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
+        UITools.removeClass(this.vopPlayer, 'vop-autohide');
         break;
       case 'closed':
         break;
@@ -619,12 +631,6 @@ class UISkinYoutube extends React.Component {
       default:
         break;
     }
-
-    //
-    UITools.removeClass(this.vopSkinContainer, this.playerState_);
-    UITools.addClass(this.vopSkinContainer, 'vop-player-' + state);
-
-    this.playerState_ = state;
   }
 
   // begin progress bar
@@ -743,7 +749,7 @@ class UISkinYoutube extends React.Component {
     }
 
     if (thumbnail) {
-      UITools.addClass(this.vopTooltip, 'vop-preview');
+      UITools.addClass(this.vopTooltip, 'vop-tooltip-preview');
       printLog('thumbnail info: ', thumbnail);
       var isSprite = (thumbnail.data.w && thumbnail.data.h);
       if (isSprite) {
@@ -759,7 +765,7 @@ class UISkinYoutube extends React.Component {
         this.vopTooltipBg.style.backgroundSize = '100% 100%';
       }
     } else {
-      UITools.removeClass(this.vopTooltip, 'vop-preview');
+      UITools.removeClass(this.vopTooltip, 'vop-tooltip-preview');
     }
 
     // update tooltip offset
@@ -848,7 +854,7 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
   removeAutohideAction() {
-    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
     if (this.timerHideControlBar) {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
@@ -858,13 +864,13 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter(e) {
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
-    printLog('+onPlayerMouseEnter, element: ' + e.target.className);
-    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
+    //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
+    UITools.removeClass(this.vopPlayer, 'vop-autohide');
   }
 
   onPlayerMouseMove(e) {
     let element_name = (e && e.target) ? e.target.className : 'null';
-    printLog('+onPlayerMouseMove, element: ' + element_name);
+    //printLog('+onPlayerMouseMove, element: ' + element_name);
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
       printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
@@ -877,7 +883,7 @@ class UISkinYoutube extends React.Component {
     let paused = this.player_.isPaused();
     let fullscreen = this.player_.isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
-      UITools.addClass(this.vopSkinContainer, 'vop-autohide');
+      UITools.addClass(this.vopPlayer, 'vop-autohide');
     }
   }
 
@@ -1266,7 +1272,6 @@ class UISkinYoutube extends React.Component {
   // this.player_ event callback
   onStateChange(e) {
     let newState = e.newState;
-    printLog(`onStateChange, newState: ${newState}`);
     this.updateUIStateMachine(newState);
   }
 
@@ -1325,17 +1330,17 @@ class UISkinYoutube extends React.Component {
   }
 
   onMediaVolumeChanged() {
-    var muted = this.player_.isMuted();
-    var volume = this.player_.getVolume();
+    let muted = this.player_.isMuted();
+    let volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
   }
 
   startBufferingUI() {
-    UITools.addClass(this.vopSkinContainer, 'vop-buffering');
+    UITools.addClass(this.vopPlayer, 'vop-buffering');
   }
 
   stopBufferingUI() {
-    UITools.removeClass(this.vopSkinContainer, 'vop-buffering');
+    UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 
   onMediaWaiting() {
@@ -1371,7 +1376,7 @@ class UISkinYoutube extends React.Component {
     }
     
     if (this.flagIsVpaidAd) {
-      this.vopAdContainer.style.zIndex = 100;
+      UITools.addClass(this.vopPlayer, 'vop-ad-started');
     }
   }
 
@@ -1385,7 +1390,7 @@ class UISkinYoutube extends React.Component {
     this.vopSettingsBtn.style.display = 'inline-block';
 
     if (this.flagIsVpaidAd) {
-      this.vopAdContainer.style.zIndex = 'auto';
+      UITools.removeClass(this.vopPlayer, 'vop-ad-started');
     }
   }
 

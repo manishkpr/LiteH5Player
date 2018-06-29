@@ -1,8 +1,7 @@
 @import 'ui_variables';
 
-/************ Begin Tooltip ************/
-
 .#{$skinYoutube} {
+  /************ Begin Tooltip ************/
   .vop-tooltip {
     position: absolute;
     bottom: 50px;
@@ -25,22 +24,22 @@
     padding: 5px 9px;
     background-color: rgba(28, 28, 28, 0.9);
   }
-  .vop-preview {
+  .vop-tooltip-preview {
     padding: 2px;
     background-color: rgba(28, 28, 28, 0.9);
     border-radius: 2px
   }
-  .vop-preview .vop-tooltip-bg {
+  .vop-tooltip-preview .vop-tooltip-bg {
     display: block;
   }
-  .vop-preview .vop-tooltip-text-wrapper {
+  .vop-tooltip-preview .vop-tooltip-text-wrapper {
     position: absolute;
     bottom: 5px;
     left: 0;
     width: 100%;
     text-align: center;
   }
-  .vop-preview .vop-tooltip-text {
+  .vop-tooltip-preview .vop-tooltip-text {
     display: inline;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0
@@ -77,6 +76,7 @@
     -webkit-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
     transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
   }
+  /************ Begin Progress Bar ************/
   .vop-progress-bar {
     position: relative;
     height: 5px;
@@ -130,6 +130,7 @@
     transform: translateX(0px);
     pointer-events: none;
   }
+  /************ End Progress Bar ************/
   .vop-controls {
     position: relative;
     height: 36px;
@@ -183,7 +184,8 @@
     top: 0;
     left: -12px;
   }
-  /* time unit */
+  /************ End custom button ************/
+  /************ Begin Time Display ************/
   .vop-time-display {
     padding-left: 6px;
     width: auto;
@@ -202,7 +204,7 @@
     display: table-cell;
     vertical-align: middle;
   }
-  /************ End custom button ************/
+  /************ End Time Display ************/
   /************ Begin volume bar ************/
   .vop-volume-panel {
     width: 52px;
@@ -651,11 +653,34 @@
   /************ End logo ************/
 }
 
+/*********************************************************************************************/
+/************ Begin Player State ************/
+/* state: idle */
+.vop-player-idle .vop-control-bar {
+  display: none;
+}
+
+.vop-player-idle .vop-play-overlay-container {
+  display: none;
+}
+
+/* state: opened */
+.vop-player-opened .vop-play-overlay-container {
+  display: block;
+}
+
+/* state: playing */
+.vop-player-playing .vop-play-overlay-container {
+  display: none;
+}
+/************ End Player State ************/
+
 /************ Begin buffering ************/
 .vop-buffering .vop-spinner {
   display: block;
 }
 /************ End buffering ************/
+
 
 /************ Begin auto-hide ************/
 .vop-autohide {
@@ -678,45 +703,11 @@
 }
 /************ End auto-hide ************/
 
-/*********************************************************************************************/
-/************ Player State -- idle ************/
-.vop-player-idle .vop-control-bar {
-  display: none;
+/************ Begin Ad State ************/
+.vop-ad-started .vop-ads-container {
+  z-index: 100;
 }
-
-.vop-player-idle .vop-play-overlay-container {
-  display: none;
-}
-
-
-/************ Player State -- opened ************/
-.vop-player-opened .vop-play-overlay-container {
-  display: block;
-}
-
-/************ Player State -- playing ************/
-.vop-player-playing .vop-play-overlay-container {
-  display: none;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/************ End Player State ************/
-/*********************************************************************************************/
-
+/************ End Ad State ************/
 
 
 
