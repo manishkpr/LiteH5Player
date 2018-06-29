@@ -8,7 +8,7 @@ import UITools from './ui_tools';
 // Menu Part
 import UIPopupMenu from './components/ui_popup_menu';
 
-import UIVolumeToggleButton from './components/ui_volumetogglebutton';
+import UIVolumeToggleButton from './components/ui_volume_toggle_button';
 import UIVolumeBar from './components/ui_volumebar';
 
 import UICaptionOverlay from './components/ui_caption_overlay';
@@ -870,8 +870,8 @@ class UISkinYoutube extends React.Component {
 
   onPlayerMouseLeave(e) {
     //printLog('+onPlayerMouseLeave');
-    var paused = this.player_.isPaused();
-    var fullscreen = this.player_.isFullscreen();
+    let paused = this.player_.isPaused();
+    let fullscreen = this.player_.isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
       UITools.addClass(this.vopPlayer, 'vop-autohide');
     }
