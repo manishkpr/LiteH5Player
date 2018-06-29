@@ -105,7 +105,7 @@ class UISkinYoutube extends React.Component {
           </div>
         </div>
         <UICaptionOverlay />
-        <UIBufferingOverlay main={this} />
+        <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
         <UILogoOverlay />
         <UIPlayOverlay main={this} />
@@ -473,6 +473,9 @@ class UISkinYoutube extends React.Component {
     this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
 
+    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+
     this.player_.on(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
@@ -506,6 +509,9 @@ class UISkinYoutube extends React.Component {
     this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+
+    this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player_.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
     this.player_.off(oldmtn.Events.LOG, this.onLog);
 
@@ -1316,13 +1322,29 @@ class UISkinYoutube extends React.Component {
       this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
       this.updateProgressBarHoverUI();
     }
-  };
+  }
 
   onMediaVolumeChanged() {
     var muted = this.player_.isMuted();
     var volume = this.player_.getVolume();
     this.updateContentVolumeBarUI(muted, volume);
-  };
+  }
+
+  startBufferingUI() {
+    UITools.addClass(this.vopSkinContainer, 'vop-buffering');
+  }
+
+  stopBufferingUI() {
+    UITools.removeClass(this.vopSkinContainer, 'vop-buffering');
+  }
+
+  onMediaWaiting() {
+    this.startBufferingUI();
+  }
+
+  onMediaPlaying() {
+    this.stopBufferingUI();
+  }
 
   onLog(e) {
     printLogUI(e.message);

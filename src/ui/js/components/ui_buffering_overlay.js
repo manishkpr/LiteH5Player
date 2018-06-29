@@ -5,25 +5,12 @@ import UITools from '../ui_tools';
 class UIBufferingOverlay extends React.Component {
   constructor(props) {
     super(props);
-
-    this.player_ = this.props.main.player_;
   }
 
   componentDidMount() {
-    this.onMediaWaiting = this.onMediaWaiting.bind(this);
-    this.onMediaPlaying = this.onMediaPlaying.bind(this);
-
-    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
-
-    this.player_.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player_.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
-
-    this.player_.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
   }
 
   render() {
@@ -43,27 +30,6 @@ class UIBufferingOverlay extends React.Component {
         </div>
       </div>
     );
-  }
-
-  startBufferingUI() {
-    let v = this.props.main.vopSkinContainer;
-    UITools.addClass(v, 'vop-buffering');
-  }
-
-  stopBufferingUI() {
-    let v = this.props.main.vopSkinContainer;
-    UITools.removeClass(v, 'vop-buffering');
-  }
-
-  onMediaWaiting() {
-    this.startBufferingUI();
-  }
-
-  onMediaPlaying() {
-    this.stopBufferingUI();
-  }
-
-  onStateChange() {
   }
 }
 
