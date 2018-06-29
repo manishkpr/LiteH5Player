@@ -22,7 +22,8 @@ class UISettingsToggleButton extends React.Component {
   }
 
   onControlMouseMove(e) {
-    this.main.onControlMouseMove(e);
+    e.stopPropagation();
+    this.main.removeAutohideAction();
   }
 }
 

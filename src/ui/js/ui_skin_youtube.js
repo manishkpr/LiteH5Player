@@ -16,7 +16,7 @@ import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 
-import UIFullscreenToggleButton from './components/ui_fullscreentogglebutton';
+import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
 
@@ -92,10 +92,8 @@ class UISkinYoutube extends React.Component {
               <button className="vop-button vop-play-button vop-style-play" title="play"
                 onClick={this.onUICmdPlay.bind(this)}
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <UIVolumeToggleButton player={this.player_} onControlMouseMove={this.onControlMouseMove.bind(this)} />
-              <UIVolumeBar
-                onVolumeSliderMouseDown={this.onVolumeSliderMouseDown.bind(this)}
-                onVolumePanelMouseMove={this.onControlMouseMove.bind(this)}/>
+              <UIVolumeToggleButton main={this} />
+              <UIVolumeBar main={this} />
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">

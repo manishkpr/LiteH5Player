@@ -4,7 +4,8 @@ class UIVolumeToggleButton extends React.Component {
   constructor(props) {
     super(props);
 
-    this.player_ = this.props.player;
+    this.main = this.props.main;
+    this.player_ = this.main.player_;
   }
 
   render() {
@@ -42,7 +43,7 @@ class UIVolumeToggleButton extends React.Component {
   }
 
   onControlMouseMove(e) {
-    this.props.onControlMouseMove(e);
+    this.main.onControlMouseMove(e);
   }
 
 }

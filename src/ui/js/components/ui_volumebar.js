@@ -3,6 +3,8 @@ import React from 'react';
 class UIVolumeBar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
   }
 
   render() {
@@ -17,11 +19,12 @@ class UIVolumeBar extends React.Component {
   }
 
   onVolumeSliderMouseDown(e) {
-    this.props.onVolumeSliderMouseDown(e);
+    this.main.onVolumeSliderMouseDown(e);
   }
 
   onVolumePanelMouseMove(e) {
-    this.props.onVolumePanelMouseMove(e);
+    e.stopPropagation();
+    this.main.removeAutohideAction();
   }
 }
 
