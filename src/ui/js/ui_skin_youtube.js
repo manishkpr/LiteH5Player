@@ -53,7 +53,7 @@ class UISkinYoutube extends React.Component {
     this.uninitPlayerListeners();
 
     this.removeAutohideAction();
-    UITools.removeClass(this.vopPlayer, 'vop-autohide');
+    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
     // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
     // it the video control will never shown, because ads-container is on top of it.
     //this.vopVideo.setAttribute('controls', 'true');
@@ -581,39 +581,36 @@ class UISkinYoutube extends React.Component {
     printLog('updateUIStateMachine, state: ' + state);
     switch (state) {
       case 'idle':
-        {
-          this.vopControlBar.style.display = 'none';
-        }
+        this.vopControlBar.style.display = 'none';
         break;
       case 'opened':
-        {
-        }
         break;
       case 'ended':
-        {
-          let paused = this.player_.isPaused();
-          let ended = this.player_.isEnded();
-          this.updatePlayBtnUI(paused, ended);
-
-          let position = this.player_.getPosition();
-          let duration = this.player_.getDuration();
-          this.progressBarContext.movePos = position;
-          this.updateProgressBarUI(position, duration);
-
-          UITools.removeClass(this.vopPlayer, 'vop-autohide');
-        }
-        break;
-      case 'closed':
-        {}
-        break;
-      case 'waiting':
-        break;
-      case 'playing':
         let paused = this.player_.isPaused();
         let ended = this.player_.isEnded();
         this.updatePlayBtnUI(paused, ended);
 
-        this.vopControlBar.style.display = 'block';
+        let position = this.player_.getPosition();
+        let duration = this.player_.getDuration();
+        this.progressBarContext.movePos = position;
+        this.updateProgressBarUI(position, duration);
+
+        UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
+        break;
+      case 'closed':
+        break;
+      case 'waiting':
+        break;
+      case 'playing':
+        if (!this.flagFirstPlaying) {
+          this.flagFirstPlaying = true;
+
+          let paused = this.player_.isPaused();
+          let ended = this.player_.isEnded();
+          this.updatePlayBtnUI(paused, ended);
+
+          this.vopControlBar.style.display = 'block';
+        }
         break;
       default:
         break;
@@ -841,7 +838,7 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
   removeAutohideAction() {
-    UITools.removeClass(this.vopPlayer, 'vop-autohide');
+    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
     if (this.timerHideControlBar) {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
@@ -852,7 +849,7 @@ class UISkinYoutube extends React.Component {
   onPlayerMouseEnter(e) {
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
     printLog('+onPlayerMouseEnter, element: ' + e.target.className);
-    UITools.removeClass(this.vopPlayer, 'vop-autohide');
+    UITools.removeClass(this.vopSkinContainer, 'vop-autohide');
   }
 
   onPlayerMouseMove(e) {
@@ -870,7 +867,7 @@ class UISkinYoutube extends React.Component {
     let paused = this.player_.isPaused();
     let fullscreen = this.player_.isFullscreen();
     if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
-      UITools.addClass(this.vopPlayer, 'vop-autohide');
+      UITools.addClass(this.vopSkinContainer, 'vop-autohide');
     }
   }
 
