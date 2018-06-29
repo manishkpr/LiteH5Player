@@ -29,7 +29,7 @@ class UIVolumeBar extends React.Component {
 
   render() {
     return (
-      <div className="vop-volume-panel" onMouseMove={this.onVolumePanelMouseMove.bind(this)}>
+      <div className="vop-volume-panel" onMouseMove={this.onVolumeBarMouseMove.bind(this)}>
         <div className="vop-volume-slider" onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
           <div className="vop-volume-slider-handle">
           </div>
@@ -102,21 +102,7 @@ class UIVolumeBar extends React.Component {
 
     this.flagVolumeSliderMousedown = false;
 
-    let pt = {
-      x: e.clientX,
-      y: e.clientY
-    };
-
-    if (UITools.isPtInElement(pt, this.main.vopPlayer)) {
-      if (UITools.isPtInElement(pt, this.main.vopControlBar)) {
-        // do nothing
-        this.main.removeAutohideAction();
-      } else {
-        this.main.onPlayerMouseMove();
-      }
-    } else {
-      this.main.onPlayerMouseMove();
-    }
+    this.main.onVolumeBarMouseUp(e);
   }
 
   captureVolumeSliderMouseEvents() {
@@ -149,9 +135,8 @@ class UIVolumeBar extends React.Component {
     return valueVolumeMovePosition;
   }
 
-  onVolumePanelMouseMove(e) {
-    e.stopPropagation();
-    this.main.removeAutohideAction();
+  onVolumeBarMouseMove(e) {
+    this.main.onControlMouseMove(e);
   }
 }
 

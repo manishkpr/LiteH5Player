@@ -894,6 +894,23 @@ class UISkinYoutube extends React.Component {
     }
   }
 
+  onVolumeBarMouseUp(e) {
+    let pt = {
+      x: e.clientX,
+      y: e.clientY
+    };
+    if (UITools.isPtInElement(pt, this.vopPlayer)) {
+      if (UITools.isPtInElement(pt, this.vopControlBar)) {
+        // do nothing
+        this.removeAutohideAction();
+      } else {
+        this.onPlayerMouseMove();
+      }
+    } else {
+      this.onPlayerMouseMove();
+    }
+  }
+
   onControlMouseMove(e) {
     e.stopPropagation();
     this.removeAutohideAction();
