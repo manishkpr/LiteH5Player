@@ -581,19 +581,12 @@ class UISkinYoutube extends React.Component {
     printLog('updateUIStateMachine, state: ' + state);
     switch (state) {
       case 'idle':
-        {}
+        {
+          this.vopControlBar.style.display = 'none';
+        }
         break;
       case 'opened':
         {
-          let position = this.player_.getPosition();
-          let duration = this.player_.getDuration();
-          this.updateProgressBarUI(position, duration);
-          this.vopControlBar.style.display = 'block';
-
-          // update volume here
-          let muted = this.player_.isMuted();
-          let volume = this.player_.getVolume();
-          this.updateContentVolumeBarUI(muted, volume);
         }
         break;
       case 'ended':
@@ -619,6 +612,8 @@ class UISkinYoutube extends React.Component {
         let paused = this.player_.isPaused();
         let ended = this.player_.isEnded();
         this.updatePlayBtnUI(paused, ended);
+
+        this.vopControlBar.style.display = 'block';
         break;
       default:
         break;
@@ -1662,18 +1657,8 @@ class UISkinYoutube extends React.Component {
 
   // When the skin installed, needs to update UI
   syncPlayerStateToUI() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
-
-    let paused = this.player_.isPaused();
-    let ended = this.player_.isEnded();
-    this.updatePlayBtnUI(paused, ended);
-
-    // update volume here
-    let muted = this.player_.isMuted();
-    let volume = this.player_.getVolume();
-    this.updateContentVolumeBarUI(muted, volume);
+    let state = this.player_.getState();
+    this.updateUIStateMachine(state);
   }
 
   isPlayerActive() {
