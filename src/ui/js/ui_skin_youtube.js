@@ -172,7 +172,6 @@ class UISkinYoutube extends React.Component {
 
     // flags reference variable of volume bar
     this.flagVolumeSliderMousedown = false;
-    this.valueVolumeMovePosition = 0;
 
     // menu context
     this.settingMenuUIData = {
@@ -647,7 +646,8 @@ class UISkinYoutube extends React.Component {
     }
 
     // update time progress scrubber button
-    this.valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
+    let valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
+    return valueVolumeMovePosition;
   }
 
   getProgressMovePosition(e) {
@@ -1214,10 +1214,10 @@ class UISkinYoutube extends React.Component {
   }
 
   docVolumeSliderMousemove(e) {
-    this.updateVolumeMovePosition(e);
+    let valueVolumeMovePosition = this.updateVolumeMovePosition(e);
 
     var muted = this.player_.isMuted();
-    var volume = this.valueVolumeMovePosition;
+    var volume = valueVolumeMovePosition;
     if (volume === 0) {
       // do nothing
     } else {
@@ -1228,7 +1228,7 @@ class UISkinYoutube extends React.Component {
       muted = false;
     }
 
-    this.player_.setVolume(this.valueVolumeMovePosition);
+    this.player_.setVolume(valueVolumeMovePosition);
   }
 
   docVolumeSliderMouseup(e) {
