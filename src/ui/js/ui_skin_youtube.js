@@ -1171,7 +1171,7 @@ class UISkinYoutube extends React.Component {
     this.progressBarContext.movePos = movePos;
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
-  };
+  }
 
   docProgressBarMouseup(e) {
     printLog('+docProgressBarMouseup');
@@ -1315,7 +1315,7 @@ class UISkinYoutube extends React.Component {
       var ended = this.player_.isEnded();
       this.updatePlayBtnUI(paused, ended);
     }
-  };
+  }
 
   onMediaTimeupdated() {
     //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
@@ -1374,7 +1374,7 @@ class UISkinYoutube extends React.Component {
     } else {
       this.vopAdContainer.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
     }
-    
+
     if (this.flagIsVpaidAd) {
       UITools.addClass(this.vopPlayer, 'vop-ad-started');
     }
@@ -1416,11 +1416,11 @@ class UISkinYoutube extends React.Component {
     printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
     printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
     
-    UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
-    UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
     if (flagIsFullscreen) {
+      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
       UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
     } else {
+      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
       UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
     }
   }
