@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class UISubtitleMenu extends React.Component {
+class UISubtitlesMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -66,4 +66,4 @@ class UISubtitleMenu extends React.Component {
   }
 }
 
-export default UISubtitleMenu;
+export default UISubtitlesMenu;

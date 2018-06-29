@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../assets/img/logo.png';
 
-class UILogo extends React.Component {
+class UILogoOverlay extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -28,4 +28,4 @@ class UILogo extends React.Component {
   }
 }
 
-export default UILogo;
+export default UILogoOverlay;

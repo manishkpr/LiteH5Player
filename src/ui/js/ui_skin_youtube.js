@@ -11,12 +11,14 @@ import UIPopupMenu from './components/ui_popup_menu';
 import UIVolumeToggleButton from './components/ui_volumetogglebutton';
 import UIVolumeBar from './components/ui_volumebar';
 
+import UICaptionOverlay from './components/ui_caption_overlay';
 import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
-import UILogo from './components/ui_logo';
+import UILogoOverlay from './components/ui_logo_overlay';
 
 import UIFullscreenToggleButton from './components/ui_fullscreentogglebutton';
-
+import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
+import UISettingsToggleButton from './components/ui_settings_toggle_button';
 
 class UISkinYoutube extends React.Component {
   constructor(props) {
@@ -97,21 +99,16 @@ class UISkinYoutube extends React.Component {
               <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
             </div>
             <div className="vop-right-controls">
-              <button className="vop-button vop-subtitles-button vop-style-subtitles" title="subtitles"
-                onClick={this.onUICmdSubtitles.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}></button>
-              <button className="vop-button vop-settings-button vop-style-settings" title="settings"
-                onClick={this.onUICmdSettings.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <UISubtitlesToggleButton main={this} />
+              <UISettingsToggleButton main={this} />
               <UIFullscreenToggleButton main={this} />
             </div>
           </div>
         </div>
-        <div className="vop-caption-window">
-        </div>
-        <UIBufferingOverlay main={this}/>
-        <UIGiantButtonOverlay main={this}/>
-        <UILogo />
+        <UICaptionOverlay />
+        <UIBufferingOverlay main={this} />
+        <UIGiantButtonOverlay main={this} />
+        <UILogoOverlay />
       </div>
     )
   }

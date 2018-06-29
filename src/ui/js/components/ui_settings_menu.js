@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class UISettingMenu extends React.Component {
+class UISettingsMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -56,7 +56,7 @@ class UISettingMenu extends React.Component {
 }
 
 
-export default UISettingMenu;
+export default UISettingsMenu;
 
 
 
