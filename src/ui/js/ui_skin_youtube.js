@@ -116,7 +116,7 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
     this.player_ = null;
-    this.playerState = '';
+    this.playerState_ = '';
     this.castSender_ = null;
     this.ratio = 0.5625;
 
@@ -615,10 +615,10 @@ class UISkinYoutube extends React.Component {
     }
 
     //
-    UITools.removeClass(this.vopSkinContainer, this.playerState);
+    UITools.removeClass(this.vopSkinContainer, this.playerState_);
     UITools.addClass(this.vopSkinContainer, 'vop-player-' + state);
 
-    this.playerState = state;
+    this.playerState_ = state;
   }
 
   // begin progress bar
