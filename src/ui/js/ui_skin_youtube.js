@@ -116,6 +116,7 @@ class UISkinYoutube extends React.Component {
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
     this.player_ = null;
+    this.playerState = '';
     this.castSender_ = null;
     this.ratio = 0.5625;
 
@@ -581,7 +582,6 @@ class UISkinYoutube extends React.Component {
     printLog('updateUIStateMachine, state: ' + state);
     switch (state) {
       case 'idle':
-        this.vopControlBar.style.display = 'none';
         break;
       case 'opened':
         break;
@@ -599,8 +599,6 @@ class UISkinYoutube extends React.Component {
         break;
       case 'closed':
         break;
-      case 'waiting':
-        break;
       case 'playing':
         if (!this.flagFirstPlaying) {
           this.flagFirstPlaying = true;
@@ -615,6 +613,12 @@ class UISkinYoutube extends React.Component {
       default:
         break;
     }
+
+    //
+    UITools.removeClass(this.vopSkinContainer, this.playerState);
+    UITools.addClass(this.vopSkinContainer, 'vop-player-' + state);
+
+    this.playerState = state;
   }
 
   // begin progress bar

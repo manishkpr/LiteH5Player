@@ -24,9 +24,6 @@ class UIPlayOverlay extends React.Component {
 
   onPlayOverlayClick() {
     this.main.player_.play();
-
-    let v = document.querySelector('.vop-play-overlay-container');
-    v.style.display = 'none';
   }
 }
 

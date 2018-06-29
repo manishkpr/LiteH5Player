@@ -679,12 +679,25 @@
 /************ End auto-hide ************/
 
 /*********************************************************************************************/
-/************ Begin Player State ************/
+/************ Player State -- idle ************/
+.vop-player-idle .vop-control-bar {
+  display: none;
+}
+
+.vop-player-idle .vop-play-overlay-container {
+  display: none;
+}
 
 
+/************ Player State -- opened ************/
+.vop-player-opened .vop-play-overlay-container {
+  display: block;
+}
 
-
-
+/************ Player State -- playing ************/
+.vop-player-playing .vop-play-overlay-container {
+  display: none;
+}
 
 
 
