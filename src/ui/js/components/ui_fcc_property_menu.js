@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 
 class UIFccPropertyMenu extends React.Component {
   constructor(props) {
