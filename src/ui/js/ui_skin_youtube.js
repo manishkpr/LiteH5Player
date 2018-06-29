@@ -139,8 +139,6 @@ class UISkinYoutube extends React.Component {
     this.vopPlayProgress = null;
     this.vopHoverProgress = null;
     this.vopScrubberContainer = null;
-    this.vopVolumeSlider = null;
-    this.vopVolumeSliderHandle = null;
 
     this.vopSubtitlesBtn;
     this.vopSettingsBtn;
@@ -153,7 +151,6 @@ class UISkinYoutube extends React.Component {
 
     this.colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
     this.colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
-    this.colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
 
     // flag
     this.timerHideControlBar;
@@ -414,13 +411,10 @@ class UISkinYoutube extends React.Component {
     this.vopHoverProgress = document.querySelector('.vop-hover-progress');
 
     this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
-    this.vopVolumeSlider = document.querySelector('.vop-volume-slider');
-    this.vopVolumeSliderHandle = document.querySelector('.vop-volume-slider-handle');
 
     this.uiLog = document.getElementById('idLog');
 
     this.vopPlayButton = this.vopSkinContainer.querySelector('.vop-play-button');
-    this.vopVolumeButton = this.vopSkinContainer.querySelector('.vop-volume-button');
     this.vopPauseButton = this.vopSkinContainer.querySelector('.vop-pause-button');
     this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
     this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
@@ -598,9 +592,6 @@ class UISkinYoutube extends React.Component {
       case 'idle':
         break;
       case 'opened':
-        let muted = this.player_.isMuted();
-        let volume = this.player_.getVolume();
-        this.updateContentVolumeBarUI(muted, volume);
         break;
       case 'ended':
         let paused = this.player_.isPaused();
@@ -633,23 +624,6 @@ class UISkinYoutube extends React.Component {
   }
 
   // begin progress bar
-  updateVolumeMovePosition(e) {
-    // part - input
-    var rect = this.vopVolumeSlider.getBoundingClientRect();
-
-    // part - logic process
-    var offsetX = e.clientX - rect.left;
-    if (offsetX < 0) {
-      offsetX = 0;
-    } else if (offsetX + this.vopVolumeSliderHandle.clientWidth > rect.width) {
-      offsetX = rect.width;
-    }
-
-    // update time progress scrubber button
-    let valueVolumeMovePosition = (offsetX / rect.width) * 1.0;
-    return valueVolumeMovePosition;
-  }
-
   getProgressMovePosition(e) {
     // part - input
     var rect = this.vopProgressBar.getBoundingClientRect();
@@ -812,43 +786,6 @@ class UISkinYoutube extends React.Component {
         UITools.addClass(this.vopPlayButton, 'vop-style-pause');
       }
     }
-  }
-
-  updateContentVolumeBarUI(muted, volume) {
-    var uiVolumeIcon;
-    var uiVolumeList;
-    var uiVolumeHandleLeft;
-
-    if (volume === 0 || muted) {
-      uiVolumeIcon = 'vop-style-volumeoff';
-      uiVolumeList = [0, 1];
-      uiVolumeHandleLeft = '0px';
-    } else {
-      if (volume >= 0.5) {
-        uiVolumeIcon = 'vop-style-volumeup';
-      } else {
-        uiVolumeIcon = 'vop-style-volumedown';
-      }
-
-      uiVolumeList = [volume, 1];
-
-      var vLeft = (volume / 1) * this.vopVolumeSlider.clientWidth;
-      if (vLeft + this.vopVolumeSliderHandle.clientWidth > this.vopVolumeSlider.clientWidth) {
-        vLeft = this.vopVolumeSlider.clientWidth - this.vopVolumeSliderHandle.clientWidth;
-      }
-
-      uiVolumeHandleLeft = vLeft.toString() + 'px';
-    }
-
-    // update muted button
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumedown');
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeup');
-    UITools.removeClass(this.vopVolumeButton, 'vop-style-volumeoff');
-    UITools.addClass(this.vopVolumeButton, uiVolumeIcon);
-    // update volume slider background
-    this.vopVolumeSlider.style.background = UITools.genGradientColor(uiVolumeList, this.colorList_volume);
-    // update volume slider handle
-    this.vopVolumeSliderHandle.style.left = uiVolumeHandleLeft;
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -1202,72 +1139,6 @@ class UISkinYoutube extends React.Component {
     this.progressBarContext.mousedown = false;
   }
 
-  onVolumeSliderMouseDown(e) {
-    printLog('+onVolumeSliderMouseDown');
-    this.captureVolumeSliderMouseEvents();
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.flagVolumeSliderMousedown = true;
-
-    this.docVolumeSliderMousemove(e);
-  }
-
-  docVolumeSliderMousemove(e) {
-    let valueVolumeMovePosition = this.updateVolumeMovePosition(e);
-
-    var muted = this.player_.isMuted();
-    var volume = valueVolumeMovePosition;
-    if (volume === 0) {
-      // do nothing
-    } else {
-      if (muted === true) {
-        this.player_.unmute();
-      }
-
-      muted = false;
-    }
-
-    this.player_.setVolume(valueVolumeMovePosition);
-  }
-
-  docVolumeSliderMouseup(e) {
-    printLog('+docVolumeSliderMouseup');
-    this.releaseVolumeSliderMouseEvents();
-    e.preventDefault();
-
-    this.flagVolumeSliderMousedown = false;
-
-    var pt = {
-      x: e.clientX,
-      y: e.clientY
-    };
-
-    if (UITools.isPtInElement(pt, this.vopPlayer)) {
-      if (UITools.isPtInElement(pt, this.vopControlBar)) {
-        // do nothing
-        this.removeAutohideAction();
-      } else {
-        this.onPlayerMouseMove();
-      }
-    } else {
-      this.onPlayerMouseMove();
-    }
-  }
-
-  captureVolumeSliderMouseEvents() {
-    this.newVolumeSliderMousemove = this.docVolumeSliderMousemove.bind(this);
-    this.newVolumeSliderMouseup = this.docVolumeSliderMouseup.bind(this);
-
-    document.addEventListener('mousemove', this.newVolumeSliderMousemove, true);
-    document.addEventListener('mouseup', this.newVolumeSliderMouseup, true);
-  }
-
-  releaseVolumeSliderMouseEvents() {
-    document.removeEventListener('mousemove', this.newVolumeSliderMousemove, true);
-    document.removeEventListener('mouseup', this.newVolumeSliderMouseup, true);
-  }
-
   ////////////////////////////////////////////////////////////////////////////////////
   // this.player_ event callback
   onStateChange(e) {
@@ -1330,9 +1201,7 @@ class UISkinYoutube extends React.Component {
   }
 
   onMediaVolumeChanged() {
-    let muted = this.player_.isMuted();
-    let volume = this.player_.getVolume();
-    this.updateContentVolumeBarUI(muted, volume);
+    
   }
 
   startBufferingUI() {
