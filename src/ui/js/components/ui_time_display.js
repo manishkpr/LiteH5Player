@@ -15,7 +15,7 @@ class UITimeDisplay extends Preact.Component {
     let timeText = '00:00/00:00';
     switch (this.main.playerState) {
       case 'playing':
-        timeText = this.main.updateTimeDisplay(position, duration);
+        timeText = this.main.getTimeDisplay(position, duration);
         break;
       default:
         break;

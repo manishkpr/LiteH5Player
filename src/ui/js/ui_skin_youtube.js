@@ -412,6 +412,8 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
 
+    this.vopTimeDisplay = document.querySelector('.vop-time-text');
+
     this.uiLog = document.getElementById('idLog');
 
     this.vopPlayButton = this.vopSkinContainer.querySelector('.vop-play-button');
@@ -640,7 +642,7 @@ export default class UISkinYoutube extends Preact.Component {
     // part - input
 
     // part - logic process
-    let uiPosition;
+    let uiPosition = 0;
     let isLive = (duration === Infinity) ? true : false;
     if (isLive) {
       let seekable = this.player_.getSeekableRange();
@@ -664,8 +666,7 @@ export default class UISkinYoutube extends Preact.Component {
       this.vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * this.vopProgressBar.clientWidth).toString() + 'px)';
     }
 
-    let tDisplay = document.querySelector('.vop-time-text');
-    tDisplay.innerText = this.updateTimeDisplay(uiPosition, duration);
+    this.updateTimeDisplay(uiPosition, duration);
   }
 
   updateProgressBarHoverUI() {
@@ -750,8 +751,7 @@ export default class UISkinYoutube extends Preact.Component {
     // update time progress bar
     this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
 
-    let tDisplay = document.querySelector('.vop-time-text');
-    tDisplay.innerText = this.updateTimeDisplay(uiPosition, duration);
+    this.updateTimeDisplay(uiPosition, duration);
   }
 
   updatePlayBtnUI(paused, ended) {
@@ -770,7 +770,7 @@ export default class UISkinYoutube extends Preact.Component {
     }
   }
 
-  updateTimeDisplay(position, duration) {
+  getTimeDisplay(position, duration) {
     let isLive = (duration === Infinity) ? true : false;
 
     let timeText = '';
@@ -785,6 +785,10 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     return timeText;
+  }
+
+  updateTimeDisplay(position, duration) {
+    this.vopTimeDisplay.innerText = this.getTimeDisplay(position, duration);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -1076,7 +1080,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     // update progress bar ui
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
   }
 
@@ -1128,7 +1134,9 @@ export default class UISkinYoutube extends Preact.Component {
     this.doProcessThumbnailMove();
 
     this.progressBarContext.movePos = movePos;
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
     this.updateTooltipUI(this.progressBarContext.movePos);
@@ -1153,7 +1161,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     // update ui first
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
     if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
@@ -1171,7 +1181,9 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onMediaDurationChanged() {
-    this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
+    this.updateProgressBarUI(position, duration);
   }
 
   onMediaEnded() {}
@@ -1219,7 +1231,9 @@ export default class UISkinYoutube extends Preact.Component {
     // in this situation, we won't update progress bar ui.
     if (this.progressBarContext.mousedown) {} else {
       //this.progressBarContext.movePos = this.player_.getPosition();
-      this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
+      let position = this.player_.getPosition();
+      let duration = this.player_.getDuration();
+      this.updateProgressBarUI(position, duration);
       this.updateProgressBarHoverUI();
     }
   }
