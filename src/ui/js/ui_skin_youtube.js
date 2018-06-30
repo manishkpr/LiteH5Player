@@ -23,6 +23,8 @@ import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 
+import UIToolTip from './components/ui_tooltip';
+
 import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
@@ -680,28 +682,29 @@ export default class UISkinYoutube extends Preact.Component {
     }
   }
 
-  updateTooltipUI(ptClientX) {
+  updateTooltipUI() {
     let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
 
-    function getTooltipOffsetX(progressBarClientX, tooltipWidth) {
+    function getTooltipOffsetX(tooltipWidth) {
       // part - input
       // bounding client rect can return the progress bar's rect relative to current page.
       let rect = this.vopProgressBar.getBoundingClientRect();
       let leftMin = 12;
       let rightMax = 12 + rect.width;
 
-      // part - logic process
-      let offsetToProgressBar = (progressBarClientX - rect.left);
-      let offsetToVideo = offsetToProgressBar + 12;
-
-      let tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth / 2;
-      let tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth / 2;
+      let duration = this.player_.getDuration();
+        
+      let currPosWidth = (this.progressBarContext.movePos / duration) * rect.width;
+      let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
+      let tooltipRight_RelativeToVideo = leftMin + currPosWidth + tooltipWidth / 2;
 
       if (tooltipLeft_RelativeToVideo < leftMin) {
         tooltipLeft_RelativeToVideo = leftMin;
       } else if (tooltipRight_RelativeToVideo > rightMax) {
         tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
       }
+      
+      console.log('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
 
       return tooltipLeft_RelativeToVideo;
     }
@@ -736,7 +739,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopTooltip.style.display = 'block';
 
     // set the correct offset of tooltip.
-    let offsetX = getTooltipOffsetX.call(this, ptClientX, this.vopTooltip.clientWidth);
+    let offsetX = getTooltipOffsetX.call(this, this.vopTooltip.clientWidth);
     this.vopTooltip.style.left = offsetX.toString() + 'px';
   }
 
@@ -1092,8 +1095,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarHoverUI();
 
-    let ptClientX = e.clientX;
-    this.updateTooltipUI(ptClientX);
+    this.updateTooltipUI();
   }
 
   onProgressBarMouseLeave() {
@@ -1129,8 +1131,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
 
-    let ptClientX = e.clientX;
-    this.updateTooltipUI(ptClientX);
+    this.updateTooltipUI();
   }
 
   docProgressBarMouseup(e) {
