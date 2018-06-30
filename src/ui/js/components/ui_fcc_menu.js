@@ -1,7 +1,7 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact'; 
 
-
-class UIFccMenu extends React.Component {
+class UIFccMenu extends Preact.Component {
   constructor(props) {
     super(props);
 

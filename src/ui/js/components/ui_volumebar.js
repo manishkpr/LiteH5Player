@@ -1,7 +1,9 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
+
 import UITools from '../ui_tools';
 
-class UIVolumeBar extends React.Component {
+class UIVolumeBar extends Preact.Component {
   constructor(props) {
     super(props);
 
@@ -88,6 +90,8 @@ class UIVolumeBar extends React.Component {
     this.flagVolumeSliderMousedown = true;
 
     this.docVolumeSliderMousemove(e);
+
+    this.main.onVolumeBarMouseDown(e);
   }
 
   docVolumeSliderMousemove(e) {

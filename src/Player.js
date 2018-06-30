@@ -27,8 +27,8 @@ import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 // UI
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Preact from 'preact';
+import { h } from 'preact';
 import UIBasic from './ui/js/ui_basic';
 
 //////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,8 @@ function Player(idContainer) {
   let context_ = oldmtn; //{ flag: 'player' };
   let playerContainer_ = document.getElementById(idContainer);
 
-  let uiBasic_ = ReactDOM.render(<UIBasic/>, playerContainer_);
+  let root;
+  let uiBasic_ = Preact.render(<UIBasic/>, playerContainer_, root);
 
   let media_ = document.querySelector('.vop-video');
   let adContainer_ = document.querySelector('.vop-ads-container');

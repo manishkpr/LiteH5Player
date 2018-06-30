@@ -1,8 +1,9 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
 import '../../assets/img/logo.png';
 
-class UILogoOverlay extends React.Component {
+class UILogoOverlay extends Preact.Component {
   constructor(props) {
     super(props);
   }

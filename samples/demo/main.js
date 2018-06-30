@@ -181,6 +181,8 @@ window.onload = function() {
 
   uiEngine = new oldmtn.UIEngine(omPlayer);
 
+  omPlayer.open(mediaCfg_);
+
   // Init with UIEngine
   // uiEngine = new oldmtn.UIEngine('player-container');
   // uiEngine.init(cfg_);

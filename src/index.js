@@ -6,7 +6,6 @@ import CastReceiver from './cast/cast_receiver';
 
 import UIEngine from './ui/js/ui_engine';
 
-
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
 

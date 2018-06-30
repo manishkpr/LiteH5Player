@@ -1,7 +1,7 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
-
-class UIXSpeedMenu extends React.Component {
+class UIXSpeedMenu extends Preact.Component {
   constructor(props) {
     super(props);
 

@@ -1,7 +1,7 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
-
-class UIQualityMenu extends React.Component {
+class UIQualityMenu extends Preact.Component {
   constructor(props) {
     super(props);
 

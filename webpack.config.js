@@ -3,7 +3,7 @@ var path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = false;
 
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, "src/index.js"),
@@ -34,7 +34,7 @@ module.exports = {
       use: {
         loader: 'babel-loader',
         options: {
-          presets: ['es2015', 'babel-preset-react']
+          presets: ['es2015']
         }
       }
     }, {

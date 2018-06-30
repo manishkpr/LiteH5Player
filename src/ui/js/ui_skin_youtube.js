@@ -1,4 +1,6 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
+
 import ResizeSensor from 'resize-sensor';
 
 import '../css/ui_skin_youtube.scss';
@@ -21,7 +23,7 @@ import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
 
-class UISkinYoutube extends React.Component {
+export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
     super(props);
 
@@ -166,9 +168,6 @@ class UISkinYoutube extends React.Component {
       movePos: 0
     };
     this.flagThumbnailMode = false;
-
-    // flags reference variable of volume bar
-    this.flagVolumeSliderMousedown = false;
 
     // menu context
     this.settingMenuUIData = {
@@ -898,7 +897,12 @@ class UISkinYoutube extends React.Component {
     }
   }
 
+  onVolumeBarMouseDown(e) {
+    this.flagVolumeSliderMousedown = true;
+  }
   onVolumeBarMouseUp(e) {
+    this.flagVolumeSliderMousedown = false;
+
     let pt = {
       x: e.clientX,
       y: e.clientY
@@ -1589,9 +1593,5 @@ class UISkinYoutube extends React.Component {
     return false;
   }
 }
-
-export default UISkinYoutube;
-
-
 
 

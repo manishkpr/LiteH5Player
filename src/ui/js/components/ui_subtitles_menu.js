@@ -1,7 +1,7 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
-
-class UISubtitlesMenu extends React.Component {
+class UISubtitlesMenu extends Preact.Component {
   constructor(props) {
     super(props);
 

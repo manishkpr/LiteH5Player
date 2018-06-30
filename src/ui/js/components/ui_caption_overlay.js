@@ -1,6 +1,7 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact'; 
 
-class UICaptionOverlay extends React.Component {
+class UICaptionOverlay extends Preact.Component {
   constructor(props) {
     super(props);
   }

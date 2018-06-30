@@ -1,7 +1,9 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
+
 import UITools from '../ui_tools';
 
-class UIFullscreenToggleButton extends React.Component {
+class UIFullscreenToggleButton extends Preact.Component {
   constructor(props) {
     super(props);
     

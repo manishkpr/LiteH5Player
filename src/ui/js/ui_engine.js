@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { h } from 'preact';
+import Preact from 'preact';
 
 import UISkinYoutube from './ui_skin_youtube';
 
@@ -18,11 +18,12 @@ class UIEngine {
       this.h5VideoPlayer_.appendChild(this.skinContainerYb_);
     }
 
-    this.uiPlayer_ = ReactDOM.render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_);
+    let root;
+    this.uiPlayer_ = Preact.render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_, root);
   }
 
   uninstallSkin() {
-    ReactDOM.unmountComponentAtNode(this.skinContainerYb_);
+    Preact.unmountComponentAtNode(this.skinContainerYb_);
   }
 }
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
 
-class UIAudioTrackMenu extends React.Component {
+class UIAudioTrackMenu extends Preact.Component {
   constructor(props) {
     super(props);
     this.main = this.props.main;

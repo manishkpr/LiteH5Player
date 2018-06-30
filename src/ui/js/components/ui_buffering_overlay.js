@@ -1,8 +1,9 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact'; 
 
 import UITools from '../ui_tools';
 
-class UIBufferingOverlay extends React.Component {
+class UIBufferingOverlay extends Preact.Component {
   constructor(props) {
     super(props);
   }

@@ -1,7 +1,9 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
+
 import UITools from '../ui_tools';
 
-class UISettingsToggleButton extends React.Component {
+class UISettingsToggleButton extends Preact.Component {
   constructor(props) {
     super(props);
 

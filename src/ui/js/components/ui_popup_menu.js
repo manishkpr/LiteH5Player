@@ -1,4 +1,5 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
 import '../../assets/img/logo.png';
 
@@ -10,7 +11,7 @@ import UIFccMenu from './ui_fcc_menu';
 import UIFccPropertyMenu from './ui_fcc_property_menu';
 import UIXSpeedMenu from './ui_xspeed_menu';
 
-class UIPopupMenu extends React.Component {
+class UIPopupMenu extends Preact.Component {
   constructor(props) {
     super(props);
 

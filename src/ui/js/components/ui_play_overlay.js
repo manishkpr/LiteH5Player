@@ -1,7 +1,8 @@
-import React from 'react';
+import { h } from 'preact';
+import Preact from 'preact';
 
 
-class UIPlayOverlay extends React.Component {
+class UIPlayOverlay extends Preact.Component {
   constructor(props) {
     super(props);
     this.main = this.props.main;
