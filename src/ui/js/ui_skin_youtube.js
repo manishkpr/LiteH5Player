@@ -73,12 +73,7 @@ export default class UISkinYoutube extends Preact.Component {
         onMouseMove={this.onPlayerMouseMove.bind(this)}
         onMouseDown={this.onPlayerMouseDown.bind(this)}
         onMouseUp={this.onPlayerMouseUp.bind(this)}>
-        <div className="vop-tooltip">
-          <div className="vop-tooltip-bg"></div>
-          <div className="vop-tooltip-text-wrapper">
-            <span className="vop-tooltip-text">00:00</span>
-          </div>
-        </div>
+        <UIToolTip main={this} />
         <UIPopupMenu main={this} />
         <div className="vop-gradient-bottom"></div>
         <div className="vop-control-bar"
@@ -438,8 +433,8 @@ export default class UISkinYoutube extends Preact.Component {
     //if (window.ResizeObserver) {
     if (false) {
       function onPlayerSize(entries) {
-        for (var i = 0; i < entries.length; i++) {
-          var entry = entries[i];
+        for (let i = 0; i < entries.length; i++) {
+          let entry = entries[i];
           const cr = entry.contentRect;
           const cWidth = entry.target.clientWidth;
           const cHeight = entry.target.clientHeight;
@@ -447,7 +442,7 @@ export default class UISkinYoutube extends Preact.Component {
           this.player_.resize(cWidth, cHeight);
         }
       }
-      var ro = new ResizeObserver(onPlayerSize.bind(this));
+      let ro = new ResizeObserver(onPlayerSize.bind(this));
 
       // Observer one or multiple elements
       ro.observe(this.vopPlayer);
@@ -488,9 +483,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     // chrome cast part
     if (0) {
-      var receiverAppId = 'E19ACDB8'; // joseph test app1
-      //var receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
-      //var receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
+      let receiverAppId = 'E19ACDB8'; // joseph test app1
+      //let receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
+      //let receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
 
       // init chromecast sender
       this.castSender_ = new oldmtn.CastSender(receiverAppId);
@@ -551,8 +546,8 @@ export default class UISkinYoutube extends Preact.Component {
   onResizeSensorCb(e) {
     // PlayerContainer's width change, need to update its height
     // and player's metrics.
-    var dstWidth = 0;
-    var dstHeight = 0;
+    let dstWidth = 0;
+    let dstHeight = 0;
     if (this.player_.isFullscreen()) {
       dstWidth = this.playerContainer.clientWidth;
       dstHeight = this.playerContainer.clientHeight;
@@ -624,10 +619,10 @@ export default class UISkinYoutube extends Preact.Component {
   // begin progress bar
   getProgressMovePosition(e) {
     // part - input
-    var rect = this.vopProgressBar.getBoundingClientRect();
+    let rect = this.vopProgressBar.getBoundingClientRect();
 
     // part - logic process
-    var offsetX = e.clientX - rect.left;
+    let offsetX = e.clientX - rect.left;
     if (offsetX < 0) {
       offsetX = 0;
     } else if (offsetX > rect.width) {
@@ -635,7 +630,7 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     // update time progress scrubber button
-    var duration = this.player_.getDuration();
+    let duration = this.player_.getDuration();
     return (offsetX / rect.width) * duration;
   }
 
@@ -643,14 +638,14 @@ export default class UISkinYoutube extends Preact.Component {
     // part - input
 
     // part - logic process
-    var isLive = (duration === Infinity) ? true : false;
+    let uiPosition;
+    let isLive = (duration === Infinity) ? true : false;
     if (isLive) {
-      var seekable = this.player_.getSeekableRange();
-      var buffered = this.player_.getBufferedRanges();
+      let seekable = this.player_.getSeekableRange();
+      let buffered = this.player_.getBufferedRanges();
       printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
     } else {
-      var uiPosition;
-      var uiBufferedPos;
+      let uiBufferedPos;
       if (this.progressBarContext.mousedown) {
         uiPosition = this.progressBarContext.movePos;
       } else {
@@ -672,35 +667,35 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   updateProgressBarHoverUI() {
-    var position = this.player_.getPosition();
-    var duration = this.player_.getDuration();
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
 
     if (this.progressBarContext.movePos <= position || this.progressBarContext.mousedown) {
       this.vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
-      var rect = this.vopProgressBar.getBoundingClientRect();
-      var offsetX = (position / duration) * rect.width;
+      let rect = this.vopProgressBar.getBoundingClientRect();
+      let offsetX = (position / duration) * rect.width;
       this.vopHoverProgress.style.left = offsetX + 'px';
       this.vopHoverProgress.style.transform = 'scaleX(' + (this.progressBarContext.movePos - position) / duration + ')';
     }
   }
 
-  updateTooltipUI(e) {
-    var thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+  updateTooltipUI(ptClientX) {
+    let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
 
-    function getTooltipOffsetX(e, tooltipWidth) {
+    function getTooltipOffsetX(progressBarClientX, tooltipWidth) {
       // part - input
       // bounding client rect can return the progress bar's rect relative to current page.
-      var rect = this.vopProgressBar.getBoundingClientRect();
-      var leftMin = 12;
-      var rightMax = 12 + rect.width;
+      let rect = this.vopProgressBar.getBoundingClientRect();
+      let leftMin = 12;
+      let rightMax = 12 + rect.width;
 
       // part - logic process
-      var offsetToProgressBar = (e.clientX - rect.left);
-      var offsetToVideo = offsetToProgressBar + 12;
+      let offsetToProgressBar = (progressBarClientX - rect.left);
+      let offsetToVideo = offsetToProgressBar + 12;
 
-      var tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth / 2;
-      var tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth / 2;
+      let tooltipLeft_RelativeToVideo = offsetToVideo - tooltipWidth / 2;
+      let tooltipRight_RelativeToVideo = offsetToVideo + tooltipWidth / 2;
 
       if (tooltipLeft_RelativeToVideo < leftMin) {
         tooltipLeft_RelativeToVideo = leftMin;
@@ -714,7 +709,7 @@ export default class UISkinYoutube extends Preact.Component {
     if (thumbnail) {
       UITools.addClass(this.vopTooltip, 'vop-tooltip-preview');
       printLog('thumbnail info: ', thumbnail);
-      var isSprite = (thumbnail.data.w && thumbnail.data.h);
+      let isSprite = (thumbnail.data.w && thumbnail.data.h);
       if (isSprite) {
         this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
         this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
@@ -732,7 +727,7 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     // update tooltip offset
-    var strTime = oldmtn.CommonUtils.timeToString(this.progressBarContext.movePos);
+    let strTime = oldmtn.CommonUtils.timeToString(this.progressBarContext.movePos);
     this.vopTooltipText.innerText = strTime;
 
     // calculate metrics first
@@ -741,13 +736,13 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopTooltip.style.display = 'block';
 
     // set the correct offset of tooltip.
-    var offsetX = getTooltipOffsetX.call(this, e, this.vopTooltip.clientWidth);
+    let offsetX = getTooltipOffsetX.call(this, ptClientX, this.vopTooltip.clientWidth);
     this.vopTooltip.style.left = offsetX.toString() + 'px';
   }
 
   updateAdProgressUI() {
-    var position = this.player_.getPosition();
-    var duration = this.player_.getDuration();
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
 
     // update time progress bar
     this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
@@ -971,7 +966,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onBtnSeek() {
-    var time = document.getElementById('seekedTime').value;
+    let time = document.getElementById('seekedTime').value;
     this.player_.setPosition(time);
   }
 
@@ -1003,12 +998,12 @@ export default class UISkinYoutube extends Preact.Component {
 
   //
   onUICmdCastInit() {
-    var cfg = getInitConfig();
+    let cfg = getInitConfig();
     this.castSender.new_init(cfg);
   }
 
   onUICmdCastOpen() {
-    var info = getMediaInfo();
+    let info = getMediaInfo();
     this.castSender.new_open(info);
   }
 
@@ -1043,8 +1038,8 @@ export default class UISkinYoutube extends Preact.Component {
       if (!this.progressBarContext.pausedBeforeMousedown) {
         this.player_.pause();
 
-        var paused = true;
-        var ended = this.player_.isEnded();
+        let paused = true;
+        let ended = this.player_.isEnded();
         this.updatePlayBtnUI(paused, ended);
       }
 
@@ -1083,7 +1078,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onProgressBarMouseMove(e) {
-    //printLog('+onProgressBarMouseMove');
+    printLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
     e.stopPropagation();
     this.removeAutohideAction();
 
@@ -1096,7 +1091,9 @@ export default class UISkinYoutube extends Preact.Component {
     // update progress bar ui
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarHoverUI();
-    this.updateTooltipUI(e);
+
+    let ptClientX = e.clientX;
+    this.updateTooltipUI(ptClientX);
   }
 
   onProgressBarMouseLeave() {
@@ -1131,6 +1128,9 @@ export default class UISkinYoutube extends Preact.Component {
     this.progressBarContext.movePos = movePos;
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
+
+    let ptClientX = e.clientX;
+    this.updateTooltipUI(ptClientX);
   }
 
   docProgressBarMouseup(e) {
@@ -1182,9 +1182,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.ratio = (this.metaHeight / this.metaWidth);
 
-    var v = this.playerContainer;
-    var dstWidth = v.clientWidth;
-    var dstHeight = dstWidth * this.ratio;
+    let v = this.playerContainer;
+    let dstWidth = v.clientWidth;
+    let dstHeight = dstWidth * this.ratio;
 
     //this.playerContainer.style.width = dstWidth.toString() + 'px';
     this.playerContainer.style.height = dstHeight.toString() + 'px';
@@ -1205,8 +1205,8 @@ export default class UISkinYoutube extends Preact.Component {
     if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
       this.player_.play();
       // update ui
-      var paused = false;
-      var ended = this.player_.isEnded();
+      let paused = false;
+      let ended = this.player_.isEnded();
       this.updatePlayBtnUI(paused, ended);
     }
   }
@@ -1253,7 +1253,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateUIState();
 
     // BD
-    var videos = document.getElementsByTagName('video');
+    let videos = document.getElementsByTagName('video');
     // ED
     printLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
     this.flagAdStarted = true;
@@ -1287,16 +1287,16 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAdTimeUpdate() {
-    var position = this.player_.getPosition();
-    var duration = this.player_.getDuration();
+    let position = this.player_.getPosition();
+    let duration = this.player_.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
   }
 
   onAdCompanions(e) {
-    var v = document.getElementById('idCompanionAd');
-    for (var i = 0; i < e.companions.length; i++) {
-      var companion = e.companions[i];
+    let v = document.getElementById('idCompanionAd');
+    for (let i = 0; i < e.companions.length; i++) {
+      let companion = e.companions[i];
       if (v.clientWidth === companion.width && v.clientHeight === companion.height) {
         v.innerHTML = companion.content;
       }
@@ -1341,15 +1341,15 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onMainMenuItemBlur(e) {
-    var text = '';
+    let text = '';
     if (e.relatedTarget) {
       text = ', text: ' + e.relatedTarget.innerText;
     }
 
     printLog('+onMainMenuItemBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
 
-    var prevFocus = e.target;
-    var nextFocus = e.relatedTarget;
+    let prevFocus = e.target;
+    let nextFocus = e.relatedTarget;
 
     if (nextFocus) {
       if (nextFocus === this.vopSettingsBtn) {
@@ -1376,7 +1376,7 @@ export default class UISkinYoutube extends Preact.Component {
   onSubtitleMenuItemClick(e) {
     e.stopPropagation();
 
-    var id = e.currentTarget.dataset.id;
+    let id = e.currentTarget.dataset.id;
     if (this.settingMenuUIData.currSubtitleId === id) {
       this.settingMenuUIData.currSubtitleId = '';
     } else {
@@ -1409,7 +1409,7 @@ export default class UISkinYoutube extends Preact.Component {
     printLog('+onMainMenuItemClick, ' +
       ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
-    var nextFocus = e.currentTarget;
+    let nextFocus = e.currentTarget;
 
     printLog('id: ' + nextFocus.dataset.id);
     switch (nextFocus.dataset.id) {
@@ -1432,7 +1432,7 @@ export default class UISkinYoutube extends Preact.Component {
   onQualityMenuItemClick(e) {
     printLog('+onQualityMenuItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
-    var nextFocus = e.currentTarget;
+    let nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currQualityId = nextFocus.dataset.id;
     this.updateUIState();
@@ -1440,7 +1440,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   onQualityMenuItemBlur(e) {
     printLog('+onQualityMenuItemBlur');
-    var nextFocus = e.relatedTarget;
+    let nextFocus = e.relatedTarget;
     if (nextFocus) {
       printLog('className: ' + nextFocus.className);
       if (nextFocus.className.indexOf('vop-panel-title') !== -1 ||
@@ -1466,7 +1466,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   onAudioTrackMenuItemClick(e) {
     printLog('+onAudioTrackMenuItemClick');
-    var nextFocus = e.currentTarget;
+    let nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currAudioTrackId = nextFocus.dataset.id;
     this.updateUIState();
@@ -1500,8 +1500,8 @@ export default class UISkinYoutube extends Preact.Component {
   onFccPropertyMenuItemClick(e) {
     printLog('+onFccPropertyMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
-    for (var i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
-      var fccProperty = this.settingMenuUIData.fccPropertyList[i];
+    for (let i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
+      let fccProperty = this.settingMenuUIData.fccPropertyList[i];
       if (fccProperty.name === this.settingMenuUIData.currFccPropertyName) {
         fccProperty.currValue = e.currentTarget.dataset.id;
         this.updateUIState();
@@ -1511,8 +1511,8 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onFccPropertyMenuItemBlur(e) {
-    var prevFocus = e.target;
-    var nextFocus = e.relatedTarget;
+    let prevFocus = e.target;
+    let nextFocus = e.relatedTarget;
 
     if (nextFocus) {
       if (nextFocus === this.vopSettingsBtn) {
@@ -1537,7 +1537,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   onXSpeedMenuItemClick(e) {
     printLog('+onXSpeedMenuItemClick');
-    var nextFocus = e.currentTarget;
+    let nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currSpeed = nextFocus.dataset.id;
     this.updateUIState();

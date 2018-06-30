@@ -1,8 +1,6 @@
 import { h } from 'preact';
 import Preact from 'preact';
 
-import '../../assets/img/logo.png';
-
 import UISubtitlesMenu from './ui_subtitles_menu';
 import UISettingsMenu from './ui_settings_menu';
 import UIQualityMenu from './ui_quality_menu';

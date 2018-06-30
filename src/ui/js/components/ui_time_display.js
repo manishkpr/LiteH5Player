@@ -1,8 +1,6 @@
 import { h } from 'preact';
 import Preact from 'preact';
 
-import '../../assets/img/logo.png';
-
 class UITimeDisplay extends Preact.Component {
   constructor(props) {
     super(props);
@@ -19,6 +17,8 @@ class UITimeDisplay extends Preact.Component {
       case 'playing':
         timeText = this.main.updateTimeDisplay(position, duration);
         break;
+      default:
+        break;
     }
 
     return (
@@ -28,7 +28,5 @@ class UITimeDisplay extends Preact.Component {
     );
   }
 }
-
-
 
 export default UITimeDisplay;
