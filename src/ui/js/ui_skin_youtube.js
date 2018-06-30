@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import ResizeSensor from 'resize-sensor';
@@ -12,6 +14,8 @@ import UIPopupMenu from './components/ui_popup_menu';
 
 import UIVolumeToggleButton from './components/ui_volume_toggle_button';
 import UIVolumeBar from './components/ui_volumebar';
+
+import UITimeDisplay from './components/ui_time_display';
 
 import UICaptionOverlay from './components/ui_caption_overlay';
 import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
@@ -97,7 +101,7 @@ export default class UISkinYoutube extends Preact.Component {
                 onMouseMove={this.onControlMouseMove.bind(this)}></button>
               <UIVolumeToggleButton main={this} />
               <UIVolumeBar main={this} />
-              <div className="vop-time-display"><span className="vop-time-text">00:00/00:00</span></div>
+              <UITimeDisplay main={this} />
             </div>
             <div className="vop-right-controls">
               <UISubtitlesToggleButton main={this} />
@@ -375,7 +379,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
-    
+
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
     this.onMediaWaiting = this.onMediaWaiting.bind(this);
 
@@ -581,7 +585,7 @@ export default class UISkinYoutube extends Preact.Component {
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
     printLog('updateUIStateMachine, state: ' + state);
-    
+
     //
     UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState);
     UITools.addClass(this.vopPlayer, 'vop-player-' + state);
@@ -611,15 +615,6 @@ export default class UISkinYoutube extends Preact.Component {
       case 'closed':
         break;
       case 'playing':
-        if (!this.flagFirstPlaying) {
-          this.flagFirstPlaying = true;
-
-          let paused = this.player_.isPaused();
-          let ended = this.player_.isEnded();
-          this.updatePlayBtnUI(paused, ended);
-
-          this.vopControlBar.style.display = 'block';
-        }
         break;
       default:
         break;
@@ -649,14 +644,10 @@ export default class UISkinYoutube extends Preact.Component {
 
     // part - logic process
     var isLive = (duration === Infinity) ? true : false;
-    var timeText = '';
     if (isLive) {
       var seekable = this.player_.getSeekableRange();
       var buffered = this.player_.getBufferedRanges();
       printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
-
-      // update time display label
-      timeText = 'Live';
     } else {
       var uiPosition;
       var uiBufferedPos;
@@ -674,15 +665,10 @@ export default class UISkinYoutube extends Preact.Component {
 
       // update time progress scrubber button
       this.vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * this.vopProgressBar.clientWidth).toString() + 'px)';
-
-      // update time display label
-      var c = oldmtn.CommonUtils.timeToString(uiPosition);
-      var d = oldmtn.CommonUtils.timeToString(duration);
-      timeText = c + '/' + d;
     }
 
-    var tDisplay = document.querySelector('.vop-time-text');
-    tDisplay.innerText = timeText;
+    let tDisplay = document.querySelector('.vop-time-text');
+    tDisplay.innerText = this.updateTimeDisplay(uiPosition, duration);
   }
 
   updateProgressBarHoverUI() {
@@ -766,13 +752,8 @@ export default class UISkinYoutube extends Preact.Component {
     // update time progress bar
     this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
 
-    // update time display label
-    var c = oldmtn.CommonUtils.timeToString(position);
-    var d = oldmtn.CommonUtils.timeToString(duration);
-    var fmtTime = c + '/' + d;
-
-    var tDisplay = document.querySelector('.vop-time-text');
-    tDisplay.innerText = fmtTime;
+    let tDisplay = document.querySelector('.vop-time-text');
+    tDisplay.innerText = this.updateTimeDisplay(uiPosition, duration);
   }
 
   updatePlayBtnUI(paused, ended) {
@@ -789,6 +770,23 @@ export default class UISkinYoutube extends Preact.Component {
         UITools.addClass(this.vopPlayButton, 'vop-style-pause');
       }
     }
+  }
+
+  updateTimeDisplay(position, duration) {
+    let isLive = (duration === Infinity) ? true : false;
+
+    let timeText = '';
+    if (isLive) {
+      // update time display label
+      timeText = 'Live';
+    } else {
+      // update time display label
+      let c = oldmtn.CommonUtils.timeToString(position);
+      let d = oldmtn.CommonUtils.timeToString(duration);
+      timeText = c + '/' + d;
+    }
+
+    return timeText;
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -1122,7 +1120,7 @@ export default class UISkinYoutube extends Preact.Component {
   docProgressBarMousemove(e) {
     printLog('+docProgressBarMousemove');
 
-    var movePos = this.getProgressMovePosition(e);
+    let movePos = this.getProgressMovePosition(e);
     if (this.progressBarContext.movePos === movePos) {
       return;
     }
@@ -1226,7 +1224,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onMediaVolumeChanged() {
-    
+
   }
 
   startBufferingUI() {
@@ -1309,7 +1307,7 @@ export default class UISkinYoutube extends Preact.Component {
     let flagIsFullscreen = this.player_.isFullscreen();
     printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
     printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
-    
+
     if (flagIsFullscreen) {
       UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
       UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
@@ -1593,5 +1591,3 @@ export default class UISkinYoutube extends Preact.Component {
     return false;
   }
 }
-
-
