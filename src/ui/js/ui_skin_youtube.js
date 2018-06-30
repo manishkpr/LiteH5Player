@@ -682,10 +682,10 @@ export default class UISkinYoutube extends Preact.Component {
     }
   }
 
-  updateTooltipUI() {
-    let thumbnail = this.player_.getThumbnail(this.progressBarContext.movePos);
+  updateTooltipUI(currMovePos) {
+    let thumbnail = this.player_.getThumbnail(currMovePos);
 
-    function getTooltipOffsetX(tooltipWidth) {
+    function getTooltipOffsetX(currMovePos, tooltipWidth) {
       // part - input
       // bounding client rect can return the progress bar's rect relative to current page.
       let rect = this.vopProgressBar.getBoundingClientRect();
@@ -694,7 +694,7 @@ export default class UISkinYoutube extends Preact.Component {
 
       let duration = this.player_.getDuration();
         
-      let currPosWidth = (this.progressBarContext.movePos / duration) * rect.width;
+      let currPosWidth = (currMovePos / duration) * rect.width;
       let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
       let tooltipRight_RelativeToVideo = leftMin + currPosWidth + tooltipWidth / 2;
 
@@ -730,7 +730,7 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     // update tooltip offset
-    let strTime = oldmtn.CommonUtils.timeToString(this.progressBarContext.movePos);
+    let strTime = oldmtn.CommonUtils.timeToString(currMovePos);
     this.vopTooltipText.innerText = strTime;
 
     // calculate metrics first
@@ -739,7 +739,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopTooltip.style.display = 'block';
 
     // set the correct offset of tooltip.
-    let offsetX = getTooltipOffsetX.call(this, this.vopTooltip.clientWidth);
+    let offsetX = getTooltipOffsetX.call(this, currMovePos, this.vopTooltip.clientWidth);
     this.vopTooltip.style.left = offsetX.toString() + 'px';
   }
 
@@ -1095,7 +1095,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
     this.updateProgressBarHoverUI();
 
-    this.updateTooltipUI();
+    this.updateTooltipUI(this.progressBarContext.movePos);
   }
 
   onProgressBarMouseLeave() {
@@ -1131,7 +1131,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateProgressBarUI(this.player_.getPosition(), this.player_.getDuration());
     this.updateProgressBarHoverUI();
 
-    this.updateTooltipUI();
+    this.updateTooltipUI(this.progressBarContext.movePos);
   }
 
   docProgressBarMouseup(e) {
