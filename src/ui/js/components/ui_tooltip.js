@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, Component } from 'preact';
 
 // Functionality:
 // 1. show tooltip thumbnail;
@@ -9,12 +8,27 @@ import Preact from 'preact';
 // 1. player instance;
 // 2. player current position;
 
-class UIToolTip extends Preact.Component {
+class UIToolTip extends Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
+  }
+
+  componentDidMount(e) {
+    this.vopTooltip = document.querySelector('.vop-tooltip');
+    this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
+    this.vopTooltipText = document.querySelector('.vop-tooltip-text');
+
+
+  }
+
+  componentDidUpdate() {
   }
 
   render() {
+    console.log('UIToolTip, render');
+
     let oldTooltipText = '00:00';
     let vopTooltipText = document.querySelector('.vop-tooltip-text');
     if (vopTooltipText) {

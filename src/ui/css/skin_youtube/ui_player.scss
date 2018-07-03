@@ -705,7 +705,7 @@
 
 /************ Begin Ad State ************/
 .vop-ad-started .vop-ads-container {
-  z-index: 100;
+  z-index: $zIndex_ads;
 }
 /************ End Ad State ************/
 

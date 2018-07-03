@@ -126,16 +126,8 @@ export default class UISkinYoutube extends Preact.Component {
 
     // UI Controls
     this.vopPlayer = null;
-    this.vopTooltip = null;
-    this.vopTooltipBg = null;
-    this.vopTooltipText = null;
     this.vopControlBar = null;
-    this.vopProgressBar = null;
-    this.vopLoadProgress = null;
-    this.vopPlayProgress = null;
-    this.vopHoverProgress = null;
-    this.vopScrubberContainer = null;
-
+    
     this.vopSubtitlesBtn;
     this.vopSettingsBtn;
 
@@ -147,13 +139,6 @@ export default class UISkinYoutube extends Preact.Component {
 
     // flag
     this.timerHideControlBar;
-
-    // flags reference variable of progress bar
-    this.progressBarContext;
-    this.progressBarMoveContext = {
-      movePos: 0
-    };
-    this.flagThumbnailMode = false;
 
     // menu context
     this.settingMenuUIData = {
@@ -353,12 +338,11 @@ export default class UISkinYoutube extends Preact.Component {
     //
     this.onStateChange = this.onStateChange.bind(this);
 
-    this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaEnded = this.onMediaEnded.bind(this);
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
     this.onMediaSeeking = this.onMediaSeeking.bind(this);
-    this.onMediaSeeked = this.onMediaSeeked.bind(this);
-    this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
+    
+    
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
 
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
@@ -383,17 +367,13 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.vopSkinContainer = document.querySelector('.vop-skin-youtube');
 
+    this.vopControlBar = document.querySelector('.vop-control-bar');
+
+    this.vopProgressBar = document.querySelector('.vop-progress-bar');
+
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
     this.vopTooltipText = document.querySelector('.vop-tooltip-text');
-
-    this.vopControlBar = document.querySelector('.vop-control-bar');
-    this.vopProgressBar = document.querySelector('.vop-progress-bar');
-    this.vopLoadProgress = document.querySelector('.vop-load-progress');
-    this.vopPlayProgress = document.querySelector('.vop-play-progress');
-    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
-
-    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
 
     this.vopTimeDisplay = document.querySelector('.vop-time-text');
 
@@ -445,12 +425,9 @@ export default class UISkinYoutube extends Preact.Component {
   initPlayerListeners() {
     this.player_.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
-    this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
     this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
-    this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
-    this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
 
     this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
@@ -483,8 +460,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
     this.player_.off(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
-    this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
-    this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
 
     this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
@@ -552,7 +527,7 @@ export default class UISkinYoutube extends Preact.Component {
       printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
       let position = this.player_.getPosition();
       let duration = this.player_.getDuration();
-      this.updateProgressBarUI(position, duration);
+      //this.updateProgressBarUI(position, duration);
     }
   }
 
@@ -576,13 +551,6 @@ export default class UISkinYoutube extends Preact.Component {
       case 'opened':
         break;
       case 'ended':
-        let position = this.player_.getPosition();
-        let duration = this.player_.getDuration();
-        if (this.progressBarContext) {
-          this.progressBarContext.movePos = position;
-        }
-        this.updateProgressBarUI(position, duration);
-
         UITools.removeClass(this.vopPlayer, 'vop-autohide');
         break;
       case 'closed':
@@ -591,80 +559,6 @@ export default class UISkinYoutube extends Preact.Component {
         break;
       default:
         break;
-    }
-  }
-
-  // begin progress bar
-  getProgressMovePosition(e) {
-    // part - input
-    let rect = this.vopProgressBar.getBoundingClientRect();
-
-    // part - logic process
-    let offsetX = e.clientX - rect.left;
-    if (offsetX < 0) {
-      offsetX = 0;
-    } else if (offsetX > rect.width) {
-      offsetX = rect.width;
-    }
-
-    // update time progress scrubber button
-    let duration = this.player_.getDuration();
-    return (offsetX / rect.width) * duration;
-  }
-
-  updateProgressBarUI(position, duration) {
-    // part - input
-
-    // part - logic process
-    let uiPosition = 0;
-    let isLive = (duration === Infinity) ? true : false;
-    if (isLive) {
-      let seekable = this.player_.getSeekableRange();
-      let buffered = this.player_.getBufferedRanges();
-      printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
-    } else {
-      let uiBufferedPos;
-      if (this.progressBarContext) {
-        uiPosition = this.progressBarContext.movePos;
-      } else {
-        uiPosition = position;
-      }
-
-      // part - output, update ui
-      // update time progress bar
-      uiBufferedPos = this.player_.getValidBufferPosition(uiPosition);
-      this.vopLoadProgress.style.transform = 'scaleX(' + uiBufferedPos / duration + ')';
-      this.vopPlayProgress.style.transform = 'scaleX(' + uiPosition / duration + ')';
-
-      // update time progress scrubber button
-      this.vopScrubberContainer.style.transform = 'translateX(' + ((uiPosition / duration) * this.vopProgressBar.clientWidth).toString() + 'px)';
-    }
-
-    this.updateTimeDisplay(uiPosition, duration);
-  }
-
-  updateProgressBarHoverUI() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-
-    let movePos = 0;
-    if (this.progressBarContext) {
-      console.log('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
-    }
-    console.log('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
-    if (this.progressBarContext) {
-      movePos = this.progressBarContext.movePos;
-    } else if (this.progressBarMoveContext) {
-      movePos = this.progressBarMoveContext.movePos;
-    }
-    console.log('test0703, movePost: ' + movePos);
-    if (movePos <= position) {
-      this.vopHoverProgress.style.transform = 'scaleX(0)';
-    } else {
-      let rect = this.vopProgressBar.getBoundingClientRect();
-      let offsetX = (position / duration) * rect.width;
-      this.vopHoverProgress.style.left = offsetX + 'px';
-      this.vopHoverProgress.style.transform = 'scaleX(' + (movePos - position) / duration + ')';
     }
   }
 
@@ -985,136 +879,16 @@ export default class UISkinYoutube extends Preact.Component {
     this.castSender.new_test();
   }
 
-  doEnterThumbnailMode() {
-    printLog('+doEnterThumbnailMode');
-    if (!this.flagThumbnailMode) {
-      // need to pause content first before starting a seek operation.
-      if (!this.progressBarContext.pausedBeforeMousedown) {
-        this.player_.pause();
-      }
-
-      this.progressBarContext.timer = null;
-      this.flagThumbnailMode = true;
-    }
-  }
-
-  doProcessThumbnailMove() {
-    // for further action, you can add thumbnail popup here.
-  }
-
-  doProcessThumbnailUp() {
-    // for further action, you can add thumbnail ended event here.
-  }
-
   onProgressBarMouseDown(e) {
     printLog('+onProgressBarMouseDown');
-    this.captureProgressBarMouseEvents();
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.progressBarContext = {};
-    this.progressBarContext.pausedBeforeMousedown = this.player_.isPaused();
-    this.progressBarContext.endedBeforeMousedown = this.player_.isEnded();
-    this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
-    this.flagThumbnailMode = false;
-    this.progressBarContext.timer = setTimeout(function() {
-      this.doEnterThumbnailMode();
-    }.bind(this), 200);
-
-    // update progress bar ui
-    this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
-    this.updateProgressBarHoverUI();
   }
 
-  onProgressBarMouseMove(e) {
-    printLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
-    e.stopPropagation();
-    this.removeAutohideAction();
-
-    // if mouse down, just return
-    if (this.progressBarContext ||
-      this.settingMenuUIData.currMenu !== 'none') {
-      return;
-    }
-
-    // update progress bar ui
-    let movePos = this.getProgressMovePosition(e);
-    this.progressBarMoveContext.movePos = movePos;
-    this.updateProgressBarHoverUI();
-
+  onProgressBarMouseMove(e, movePos) {
     this.updateTooltipUI(movePos);
   }
 
   onProgressBarMouseLeave() {
-    //printLog('+onProgressBarMouseLeave');
     this.vopTooltip.style.display = 'none';
-  }
-
-  captureProgressBarMouseEvents() {
-    this.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
-    this.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
-
-    document.addEventListener('mousemove', this.newProgressBarMousemove, true);
-    document.addEventListener('mouseup', this.newProgressBarMouseup, true);
-  }
-
-  releaseProgressBarMouseEvents() {
-    document.removeEventListener('mousemove', this.newProgressBarMousemove, true);
-    document.removeEventListener('mouseup', this.newProgressBarMouseup, true);
-  }
-
-  docProgressBarMousemove(e) {
-    printLog('+docProgressBarMousemove');
-
-    let movePos = this.getProgressMovePosition(e);
-    if (this.progressBarContext.movePos === movePos) {
-      return;
-    }
-
-    this.doEnterThumbnailMode();
-    this.doProcessThumbnailMove();
-
-    this.progressBarContext.movePos = movePos;
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
-    this.updateProgressBarHoverUI();
-
-    this.updateTooltipUI(this.progressBarContext.movePos);
-  }
-
-  docProgressBarMouseup(e) {
-    printLog('+docProgressBarMouseup');
-    e.preventDefault();
-    this.releaseProgressBarMouseEvents();
-
-    if (this.flagThumbnailMode) {
-      // thumbnail mode click event
-      this.doProcessThumbnailUp();
-    } else {
-      // plain click event
-      if (this.progressBarContext.timer) {
-        // it's quick click, don't need to pause
-        clearTimeout(this.progressBarContext.timer);
-        this.progressBarContext.timer = null;
-      }
-    }
-
-    // update ui first
-    this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
-    this.updateProgressBarHoverUI();
-
-    if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
-      this.player_.setPosition(this.progressBarContext.movePos);
-    } else {
-      this.progressBarContext = null;
-    }
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -1122,12 +896,6 @@ export default class UISkinYoutube extends Preact.Component {
   onStateChange(e) {
     let newState = e.newState;
     this.updateUIStateMachine(newState);
-  }
-
-  onMediaDurationChanged() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
-    this.updateProgressBarUI(position, duration);
   }
 
   onMediaEnded() {}
@@ -1152,35 +920,6 @@ export default class UISkinYoutube extends Preact.Component {
 
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
-  }
-
-  onMediaSeeked() {
-    printLog('+onMediaSeeked, pos: ' + this.player_.getPosition() +
-      ', paused: ' + this.player_.isPaused() +
-      ', ended: ' + this.player_.isEnded());
-
-    if (this.progressBarContext) {
-      if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
-        this.player_.play();
-      }
-      this.progressBarContext = null;
-    }
-  }
-
-  onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
-
-    // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
-    // in this situation, we won't update progress bar ui.
-    if (this.progressBarContext) {
-      // do nothing
-    } else {
-      //this.progressBarContext.movePos = this.player_.getPosition();
-      let position = this.player_.getPosition();
-      let duration = this.player_.getDuration();
-      this.updateProgressBarUI(position, duration);
-      this.updateProgressBarHoverUI();
-    }
   }
 
   onMediaVolumeChanged() {
