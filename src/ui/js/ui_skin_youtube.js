@@ -19,6 +19,7 @@ import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 
 import UIToolTip from './components/ui_tooltip';
+import UIProgressBar from './components/ui_progressbar';
 
 import UIPlayToggleButton from './components/ui_play_toggle_button';
 import UIVolumeToggleButton from './components/ui_volume_toggle_button';
@@ -81,17 +82,8 @@ export default class UISkinYoutube extends Preact.Component {
         <div className="vop-gradient-bottom"></div>
         <div className="vop-control-bar"
           onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
-          <div className="vop-progress-bar"
-            onMouseDown={this.onProgressBarMouseDown.bind(this)}
-            onMouseMove={this.onProgressBarMouseMove.bind(this)}
-            onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
-            <div className="vop-progress-list">
-              <div className="vop-load-progress"></div>
-              <div className="vop-hover-progress"></div>
-              <div className="vop-play-progress"></div>
-            </div>
-            <div className="vop-scrubber-container"></div>
-          </div>
+          
+          <UIProgressBar main={this} />
           <div className="vop-controls">
             <div className="vop-left-controls">
               <UIPlayToggleButton main={this} />
@@ -831,12 +823,12 @@ export default class UISkinYoutube extends Preact.Component {
     let currPaused = this.player_.isPaused();
     let currEnded = this.player_.isEnded();
 
+    let newPaused;
     // Compute new play/pause state and apply it to player.
     if (currEnded) {
       // call play method when video is ended will trigger 'seeking' event and the target position is 0.
       newPaused = false;
     } else {
-      let newPaused;
       // execute ui cmd
       if (currPaused) {
         newPaused = false;
