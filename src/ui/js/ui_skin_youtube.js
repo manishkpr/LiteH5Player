@@ -394,7 +394,6 @@ export default class UISkinYoutube extends Preact.Component {
 
     //
     this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
-    this.onFullscreenChanged = this.onFullscreenChanged.bind(this);
   }
 
   // Title: init part
@@ -424,7 +423,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopPauseButton = this.vopSkinContainer.querySelector('.vop-pause-button');
     this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
     this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
-    this.vopFullscreenBtn = this.vopSkinContainer.querySelector('.vop-fullscreen-button');
 
     //
     this.vopVideo = document.querySelector('.vop-video');
@@ -433,6 +431,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   initUIElementsStyles() {
+    // Can add ui style config here.
     //this.vopPlayProgress.style.backgroundColor = '#FA12FF';
   }
 
@@ -486,8 +485,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
     this.player_.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
-    //
-    this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
 
     // chrome cast part
     if (0) {
@@ -522,9 +519,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
     this.player_.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
     this.player_.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
-
-    //
-    this.player_.off(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
   }
 
   playerOpen(mediaCfg) {
@@ -1273,8 +1267,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     // BD
     let videos = document.getElementsByTagName('video');
-    // ED
     printLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
+    // ED
+
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.linear;
     this.flagIsVpaidAd = e.vpaid;
@@ -1319,20 +1314,6 @@ export default class UISkinYoutube extends Preact.Component {
       if (v.clientWidth === companion.width && v.clientHeight === companion.height) {
         v.innerHTML = companion.content;
       }
-    }
-  }
-
-  onFullscreenChanged() {
-    let flagIsFullscreen = this.player_.isFullscreen();
-    printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
-    printLog('player, width: ' + this.playerContainer.clientWidth + ', height: ' + this.playerContainer.clientHeight);
-
-    if (flagIsFullscreen) {
-      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
-      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
-    } else {
-      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
-      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
     }
   }
 
