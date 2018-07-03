@@ -11,8 +11,6 @@ class UIFullscreenToggleButton extends Preact.Component {
   }
 
   componentDidMount() {
-    console.log('+componentDidMount');
-
     this.vopFullscreenBtn = document.querySelector('.vop-fullscreen-button');
 
     this.onFullscreenChanged = this.onFullscreenChanged.bind(this);

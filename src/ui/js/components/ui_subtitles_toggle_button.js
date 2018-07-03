@@ -1,8 +1,6 @@
 import { h } from 'preact';
 import Preact from 'preact';
 
-import UITools from '../ui_tools';
-
 class UISubtitleToggleButton extends Preact.Component {
   constructor(props) {
     super(props);

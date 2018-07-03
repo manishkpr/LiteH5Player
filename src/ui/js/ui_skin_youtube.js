@@ -12,11 +12,6 @@ import UITools from './ui_tools';
 // Menu Part
 import UIPopupMenu from './components/ui_popup_menu';
 
-import UIVolumeToggleButton from './components/ui_volume_toggle_button';
-import UIVolumeBar from './components/ui_volumebar';
-
-import UITimeDisplay from './components/ui_time_display';
-
 import UICaptionOverlay from './components/ui_caption_overlay';
 import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
@@ -25,11 +20,15 @@ import UIPlayOverlay from './components/ui_play_overlay';
 
 import UIToolTip from './components/ui_tooltip';
 
-import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
+import UIPlayToggleButton from './components/ui_play_toggle_button';
+import UIVolumeToggleButton from './components/ui_volume_toggle_button';
+import UIVolumeBar from './components/ui_volumebar';
+import UITimeDisplay from './components/ui_time_display';
+import UIPipToggleButton from './components/ui_pip_toggle_button';
+import UIChromecastToggleButton from './components/ui_chromecast_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
-import UIChromecastToggleButton from './components/ui_chromecast_toggle_button';
-import UIPipToggleButton from './components/ui_pip_toggle_button';
+import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 
 export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
@@ -95,9 +94,7 @@ export default class UISkinYoutube extends Preact.Component {
           </div>
           <div className="vop-controls">
             <div className="vop-left-controls">
-              <button className="vop-button vop-play-button vop-style-play" title="play"
-                onClick={this.onUICmdPlay.bind(this)}
-                onMouseMove={this.onControlMouseMove.bind(this)}></button>
+              <UIPlayToggleButton main={this} />
               <UIVolumeToggleButton main={this} />
               <UIVolumeBar main={this} />
               <UITimeDisplay main={this} />
@@ -375,7 +372,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaEnded = this.onMediaEnded.bind(this);
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
-    this.onMediaPaused = this.onMediaPaused.bind(this);
     this.onMediaSeeking = this.onMediaSeeking.bind(this);
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
@@ -468,7 +464,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-    this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
     this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
     this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
@@ -503,7 +498,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-    this.player_.off(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
     this.player_.off(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
     this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
@@ -598,10 +592,6 @@ export default class UISkinYoutube extends Preact.Component {
       case 'opened':
         break;
       case 'ended':
-        let paused = this.player_.isPaused();
-        let ended = this.player_.isEnded();
-        this.updatePlayBtnUI(paused, ended);
-
         let position = this.player_.getPosition();
         let duration = this.player_.getDuration();
         this.progressBarContext.movePos = position;
@@ -752,22 +742,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateProgressBarUI(position, duration);
   }
 
-  updatePlayBtnUI(paused, ended) {
-    UITools.removeClass(this.vopPlayButton, 'vop-style-play');
-    UITools.removeClass(this.vopPlayButton, 'vop-style-pause');
-    UITools.removeClass(this.vopPlayButton, 'vop-style-replay');
-
-    if (ended) {
-      UITools.addClass(this.vopPlayButton, 'vop-style-replay');
-    } else {
-      if (paused) {
-        UITools.addClass(this.vopPlayButton, 'vop-style-play');
-      } else {
-        UITools.addClass(this.vopPlayButton, 'vop-style-pause');
-      }
-    }
-  }
-
   getTimeDisplay(position, duration) {
     let isLive = (duration === Infinity) ? true : false;
 
@@ -846,21 +820,8 @@ export default class UISkinYoutube extends Preact.Component {
   // browser & UI callback functions
   onUICmdPlay() {
     // Get current play/pause state from UI.
-    let currPaused;
-    let currEnded;
-
-    if (UITools.hasClass(this.vopPlayButton, 'vop-style-play')) {
-      currPaused = true;
-      currEnded = false;
-    } else if (UITools.hasClass(this.vopPlayButton, 'vop-style-pause')) {
-      currPaused = false;
-      currEnded = false;
-    } else if (UITools.hasClass(this.vopPlayButton, 'vop-style-replay')) {
-      currPaused = false;
-      currEnded = true;
-    } else {
-      console.log('Play button can\'t have this style');
-    }
+    let currPaused = this.player_.isPaused();
+    let currEnded = this.player_.isEnded();
 
     // Compute new play/pause state and apply it to player.
     if (currEnded) {
@@ -880,9 +841,6 @@ export default class UISkinYoutube extends Preact.Component {
       } else {
         newPaused = true;
       }
-
-      // update ui
-      this.updatePlayBtnUI(newPaused, currEnded);
 
       // update logic
       if (this.isPlayerActive()) {
@@ -1042,10 +1000,6 @@ export default class UISkinYoutube extends Preact.Component {
       // need to pause content first before starting a seek operation.
       if (!this.progressBarContext.pausedBeforeMousedown) {
         this.player_.pause();
-
-        let paused = true;
-        let ended = this.player_.isEnded();
-        this.updatePlayBtnUI(paused, ended);
       }
 
       this.progressBarContext.timer = null;
@@ -1204,21 +1158,17 @@ export default class UISkinYoutube extends Preact.Component {
     this.player_.resize(dstWidth, dstHeight);
   }
 
-  onMediaPaused() {};
-
   onMediaSeeking() {
     printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
   }
 
   onMediaSeeked() {
-    printLog('+onMediaSeeked, pos: ' + this.player_.getPosition());
+    printLog('+onMediaSeeked, pos: ' + this.player_.getPosition() +
+      ', paused: ' + this.player_.isPaused() +
+      ', ended: ' + this.player_.isEnded());
 
     if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
       this.player_.play();
-      // update ui
-      let paused = false;
-      let ended = this.player_.isEnded();
-      this.updatePlayBtnUI(paused, ended);
     }
   }
 

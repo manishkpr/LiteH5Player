@@ -437,6 +437,7 @@ function Player(idContainer) {
     eventBus_.on(Events.MEDIA_ENDED, onMediaEnded, {});
     eventBus_.on(Events.MEDIA_WAITING, onMediaWaiting, {});
     eventBus_.on(Events.MEDIA_PLAYING, onMediaPlaying, {});
+    eventBus_.on(Events.MEDIA_PAUSED, onMediaPaused, {});
 
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
@@ -461,6 +462,7 @@ function Player(idContainer) {
     eventBus_.off(Events.MEDIA_ENDED, onMediaEnded, {});
     eventBus_.off(Events.MEDIA_WAITING, onMediaWaiting, {});
     eventBus_.off(Events.MEDIA_PLAYING, onMediaPlaying, {});
+    eventBus_.off(Events.MEDIA_PAUSED, onMediaPaused, {});
 
     // controller events
     eventBus_.off(Events.FOUND_PARSER, onFoundParser);
@@ -500,6 +502,10 @@ function Player(idContainer) {
 
   function onMediaPlaying() {
     updateState('playing');
+  }
+
+  function onMediaPaused() {
+    updateState('paused');
   }
 
   function onFoundParser(data) {
