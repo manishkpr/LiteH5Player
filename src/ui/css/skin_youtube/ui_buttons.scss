@@ -39,6 +39,9 @@
   .vop-style-cast {
     background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg)
   }
+  .vop-style-pip {
+    background-image: url(../assets/svg/ic_picture_in_picture_24px.svg)
+  }
 
   .vop-style-play,
   .vop-style-pause,
@@ -52,7 +55,8 @@
   .vop-style-settings,
   .vop-style-fullscreen,
   .vop-style-fullscreen-exit,
-  .vop-style-cast {
+  .vop-style-cast,
+  .vop-style-pip {
     background-position: center;
     background-repeat: no-repeat;
   }

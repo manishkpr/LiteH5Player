@@ -10,7 +10,7 @@ class UILogoOverlay extends Preact.Component {
 
   render() {
     return (
-      <div className="vop-logo"
+      <div className="vop-logo-container"
         onClick={this.onLogoClick.bind(this)}
         onMouseDown={this.onLogoMouseDown.bind(this)}>
         <a href="http://localhost/1/LiteH5Player/samples/simple.html" target="_Blank">

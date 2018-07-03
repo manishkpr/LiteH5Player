@@ -28,7 +28,9 @@ import CommonUtils from './utils/common_utils';
 
 // UI
 import Preact from 'preact';
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import UIBasic from './ui/js/ui_basic';
 
 //////////////////////////////////////////////////////////////////////////////
@@ -143,7 +145,10 @@ function Player(idContainer) {
     let newState = state;
 
     playerState_ = newState;
-    eventBus_.trigger(Events.STATE_CHANGE, {oldState: oldState, newState: newState});
+    eventBus_.trigger(Events.STATE_CHANGE, {
+      oldState: oldState,
+      newState: newState
+    });
   }
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +339,28 @@ function Player(idContainer) {
     }
   }
 
+  function isPipSupported() {
+    let videoElement = media_;
+    if (videoElement &&
+      videoElement.webkitSupportsPresentationMode &&
+      typeof videoElement.webkitSetPresentationMode === 'function') {
+      return true;
+    }
+    return false;
+  }
+
+  function setPipPresentation(show) {
+    if (isPipSupported()) {
+      let videoElement = media_;
+      if (show && videoElement.webkitPresentationMode === 'inline') {
+        videoElement.webkitSetPresentationMode('picture-in-picture');
+      } else if (!show &&
+        videoElement.webkitPresentationMode === 'picture-in-picture') {
+        videoElement.webkitSetPresentationMode('inline');
+      }
+    }
+  }
+
   function getState() {
     return playerState_;
   }
@@ -414,7 +441,7 @@ function Player(idContainer) {
     // controller events
     eventBus_.on(Events.FOUND_PARSER, onFoundParser);
     eventBus_.on(Events.MEDIA_ATTACHED, onMediaAttached);
-    
+
     // ads events
     eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
@@ -469,8 +496,7 @@ function Player(idContainer) {
     updateState('ended');
   }
 
-  function onMediaWaiting() {
-  }
+  function onMediaWaiting() {}
 
   function onMediaPlaying() {
     updateState('playing');
@@ -609,6 +635,8 @@ function Player(idContainer) {
     playAd: playAd,
     // thumbnail
     getThumbnail: getThumbnail,
+    // pip(Safari only)
+    setPipPresentation: setPipPresentation,
     // State Machine
     getState: getState,
     // debug
@@ -623,4 +651,3 @@ function Player(idContainer) {
 };
 
 export default Player;
-

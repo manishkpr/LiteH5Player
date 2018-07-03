@@ -29,6 +29,7 @@ import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
 import UIChromecastToggleButton from './components/ui_chromecast_toggle_button';
+import UIPipToggleButton from './components/ui_pip_toggle_button';
 
 export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
@@ -102,6 +103,7 @@ export default class UISkinYoutube extends Preact.Component {
               <UITimeDisplay main={this} />
             </div>
             <div className="vop-right-controls">
+              <UIPipToggleButton main={this} />
               <UIChromecastToggleButton main={this} />
               <UISubtitlesToggleButton main={this} />
               <UISettingsToggleButton main={this} />
