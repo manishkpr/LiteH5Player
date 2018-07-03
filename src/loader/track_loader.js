@@ -15,14 +15,12 @@ function TrackLoader() {
 
   let vttParser_ = VTTParser(context_).getInstance();
 
-  let track_;
-
   function setup() {
     eventBus_.on(Events.TRACK_LOADING, onTrackLoading);
   }
 
   function onTrackLoading(data) {
-    track_ = data.track;
+    let track_ = data.track;
 
     function successHandler(xhr) {
       let data = xhr.responseText;

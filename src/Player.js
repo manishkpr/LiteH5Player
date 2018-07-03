@@ -10,7 +10,6 @@ import FetchLoader from './utils/fetch_loader';
 import FragmentLoader from './loader/fragment_loader';
 import PlaylistLoader from './loader/playlist_loader';
 
-
 import TrackLoader from './loader/track_loader';
 
 import PlaybackController from './controller/playback_controller';
@@ -54,8 +53,9 @@ function Player(idContainer) {
   let licenseController_ = new LicenseController();
 
   let playlistLoader_;
+  let textTrackLoader_;
+  let fragmentLoader_;
 
-  let textEngine_;
   let bufferController_;
   let emeController_;
   let parserController_;
@@ -64,7 +64,6 @@ function Player(idContainer) {
   let playbackController_;
   let textTrackController_;
   let thumbnailController_;
-  let fragmentLoader_;
 
   // chromecast
   let castSender_;
@@ -382,6 +381,7 @@ function Player(idContainer) {
     }
   }
 
+  // ads
   function playAd() {
     if (adsEngine_) {
       adsEngine_.playAd();
@@ -392,6 +392,15 @@ function Player(idContainer) {
     // } else {
 
     // }
+  }
+
+  // subtitles
+  function getCurrentSubtitleTrack() {
+    return textTrackController_.getCurrentSubtitleTrack();
+  }
+
+  function selectSubtitleTrack(id) {
+    textTrackController_.selectSubtitleTrack(id);
   }
 
   // thumbnail
@@ -502,16 +511,18 @@ function Player(idContainer) {
   // private functions
   function initComponent() {
     playlistLoader_ = PlaylistLoader(context_).getInstance();
+    textTrackLoader_ = TrackLoader(context_).getInstance();
+    fragmentLoader_ = FragmentLoader(context_).create();
+
     playbackController_ = PlaybackController(context_).getInstance();
-    textEngine_ = TextTrackController(context_).getInstance();
+    textTrackController_ = TextTrackController(context_).getInstance();
     bufferController_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
     parserController_ = ParserController(context_).getInstance();
     levelController_ = LevelController(context_).getInstance();
     streamController_ = StreamController(context_).getInstance();
-    textTrackController_ = TrackLoader(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
-    fragmentLoader_ = FragmentLoader(context_).create();
+
 
     // html5 video poster
     if (context_.cfg.poster) {
@@ -763,6 +774,9 @@ function Player(idContainer) {
     getValidBufferPosition: getValidBufferPosition,
     // ads
     playAd: playAd,
+    // subtitles
+    getCurrentSubtitleTrack: getCurrentSubtitleTrack,
+    selectSubtitleTrack: selectSubtitleTrack,
     // thumbnail
     getThumbnail: getThumbnail,
     // chromecast
@@ -779,7 +793,7 @@ function Player(idContainer) {
     setPipPresentation: setPipPresentation,
     // airplay(Safari only)
     showPlaybackTargetPicker: showPlaybackTargetPicker,
-    // State Machine
+    // state Machine
     getState: getState,
     // debug
     manualSchedule: manualSchedule,

@@ -16,18 +16,20 @@ function TextTrackController() {
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
+  let currTrackId_ = '';
   let textTracks_ = [];
 
   function setup() {
     eventBus_.on(Events.TRACK_LOADED, onTextTrackLoaded);
-    //addTextTrack();
   }
 
   function onTextTrackLoaded(e) {
     let cueData = e.cueData;
     let kind = e.kind;
     let label = e.label;
-    let textTrack = media_.addTextTrack(kind, label, label);
+    var textTrack = media_.addTextTrack(kind, label, label);
+    textTrack.mode = 'hidden';
+    let trackId = (media_.textTracks.length - 1).toString();
 
     for (let i = 0; i < cueData.length; i++) {
       let item = cueData[i];
@@ -37,35 +39,46 @@ function TextTrackController() {
         text: item.data
       }
 
-      let cue = createCue(data);
+      let cue = createCue(data, textTrack);
       textTrack.addCue(cue);
     }
 
-    // //
-    // textTrack.mode = 'showing';
     let track = {
-      id: media_.textTracks.length,
+      id: trackId,
       lang: e.label,
       label: e.label
     };
     textTracks_.push(track);
 
+    // set default
+    if (currTrackId_ === '') {
+      if (trackId === '0') {
+        currTrackId_ = trackId;
+        textTrack.mode = 'showing';
+      }
+    }
+
     // Trigger text track found event.
-    eventBus_.trigger(Events.TRACK_ADDED, { track: track });
+    eventBus_.trigger(Events.TRACK_ADDED, { track: track, currTrackId: currTrackId_ });
   }
 
-  function createCue(data) {
+  function createCue(data, track) {
     let cue = new Cue(data.start, data.end, '');
     cue.data = data;
+    // FIXME: Need to hide ttml render if you want to hide a texttrack while a cue is showing.
     cue.onenter = function() {
-      let data = this.data;
-      console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
-      eventBus_.trigger(Events.CUE_START, {cue: data});
+      if (track.mode === 'showing') {
+        let data = this.data;
+        console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
+        eventBus_.trigger(Events.CUE_START, {cue: data});
+      }
     };
     cue.onexit = function() {
-      let data = this.data;
-      console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);
-      eventBus_.trigger(Events.CUE_END, {cue: data});
+      if (track.mode === 'showing') {
+        let data = this.data;
+        console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);
+        eventBus_.trigger(Events.CUE_END, {cue: data});
+      }
     };
 
     return cue;
@@ -168,7 +181,37 @@ function TextTrackController() {
     //}
   }
 
-  let instance = {};
+  /**
+   * @description Retuns undefined if current don't select any text track.
+   */
+  function getCurrentSubtitleTrack() {
+    let currTrack;
+    for (let i = 0; i < textTracks_.length; i ++) {
+      let track = textTracks_[i];
+      if (track.id === currTrackId_) {
+        currTrack = track;
+      }
+    }
+    return currTrack;
+  }
+
+  function selectSubtitleTrack(id) {
+    for (let i = 0; i < media_.textTracks.length; i ++) {
+      let track = media_.textTracks[i];
+      if (i.toString() === id) {
+        track.mode = 'showing';
+      } else {
+        track.mode = 'hidden';
+      }
+    }
+
+    currTrackId_ = id;
+  }
+
+  let instance = {
+    getCurrentSubtitleTrack: getCurrentSubtitleTrack,
+    selectSubtitleTrack: selectSubtitleTrack
+  };
 
   setup();
 

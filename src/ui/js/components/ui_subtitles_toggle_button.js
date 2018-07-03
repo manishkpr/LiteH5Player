@@ -10,15 +10,17 @@ class UISubtitlesToggleButton extends Component {
     this.main = this.props.main;
     this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
-  }
-
-  componentDidMount() {
-    this.vopSubtitlesButton = document.querySelector('.vop-subtitles-button');
 
     this.onAdStarted = this.onAdStarted.bind(this);
     this.onAdComplete = this.onAdComplete.bind(this);
     this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+
+    this.onTrackAdded = this.onTrackAdded.bind(this);
+    this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
+  }
+
+  componentDidMount() {
   }
 
   componentWillUnmount() {
@@ -28,7 +30,10 @@ class UISubtitlesToggleButton extends Component {
 
   render() {
     return (
-      <button data-id={ID.SUBTITLES_BUTTON} className="vop-button vop-subtitles-button" title="subtitles"
+      <button data-id={ID.SUBTITLES_BUTTON}
+        className="vop-button vop-subtitles-button"
+        style="display: none;"
+        title="subtitles"
         onClick={this.onUICmdSubtitles.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>
@@ -63,6 +68,13 @@ class UISubtitlesToggleButton extends Component {
 
   onAdComplete() {
     this.vopSubtitlesButton.style.display = 'inline-block';
+  }
+
+  onTrackAdded(e) {
+    if (!this.vopSubtitlesButton) {
+      this.vopSubtitlesButton = document.querySelector('.vop-subtitles-button');
+    }
+    this.vopSubtitlesButton.style.display = 'block';
   }
 }
 

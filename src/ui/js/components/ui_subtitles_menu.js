@@ -20,34 +20,38 @@ class UISubtitlesMenu extends Component {
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
 
-    this.subtitlesData = {
-      // subtitle menu
-      subtitleTracks: [{
-        id: '1',
-        lang: 'English'
-      }, {
-        id: '2',
-        lang: 'French'
-      }, {
-        id: '3',
-        lang: 'Chinese'
-      }, {
-        id: '4',
-        lang: 'Dutch'
-      }, {
-        id: '5',
-        lang: 'Spanish'
-      }, {
-        id: '6',
-        lang: 'Korean'
-      }, {
-        id: '7',
-        lang: 'Thai'
-      }],
-      currSubtitleId: '2'
-    }
+    // this.textTracksData = {
+    //   // subtitle menu
+    //   tracks: [{
+    //     id: '1',
+    //     lang: 'English'
+    //   }, {
+    //     id: '2',
+    //     lang: 'French'
+    //   }, {
+    //     id: '3',
+    //     lang: 'Chinese'
+    //   }, {
+    //     id: '4',
+    //     lang: 'Dutch'
+    //   }, {
+    //     id: '5',
+    //     lang: 'Spanish'
+    //   }, {
+    //     id: '6',
+    //     lang: 'Korean'
+    //   }, {
+    //     id: '7',
+    //     lang: 'Thai'
+    //   }],
+    //   currTrackId: '2'
+    // }
+    this.textTracksData = {
+      tracks: [],
+      currTrackId: ''
+    };
     this.state = {
-      subtitlesData: this.subtitlesData
+      textTracksData: this.textTracksData
     }
   }
 
@@ -56,21 +60,21 @@ class UISubtitlesMenu extends Component {
   }
 
   render() {
-    const { subtitlesData } = this.state;
+    const { textTracksData } = this.state;
 
-    const menuitems = subtitlesData.subtitleTracks.map((item, index) =>
+    const menuitems = textTracksData.tracks.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitem"
-        aria-checked={subtitlesData.currSubtitleId === item.id ? 'true' : 'false'}
+        aria-checked={textTracksData.currTrackId === item.id ? 'true' : 'false'}
         data-id={item.id} onClick={this.onMenuItemClick_}
         tabIndex="0" onBlur={this.onMenuItemBlur_}>
-          <div className="vop-menuitem-label">
-            { item.lang }
-          </div>
-          <div className="vop-menuitem-content">
-            <div className="vop-menuitem-toggle-checkbox">
-            </div>
+        <div className="vop-menuitem-label">
+          { item.lang }
+        </div>
+        <div className="vop-menuitem-content">
+          <div className="vop-menuitem-toggle-checkbox">
           </div>
         </div>
+      </div>
     );
 
     return (
@@ -92,12 +96,15 @@ class UISubtitlesMenu extends Component {
     e.stopPropagation();
     
     let id = e.currentTarget.dataset.id;
-    if (this.subtitlesData.currSubtitleId === id) {
-      this.subtitlesData.currSubtitleId = '';
+    if (this.textTracksData.currTrackId === id) {
+      this.textTracksData.currTrackId = '';
     } else {
-      this.subtitlesData.currSubtitleId = id;
+      this.textTracksData.currTrackId = id;
     }
-    this.setState({subtitlesData: this.subtitlesData});
+    this.setState({textTracksData: this.textTracksData});
+
+    // apply changes to player instance
+    this.player.selectSubtitleTrack(this.textTracksData.currTrackId);
   }
 
   onMenuItemBlur(e) {
@@ -134,12 +141,12 @@ class UISubtitlesMenu extends Component {
 
   onTrackAdded(e) {
     let track = e.track;
-    // BD
-    track.id = '8';
-    // ED
-    this.subtitlesData.subtitleTracks.push(track);
+    let currTrackId = e.currTrackId;
+
+    this.textTracksData.tracks.push(track);
+    this.textTracksData.currTrackId = currTrackId;
     this.setState({
-      subtitlesData: this.subtitlesData
+      textTracksData: this.textTracksData
     });
   }
 }

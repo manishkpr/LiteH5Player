@@ -21,14 +21,14 @@ class LicenseController {
     // ED
   }
 
-  checkUrl(url) {
+  checkUrl(domain) {
     let ret = false;
-    if (url.toLowerCase() === 'localhost') {
+    if (domain.toLowerCase() === 'localhost') {
       ret = true;
     } else if (this.whitelist.length > 0) {
       // check ip address
-      let arrRegex = url.match(IPADDRESS_REGEX);
-      //console.log(`check ip: ${url} ==> ip: ${arrRegex}`);
+      let arrRegex = domain.match(IPADDRESS_REGEX);
+      //console.log(`check ip: ${domain} ==> ip: ${arrRegex}`);
       if (arrRegex) {
         for (let i = 0; i < this.whitelist.length; i++) {
           if (arrRegex[0] === this.whitelist[i]) {
@@ -38,8 +38,8 @@ class LicenseController {
         }
       } else {
         // check domain
-        let arrRegex = url.match(DOMAIN_REGEX);
-        //console.log(`check domain: ${url} ==> domain: ${arrRegex}`);
+        let arrRegex = domain.match(DOMAIN_REGEX);
+        //console.log(`check domain: ${domain} ==> domain: ${arrRegex}`);
         if (arrRegex) {
           for (let i = 0; i < this.whitelist.length; i++) {
             if (arrRegex[0] === this.whitelist[i]) {
