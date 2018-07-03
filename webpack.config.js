@@ -12,18 +12,6 @@ module.exports = {
     filename: "js/liteH5Player.debug.js"
   },
   mode: 'development',
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: 'css/liteH5Player.css',
-      chunkFilename: "[id].css"
-    }),
-    new HtmlWebpackPlugin({  // Also generate a test.html
-      filename: 'index.html',
-      template: 'samples/demo/index.html'
-    })
-  ],
   module: {
     rules: [{
       test: /\.js$/,
@@ -64,7 +52,19 @@ module.exports = {
         options: {}
       }
     }]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'css/liteH5Player.css',
+      chunkFilename: "[id].css"
+    }),
+    new HtmlWebpackPlugin({  // Also generate a test.html
+      filename: 'index.html',
+      template: 'samples/demo/index.html'
+    })
+  ]
 };
 
 /*
