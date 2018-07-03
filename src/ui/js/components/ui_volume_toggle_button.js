@@ -1,9 +1,8 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, Component } from 'preact';
 
 import UITools from '../ui_tools';
 
-class UIVolumeToggleButton extends Preact.Component {
+class UIVolumeToggleButton extends Component {
   constructor(props) {
     super(props);
 

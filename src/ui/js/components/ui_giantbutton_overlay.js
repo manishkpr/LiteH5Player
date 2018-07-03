@@ -27,7 +27,7 @@ class UIGiantButtonOverlay extends Preact.Component {
 
   render() {
     return (
-      <div className="vop-giant-button-container" style={{display: 'none'}} onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
+      <div className="vop-giant-button-container" onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
         <div className="vop-giant-button"></div>
       </div>
     );

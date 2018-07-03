@@ -28,6 +28,7 @@ import UIToolTip from './components/ui_tooltip';
 import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
 import UISettingsToggleButton from './components/ui_settings_toggle_button';
+import UIChromecastToggleButton from './components/ui_chromecast_toggle_button';
 
 export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
@@ -101,6 +102,7 @@ export default class UISkinYoutube extends Preact.Component {
               <UITimeDisplay main={this} />
             </div>
             <div className="vop-right-controls">
+              <UIChromecastToggleButton main={this} />
               <UISubtitlesToggleButton main={this} />
               <UISettingsToggleButton main={this} />
               <UIFullscreenToggleButton main={this} />
@@ -748,10 +750,10 @@ export default class UISkinYoutube extends Preact.Component {
     let position = this.player_.getPosition();
     let duration = this.player_.getDuration();
 
-    // update time progress bar
-    this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
+    // // update time progress bar
+    // this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
 
-    this.updateTimeDisplay(uiPosition, duration);
+    this.updateProgressBarUI(position, duration);
   }
 
   updatePlayBtnUI(paused, ended) {

@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, render } from 'preact';
 
 import UISkinYoutube from './ui_skin_youtube';
 
@@ -19,11 +18,11 @@ class UIEngine {
     }
 
     let root;
-    this.uiPlayer_ = Preact.render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_, root);
+    this.uiPlayer_ = render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_, root);
   }
 
   uninstallSkin() {
-    Preact.unmountComponentAtNode(this.skinContainerYb_);
+    render(null, this.skinContainerYb_, this.uiPlayer_);
   }
 }
 
