@@ -34,12 +34,13 @@ function TextTrackController() {
     for (let i = 0; i < cueData.length; i++) {
       let item = cueData[i];
       let data = {
+        trackId: trackId,
         start: item.start,
         end: item.end,
-        text: item.data
+        text: item.data,
       }
 
-      let cue = createCue(data, textTrack);
+      let cue = createCue(data);
       textTrack.addCue(cue);
     }
 
@@ -62,11 +63,25 @@ function TextTrackController() {
     eventBus_.trigger(Events.TRACK_ADDED, { track: track, currTrackId: currTrackId_ });
   }
 
-  function createCue(data, track) {
+  function createCue(data) {
+    function findTrackById(id) {
+      let ret;
+      for (let i = 0; i < media_.textTracks.length; i ++) {
+        let track = media_.textTracks[i];
+        if (id === i.toString()) {
+          ret = track;
+        }
+      }
+      return ret;
+    }
+
     let cue = new Cue(data.start, data.end, '');
     cue.data = data;
     // FIXME: Need to hide ttml render if you want to hide a texttrack while a cue is showing.
+    // IDEA: Create a series of div for each text track.
     cue.onenter = function() {
+      let track = findTrackById(cue.data.trackId);
+
       if (track.mode === 'showing') {
         let data = this.data;
         console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
@@ -74,6 +89,7 @@ function TextTrackController() {
       }
     };
     cue.onexit = function() {
+      let track = findTrackById(cue.data.trackId);
       if (track.mode === 'showing') {
         let data = this.data;
         console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);

@@ -11,6 +11,9 @@ class UICaptionOverlay extends Component {
     this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
 
+    this.onTrackAdded = this.onTrackAdded.bind(this);
+    this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
+
     this.onCueStart = this.onCueStart.bind(this);
     this.onCueEnd = this.onCueEnd.bind(this);
     this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
@@ -18,6 +21,9 @@ class UICaptionOverlay extends Component {
 
     this.onAutoHideChange = this.onAutoHideChange.bind(this);
     this.evEmitter.on(Events.AUTOHIDE_CHANGE, this.onAutoHideChange);
+
+    //
+    
   }
 
   componentDidMount() {
@@ -44,7 +50,6 @@ class UICaptionOverlay extends Component {
     );
   }
 
-
   onCueStart(e) {
     this.cue = e.cue;
 
@@ -69,6 +74,10 @@ class UICaptionOverlay extends Component {
     } else {
       this.vopCaptionOverlay.style.bottom = height.toString() + 'px';
     }
+  }
+
+  onTrackAdded(e) {
+
   }
 }
 
