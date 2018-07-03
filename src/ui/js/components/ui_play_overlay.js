@@ -24,7 +24,7 @@ class UIPlayOverlay extends Preact.Component {
   }
 
   onPlayOverlayClick() {
-    this.main.player_.play();
+    this.main.player.play();
   }
 }
 

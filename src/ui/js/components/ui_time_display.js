@@ -6,12 +6,12 @@ class UITimeDisplay extends Preact.Component {
     super(props);
 
     this.main = this.props.main;
-    this.player_ = this.main.player_;
+    this.player = this.main.player;
   }
 
   render() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     let timeText = '00:00/00:00';
     switch (this.main.playerState) {
       case 'idle':

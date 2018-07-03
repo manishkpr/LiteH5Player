@@ -5,7 +5,7 @@ class UIProgressBar extends Component {
     super(props);
 
     this.main = this.props.main;
-    this.player_ = this.main.player_;
+    this.player = this.main.player;
     // flags reference variable of progress bar
     this.progressBarContext;
     this.progressBarMoveContext = {
@@ -25,15 +25,15 @@ class UIProgressBar extends Component {
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
 
-    this.player_.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
-    this.player_.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
-    this.player_.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
-    this.player_.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
-    this.player_.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    this.player.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
   }
 
   render() {
@@ -46,8 +46,8 @@ class UIProgressBar extends Component {
 
     switch(this.main.playerState) {
       case 'ended':
-      let position = this.player_.getPosition();
-      let duration = this.player_.getDuration();
+      let position = this.player.getPosition();
+      let duration = this.player.getDuration();
       if (this.progressBarContext) {
         this.progressBarContext.movePos = position;
       }
@@ -71,35 +71,35 @@ class UIProgressBar extends Component {
   }
 
   onMediaDurationChanged() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     this.updateProgressBarUI(position, duration);
   }
 
   onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + this.player_.getPosition() + ', duration: ' + this.player_.getDuration());
+    //printLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
     if (this.progressBarContext) {
       // do nothing
     } else {
-      //this.progressBarContext.movePos = this.player_.getPosition();
-      let position = this.player_.getPosition();
-      let duration = this.player_.getDuration();
+      //this.progressBarContext.movePos = this.player.getPosition();
+      let position = this.player.getPosition();
+      let duration = this.player.getDuration();
       this.updateProgressBarUI(position, duration);
       this.updateProgressBarHoverUI();
     }
   }
 
   onMediaSeeked() {
-    printLog('+onMediaSeeked, pos: ' + this.player_.getPosition() +
-      ', paused: ' + this.player_.isPaused() +
-      ', ended: ' + this.player_.isEnded());
+    printLog('+onMediaSeeked, pos: ' + this.player.getPosition() +
+      ', paused: ' + this.player.isPaused() +
+      ', ended: ' + this.player.isEnded());
 
     if (this.progressBarContext) {
       if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
-        this.player_.play();
+        this.player.play();
       }
       this.progressBarContext = null;
     }
@@ -111,9 +111,9 @@ class UIProgressBar extends Component {
     e.stopPropagation();
 
     this.progressBarContext = {};
-    this.progressBarContext.pausedBeforeMousedown = this.player_.isPaused();
-    this.progressBarContext.endedBeforeMousedown = this.player_.isEnded();
-    this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
+    this.progressBarContext.pausedBeforeMousedown = this.player.isPaused();
+    this.progressBarContext.endedBeforeMousedown = this.player.isEnded();
+    this.progressBarContext.posBeforeMousedown = this.player.getPosition();
     this.flagThumbnailMode = false;
     this.progressBarContext.timer = setTimeout(function() {
       this.doEnterThumbnailMode();
@@ -121,8 +121,8 @@ class UIProgressBar extends Component {
 
     // update progress bar ui
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
@@ -180,8 +180,8 @@ class UIProgressBar extends Component {
     this.doProcessThumbnailMove();
 
     this.progressBarContext.movePos = movePos;
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
@@ -207,13 +207,13 @@ class UIProgressBar extends Component {
 
     // update ui first
     this.progressBarContext.movePos = this.getProgressMovePosition(e);
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
     if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
-      this.player_.setPosition(this.progressBarContext.movePos);
+      this.player.setPosition(this.progressBarContext.movePos);
     } else {
       this.progressBarContext = null;
     }
@@ -227,7 +227,7 @@ class UIProgressBar extends Component {
     if (!this.flagThumbnailMode) {
       // need to pause content first before starting a seek operation.
       if (!this.progressBarContext.pausedBeforeMousedown) {
-        this.player_.pause();
+        this.player.pause();
       }
 
       this.progressBarContext.timer = null;
@@ -256,7 +256,7 @@ class UIProgressBar extends Component {
     }
 
     // update time progress scrubber button
-    let duration = this.player_.getDuration();
+    let duration = this.player.getDuration();
     return (offsetX / rect.width) * duration;
   }
 
@@ -269,8 +269,8 @@ class UIProgressBar extends Component {
 
     let isLive = (duration === Infinity) ? true : false;
     if (isLive) {
-      let seekable = this.player_.getSeekableRange();
-      let buffered = this.player_.getBufferedRanges();
+      let seekable = this.player.getSeekableRange();
+      let buffered = this.player.getBufferedRanges();
       printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
     } else {
       let uiBufferedPos;
@@ -282,7 +282,7 @@ class UIProgressBar extends Component {
 
       // part - output, update ui
       // update time progress bar
-      uiBufferedPos = this.player_.getValidBufferPosition(uiPosition);
+      uiBufferedPos = this.player.getValidBufferPosition(uiPosition);
       loadProgressTransform = 'scaleX(' + uiBufferedPos / duration + ')';
       playProgressTransform = 'scaleX(' + uiPosition / duration + ')';
 
@@ -319,8 +319,8 @@ class UIProgressBar extends Component {
   }
 
   updateProgressBarHoverUI() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
 
     let movePos = 0;
     if (this.progressBarContext) {

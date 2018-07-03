@@ -7,7 +7,7 @@ class UIGiantButtonOverlay extends Preact.Component {
   constructor(props) {
     super(props);
 
-    this.player_ = this.props.main.player_;
+    this.player = this.props.main.player;
   }
 
   componentDidMount() {
@@ -16,13 +16,13 @@ class UIGiantButtonOverlay extends Preact.Component {
 
     this.onMediaPlay = this.onMediaPlay.bind(this);
     this.onMediaPaused = this.onMediaPaused.bind(this);
-    this.player_.on(oldmtn.Events.MEDIA_PLAY, this.onMediaPlay);
-    this.player_.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
+    this.player.on(oldmtn.Events.MEDIA_PLAY, this.onMediaPlay);
+    this.player.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.MEDIA_PLAY, this.onMediaPlay);
-    this.player_.off(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
+    this.player.off(oldmtn.Events.MEDIA_PLAY, this.onMediaPlay);
+    this.player.off(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
   }
 
   render() {

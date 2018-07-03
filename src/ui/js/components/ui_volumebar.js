@@ -8,7 +8,7 @@ class UIVolumeBar extends Preact.Component {
     super(props);
 
     this.main = this.props.main;
-    this.player_ = this.main.player_;
+    this.player = this.main.player;
 
     //
     this.colorList_volume = ['#ccc', 'rgba(192,192,192,0.3)'];
@@ -24,11 +24,11 @@ class UIVolumeBar extends Preact.Component {
 
     //
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
-    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   render() {
@@ -48,8 +48,8 @@ class UIVolumeBar extends Preact.Component {
   }
 
   getVolumeInfo() {
-    let muted = this.player_.isMuted();
-    let volume = this.player_.getVolume();
+    let muted = this.player.isMuted();
+    let volume = this.player.getVolume();
 
     // Process
     let uiVolumeList;
@@ -97,19 +97,19 @@ class UIVolumeBar extends Preact.Component {
   docVolumeSliderMousemove(e) {
     let valueVolumeMovePosition = this.getVolumeMovePosition(e);
 
-    let muted = this.player_.isMuted();
+    let muted = this.player.isMuted();
     let volume = valueVolumeMovePosition;
     if (volume === 0) {
       // do nothing
     } else {
       if (muted === true) {
-        this.player_.unmute();
+        this.player.unmute();
       }
 
       muted = false;
     }
 
-    this.player_.setVolume(valueVolumeMovePosition);
+    this.player.setVolume(valueVolumeMovePosition);
   }
 
   docVolumeSliderMouseup(e) {

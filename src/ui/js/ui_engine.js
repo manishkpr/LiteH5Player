@@ -4,7 +4,7 @@ import UISkinYoutube from './ui_skin_youtube';
 
 class UIEngine {
   constructor(player) {
-    this.player_ = player;
+    this.player = player;
 
     this.h5VideoPlayer_ = document.querySelector('.html5-video-player');
   }
@@ -18,7 +18,7 @@ class UIEngine {
     }
 
     let root;
-    this.uiPlayer_ = render(<UISkinYoutube player={this.player_}/>, this.skinContainerYb_, root);
+    this.uiPlayer_ = render(<UISkinYoutube player={this.player}/>, this.skinContainerYb_, root);
   }
 
   uninstallSkin() {

@@ -12,6 +12,8 @@ import UITools from './ui_tools';
 // Menu Part
 import UIPopupMenu from './components/ui_popup_menu';
 
+import UIControlBar from './components/ui_control_bar';
+
 import UICaptionOverlay from './components/ui_caption_overlay';
 import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
@@ -19,24 +21,13 @@ import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 
 import UIToolTip from './components/ui_tooltip';
-import UIProgressBar from './components/ui_progressbar';
-
-import UIPlayToggleButton from './components/ui_play_toggle_button';
-import UIVolumeToggleButton from './components/ui_volume_toggle_button';
-import UIVolumeBar from './components/ui_volumebar';
-import UITimeDisplay from './components/ui_time_display';
-import UIPipToggleButton from './components/ui_pip_toggle_button';
-import UIChromecastToggleButton from './components/ui_chromecast_toggle_button';
-import UISubtitlesToggleButton from './components/ui_subtitles_toggle_button';
-import UISettingsToggleButton from './components/ui_settings_toggle_button';
-import UIFullscreenToggleButton from './components/ui_fullscreen_toggle_button';
 
 export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
     super(props);
 
     this.initVariable();
-    this.player_ = props.player;
+    this.player = props.player;
     this.state = {
       settingMenuUIData: this.settingMenuUIData
     };
@@ -70,6 +61,23 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   render() {
+    // Update current component.
+    switch (this.playerState) {
+      case 'idle':
+        break;
+      case 'opened':
+        break;
+      case 'ended':
+        UITools.removeClass(this.vopPlayer, 'vop-autohide');
+        break;
+      case 'closed':
+        break;
+      case 'playing':
+        break;
+      default:
+        break;
+    }
+
     return (
       <div className="vop-skin-youtube"
         onMouseEnter={this.onPlayerMouseEnter.bind(this)}
@@ -80,26 +88,8 @@ export default class UISkinYoutube extends Preact.Component {
         <UIToolTip main={this} />
         <UIPopupMenu main={this} />
         <div className="vop-gradient-bottom"></div>
-        <div className="vop-control-bar"
-          onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
-          
-          <UIProgressBar main={this} />
-          <div className="vop-controls">
-            <div className="vop-left-controls">
-              <UIPlayToggleButton main={this} />
-              <UIVolumeToggleButton main={this} />
-              <UIVolumeBar main={this} />
-              <UITimeDisplay main={this} />
-            </div>
-            <div className="vop-right-controls">
-              <UIPipToggleButton main={this} />
-              <UIChromecastToggleButton main={this} />
-              <UISubtitlesToggleButton main={this} />
-              <UISettingsToggleButton main={this} />
-              <UIFullscreenToggleButton main={this} />
-            </div>
-          </div>
-        </div>
+
+        <UIControlBar main={this} />
         <UICaptionOverlay />
         <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
@@ -111,7 +101,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
-    this.player_ = null;
+    this.player = null;
     this.playerState = '';
     this.castSender_ = null;
     this.ratio = 0.5625;
@@ -340,11 +330,7 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.onMediaEnded = this.onMediaEnded.bind(this);
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
-    this.onMediaSeeking = this.onMediaSeeking.bind(this);
     
-    
-    this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
-
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
     this.onMediaWaiting = this.onMediaWaiting.bind(this);
 
@@ -406,7 +392,7 @@ export default class UISkinYoutube extends Preact.Component {
           const cWidth = entry.target.clientWidth;
           const cHeight = entry.target.clientHeight;
 
-          this.player_.resize(cWidth, cHeight);
+          this.player.resize(cWidth, cHeight);
         }
       }
       let ro = new ResizeObserver(onPlayerSize.bind(this));
@@ -423,23 +409,21 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   initPlayerListeners() {
-    this.player_.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
+    this.player.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
-    this.player_.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
-    this.player_.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-    this.player_.on(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
-    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
+    this.player.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
 
-    this.player_.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player_.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+    this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
-    this.player_.on(oldmtn.Events.LOG, this.onLog);
+    this.player.on(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
-    this.player_.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
-    this.player_.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
-    this.player_.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
-    this.player_.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
+    this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
+    this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+    this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+    this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
 
     // chrome cast part
@@ -454,46 +438,44 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   uninitPlayerListeners() {
-    this.player_.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
+    this.player.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
-    this.player_.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
-    this.player_.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
-    this.player_.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-    this.player_.off(oldmtn.Events.MEDIA_SEEKING, this.onMediaSeeking);
-    this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
+    this.player.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
 
-    this.player_.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player_.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+    this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
-    this.player_.off(oldmtn.Events.LOG, this.onLog);
+    this.player.off(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
-    this.player_.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
-    this.player_.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
-    this.player_.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
-    this.player_.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
+    this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
+    this.player.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+    this.player.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+    this.player.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
   }
 
   playerOpen(mediaCfg) {
-    this.player_.open(mediaCfg);
+    this.player.open(mediaCfg);
   }
 
   playerClose() {
     printLog('+onBtnClose');
-    this.player_.close();
+    this.player.close();
     this.updateUIStateMachine('closed');
   }
 
   playerRequestAds() {
-    this.player_.playAd();
+    this.player.playAd();
   }
 
   onBtnInit() {
-    this.player_.init(cfg_);
+    this.player.init(cfg_);
   }
 
   onBtnUninit() {
-    this.player_.uninit(cfg_);
+    this.player.uninit(cfg_);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -503,7 +485,7 @@ export default class UISkinYoutube extends Preact.Component {
     // and player's metrics.
     let dstWidth = 0;
     let dstHeight = 0;
-    if (this.player_.isFullscreen()) {
+    if (this.player.isFullscreen()) {
       dstWidth = this.playerContainer.clientWidth;
       dstHeight = this.playerContainer.clientHeight;
     } else {
@@ -522,11 +504,11 @@ export default class UISkinYoutube extends Preact.Component {
 
     if (this.isPlayerActive()) {
       //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
-      this.player_.resize(dstWidth, dstHeight);
+      this.player.resize(dstWidth, dstHeight);
 
       printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
-      let position = this.player_.getPosition();
-      let duration = this.player_.getDuration();
+      let position = this.player.getPosition();
+      let duration = this.player.getDuration();
       //this.updateProgressBarUI(position, duration);
     }
   }
@@ -543,27 +525,10 @@ export default class UISkinYoutube extends Preact.Component {
     // Update all child components.
     this.playerState = state;
     this.updateUIState();
-
-    // Update current component.
-    switch (state) {
-      case 'idle':
-        break;
-      case 'opened':
-        break;
-      case 'ended':
-        UITools.removeClass(this.vopPlayer, 'vop-autohide');
-        break;
-      case 'closed':
-        break;
-      case 'playing':
-        break;
-      default:
-        break;
-    }
   }
 
   updateTooltipUI(currMovePos) {
-    let thumbnail = this.player_.getThumbnail(currMovePos);
+    let thumbnail = this.player.getThumbnail(currMovePos);
 
     function getTooltipOffsetX(currMovePos, tooltipWidth) {
       // part - input
@@ -572,7 +537,7 @@ export default class UISkinYoutube extends Preact.Component {
       let leftMin = 12;
       let rightMax = 12 + rect.width;
 
-      let duration = this.player_.getDuration();
+      let duration = this.player.getDuration();
         
       let currPosWidth = (currMovePos / duration) * rect.width;
       let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
@@ -624,8 +589,8 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   updateAdProgressUI() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
 
     // // update time progress bar
     // this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
@@ -683,8 +648,8 @@ export default class UISkinYoutube extends Preact.Component {
 
   onPlayerMouseLeave(e) {
     //printLog('+onPlayerMouseLeave');
-    let paused = this.player_.isPaused();
-    let fullscreen = this.player_.isFullscreen();
+    let paused = this.player.isPaused();
+    let fullscreen = this.player.isFullscreen();
     if (!paused &&
       !this.progressBarContext &&
       !this.flagVolumeSliderMousedown &&
@@ -714,8 +679,8 @@ export default class UISkinYoutube extends Preact.Component {
   // browser & UI callback functions
   onUICmdPlay() {
     // Get current play/pause state from UI.
-    let currPaused = this.player_.isPaused();
-    let currEnded = this.player_.isEnded();
+    let currPaused = this.player.isPaused();
+    let currEnded = this.player.isEnded();
 
     let newPaused;
     // Compute new play/pause state and apply it to player.
@@ -732,9 +697,9 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     if (newPaused) {
-      this.player_.pause();
+      this.player.pause();
     } else {
-      this.player_.play();
+      this.player.play();
     }
   }
 
@@ -765,25 +730,21 @@ export default class UISkinYoutube extends Preact.Component {
     this.removeAutohideAction();
   }
 
-  onUICmdControlBarMouseDown(e) {
-    e.stopPropagation();
-  }
-
   onBtnManualSchedule() {
-    this.player_.manualSchedule();
+    this.player.manualSchedule();
   }
 
   onBtnInitAD() {
-    this.player_.test();
+    this.player.test();
   }
 
   onBtnDelAll() {
-    this.player_.dellAll();
+    this.player.dellAll();
   }
 
   onBtnStop() {
-    this.player_.close();
-    this.player_ = null;
+    this.player.close();
+    this.player = null;
   }
 
   onUICmdSubtitles() {
@@ -815,25 +776,25 @@ export default class UISkinYoutube extends Preact.Component {
 
   onBtnSeek() {
     let time = document.getElementById('seekedTime').value;
-    this.player_.setPosition(time);
+    this.player.setPosition(time);
   }
 
   onBtnAddTextTrack() {
-    if (this.player_) {
-      this.player_.addTextTrack();
+    if (this.player) {
+      this.player.addTextTrack();
     }
   }
 
   onBtnRemoveTextTrack() {
-    this.player_.removeTextTrack();
+    this.player.removeTextTrack();
   }
 
   setTextTrackHidden() {
-    this.player_.setTextTrackHidden();
+    this.player.setTextTrackHidden();
   }
 
   setCueAlign(align) {
-    this.player_.setCueAlign(align);
+    this.player.setCueAlign(align);
   }
 
   onFruitClick() {
@@ -841,7 +802,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onBtnAttribute() {
-    //this.player_.attribute();
+    //this.player.attribute();
   }
 
   //
@@ -892,7 +853,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
-  // this.player_ event callback
+  // this.player event callback
   onStateChange(e) {
     let newState = e.newState;
     this.updateUIStateMachine(newState);
@@ -915,15 +876,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.playerContainer.style.height = dstHeight.toString() + 'px';
     this.vopPlayer.style.width = dstWidth.toString() + 'px';
     this.vopPlayer.style.height = dstHeight.toString() + 'px';
-    this.player_.resize(dstWidth, dstHeight);
-  }
-
-  onMediaSeeking() {
-    printLog('+onMediaSeeking, pos: ' + this.player_.getPosition());
-  }
-
-  onMediaVolumeChanged() {
-
+    this.player.resize(dstWidth, dstHeight);
   }
 
   startBufferingUI() {
@@ -987,8 +940,8 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAdTimeUpdate() {
-    let position = this.player_.getPosition();
-    let duration = this.player_.getDuration();
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
     //printLog('ad position: ' + position + ', duration: ' + duration);
     this.updateAdProgressUI();
   }
@@ -1242,7 +1195,7 @@ export default class UISkinYoutube extends Preact.Component {
       return value;
     }
     let value = getXSpeedValue.call(this, this.settingMenuUIData.currSpeed);
-    this.player_.setAudioPlaybackSpeed(parseFloat(value));
+    this.player.setAudioPlaybackSpeed(parseFloat(value));
   }
 
   onXSpeedMenuItemBlur(e) {
@@ -1251,7 +1204,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   playerTest() {
-    this.player_.test();
+    this.player.test();
   }
 
   // When data changed, needs to update UI.
@@ -1264,13 +1217,13 @@ export default class UISkinYoutube extends Preact.Component {
 
   // When the skin installed, needs to update UI
   syncPlayerStateToUI() {
-    let state = this.player_.getState();
+    let state = this.player.getState();
     this.updateUIStateMachine(state);
   }
 
   isPlayerActive() {
-    let currState = this.player_.getState();
-    if (this.player_ && currState !== 'idle' && currState !== 'inited') {
+    let currState = this.player.getState();
+    if (this.player && currState !== 'idle' && currState !== 'inited') {
       return true;
     }
 

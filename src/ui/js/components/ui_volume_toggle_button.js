@@ -7,7 +7,7 @@ class UIVolumeToggleButton extends Component {
     super(props);
 
     this.main = this.props.main;
-    this.player_ = this.main.player_;
+    this.player = this.main.player;
 
     this.vopVolumeBtnStyle = 'vop-style-volumeup';
   }
@@ -17,11 +17,11 @@ class UIVolumeToggleButton extends Component {
 
     //
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
-    this.player_.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   render() {
@@ -38,8 +38,8 @@ class UIVolumeToggleButton extends Component {
   getNewVolumeBtnStyle() {
     let newVolumeBtnStyle = '';
 
-    let muted = this.player_.isMuted();
-    let volume = this.player_.getVolume();
+    let muted = this.player.isMuted();
+    let volume = this.player.getVolume();
     if (volume === 0 || muted) {
       newVolumeBtnStyle = 'vop-style-volumeoff';
     } else {
@@ -63,25 +63,25 @@ class UIVolumeToggleButton extends Component {
   }
 
   onUICmdVolume() {
-    let muted = this.player_.isMuted();
-    let volume = this.player_.getVolume();
+    let muted = this.player.isMuted();
+    let volume = this.player.getVolume();
 
     if (volume === 0) {
       if (muted) {
-        this.player_.unmute();
+        this.player.unmute();
         muted = false;
       }
 
-      // If the this.player_ is muted, and volume is 0,
+      // If the this.player is muted, and volume is 0,
       // in this situation, we will restore volume to 0.2
       volume = 0.1;
-      this.player_.setVolume(volume);
+      this.player.setVolume(volume);
     } else {
       if (muted) {
-        this.player_.unmute();
+        this.player.unmute();
         muted = false;
       } else {
-        this.player_.mute();
+        this.player.mute();
         muted = true;
       }
     }

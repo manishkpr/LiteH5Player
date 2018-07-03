@@ -7,18 +7,18 @@ class UIFullscreenToggleButton extends Preact.Component {
   constructor(props) {
     super(props);
     
-    this.player_ = this.props.main.player_;
+    this.player = this.props.main.player;
   }
 
   componentDidMount() {
     this.vopFullscreenBtn = document.querySelector('.vop-fullscreen-button');
 
     this.onFullscreenChanged = this.onFullscreenChanged.bind(this);
-    this.player_.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
+    this.player.on(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
   }
 
   componentWillUnmount() {
-    this.player_.off(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
+    this.player.off(oldmtn.Events.FULLSCREEN_CHANGE, this.onFullscreenChanged);
   }
 
   render() {
@@ -32,7 +32,7 @@ class UIFullscreenToggleButton extends Preact.Component {
 
   onUICmdFullscreen() {
     printLog('+onBtnFullscreen');
-    if (this.player_.isFullscreen()) {
+    if (this.player.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
       let v = this.props.main.playerContainer
@@ -45,7 +45,7 @@ class UIFullscreenToggleButton extends Preact.Component {
   }
 
   onFullscreenChanged() {
-    let flagIsFullscreen = this.player_.isFullscreen();
+    let flagIsFullscreen = this.player.isFullscreen();
     printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
 
     if (flagIsFullscreen) {
