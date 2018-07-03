@@ -14,7 +14,11 @@ class UITimeDisplay extends Preact.Component {
     let duration = this.player_.getDuration();
     let timeText = '00:00/00:00';
     switch (this.main.playerState) {
+      case 'idle':
+      case 'opened':
       case 'playing':
+      case 'paused':
+      case 'ended':
         timeText = this.main.getTimeDisplay(position, duration);
         break;
       default:

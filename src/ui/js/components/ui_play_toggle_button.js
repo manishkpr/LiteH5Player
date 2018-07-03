@@ -43,7 +43,7 @@ class UIPlayToggleButton extends Component {
     this.main.onUICmdPlay();
   }
 
-  onControlMouseMove() {
+  onControlMouseMove(e) {
     this.main.onControlMouseMove(e);
   }
 }

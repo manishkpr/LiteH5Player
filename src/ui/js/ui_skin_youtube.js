@@ -87,8 +87,8 @@ export default class UISkinYoutube extends Preact.Component {
             onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
             <div className="vop-progress-list">
               <div className="vop-load-progress"></div>
-              <div className="vop-play-progress"></div>
               <div className="vop-hover-progress"></div>
+              <div className="vop-play-progress"></div>
             </div>
             <div className="vop-scrubber-container"></div>
           </div>
@@ -153,20 +153,12 @@ export default class UISkinYoutube extends Preact.Component {
     this.metaWidth;
     this.metaHeight;
 
-    this.colorList_contentProgress = ['red', 'rgb(133,133,133)', 'rgb(52,51,52)'];
-    this.colorList_adProgress = ['orange', 'rgba(192,192,192,0.3)'];
-
     // flag
     this.timerHideControlBar;
 
     // flags reference variable of progress bar
-    this.progressBarContext = {
-      mousedown: false,
-      pausedBeforeMousedown: true,
-      endedBeforeMousedown: false,
-      posBeforeMousedown: 0,
-      timer: null,
-      //
+    this.progressBarContext;
+    this.progressBarMoveContext = {
       movePos: 0
     };
     this.flagThumbnailMode = false;
@@ -594,7 +586,9 @@ export default class UISkinYoutube extends Preact.Component {
       case 'ended':
         let position = this.player_.getPosition();
         let duration = this.player_.getDuration();
-        this.progressBarContext.movePos = position;
+        if (this.progressBarContext) {
+          this.progressBarContext.movePos = position;
+        }
         this.updateProgressBarUI(position, duration);
 
         UITools.removeClass(this.vopPlayer, 'vop-autohide');
@@ -638,7 +632,7 @@ export default class UISkinYoutube extends Preact.Component {
       printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
     } else {
       let uiBufferedPos;
-      if (this.progressBarContext.mousedown) {
+      if (this.progressBarContext) {
         uiPosition = this.progressBarContext.movePos;
       } else {
         uiPosition = position;
@@ -661,13 +655,24 @@ export default class UISkinYoutube extends Preact.Component {
     let position = this.player_.getPosition();
     let duration = this.player_.getDuration();
 
-    if (this.progressBarContext.movePos <= position || this.progressBarContext.mousedown) {
+    let movePos = 0;
+    if (this.progressBarContext) {
+      console.log('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
+    }
+    console.log('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
+    if (this.progressBarContext) {
+      movePos = this.progressBarContext.movePos;
+    } else if (this.progressBarMoveContext) {
+      movePos = this.progressBarMoveContext.movePos;
+    }
+    console.log('test0703, movePost: ' + movePos);
+    if (movePos <= position) {
       this.vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
       let rect = this.vopProgressBar.getBoundingClientRect();
       let offsetX = (position / duration) * rect.width;
       this.vopHoverProgress.style.left = offsetX + 'px';
-      this.vopHoverProgress.style.transform = 'scaleX(' + (this.progressBarContext.movePos - position) / duration + ')';
+      this.vopHoverProgress.style.transform = 'scaleX(' + (movePos - position) / duration + ')';
     }
   }
 
@@ -794,7 +799,10 @@ export default class UISkinYoutube extends Preact.Component {
     //printLog('+onPlayerMouseLeave');
     let paused = this.player_.isPaused();
     let fullscreen = this.player_.isFullscreen();
-    if (!paused && !this.progressBarContext.mousedown && !this.flagVolumeSliderMousedown && !fullscreen) {
+    if (!paused &&
+      !this.progressBarContext &&
+      !this.flagVolumeSliderMousedown &&
+      !fullscreen) {
       UITools.addClass(this.vopPlayer, 'vop-autohide');
     }
   }
@@ -826,13 +834,7 @@ export default class UISkinYoutube extends Preact.Component {
     // Compute new play/pause state and apply it to player.
     if (currEnded) {
       // call play method when video is ended will trigger 'seeking' event and the target position is 0.
-      // this.progressBarContext.pausedBeforeMousedown = false;
-      // this.progressBarContext.endedBeforeMousedown = false;
-      // this.player_.play();
-      // old
-      this.progressBarContext.pausedBeforeMousedown = true;
-      this.progressBarContext.endedBeforeMousedown = true;
-      this.player_.setPosition(0);
+      newPaused = false;
     } else {
       let newPaused;
       // execute ui cmd
@@ -841,15 +843,12 @@ export default class UISkinYoutube extends Preact.Component {
       } else {
         newPaused = true;
       }
+    }
 
-      // update logic
-      if (this.isPlayerActive()) {
-        if (newPaused) {
-          this.player_.pause();
-        } else {
-          this.player_.play();
-        }
-      }
+    if (newPaused) {
+      this.player_.pause();
+    } else {
+      this.player_.play();
     }
   }
 
@@ -1021,7 +1020,7 @@ export default class UISkinYoutube extends Preact.Component {
     e.preventDefault();
     e.stopPropagation();
 
-    this.progressBarContext.mousedown = true;
+    this.progressBarContext = {};
     this.progressBarContext.pausedBeforeMousedown = this.player_.isPaused();
     this.progressBarContext.endedBeforeMousedown = this.player_.isEnded();
     this.progressBarContext.posBeforeMousedown = this.player_.getPosition();
@@ -1044,16 +1043,17 @@ export default class UISkinYoutube extends Preact.Component {
     this.removeAutohideAction();
 
     // if mouse down, just return
-    if (this.progressBarContext.mousedown ||
+    if (this.progressBarContext ||
       this.settingMenuUIData.currMenu !== 'none') {
       return;
     }
 
     // update progress bar ui
-    this.progressBarContext.movePos = this.getProgressMovePosition(e);
+    let movePos = this.getProgressMovePosition(e);
+    this.progressBarMoveContext.movePos = movePos;
     this.updateProgressBarHoverUI();
 
-    this.updateTooltipUI(this.progressBarContext.movePos);
+    this.updateTooltipUI(movePos);
   }
 
   onProgressBarMouseLeave() {
@@ -1120,9 +1120,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
       this.player_.setPosition(this.progressBarContext.movePos);
+    } else {
+      this.progressBarContext = null;
     }
-
-    this.progressBarContext.mousedown = false;
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -1167,8 +1167,11 @@ export default class UISkinYoutube extends Preact.Component {
       ', paused: ' + this.player_.isPaused() +
       ', ended: ' + this.player_.isEnded());
 
-    if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
-      this.player_.play();
+    if (this.progressBarContext) {
+      if (!this.progressBarContext.pausedBeforeMousedown || this.progressBarContext.endedBeforeMousedown) {
+        this.player_.play();
+      }
+      this.progressBarContext = null;
     }
   }
 
@@ -1177,7 +1180,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
-    if (this.progressBarContext.mousedown) {} else {
+    if (this.progressBarContext) {
+      // do nothing
+    } else {
       //this.progressBarContext.movePos = this.player_.getPosition();
       let position = this.player_.getPosition();
       let duration = this.player_.getDuration();
