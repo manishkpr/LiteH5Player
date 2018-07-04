@@ -647,6 +647,11 @@ export default class UISkinYoutube extends Preact.Component {
 
   onPlayerMouseDown(e) {
     //printLog('+onPlayerMouseDown');
+    // If playerState is 'opened', should let ui_play_overlay components handle play action.
+    if (this.playerState === 'opened') {
+      return;
+    }
+
     this.flagPlayerMouseDown = true;
   }
 
@@ -899,8 +904,7 @@ export default class UISkinYoutube extends Preact.Component {
     this.flagIsLinearAd = e.linear;
     this.flagIsVpaidAd = e.vpaid;
     // FIXME: How to trigger playing state when ad start play.
-    this.playerState = 'playing';
-    this.updateUIState();
+    this.updateUIStateMachine('playing');
 
     // update control bar ui
     if (this.flagIsLinearAd) {

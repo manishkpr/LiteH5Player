@@ -669,6 +669,10 @@
   display: block;
 }
 
+.vop-player-opened .vop-control-bar {
+  display: none;
+}
+
 /* state: playing */
 .vop-player-playing .vop-play-overlay-container {
   display: none;
