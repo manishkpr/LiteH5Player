@@ -389,11 +389,13 @@ function AdsController(adContainer, media, advertising) {
       case google.ima.AdEvent.Type.PAUSED:
         {
           isPaused_ = true;
+          eventBus_.trigger(Events.AD_PAUSED);
         }
         break;
       case google.ima.AdEvent.Type.RESUMED:
         {
           isPaused_ = false;
+          eventBus_.trigger(Events.AD_RESUMED);
         }
         break;
       case google.ima.AdEvent.Type.SKIPPED:

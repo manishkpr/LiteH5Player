@@ -27,6 +27,8 @@ class CoreEvents {
     this.AD_ERROR = 'adError';
     this.AD_STARTED = 'adStarted';
     this.AD_COMPLETE = 'adComplete';
+    this.AD_PAUSED = 'adPaused';
+    this.AD_RESUMED = 'adResumed';
     this.AD_CONTENT_PAUSE_REQUESTED = 'adContentPauseRequested';
     this.AD_CONTENT_RESUME_REQUESTED = 'adContentResumeRequested';
     this.AD_ADS_MANAGER_LOADED = 'adAdsManagerLoaded';

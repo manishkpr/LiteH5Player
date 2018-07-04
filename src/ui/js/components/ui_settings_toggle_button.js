@@ -11,8 +11,16 @@ class UISettingsToggleButton extends Preact.Component {
   }
 
   render() {
+    let btnStyle = {};
+    if (this.main.flagAdStarted && this.main.flagIsLinearAd) {
+      btnStyle.display = 'none';
+    } else {
+      btnStyle.display = 'inline-block';
+    }
+
     return (
       <button className="vop-button vop-settings-button vop-style-settings" title="settings"
+        style={btnStyle}
         onClick={this.onUICmdSettings.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>

@@ -10,7 +10,7 @@ class UIAudioTrackMenu extends Preact.Component {
 
   componentDidUpdate() {
     if (this.main.state.settingMenuUIData.currMenu === 'audio_track_menu') {
-      var v = document.querySelector('.vop-menuitem');
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
@@ -18,7 +18,7 @@ class UIAudioTrackMenu extends Preact.Component {
   }
 
   render() {
-    console.log('+render, UIAudioTrackMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //console.log('+render, UIAudioTrackMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
     if (this.main.state.settingMenuUIData.currMenu === 'audio_track_menu') {
       const menuitems = this.main.state.settingMenuUIData.audioTrackList.map((item, index) =>

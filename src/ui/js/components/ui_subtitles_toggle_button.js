@@ -9,8 +9,16 @@ class UISubtitleToggleButton extends Preact.Component {
   }
 
   render() {
+    let btnStyle = {};
+    if (this.main.flagAdStarted && this.main.flagIsLinearAd) {
+      btnStyle.display = 'none';
+    } else {
+      btnStyle.display = 'inline-block';
+    }
+
     return (
       <button className="vop-button vop-subtitles-button vop-style-subtitles" title="subtitles"
+        style={btnStyle}
         onClick={this.onUICmdSubtitles.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>

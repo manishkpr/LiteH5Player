@@ -7,7 +7,8 @@ class UIFullscreenToggleButton extends Preact.Component {
   constructor(props) {
     super(props);
     
-    this.player = this.props.main.player;
+    this.main = this.props.main;
+    this.player = this.main.player;
   }
 
   componentDidMount() {

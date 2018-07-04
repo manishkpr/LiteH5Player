@@ -24,16 +24,21 @@ class UIProgressBar extends Component {
     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.onMediaSeeked = this.onMediaSeeked.bind(this);
+    this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
 
     this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+
+    this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
   componentWillUnmount() {
     this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+
+    this.player.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
   render() {
@@ -103,6 +108,13 @@ class UIProgressBar extends Component {
       }
       this.progressBarContext = null;
     }
+  }
+ 
+  onAdTimeUpdate() {
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
+    //printLog('ad position: ' + position + ', duration: ' + duration);
+    this.updateProgressBarUI(position, duration);
   }
 
   onProgressBarMouseDown(e) {

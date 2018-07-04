@@ -5,6 +5,7 @@ class UIPlayToggleButton extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
   }
 
   componentDidMount() {

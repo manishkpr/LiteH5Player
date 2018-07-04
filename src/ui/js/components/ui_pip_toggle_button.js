@@ -6,14 +6,23 @@ class UIPipToggleButton extends Component {
   constructor(props) {
     super(props);
 
-    this.player = this.props.main.player;
+    this.main = this.props.main;
+    this.player = this.main.player;
     this.pipMode = false;
   }
 
   render() {
+    let btnStyle = {};
+    if (this.main.flagAdStarted && this.main.flagIsLinearAd) {
+      btnStyle.display = 'none';
+    } else {
+      btnStyle.display = 'inline-block';
+    }
+
     return (
       <button className={"vop-button vop-pip-button vop-style-pip"} title="picture in picture"
-        onClick={this.onUICmdPip.bind(this)}>
+        onClick={this.onUICmdPip.bind(this)}
+        style={btnStyle}>
       </button>
     );
   }

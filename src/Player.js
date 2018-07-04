@@ -447,6 +447,8 @@ function Player(idContainer) {
     eventBus_.on(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.on(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
     eventBus_.on(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
+    eventBus_.on(Events.AD_PAUSED, onAdPaused, {});
+    eventBus_.on(Events.AD_RESUMED, onAdResumed, {});
 
     // fullscreen listener
     document.addEventListener("fullscreenchange", onFullScreenChange);
@@ -472,6 +474,8 @@ function Player(idContainer) {
     eventBus_.off(Events.AD_CONTENT_PAUSE_REQUESTED, onAdContentPauseRequested, {});
     eventBus_.off(Events.AD_CONTENT_RESUME_REQUESTED, onAdContentResumeRequested, {});
     eventBus_.off(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
+    eventBus_.off(Events.AD_PAUSED, onAdPaused, {});
+    eventBus_.off(Events.AD_RESUMED, onAdResumed, {});
 
     document.removeEventListener("fullscreenchange", onFullScreenChange);
     document.removeEventListener("mozfullscreenchange", onFullScreenChange);
@@ -545,6 +549,14 @@ function Player(idContainer) {
   function onAdLoadingComplete() {
     flagAdOpenComplete_ = true;
     processOpenComplete();
+  }
+
+  function onAdPaused() {
+    updateState('paused');
+  }
+
+  function onAdResumed() {
+    updateState('playing');
   }
   // End -- internal events listener functions
 

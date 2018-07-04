@@ -339,7 +339,6 @@ export default class UISkinYoutube extends Preact.Component {
     // ad callback event
     this.onAdStarted = this.onAdStarted.bind(this);
     this.onAdComplete = this.onAdComplete.bind(this);
-    this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
     this.onAdCompanions = this.onAdCompanions.bind(this);
 
     //
@@ -422,7 +421,6 @@ export default class UISkinYoutube extends Preact.Component {
     // ad callback event
     this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
-    this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
     this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
 
@@ -452,7 +450,6 @@ export default class UISkinYoutube extends Preact.Component {
     // ad callback event
     this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
-    this.player.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
     this.player.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
   }
 
@@ -588,16 +585,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopTooltip.style.left = offsetX.toString() + 'px';
   }
 
-  updateAdProgressUI() {
-    let position = this.player.getPosition();
-    let duration = this.player.getDuration();
-
-    // // update time progress bar
-    // this.vopPlayProgress.style.transform = 'scaleX(' + position / duration + ')';
-
-    this.updateProgressBarUI(position, duration);
-  }
-
   getTimeDisplay(position, duration) {
     let isLive = (duration === Infinity) ? true : false;
 
@@ -659,12 +646,12 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onPlayerMouseDown(e) {
-    printLog('+onPlayerMouseDown');
+    //printLog('+onPlayerMouseDown');
     this.flagPlayerMouseDown = true;
   }
 
   onPlayerMouseUp(e) {
-    printLog('+onPlayerMouseUp');
+    //printLog('+onPlayerMouseUp');
     if (this.flagPlayerMouseDown) {
       this.flagPlayerMouseDown = false;
 
@@ -900,22 +887,22 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAdStarted(e) {
-    // Hide all popup menu.
-    this.settingMenuUIData.currMenu = 'none';
-    this.updateUIState();
-
     // BD
     let videos = document.getElementsByTagName('video');
     printLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
     // ED
 
+    // Hide all popup menu.
+    this.settingMenuUIData.currMenu = 'none';
+  
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.linear;
     this.flagIsVpaidAd = e.vpaid;
+
+    this.updateUIState();
+
     // update control bar ui
     if (this.flagIsLinearAd) {
-      this.vopSubtitlesBtn.style.display = 'none';
-      this.vopSettingsBtn.style.display = 'none';
     } else {
       this.vopAdContainer.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
     }
@@ -928,22 +915,11 @@ export default class UISkinYoutube extends Preact.Component {
   onAdComplete() {
     printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
     this.flagAdStarted = false;
-
-    // update control bar ui
-    this.vopProgressBar.style.display = 'block';
-    this.vopSubtitlesBtn.style.display = 'inline-block';
-    this.vopSettingsBtn.style.display = 'inline-block';
+    this.updateUIState();
 
     if (this.flagIsVpaidAd) {
       UITools.removeClass(this.vopPlayer, 'vop-ad-started');
     }
-  }
-
-  onAdTimeUpdate() {
-    let position = this.player.getPosition();
-    let duration = this.player.getDuration();
-    //printLog('ad position: ' + position + ', duration: ' + duration);
-    this.updateAdProgressUI();
   }
 
   onAdCompanions(e) {
@@ -1036,7 +1012,6 @@ export default class UISkinYoutube extends Preact.Component {
       this.settingMenuUIData.currMenu = 'none';
       this.updateUIState();
     }
-
   }
 
   onQualityMenuBack(e) {
@@ -1211,7 +1186,12 @@ export default class UISkinYoutube extends Preact.Component {
   updateUIState() {
     this.setState({
       settingMenuUIData: this.settingMenuUIData,
-      playerState: this.playerState
+      // player state
+      playerState: this.playerState,
+      // ad state
+      flagAdStarted: this.flagAdStarted,
+      flagIsLinearAd: this.flagIsLinearAd,
+      flagIsVpaidAd: this.flagIsVpaidAd
     });
   }
 
