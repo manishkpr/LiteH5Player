@@ -351,6 +351,7 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.vopSkinContainer = document.querySelector('.vop-skin-youtube');
 
+    this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
     this.vopControlBar = document.querySelector('.vop-control-bar');
 
     this.vopProgressBar = document.querySelector('.vop-progress-bar');
@@ -906,13 +907,23 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateUIStateMachine('playing');
 
     // update control bar ui
-    if (this.flagIsLinearAd) {
-    } else {
-      this.vopAdContainer.style.marginTop = '-' + (this.vopControlBar.clientHeight + 10).toString() + 'px';
-    }
-
     if (this.flagIsVpaidAd) {
-      UITools.addClass(this.vopPlayer, 'vop-ad-started');
+      this.vopAdContainer.style.zIndex = '1';
+      //UITools.addClass(this.vopPlayer, 'vop-ad-started');
+    } else {
+      if (this.flagIsLinearAd) {
+        this.vopAdContainer.style.zIndex = '1';
+        this.vopControlBar.style.zIndex = '2';
+        this.vopGardientBottom.style.zIndex = '2'
+      } else {
+        let adDstWidth = this.vopPlayer.clientWidth;
+        let adDstHeight = e.height + 10;
+        this.player.resize(adDstWidth, adDstHeight);
+        this.vopAdContainer.style.bottom = (this.vopControlBar.clientHeight + 5).toString() + 'px';
+        //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
+        this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
+        this.vopAdContainer.style.zIndex = '1';
+      }
     }
   }
 
@@ -922,7 +933,16 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateUIState();
 
     if (this.flagIsVpaidAd) {
-      UITools.removeClass(this.vopPlayer, 'vop-ad-started');
+      this.vopAdContainer.style.zIndex = 'auto';
+      //UITools.removeClass(this.vopPlayer, 'vop-ad-started');
+    } else {
+      if (this.flagIsLinearAd) {
+        this.vopAdContainer.style.zIndex = 'auto';
+        this.vopControlBar.style.zIndex = 'auto';
+        this.vopGardientBottom.style.zIndex = 'auto'
+      } else {
+        //this.vopAdContainer.style.zIndex = '1';
+      }
     }
   }
 

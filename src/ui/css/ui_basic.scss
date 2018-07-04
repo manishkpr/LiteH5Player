@@ -1,7 +1,7 @@
 $videoContainer_bkClr: black;
 
-$zIndex_video: 1;
-$zIndex_ads_container: 1;
+$zIndex_video: auto;
+$zIndex_ads_container: auto;
 
 .html5-video-player {
   position: relative;
@@ -20,7 +20,6 @@ $zIndex_ads_container: 1;
 }
 
 .vop-video {
-  position: absolute;
   width: 100%;
   height: 100%;
 }
