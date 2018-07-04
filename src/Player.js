@@ -290,11 +290,15 @@ function Player(idContainer) {
   }
 
   function getVolume() {
-    if (!playbackController_) {
-      return;
-    }
+    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+      return adsEngine_.getVolume();
+    } else {
+      if (!playbackController_) {
+        return;
+      }
 
-    return playbackController_.getVolume();
+      return playbackController_.getVolume();
+    }
   }
 
   function setAudioPlaybackSpeed(speed) {

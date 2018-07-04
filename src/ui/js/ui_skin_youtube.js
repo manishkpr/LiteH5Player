@@ -628,7 +628,7 @@ export default class UISkinYoutube extends Preact.Component {
     //printLog('+onPlayerMouseMove, element: ' + element_name);
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
-      printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
+      //printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
       this.onPlayerMouseLeave();
     }.bind(this), 3000);
   }
@@ -898,7 +898,8 @@ export default class UISkinYoutube extends Preact.Component {
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.linear;
     this.flagIsVpaidAd = e.vpaid;
-
+    // FIXME: How to trigger playing state when ad start play.
+    this.playerState = 'playing';
     this.updateUIState();
 
     // update control bar ui

@@ -25,10 +25,12 @@ class UIVolumeBar extends Preact.Component {
     //
     this.onMediaVolumeChanged = this.onMediaVolumeChanged.bind(this);
     this.player.on(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.on(oldmtn.Events.AD_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   componentWillUnmount() {
     this.player.off(oldmtn.Events.MEDIA_VOLUME_CHANGED, this.onMediaVolumeChanged);
+    this.player.off(oldmtn.Events.AD_VOLUME_CHANGED, this.onMediaVolumeChanged);
   }
 
   render() {

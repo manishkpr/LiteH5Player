@@ -423,11 +423,13 @@ function AdsController(adContainer, media, advertising) {
       case google.ima.AdEvent.Type.VOLUME_CHANGED:
         {
           debug_.log('ad VOLUME_CHANGED: ' + adsManager_.getVolume());
+          eventBus_.trigger(Events.AD_VOLUME_CHANGED);
         }
         break;
       case google.ima.AdEvent.Type.VOLUME_MUTED:
         {
           debug_.log('ad VOLUME_MUTED: ' + adsManager_.getVolume());
+          eventBus_.trigger(Events.AD_VOLUME_CHANGED);
         }
         break;
       default:
