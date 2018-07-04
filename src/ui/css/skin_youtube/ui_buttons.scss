@@ -37,10 +37,13 @@
     background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg)
   }
   .vop-style-cast {
-    background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg)
+    background-image: url(../assets/svg/Chromecast_cast_button_icon.svg)
   }
   .vop-style-pip {
     background-image: url(../assets/svg/ic_picture_in_picture_24px.svg)
+  }
+  .vop-style-airplay {
+    background-image: url(../assets/svg/ic_airplay_24px.svg)
   }
 
   .vop-style-play,
@@ -56,7 +59,8 @@
   .vop-style-fullscreen,
   .vop-style-fullscreen-exit,
   .vop-style-cast,
-  .vop-style-pip {
+  .vop-style-pip,
+  .vop-style-airplay {
     background-position: center;
     background-repeat: no-repeat;
   }

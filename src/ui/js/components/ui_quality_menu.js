@@ -14,7 +14,7 @@ class UIQualityMenu extends Preact.Component {
 
   componentDidUpdate() {
     if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
-      var v = document.querySelector('.vop-menuitem');
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
@@ -22,7 +22,7 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
-    console.log('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //console.log('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
     if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
       const menuitems = this.main.state.settingMenuUIData.qualityList.map((item, index) =>

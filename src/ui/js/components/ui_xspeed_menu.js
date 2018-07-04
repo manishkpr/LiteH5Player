@@ -10,7 +10,7 @@ class UIXSpeedMenu extends Preact.Component {
 
   componentDidUpdate() {
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
-      var v = document.querySelector('.vop-menuitem');
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
@@ -18,7 +18,7 @@ class UIXSpeedMenu extends Preact.Component {
   }
 
   render() {
-    console.log('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //console.log('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>

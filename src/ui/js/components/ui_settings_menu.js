@@ -14,7 +14,7 @@ class UISettingsMenu extends Preact.Component {
 
   componentDidUpdate() {
     if (this.main.state.settingMenuUIData.currMenu === 'main_menu') {
-      var v = document.querySelector('.vop-menuitem');
+      let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }
