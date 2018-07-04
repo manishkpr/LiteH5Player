@@ -31,10 +31,13 @@ class UIGiantButtonOverlay extends Preact.Component {
     
     let style = {};
     switch(this.main.playerState) {
-      case 'playing':
-      case 'paused':
+      case 'idle':
+      case 'opened':
       case 'ended':
       style.display = 'none';
+      break;
+      case 'playing':
+      case 'paused':
       break;
     }
 
