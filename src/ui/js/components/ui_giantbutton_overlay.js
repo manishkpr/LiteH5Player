@@ -12,8 +12,6 @@ class UIGiantButtonOverlay extends Preact.Component {
   }
 
   componentDidMount() {
-    this.uiGiantButton = document.querySelector('.vop-giant-button');
-
     this.onMediaPlay = this.onMediaPlay.bind(this);
     this.onMediaPaused = this.onMediaPaused.bind(this);
     this.player.on(oldmtn.Events.MEDIA_PLAY, this.onMediaPlay);
@@ -29,7 +27,9 @@ class UIGiantButtonOverlay extends Preact.Component {
     console.log('UIGiantButtonOverlay, this.main.playerState: ' + this.main.playerState);
     let ret = <div></div>;
     switch(this.main.playerState) {
-      case 'opened':
+      case 'playing':
+      case 'paused':
+      case 'ended':
       ret = (
         <div className="vop-giant-button-container" onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
           <div className="vop-giant-button"></div>
@@ -55,14 +55,17 @@ class UIGiantButtonOverlay extends Preact.Component {
   }
 
   updateGiantPlayBtnUI(paused) {
-    UITools.removeClass(this.uiGiantButton, 'vop-style-play-giant');
-    UITools.removeClass(this.uiGiantButton, 'vop-style-pause-giant');
-    if (paused) {
-      UITools.addClass(this.uiGiantButton, 'vop-style-pause-giant');
-    } else {
-      UITools.addClass(this.uiGiantButton, 'vop-style-play-giant');
+    this.uiGiantButton = document.querySelector('.vop-giant-button');
+    if (this.uiGiantButton) {
+      UITools.removeClass(this.uiGiantButton, 'vop-style-play-giant');
+      UITools.removeClass(this.uiGiantButton, 'vop-style-pause-giant');
+      if (paused) {
+        UITools.addClass(this.uiGiantButton, 'vop-style-pause-giant');
+      } else {
+        UITools.addClass(this.uiGiantButton, 'vop-style-play-giant');
+      }
+      this.uiGiantBtnContainer.style.display = 'block';
     }
-    this.uiGiantBtnContainer.style.display = 'block';
   }
 }
 
