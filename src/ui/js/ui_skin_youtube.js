@@ -85,15 +85,14 @@ export default class UISkinYoutube extends Preact.Component {
         onMouseMove={this.onPlayerMouseMove.bind(this)}
         onMouseDown={this.onPlayerMouseDown.bind(this)}
         onMouseUp={this.onPlayerMouseUp.bind(this)}>
+        <UILogoOverlay />
         <UIToolTip main={this} />
         <UIPopupMenu main={this} />
         <div className="vop-gradient-bottom"></div>
-
-        <UIControlBar main={this} />
         <UICaptionOverlay />
         <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
-        <UILogoOverlay />
+        <UIControlBar main={this} />
         <UIPlayOverlay main={this} />
       </div>
     )
@@ -546,14 +545,14 @@ export default class UISkinYoutube extends Preact.Component {
         tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
       }
       
-      printLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
+      //printLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
 
       return tooltipLeft_RelativeToVideo;
     }
 
     if (thumbnail) {
       UITools.addClass(this.vopTooltip, 'vop-tooltip-preview');
-      printLog('thumbnail info: ', thumbnail);
+      //printLog('thumbnail info: ', thumbnail);
       let isSprite = (thumbnail.data.w && thumbnail.data.h);
       if (isSprite) {
         this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';

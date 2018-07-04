@@ -143,7 +143,7 @@ class UIProgressBar extends Component {
   }
 
   onProgressBarMouseMove(e) {
-    printLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
+    //printLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
     e.stopPropagation();
     this.main.removeAutohideAction();
 
