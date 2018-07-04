@@ -51,17 +51,17 @@ class UISubtitlesMenu extends Preact.Component {
   }
 
   onMenuBack() {
-    console.log('+onMenuBack');
+    printLog('+onMenuBack');
     this.main.onSubtitleMenuBack();
   }
 
   onMenuItemClick(e) {
-    console.log('+onMenuItemClick');
+    printLog('+onMenuItemClick');
     this.main.onSubtitleMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {
-    console.log('+onMenuItemBlur');
+    printLog('+onMenuItemBlur');
     this.main.onSubtitleMenuItemBlur(e);
   }
 }

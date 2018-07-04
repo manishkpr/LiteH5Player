@@ -9,7 +9,6 @@ class UIQualityMenu extends Preact.Component {
   }
 
   componentDidMount(e) {
-    console.log('+componentDidMount');
   }
 
   componentDidUpdate() {
@@ -22,7 +21,7 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
-    //console.log('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //printLog('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
     if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
       const menuitems = this.main.state.settingMenuUIData.qualityList.map((item, index) =>

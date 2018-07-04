@@ -34,11 +34,11 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   componentWillMount() {
-    console.log('+componentWillMount');
+    printLog('UISkinYoutube, +componentWillMount');
   }
 
   componentDidMount() {
-    console.log('+componentDidMount');
+    printLog('UISkinYoutube, +componentDidMount');
 
     this.initUIElements();
     this.initUIElementsStyles();
@@ -49,7 +49,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   componentWillUnmount() {
-    console.log('+componentWillUnmount');
+    printLog('+componentWillUnmount');
     this.uninitUIEventListeners();
     this.uninitPlayerListeners();
 
@@ -546,7 +546,7 @@ export default class UISkinYoutube extends Preact.Component {
         tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
       }
       
-      console.log('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
+      printLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
 
       return tooltipLeft_RelativeToVideo;
     }

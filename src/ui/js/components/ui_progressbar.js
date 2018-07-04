@@ -336,15 +336,15 @@ class UIProgressBar extends Component {
 
     let movePos = 0;
     if (this.progressBarContext) {
-      //console.log('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
+      //printLog('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
     }
-    //console.log('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
+    //printLog('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
     if (this.progressBarContext) {
       movePos = this.progressBarContext.movePos;
     } else if (this.progressBarMoveContext) {
       movePos = this.progressBarMoveContext.movePos;
     }
-    //console.log('test0703, movePost: ' + movePos);
+    //printLog('test0703, movePost: ' + movePos);
     if (movePos <= position) {
       this.vopHoverProgress.style.transform = 'scaleX(0)';
     } else {
