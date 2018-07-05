@@ -383,19 +383,16 @@
     transform: translateX(16px)
   }
   /************ End vop popup menu ************/
-  /************ Begin caption window ************/
-  .vop-caption-window {
+  /************ Begin caption overlay ************/
+  .vop-caption-overlay {
     position: absolute;
-    top: 128px;
     width: 100%;
-    height: 72px;
-    background-color: orange;
-    display: none;
+    font-size: 24px;
+    color: #0FF0FF;
+    background-color: transparent;
+    display: block;
     line-height: normal;
-    z-index: $zIndex_caption_window;
-    cursor: move;
-    cursor: -webkit-grab;
-    cursor: grab;
+    z-index: $zIndex_caption_overlay;
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none

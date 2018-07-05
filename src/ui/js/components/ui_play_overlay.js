@@ -13,7 +13,7 @@ class UIPlayOverlay extends Component {
   }
 
   render() {
-    let ret = <div></div>;
+    let ret = (<div></div>);
     let retUI = (
       <div className="vop-play-overlay-container">
         <div className="vop-play-overlay" onClick={this.onPlayOverlayClick.bind(this)}>

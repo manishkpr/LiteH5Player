@@ -1,5 +1,7 @@
 ﻿import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
+import Events from './core/CoreEvents';
+import Debug from './core/Debug';
 
 import commonUtil from './utils/common_utils';
 
@@ -9,7 +11,10 @@ let Cue = window.WebKitDataCue || window.VTTCue || window.TextTrackCue;
 
 function TextEngine() {
   let context_ = this.context;
+
   let media_ = context_.media;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   function setup() {
     addTextTrack();
@@ -17,6 +22,15 @@ function TextEngine() {
 
   function createCue(data) {
     let cue = new Cue(data.start, data.end, data.text);
+    cue.data = data;
+    cue.onenter = function() {
+      let data = this.data;
+      eventBus_.trigger(Events.CUE_START, {cue: data});
+    };
+    cue.exit = function() {
+      let data = this.data;
+      eventBus_.trigger(Events.CUE_END, {cue: data});
+    };
 
     return cue;
   }
@@ -25,7 +39,7 @@ function TextEngine() {
     // method1
     let textTrack = media_.addTextTrack('subtitles', 'English', 'eng');
     textTrack.mode = 'showing';
-    for (let i = 0; i < 60; i ++) {
+    for (let i = 0; i < 60; i++) {
       let data = {
         start: i,
         end: i + 1,
@@ -118,8 +132,7 @@ function TextEngine() {
     //}
   }
 
-  let instance = {
-  };
+  let instance = {};
 
   setup();
 
@@ -128,6 +141,3 @@ function TextEngine() {
 
 TextEngine.__h5player_factory_name = 'TextEngine';
 export default FactoryMaker.getSingletonFactory(TextEngine);
-
-
-

@@ -320,6 +320,9 @@ export default class UISkinYoutube extends Preact.Component {
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
     this.onMediaWaiting = this.onMediaWaiting.bind(this);
 
+    this.onCueStart = this.onCueStart.bind(this);
+    this.onCueEnd = this.onCueEnd.bind(this);
+
     this.onLog = this.onLog.bind(this);
 
     // ad callback event
@@ -344,6 +347,8 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
     this.vopTooltipText = document.querySelector('.vop-tooltip-text');
+
+    this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
 
     this.vopTimeDisplay = document.querySelector('.vop-time-text');
 
@@ -422,6 +427,9 @@ export default class UISkinYoutube extends Preact.Component {
     this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
+    this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
+    this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
+    
     this.player.on(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
@@ -450,6 +458,9 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
+
+    this.player.off(oldmtn.Events.CUE_START, this.onCueStart);
+    this.player.off(oldmtn.Events.CUE_END, this.onCueEnd);
 
     this.player.off(oldmtn.Events.LOG, this.onLog);
 
@@ -897,6 +908,14 @@ export default class UISkinYoutube extends Preact.Component {
     this.stopBufferingUI();
   }
 
+  onCueStart(e) {
+    this.vopCaptionOverlay.innerText = e.cue.text;
+  }
+
+  onCueEnd(e) {
+    this.vopCaptionOverlay.innerText = '';
+  }
+
   onLog(e) {
     printLogUI(e.message);
   }
@@ -930,6 +949,10 @@ export default class UISkinYoutube extends Preact.Component {
         //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
         this.vopAdContainer.style.zIndex = '1';
+
+        //
+        let captionBottom = adDstHeight + this.vopControlBar.clientHeight + 10;
+        this.vopCaptionOverlay.style.bottom = captionBottom.toString() + 'px';
       }
     }
   }

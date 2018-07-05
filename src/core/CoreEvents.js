@@ -7,7 +7,7 @@ class CoreEvents {
    * @description Public facing external events to be used when developing a player that implements dash.js.
    */
   constructor() {
-    // media element eventsa
+    // media element events
     this.MEDIA_CANPLAY = 'mediaCanPlay';
     this.MEDIA_CANPLAY_THROUGH = 'mediaCanPlayThrough';
     this.MEDIA_DURATION_CHANGED = 'mediaDurationChanged';
@@ -22,6 +22,10 @@ class CoreEvents {
     this.MEDIA_TIMEUPDATE = 'mediaTimeupdate';
     this.MEDIA_VOLUME_CHANGED = 'mediaVolumeChanged';
     this.MEDIA_WAITING = 'mediaWaiting';
+
+    // TEXT_TRACK events
+    this.CUE_START = 'cueStart';
+    this.CUE_END = 'cueEnd';
 
     // ads internal events
     this.AD_ERROR = 'adError';

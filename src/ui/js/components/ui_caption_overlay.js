@@ -8,7 +8,8 @@ class UICaptionOverlay extends Preact.Component {
 
   render() {
     return (
-      <div>
+      <div className="vop-caption-overlay">
+        1234567890
       </div>
     );
   }
