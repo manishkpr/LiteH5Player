@@ -12,6 +12,7 @@ import UITools from './ui_tools';
 // Menu Part
 import UIPopupMenu from './components/ui_popup_menu';
 
+import UIGradientBottom from './components/ui_gradient_bottom';
 import UIControlBar from './components/ui_control_bar';
 
 import UICaptionOverlay from './components/ui_caption_overlay';
@@ -83,7 +84,7 @@ export default class UISkinYoutube extends Preact.Component {
         <UILogoOverlay />
         <UIToolTip main={this} />
         <UIPopupMenu main={this} />
-        <div className="vop-gradient-bottom"></div>
+        <UIGradientBottom main={this} />
         <UICaptionOverlay />
         <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
