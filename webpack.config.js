@@ -20,8 +20,9 @@ module.exports = {
         path.join(__dirname, 'third_party/hlsjs/src')
       ],
       use: {
-        loader: 'babel-loader',
-        options: {}
+        loader: 'babel-loader'
+        // If you have .babelrc, the options can be emit. When execute babel-loader,
+        // it will read .babelrc automation.
       }
     }, {
       test: /\.(sa|sc|c)ss$/,
