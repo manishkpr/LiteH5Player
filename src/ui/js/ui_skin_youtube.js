@@ -101,14 +101,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.castSender_ = null;
     this.ratio = 0.5625;
 
-    // Google Material Icon
-    this.iconPlay = '&#xe037';
-    this.iconPause = '&#xe034';
-    this.iconReplay = '&#xe042';
-    this.iconVolumeOff = '&#xe04f';
-    this.iconVolumeUp = '&#xe050';
-    this.iconVolumeDown = '&#xe04d';
-
     // UI Controls
     this.vopPlayer = null;
     this.vopControlBar = null;
