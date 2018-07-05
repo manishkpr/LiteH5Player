@@ -344,6 +344,20 @@ function Player(idContainer) {
     }
   }
 
+  function isAirplaySupported() {
+    if (window.WebKitPlaybackTargetAvailabilityEvent) {
+      return true;
+    }
+    return false;
+  }
+
+  function showPlaybackTargetPicker() {
+    if (isAirplaySupported()) {
+      let videoElement = media_;
+      videoElement.webkitShowPlaybackTargetPicker();
+    }
+  }
+
   function isPipSupported() {
     let videoElement = media_;
     if (videoElement &&
@@ -635,6 +649,8 @@ function Player(idContainer) {
     getThumbnail: getThumbnail,
     // pip(Safari only)
     setPipPresentation: setPipPresentation,
+    // airplay(Safari only)
+    showPlaybackTargetPicker: showPlaybackTargetPicker,
     // State Machine
     getState: getState,
     // debug

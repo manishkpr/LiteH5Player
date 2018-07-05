@@ -6,6 +6,7 @@ class UIAirplayToggleButton extends Component {
   constructor(props) {
     super(props);
     this.main = this.props.main;
+    this.player = this.main.player;
   }
 
   render() {
@@ -18,9 +19,14 @@ class UIAirplayToggleButton extends Component {
 
     return (
       <button className={"vop-button vop-airplay-button vop-style-airplay"} title="airplay"
-        style={btnStyle}>
+        style={btnStyle}
+        onClick={this.onUICmdAirplay.bind(this)}>
       </button>
     );
+  }
+
+  onUICmdAirplay() {
+    this.player.showPlaybackTargetPicker();
   }
 }
 
