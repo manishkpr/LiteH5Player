@@ -84,7 +84,7 @@ export default class UISkinYoutube extends Preact.Component {
         <UIToolTip main={this} />
         <UIPopupMenu main={this} />
         <UIGradientBottom main={this} />
-        <UICaptionOverlay />
+        <UICaptionOverlay main={this} />
         <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
         <UIControlBar main={this} />
@@ -909,7 +909,12 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onCueStart(e) {
-    this.vopCaptionOverlay.innerText = e.cue.text;
+    this.cue = e.cue;
+    let text = '';
+    if (this.cue) {
+      text = this.cue.text;
+    }
+    this.vopCaptionOverlay.innerText = text;
   }
 
   onCueEnd(e) {
