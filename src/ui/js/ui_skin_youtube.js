@@ -55,7 +55,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.uninitPlayerListeners();
 
     this.removeAutohideAction();
-    UITools.removeClass(this.vopPlayer, 'vop-autohide');
     // Since we want to use ads-container to show ad, if we add 'controls' attribute to video element,
     // it the video control will never shown, because ads-container is on top of it.
     //this.vopVideo.setAttribute('controls', 'true');
@@ -69,7 +68,7 @@ export default class UISkinYoutube extends Preact.Component {
       case 'opened':
         break;
       case 'ended':
-        UITools.removeClass(this.vopPlayer, 'vop-autohide');
+        this.removeAutohideAction();
         break;
       case 'closed':
         break;
@@ -656,7 +655,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   onPlayerMouseDown(e) {
     //printLog('+onPlayerMouseDown');
-    // If playerState is 'opened', should let ui_play_overlay components handle play action.
+    // If playerState is 'opened', let ui_play_overlay components handle play action.
     if (this.playerState === 'opened') {
       return;
     }
