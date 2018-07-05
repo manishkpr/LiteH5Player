@@ -389,6 +389,9 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopPlayer.addEventListener('mousedown', this.onPlayerMouseDown);
     this.vopPlayer.addEventListener('mouseup', this.onPlayerMouseUp);
 
+    this.onAdContainerMouseDown = this.onAdContainerMouseDown.bind(this);
+    this.vopAdContainer.addEventListener('mousedown', this.onAdContainerMouseDown);
+
     // resize listener
     //if (window.ResizeObserver) {
     if (false) {
@@ -673,13 +676,14 @@ export default class UISkinYoutube extends Preact.Component {
     //printLog('+onPlayerMouseUp');
     if (this.flagPlayerMouseDown) {
       this.flagPlayerMouseDown = false;
-
-      if (this.flagAdStarted && this.flagIsLinearAd) {
-        return;
-      }
-
       this.onUICmdPlay();
     }
+  }
+
+  onAdContainerMouseDown(e) {
+    // If ad is playing, it will overlay on the top of 'html5-video-player',
+    // when click on ad, we should stop this event transfer to its parent.
+    e.stopPropagation();
   }
 
   // browser & UI callback functions
