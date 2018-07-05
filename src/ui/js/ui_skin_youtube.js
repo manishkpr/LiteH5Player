@@ -860,7 +860,8 @@ export default class UISkinYoutube extends Preact.Component {
     this.updateUIStateMachine(newState);
   }
 
-  onMediaEnded() {}
+  onMediaEnded() {
+  }
 
   onMediaLoadedMetaData(e) {
     // update external div's height only.

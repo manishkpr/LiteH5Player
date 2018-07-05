@@ -38,6 +38,7 @@ function Player(idContainer) {
   let context_ = oldmtn; //{ flag: 'player' };
   let playerContainer_ = document.getElementById(idContainer);
 
+  // Create internal basic UI elements first.
   let root;
   let uiBasic_ = Preact.render(<UIBasic/>, playerContainer_, root);
 
@@ -385,31 +386,6 @@ function Player(idContainer) {
   }
 
   /////////////////////////////////////////////////////////////////////////////////
-  // Begin - TextEngine
-  function addTextTrack() {
-    textEngine_.addTextTrack();
-  }
-
-  function removeTextTrack() {};
-
-  function setTextTrackHidden() {
-    textEngine_.setTextTrackHidden();
-  }
-
-  function setCueAlign(align) {
-    textEngine_.setCueAlign(align);
-  }
-
-  function setCueLine(line) {
-    textEngine_.setCueLine(line);
-  }
-
-  function setCueLineAlign(lineAlign) {
-    textEngine_.setCueLineAlign(lineAlign);
-  }
-  // End - TextEngine
-
-  /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
     eventBus_ = EventBus(context_).getInstance();
@@ -417,7 +393,7 @@ function Player(idContainer) {
 
     playlistLoader_ = PlaylistLoader(context_).getInstance();
     playbackController_ = PlaybackController(context_).getInstance();
-    textEngine_ = new TextEngine(media_);
+    textEngine_ = TextEngine(context_).getInstance();
     bufferController_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
     parserController_ = ParserController(context_).getInstance();
@@ -566,12 +542,12 @@ function Player(idContainer) {
 
   function processOpenComplete() {
     if (flagContentOpenComplete_ && flagAdOpenComplete_) {
-      // Do internal process first.
+      // Emit event to outer.
+      updateState('opened');
+
       if (context_.cfg.autoplay) {
         play();
       }
-      // Emit event to outer.
-      updateState('opened');
     }
   }
 
