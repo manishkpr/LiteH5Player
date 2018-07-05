@@ -55,6 +55,7 @@ class CoreEvents {
     // tracks(captions, thumbnails)
     this.TRACK_LOADING = 'trackLoading';
     this.TRACK_LOADED = 'trackLoaded';
+    this.TRACK_ADDED = 'trackAdded';
     this.CUE_START = 'cueStart';
     this.CUE_END = 'cueEnd';
     // chromecast

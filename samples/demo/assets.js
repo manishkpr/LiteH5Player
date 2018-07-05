@@ -226,7 +226,7 @@ function getMediaInfo() {
 
       // Webvtt Captions
       { file: 'http://localhost/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
-      { file: 'http://localhost/2/subtitle/timetext2.vtt', kind: 'captions', label: 'TimeText2' },
+      //{ file: 'http://localhost/2/subtitle/timetext2.vtt', kind: 'captions', label: 'TimeText2' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }

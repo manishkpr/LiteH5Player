@@ -16,7 +16,7 @@ function TextTrackController() {
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
-  let textTrack_;
+  let textTracks_ = [];
 
   function setup() {
     eventBus_.on(Events.TRACK_LOADED, onTextTrackLoaded);
@@ -25,8 +25,9 @@ function TextTrackController() {
 
   function onTextTrackLoaded(e) {
     let cueData = e.cueData;
+    let kind = e.kind;
     let label = e.label;
-    textTrack_ = media_.addTextTrack('captions', label, label);
+    let textTrack = media_.addTextTrack(kind, label, label);
 
     for (let i = 0; i < cueData.length; i++) {
       let item = cueData[i];
@@ -37,13 +38,20 @@ function TextTrackController() {
       }
 
       let cue = createCue(data);
-      textTrack_.addCue(cue);
+      textTrack.addCue(cue);
     }
 
-    //
-    textTrack_.mode = 'showing';
+    // //
+    // textTrack.mode = 'showing';
+    let track = {
+      id: media_.textTracks.length,
+      lang: e.label,
+      label: e.label
+    };
+    textTracks_.push(track);
 
     // Trigger text track found event.
+    eventBus_.trigger(Events.TRACK_ADDED, { track: track });
   }
 
   function createCue(data) {

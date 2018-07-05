@@ -28,7 +28,7 @@ function TrackLoader() {
       let data = xhr.responseText;
       let cueData = vttParser_.parse(data);
 
-      eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, label: track_.label });
+      eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, kind: track_.kind, label: track_.label });
     }
 
     function errorHandler(xhr) {

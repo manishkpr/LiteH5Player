@@ -8,11 +8,15 @@ class UISubtitlesMenu extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
 
     this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
     this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
 
+    this.onTrackAdded = this.onTrackAdded.bind(this);
+    this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
+    //
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
 
@@ -126,6 +130,17 @@ class UISubtitlesMenu extends Component {
     } else {
       this.vopSubtitlesMenu.style.display = 'none';
     }
+  }
+
+  onTrackAdded(e) {
+    let track = e.track;
+    // BD
+    track.id = '8';
+    // ED
+    this.subtitlesData.subtitleTracks.push(track);
+    this.setState({
+      subtitlesData: this.subtitlesData
+    });
   }
 }
 

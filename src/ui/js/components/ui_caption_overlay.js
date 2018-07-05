@@ -44,6 +44,7 @@ class UICaptionOverlay extends Component {
     );
   }
 
+
   onCueStart(e) {
     this.cue = e.cue;
 
