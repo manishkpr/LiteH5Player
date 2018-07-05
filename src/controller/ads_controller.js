@@ -417,7 +417,9 @@ function AdsController(adContainer, media, advertising) {
         break;
       case google.ima.AdEvent.Type.USER_CLOSE:
         {
-          processWhenAdComplete();
+          if (isVpaidAd_ || isLinearAd_) {
+            processWhenAdComplete();
+          }
         }
         break;
       case google.ima.AdEvent.Type.VOLUME_CHANGED:

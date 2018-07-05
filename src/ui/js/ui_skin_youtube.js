@@ -909,7 +909,6 @@ export default class UISkinYoutube extends Preact.Component {
     // update control bar ui
     if (this.flagIsVpaidAd) {
       this.vopAdContainer.style.zIndex = '1';
-      //UITools.addClass(this.vopPlayer, 'vop-ad-started');
     } else {
       if (this.flagIsLinearAd) {
         this.vopAdContainer.style.zIndex = '1';
@@ -934,14 +933,13 @@ export default class UISkinYoutube extends Preact.Component {
 
     if (this.flagIsVpaidAd) {
       this.vopAdContainer.style.zIndex = 'auto';
-      //UITools.removeClass(this.vopPlayer, 'vop-ad-started');
     } else {
       if (this.flagIsLinearAd) {
         this.vopAdContainer.style.zIndex = 'auto';
         this.vopControlBar.style.zIndex = 'auto';
         this.vopGardientBottom.style.zIndex = 'auto'
       } else {
-        //this.vopAdContainer.style.zIndex = '1';
+        this.vopAdContainer.style.zIndex = 'auto';
       }
     }
   }

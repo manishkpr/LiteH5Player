@@ -173,7 +173,7 @@ function onUICmdCastSeek() {
 window.onload = function() {
   // print browser version info
   browserInfo = oldmtn.CommonUtils.getBrowserInfo();
-  console.log('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
+  printLog('browser: ' + browserInfo.browser + ', version: ' + browserInfo.version);
 
   // Init with Player
   omPlayer = new oldmtn.Player('player-container');
