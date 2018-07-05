@@ -15,13 +15,23 @@ function TextEngine() {
     addTextTrack();
   }
 
+  function createCue(data) {
+    let cue = new Cue(data.start, data.end, data.text);
+
+    return cue;
+  }
+
   function addTextTrack() {
     // method1
     let textTrack = media_.addTextTrack('subtitles', 'English', 'eng');
     textTrack.mode = 'showing';
     for (let i = 0; i < 60; i ++) {
-      let cue = new Cue(i, i+1, 'current time: ' + i.toString());
-
+      let data = {
+        start: i,
+        end: i + 1,
+        text: 'current time: ' + i.toString()
+      }
+      let cue = createCue(data);
       textTrack.addCue(cue);
     }
 

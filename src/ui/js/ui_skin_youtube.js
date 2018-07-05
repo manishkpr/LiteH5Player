@@ -336,8 +336,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
-    this.vopSkinContainer = document.querySelector('.vop-skin-youtube');
-
     this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
     this.vopControlBar = document.querySelector('.vop-control-bar');
 
@@ -351,10 +349,10 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.uiLog = document.getElementById('idLog');
 
-    this.vopPlayButton = this.vopSkinContainer.querySelector('.vop-play-button');
-    this.vopPauseButton = this.vopSkinContainer.querySelector('.vop-pause-button');
-    this.vopSubtitlesBtn = this.vopSkinContainer.querySelector('.vop-subtitles-button');
-    this.vopSettingsBtn = this.vopSkinContainer.querySelector('.vop-settings-button');
+    this.vopPlayButton = document.querySelector('.vop-play-button');
+    this.vopPauseButton = document.querySelector('.vop-pause-button');
+    this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
+    this.vopSettingsBtn = document.querySelector('.vop-settings-button');
 
     //
     this.vopVideo = document.querySelector('.vop-video');
@@ -674,7 +672,9 @@ export default class UISkinYoutube extends Preact.Component {
   onAdContainerMouseDown(e) {
     // If ad is playing, it will overlay on the top of 'html5-video-player',
     // when click on ad, we should stop this event transfer to its parent.
-    e.stopPropagation();
+    if (this.flagAdStarted) {
+      e.stopPropagation();
+    }
   }
 
   // browser & UI callback functions
@@ -918,12 +918,10 @@ export default class UISkinYoutube extends Preact.Component {
 
     // update control bar ui
     if (this.flagIsVpaidAd) {
-      this.vopAdContainer.style.zIndex = '1';
+      this.vopAdContainer.style.zIndex = '3';
     } else {
       if (this.flagIsLinearAd) {
         this.vopAdContainer.style.zIndex = '1';
-        this.vopControlBar.style.zIndex = '2';
-        this.vopGardientBottom.style.zIndex = '2'
       } else {
         let adDstWidth = this.vopPlayer.clientWidth;
         let adDstHeight = e.height + 10;
@@ -946,8 +944,6 @@ export default class UISkinYoutube extends Preact.Component {
     } else {
       if (this.flagIsLinearAd) {
         this.vopAdContainer.style.zIndex = 'auto';
-        this.vopControlBar.style.zIndex = 'auto';
-        this.vopGardientBottom.style.zIndex = 'auto'
       } else {
         this.vopAdContainer.style.zIndex = 'auto';
       }
