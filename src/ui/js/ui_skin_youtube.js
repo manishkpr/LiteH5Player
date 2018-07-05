@@ -79,12 +79,7 @@ export default class UISkinYoutube extends Preact.Component {
     }
 
     return (
-      <div className="vop-skin-youtube"
-        onMouseEnter={this.onPlayerMouseEnter.bind(this)}
-        onMouseLeave={this.onPlayerMouseLeave.bind(this)}
-        onMouseMove={this.onPlayerMouseMove.bind(this)}
-        onMouseDown={this.onPlayerMouseDown.bind(this)}
-        onMouseUp={this.onPlayerMouseUp.bind(this)}>
+      <div className="vop-skin-youtube">
         <UILogoOverlay />
         <UIToolTip main={this} />
         <UIPopupMenu main={this} />
@@ -381,6 +376,18 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   initUIEventListeners() {
+    this.onPlayerMouseEnter = this.onPlayerMouseEnter.bind(this);
+    this.onPlayerMouseLeave = this.onPlayerMouseLeave.bind(this);
+    this.onPlayerMouseMove = this.onPlayerMouseMove.bind(this);
+    this.onPlayerMouseDown = this.onPlayerMouseDown.bind(this);
+    this.onPlayerMouseUp = this.onPlayerMouseUp.bind(this);
+
+    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter);
+    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave);
+    this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove);
+    this.vopPlayer.addEventListener('mousedown', this.onPlayerMouseDown);
+    this.vopPlayer.addEventListener('mouseup', this.onPlayerMouseUp);
+
     // resize listener
     //if (window.ResizeObserver) {
     if (false) {
@@ -404,6 +411,12 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   uninitUIEventListeners() {
+    this.vopPlayer.removeEventListener('mouseenter', this.onPlayerMouseEnter);
+    this.vopPlayer.removeEventListener('mouseleave', this.onPlayerMouseLeave);
+    this.vopPlayer.removeEventListener('mousemove', this.onPlayerMouseMove);
+    this.vopPlayer.removeEventListener('mousedown', this.onPlayerMouseDown);
+    this.vopPlayer.removeEventListener('mouseup', this.onPlayerMouseUp);
+
     this.playerResizeSensor_ = null;
   }
 
