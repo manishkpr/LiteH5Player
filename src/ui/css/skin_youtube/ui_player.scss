@@ -241,6 +241,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+    z-index: $zIndex_popup_menu;
   }
   .vop-settings-menu {
     right: 11px;

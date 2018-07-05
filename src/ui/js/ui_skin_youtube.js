@@ -927,8 +927,8 @@ export default class UISkinYoutube extends Preact.Component {
       } else {
         let adDstWidth = this.vopPlayer.clientWidth;
         let adDstHeight = e.height + 10;
-        this.player.resize(adDstWidth, adDstHeight);
-        this.vopAdContainer.style.bottom = (this.vopControlBar.clientHeight + 5).toString() + 'px';
+        this.player.resize(adDstWidth, adDstHeight - 10);
+        this.vopAdContainer.style.bottom = this.vopControlBar.clientHeight.toString() + 'px';
         //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
         this.vopAdContainer.style.zIndex = '1';
@@ -1208,10 +1208,6 @@ export default class UISkinYoutube extends Preact.Component {
   onXSpeedMenuItemBlur(e) {
     printLog('+onXSpeedMenuItemBlur');
     this.onQualityMenuItemBlur(e);
-  }
-
-  playerTest() {
-    this.player.test();
   }
 
   // When data changed, needs to update UI.

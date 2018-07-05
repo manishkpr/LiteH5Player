@@ -3,13 +3,15 @@ $skinYoutube: 'vop-skin-youtube' !default;
 
 $zIndex_gradient_bottom: auto;
 $zIndex_caption_window: auto;
-$zIndex_tooltip: auto;
 $zIndex_spinner: auto;
 $zIndex_giant_button_container: auto;
 $zIndex_skin_container: auto;
 $zIndex_control_bar: auto;
 $zIndex_logo: auto;
 $zIndex_ads: auto;
+
+$zIndex_tooltip: 1;
+$zIndex_popup_menu: 1;
 
 
 /************ Begin containers ************/
