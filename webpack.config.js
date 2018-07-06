@@ -1,15 +1,18 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, options) => {
   console.log(`This is the Webpack 4 'mode': ${options.mode}`);
+  const devMode = (options.mode === 'development') ? true : false;
 
+  const jsOutputName = devMode ? 'liteH5Player.debug.js' : 'liteH5Player.min.js';
+  const cssOutputName = devMode ? 'liteH5Player.debug.css' : 'liteH5Player.min.css';
   return {
-    entry: path.join(__dirname, "src/index.js"),
+    entry: path.join(__dirname, 'src/index.js'),
     output: {
-      path: path.join(__dirname, "dist"),
-      filename: "js/liteH5Player.debug.js"
+      path: path.join(__dirname, 'dist'),
+      filename: path.join('js', jsOutputName)
     },
     module: {
       rules: [{
@@ -26,13 +29,14 @@ module.exports = (env, options) => {
       }, {
         test: /\.(sa|sc|c)ss$/,
         include: [
-          path.join(__dirname, "src/ui")
+          path.join(__dirname, 'src/ui')
         ],
         use: [{
           //loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
           loader: MiniCssExtractPlugin.loader
         }, {
           loader: 'css-loader', // translates CSS into CommonJS
+          options: { minimize: devMode ? false : true }
         }, {
           loader: 'sass-loader' // compiles Sass to CSS
         }]
@@ -56,8 +60,8 @@ module.exports = (env, options) => {
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: 'css/liteH5Player.css',
-        chunkFilename: "[id].css"
+        filename: path.join('css', cssOutputName),
+        chunkFilename: '[id].css'
       }),
       new HtmlWebpackPlugin({ // Also generate a test.html
         filename: 'index.html',
