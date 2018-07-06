@@ -11,7 +11,7 @@ class UISubtitlesMenu extends Preact.Component {
   componentDidMount(e) {}
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'subtitle_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'subtitle_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -20,9 +20,9 @@ class UISubtitlesMenu extends Preact.Component {
   }
 
   render() {
-    if (this.main.state.settingMenuUIData.currMenu === 'subtitle_menu') {
-      const menuitems = this.main.state.settingMenuUIData.subtitleTracks.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.main.state.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
+    if (this.main.settingMenuUIData.currMenu === 'subtitle_menu') {
+      const menuitems = this.main.settingMenuUIData.subtitleTracks.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.main.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
         data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
         tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">

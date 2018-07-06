@@ -12,7 +12,7 @@ class UIQualityMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'quality_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -21,11 +21,11 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIQualityMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    printLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
 
-    if (this.main.state.settingMenuUIData.currMenu === 'quality_menu') {
-      const menuitems = this.main.state.settingMenuUIData.qualityList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currQualityId === item.id}
+    if (this.main.settingMenuUIData.currMenu === 'quality_menu') {
+      const menuitems = this.main.settingMenuUIData.qualityList.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.settingMenuUIData.currQualityId === item.id}
           data-id={item.id} onClick={this.onQualityMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onQualityMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">

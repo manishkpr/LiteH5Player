@@ -5,377 +5,393 @@ import CastUtils from './cast_utils'
 ///////////////////////////////////////////////////////////////////////////////
 // RemotePlayerHandler
 function RemotePlayerHandler() {
+  function init(remotePlayer, remotePlayerController) {
+    remotePlayer = remotePlayer;
+    remotePlayerController = remotePlayerController;
 
-    function init(remotePlayer, remotePlayerController) {
-        remotePlayer = remotePlayer;
-        remotePlayerController = remotePlayerController;
+    remotePlayerController.addEventListener(
+      cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+      function() {
+        console.log("muted: " + remotePlayer.isMuted);
+      });
 
-        remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-            function () {
-                console.log("muted: " + remotePlayer.isMuted);
-        });
+    remotePlayerController.addEventListener(
+      cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
+      function() {
+        var newVolume = remotePlayer.volumeLevel;
+        console.log('newVolume is: ' + newVolume);
+      });
+  }
 
-        remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
-            function () {
-                var newVolume = remotePlayer.volumeLevel;
-                console.log('newVolume is: ' + newVolume);
-            });
+  function play() {
+    if (remotePlayer.isPaused) {
+      remotePlayerController.playOrPause();
     }
+  }
 
-    function play() {
-        if (remotePlayer.isPaused) {
-            remotePlayerController.playOrPause();
-        }
+  function pause() {
+    if (!remotePlayer.isPaused) {
+      remotePlayerController.playOrPause();
     }
+  }
 
-    function pause() {
-        if (!remotePlayer.isPaused) {
-            remotePlayerController.playOrPause();
-        }
-    }
+  function setVolume(volume) {
+    remotePlayer.volumeLevel = volume;
+    remotePlayerController.setVolumeLevel();
 
-    function setVolume(volume) {
-        remotePlayer.volumeLevel = volume;
-        remotePlayerController.setVolumeLevel();
+    // or
+    //session_.setVolume(1.0);
+  }
 
-        // or
-        //session_.setVolume(1.0);
-    }
+  function getVolume() {
+    return remotePlayer.volumeLevel;
+  }
 
-    function getVolume() {
-        return remotePlayer.volumeLevel;
-    }
+  function seek(time) {
+    remotePlayer.currentTime = time;
+    remotePlayerController.seek();
+  }
 
-    function seek(time) {
-        remotePlayer.currentTime = time;
-        remotePlayerController.seek();
-    }
+  function stop() {
+    remotePlayerController.stop();
+  }
 
-    function stop() {
-        remotePlayerController.stop();
-    }
-
-    let instance = {
-        init: init,
-        play: play,
-        pause: pause,
-        setVolume: setVolume,
-        getVolume: getVolume,
-        seek: seek,
-        stop: stop
-    };
-    return instance;
+  let instance = {
+    init: init,
+    play: play,
+    pause: pause,
+    setVolume: setVolume,
+    getVolume: getVolume,
+    seek: seek,
+    stop: stop
+  };
+  return instance;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////
 // CastSender
 function CastSender(receiverAppId) {
-    let receiverAppId_ = receiverAppId;
-    let remotePlayer = null;
-    let remotePlayerController = null;
-    let castContext_ = null;
-    let session_ = null;
+  let receiverAppId_ = receiverAppId;
+  let remotePlayer = null;
+  let remotePlayerController = null;
+  let castContext_ = null;
+  let session_ = null;
 
-    let remotePlayerHandler = new RemotePlayerHandler();
+  let remotePlayerHandler = new RemotePlayerHandler();
 
-    function setup() {
-        console.log('cast, init');
+  function setup() {
+    console.log('cast, init');
 
-        var options = {};
+    var options = {};
 
-        // Set the receiver application ID to your own (created in the
-        // Google Cast Developer Console), or optionally
-        // use the chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
-        options.receiverApplicationId = receiverAppId;
+    // Set the receiver application ID to your own (created in the
+    // Google Cast Developer Console), or optionally
+    // use the chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
+    options.receiverApplicationId = receiverAppId;
 
-        // Auto join policy can be one of the following three:
-        // ORIGIN_SCOPED - Auto connect from same appId and page origin
-        // TAB_AND_ORIGIN_SCOPED - Auto connect from same appId, page origin, and tab
-        // PAGE_SCOPED - No auto connect
-        //options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
-        castContext_ = cast.framework.CastContext.getInstance();
-        castContext_.setOptions(options);
+    // Auto join policy can be one of the following three:
+    // ORIGIN_SCOPED - Auto connect from same appId and page origin
+    // TAB_AND_ORIGIN_SCOPED - Auto connect from same appId, page origin, and tab
+    // PAGE_SCOPED - No auto connect
+    //options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+    castContext_ = cast.framework.CastContext.getInstance();
+    castContext_.setOptions(options);
 
-        castContext_.addEventListener(cast.framework.CastContextEventType.CAST_STATE_CHANGED,
-            function (e) {
-            //console.log('cast, cast state: ', e);
-        });
+    castContext_.addEventListener(cast.framework.CastContextEventType.CAST_STATE_CHANGED,
+      function(e) {
+        //console.log('cast, cast state: ', e);
+      }
+    );
 
-        castContext_.addEventListener(
-            cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
-            function (event) {
-            console.log('cast, sessionState: ' + event.sessionState);
-            switch (event.sessionState) {
-            case cast.framework.SessionState.SESSION_STARTED:
-            case cast.framework.SessionState.SESSION_RESUMED:
-                break;
-            case cast.framework.SessionState.SESSION_ENDED:
-                //console.log('CastContext: CastSession disconnected');
-                // Update locally as necessary
-                break;
-            }
-        });
-
-        remotePlayer = new cast.framework.RemotePlayer();
-        remotePlayerController = new cast.framework.RemotePlayerController(remotePlayer);
-        remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-            onConnectedChanged);
-        remotePlayerController.addEventListener(
-            cast.framework.RemotePlayerEventType.IS_MEDIA_LOADED_CHANGED,
-            onMediaLoadedChanged);
-
-        //
-        remotePlayerHandler.init(remotePlayer, remotePlayerController);
-    }
-
-    function onConnectedChanged() {
-        console.log('cast, +onConnectedChanged, remotePlayer.isConnected: ' + remotePlayer.isConnected);
-
-        session_ = cast.framework.CastContext.getInstance().getCurrentSession();
-        if (session_) {
-            // BD
-            let castDev = session_.getCastDevice();
-            // ED
-            session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-                onMessageReceived_);
-        } else {
-            console.log('cast, session_ is null');
-        }
-    }
-
-    function onMediaLoadedChanged() {
-        console.log('--onMediaLoadedChanged--');
-    }
-
-    function loadMedia_SuccessCb() {
-        console.log('--loadMedia_SuccessCb--');
-    }
-
-    function loadMedia_ErrorCb() {
-        console.log('--loadMedia_ErrorCb--');
-    }
-
-    function new_init(message) {
-        message.cmdType = 'init';
-        sendMessage_(message);
-    }
-
-    function new_open(message) {
-        message.cmdType = 'open';
-        sendMessage_(message);
-    }
-
-    function new_add() {
-        let msg = {'cmdType': 'add'};
-        sendMessage_(msg);
-    }
-
-    function new_addPD() {
-        let msg = {'cmdType': 'addPD'};
-        sendMessage_(msg);
-    }
-
-    function new_play() {
-        let msg = {'cmdType': 'play'};
-        sendMessage_(msg);
-    }
-
-    function new_pause() {
-        let msg = {'cmdType': 'pause'};
-        sendMessage_(msg);
-    }
-
-    function new_playAd() {
-        let msg = {'cmdType': 'playAd'};
-        sendMessage_(msg);
-    }
-
-    function new_setPosition(time) {
-        let msg = {'cmdType': 'setPosition'};
-        msg.time = time;
-        sendMessage_(msg);
-    }
-
-    function new_test() {
-        // var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
-        // let msg = 'requestAd';
-        // msg += (',' + Single_Inline_Linear);
-        // msg += (',' + '4');
-
-        msg = {'cmdType': 'test'};
-        session_.sendMessage(
-            CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-            msg,
-            function () {}, // success callback
-            function () {}); // error callback
-    }
-
-    // Opens the cast selection UI, to allow user to start or stop session.
-    function requestSession() {
-        if (!castContext_) {
-            console.warn('cast, you should call init first.');
-            return;
-        }
-
-        castContext_.requestSession();
-    }
-
-    function endSession() {
-        if (!castContext_) {
-            return;
-        }
-
-        let castSession = castContext_.getCurrentSession();
-        // End the session and pass 'true' to indicate
-        // that receiver application should be stopped.
-        castSession.endSession(true);
-    }
-
-    function stopCast() {}
-
-    function loadMedia(url, type) {
-        console.log('+loadMedia');
-
-        if (cast && cast.framework && remotePlayer.isConnected) {
-            var mediaInfo = new chrome.cast.media.MediaInfo(url, type);
-
-            mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-            mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-
-            var request = new chrome.cast.media.LoadRequest(mediaInfo);
-
-            // For cast to voReceiver
-            //request.customData = { drmInfoList: null };
-
-            session_.loadMedia(request, loadMedia_SuccessCb, loadMedia_ErrorCb);
-        } else {
-            remotePlayer = null;
-            remotePlayerController = null;
-        }
-
-        console.log('-loadMedia');
-    }
-
-    function onMessageReceived_(namespace, serialized) {
-        console.log('receive msg, namespace: ' + namespace);
-        console.log('receive msg, serialized: ' + serialized);
-
-        var message = CastUtils.deserialize(serialized);
-        switch (message.type) {
-        case 'timeupdate': {
-                console.log(`timeupdate: curTime: ${message.data.curTime}/${message.data.totalTime}`);
-            }
+    castContext_.addEventListener(
+      cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+      function(event) {
+        console.log('cast, sessionState: ' + event.sessionState);
+        switch (event.sessionState) {
+          case cast.framework.SessionState.SESSION_STARTED:
+          case cast.framework.SessionState.SESSION_RESUMED:
             break;
-        default:
+          case cast.framework.SessionState.SESSION_ENDED:
+            //console.log('CastContext: CastSession disconnected');
+            // Update locally as necessary
             break;
         }
+      });
+
+    remotePlayer = new cast.framework.RemotePlayer();
+    remotePlayerController = new cast.framework.RemotePlayerController(remotePlayer);
+    remotePlayerController.addEventListener(
+      cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
+      onConnectedChanged);
+    remotePlayerController.addEventListener(
+      cast.framework.RemotePlayerEventType.IS_MEDIA_LOADED_CHANGED,
+      onMediaLoadedChanged);
+
+    //
+    remotePlayerHandler.init(remotePlayer, remotePlayerController);
+  }
+
+  function onConnectedChanged() {
+    console.log('cast, +onConnectedChanged, remotePlayer.isConnected: ' + remotePlayer.isConnected);
+
+    session_ = cast.framework.CastContext.getInstance().getCurrentSession();
+    if (session_) {
+      // BD
+      let castDev = session_.getCastDevice();
+      // ED
+      session_.addMessageListener(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+        onMessageReceived_);
+    } else {
+      console.log('cast, session_ is null');
     }
+  }
 
-    function play() {
-        remotePlayerHandler.play();
-    }
+  function onMediaLoadedChanged() {
+    console.log('--onMediaLoadedChanged--');
+  }
 
-    function pause() {
-        remotePlayerHandler.pause();
-    }
+  function loadMedia_SuccessCb() {
+    console.log('--loadMedia_SuccessCb--');
+  }
 
-    function addVolume() {
-        var volume = RemotePlayerHandler.getVolume() + 0.1;
+  function loadMedia_ErrorCb() {
+    console.log('--loadMedia_ErrorCb--');
+  }
 
-        remotePlayerHandler.setVolume(volume);
-    }
+  function new_init(message) {
+    message.cmdType = 'init';
+    sendMessage_(message);
+  }
 
-    function delVolume(volume) {
-        var volume = RemotePlayerHandler.getVolume() - 0.1;
-        remotePlayerHandler.setVolume(volume);
-    }
+  function new_open(message) {
+    message.cmdType = 'open';
+    sendMessage_(message);
+  }
 
-    function setVolume(volume) {
-        remotePlayerHandler.setVolume(volume);
-    }
-
-    function isConnected() {
-        return remotePlayer && remotePlayer.isConnected;
-    }
-
-    function seek(time) {
-        remotePlayerHandler.seek(parseFloat(time));
-    }
-
-    function stop() {
-        remotePlayerHandler.stop();
-    }
-
-    function attribute() {
-        console.log('remote player time: ' + remotePlayer.currentTime);
-        if (remotePlayer.savedPlayerState) {
-            console.log('remotePlayer.savedPlayerState.currentTime: ' + remotePlayer.savedPlayerState.currentTime);
-        }
-    }
-
-    var tmp = 1;
-    function test() {
-        //console.log('--test--');
-
-        session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-            tmp.toString(),
-            function () {}, // success callback
-            function () {}); // error callback
-        tmp ++;
-    }
-
-    function remoteCall_(targetName, methodName) {
-        var args = Array.prototype.slice.call(arguments, 2);
-        sendMessage_({
-            'type': 'call',
-            'targetName': targetName,
-            'methodName': methodName,
-            'args': args
-        });
-    }
-
-    function sendMessage_(message) {
-        var serialized = CastUtils.serialize(message);
-        console.log('send msg: ' + serialized);
-        // TODO: have never seen this fail.  When would it and how should we react?
-        session_.sendMessage(
-            CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-            serialized,
-            function () {}, // success callback
-            function () {}); // error callback
-    }
-
-    let instance = {
-        // 
-        new_init: new_init,
-        new_open: new_open,
-        new_add: new_add,
-        new_addPD: new_addPD,
-        new_play: new_play,
-        new_pause: new_pause,
-        new_playAd: new_playAd,
-        new_setPosition: new_setPosition,
-        new_test: new_test,
-        // old left
-        requestSession: requestSession,
-        endSession: endSession,
-        stopCast: stopCast,
-        loadMedia: loadMedia,
-        stop: stop,
-        play: play,
-        pause: pause,
-        addVolume: addVolume,
-        delVolume: delVolume,
-        seek: seek,
-        attribute: attribute,
-        test: test
+  function new_add() {
+    let msg = {
+      'cmdType': 'add'
     };
+    sendMessage_(msg);
+  }
 
-    setup();
-    return instance;
+  function new_addPD() {
+    let msg = {
+      'cmdType': 'addPD'
+    };
+    sendMessage_(msg);
+  }
+
+  function new_play() {
+    let msg = {
+      'cmdType': 'play'
+    };
+    sendMessage_(msg);
+  }
+
+  function new_pause() {
+    let msg = {
+      'cmdType': 'pause'
+    };
+    sendMessage_(msg);
+  }
+
+  function new_playAd() {
+    let msg = {
+      'cmdType': 'playAd'
+    };
+    sendMessage_(msg);
+  }
+
+  function new_setPosition(time) {
+    let msg = {
+      'cmdType': 'setPosition'
+    };
+    msg.time = time;
+    sendMessage_(msg);
+  }
+
+  function new_test() {
+    // var Single_Inline_Linear = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+    // let msg = 'requestAd';
+    // msg += (',' + Single_Inline_Linear);
+    // msg += (',' + '4');
+
+    msg = {
+      'cmdType': 'test'
+    };
+    session_.sendMessage(
+      CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+      msg,
+      function() {}, // success callback
+      function() {}); // error callback
+  }
+
+  // Opens the cast selection UI, to allow user to start or stop session.
+  function requestSession() {
+    if (!castContext_) {
+      console.warn('cast, you should call init first.');
+      return;
+    }
+
+    castContext_.requestSession();
+  }
+
+  function endSession() {
+    if (!castContext_) {
+      return;
+    }
+
+    let castSession = castContext_.getCurrentSession();
+    // End the session and pass 'true' to indicate
+    // that receiver application should be stopped.
+    castSession.endSession(true);
+  }
+
+  function stopCast() {}
+
+  function loadMedia(url, type) {
+    console.log('+loadMedia');
+
+    if (cast && cast.framework && remotePlayer.isConnected) {
+      var mediaInfo = new chrome.cast.media.MediaInfo(url, type);
+
+      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+      mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+
+      var request = new chrome.cast.media.LoadRequest(mediaInfo);
+
+      // For cast to voReceiver
+      //request.customData = { drmInfoList: null };
+
+      session_.loadMedia(request, loadMedia_SuccessCb, loadMedia_ErrorCb);
+    } else {
+      remotePlayer = null;
+      remotePlayerController = null;
+    }
+
+    console.log('-loadMedia');
+  }
+
+  function onMessageReceived_(namespace, serialized) {
+    console.log('receive msg, namespace: ' + namespace);
+    console.log('receive msg, serialized: ' + serialized);
+
+    var message = CastUtils.deserialize(serialized);
+    switch (message.type) {
+      case 'timeupdate':
+        {
+          console.log(`timeupdate: curTime: ${message.data.curTime}/${message.data.totalTime}`);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  function play() {
+    remotePlayerHandler.play();
+  }
+
+  function pause() {
+    remotePlayerHandler.pause();
+  }
+
+  function addVolume() {
+    var volume = RemotePlayerHandler.getVolume() + 0.1;
+
+    remotePlayerHandler.setVolume(volume);
+  }
+
+  function delVolume(volume) {
+    var volume = RemotePlayerHandler.getVolume() - 0.1;
+    remotePlayerHandler.setVolume(volume);
+  }
+
+  function setVolume(volume) {
+    remotePlayerHandler.setVolume(volume);
+  }
+
+  function isConnected() {
+    return remotePlayer && remotePlayer.isConnected;
+  }
+
+  function seek(time) {
+    remotePlayerHandler.seek(parseFloat(time));
+  }
+
+  function stop() {
+    remotePlayerHandler.stop();
+  }
+
+  function attribute() {
+    console.log('remote player time: ' + remotePlayer.currentTime);
+    if (remotePlayer.savedPlayerState) {
+      console.log('remotePlayer.savedPlayerState.currentTime: ' + remotePlayer.savedPlayerState.currentTime);
+    }
+  }
+
+  var tmp = 1;
+
+  function test() {
+    //console.log('--test--');
+
+    session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+      tmp.toString(),
+      function() {}, // success callback
+      function() {}); // error callback
+    tmp++;
+  }
+
+  function remoteCall_(targetName, methodName) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    sendMessage_({
+      'type': 'call',
+      'targetName': targetName,
+      'methodName': methodName,
+      'args': args
+    });
+  }
+
+  function sendMessage_(message) {
+    var serialized = CastUtils.serialize(message);
+    console.log('send msg: ' + serialized);
+    // TODO: have never seen this fail.  When would it and how should we react?
+    session_.sendMessage(
+      CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+      serialized,
+      function() {}, // success callback
+      function() {}); // error callback
+  }
+
+  let instance = {
+    // 
+    new_init: new_init,
+    new_open: new_open,
+    new_add: new_add,
+    new_addPD: new_addPD,
+    new_play: new_play,
+    new_pause: new_pause,
+    new_playAd: new_playAd,
+    new_setPosition: new_setPosition,
+    new_test: new_test,
+    // old left
+    requestSession: requestSession,
+    endSession: endSession,
+    stopCast: stopCast,
+    loadMedia: loadMedia,
+    stop: stop,
+    play: play,
+    pause: pause,
+    addVolume: addVolume,
+    delVolume: delVolume,
+    seek: seek,
+    attribute: attribute,
+    test: test
+  };
+
+  setup();
+  return instance;
 };
 
 export default CastSender;

@@ -138,7 +138,7 @@ function Player(idContainer) {
 
     // context_.mediaCfg = null;
 
-    updateState('closed');
+    updateState('idle');
   }
 
   function updateState(state) {

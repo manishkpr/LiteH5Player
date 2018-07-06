@@ -9,7 +9,7 @@ class UIFccMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'fcc_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'fcc_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -18,10 +18,10 @@ class UIFccMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIFccMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //printLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
 
-    if (this.main.state.settingMenuUIData.currMenu === 'fcc_menu') {
-      const menuitems = this.main.state.settingMenuUIData.fccPropertyList.map((item, index) =>
+    if (this.main.settingMenuUIData.currMenu === 'fcc_menu') {
+      const menuitems = this.main.settingMenuUIData.fccPropertyList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
           data-id={item.name} onClick={this.onMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>

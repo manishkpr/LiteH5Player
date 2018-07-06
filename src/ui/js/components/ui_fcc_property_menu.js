@@ -9,7 +9,7 @@ class UIFccPropertyMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'fcc_property_menu') {
       var v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -18,12 +18,12 @@ class UIFccPropertyMenu extends Preact.Component {
   }
 
   render() {
-    let currFccPropertyName = this.main.state.settingMenuUIData.currFccPropertyName;
+    let currFccPropertyName = this.main.settingMenuUIData.currFccPropertyName;
 
-    if (this.main.state.settingMenuUIData.currMenu === 'fcc_property_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'fcc_property_menu') {
       let fccProperty = null;
-      for (let i = 0; i < this.main.state.settingMenuUIData.fccPropertyList.length; i++) {
-        let fccPropertyTmp = this.main.state.settingMenuUIData.fccPropertyList[i];
+      for (let i = 0; i < this.main.settingMenuUIData.fccPropertyList.length; i++) {
+        let fccPropertyTmp = this.main.settingMenuUIData.fccPropertyList[i];
         if (fccPropertyTmp.name === currFccPropertyName) {
           fccProperty = fccPropertyTmp;
           break;

@@ -9,6 +9,7 @@ import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
 
+import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
 
 import UIGradientBottom from './components/ui_gradient_bottom';
@@ -79,6 +80,7 @@ export default class UISkinYoutube extends Preact.Component {
 
     return (
       <div className="vop-skin-youtube">
+        <UITitleBar main={this} />
         <UILogoOverlay />
         <UIPopupMenu main={this} />
         <UICaptionOverlay main={this} />
@@ -561,7 +563,7 @@ export default class UISkinYoutube extends Preact.Component {
       } else if (tooltipRight_RelativeToVideo > rightMax) {
         tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
       }
-      
+
       //printLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
 
       return tooltipLeft_RelativeToVideo;
@@ -1257,6 +1259,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   // When data changed, needs to update UI.
   updateUIState() {
+    console.log('updateUIState, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu);
     this.setState({
       settingMenuUIData: this.settingMenuUIData,
       // player state

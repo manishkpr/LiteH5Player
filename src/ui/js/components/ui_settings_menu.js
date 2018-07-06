@@ -13,7 +13,7 @@ class UISettingsMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'main_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'main_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -22,8 +22,8 @@ class UISettingsMenu extends Preact.Component {
   }
 
   render() {
-    if (this.main.state.settingMenuUIData.currMenu === 'main_menu') {
-      const menuitems = this.main.state.settingMenuUIData.mainList.map((item, index) =>
+    if (this.main.settingMenuUIData.currMenu === 'main_menu') {
+      const menuitems = this.main.settingMenuUIData.mainList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
           data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>

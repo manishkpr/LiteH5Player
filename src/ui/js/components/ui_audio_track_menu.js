@@ -9,7 +9,7 @@ class UIAudioTrackMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    if (this.main.state.settingMenuUIData.currMenu === 'audio_track_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -18,11 +18,11 @@ class UIAudioTrackMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIAudioTrackMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //printLog('+render, UIAudioTrackMenu: ' + this.main.settingMenuUIData.currMenu);
 
-    if (this.main.state.settingMenuUIData.currMenu === 'audio_track_menu') {
-      const menuitems = this.main.state.settingMenuUIData.audioTrackList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currAudioTrackId === item.id}
+    if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
+      const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
+        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.settingMenuUIData.currAudioTrackId === item.id}
           data-id={item.id} onClick={this.onAudioTrackMenuItemClick.bind(this)}
           tabIndex="0" onBlur={this.onAudioTrackMenuItemBlur.bind(this)}>
           <div className="vop-menuitem-label">

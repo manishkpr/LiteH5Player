@@ -17,7 +17,7 @@ function TextEngine() {
   let debug_ = Debug(context_).getInstance();
 
   function setup() {
-    addTextTrack();
+    //addTextTrack();
   }
 
   function createCue(data) {
