@@ -80,13 +80,13 @@ export default class UISkinYoutube extends Preact.Component {
     return (
       <div className="vop-skin-youtube">
         <UILogoOverlay />
-        <UIToolTip main={this} />
         <UIPopupMenu main={this} />
-        <UIGradientBottom main={this} />
         <UICaptionOverlay main={this} />
+        <UIToolTip main={this} />
+        <UIGradientBottom main={this} />
+        <UIControlBar main={this} />
         <UIBufferingOverlay />
         <UIGiantButtonOverlay main={this} />
-        <UIControlBar main={this} />
         <UIPlayOverlay main={this} />
       </div>
     )
