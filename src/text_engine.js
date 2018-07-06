@@ -21,7 +21,7 @@ function TextEngine() {
   }
 
   function createCue(data) {
-    let cue = new Cue(data.start, data.end, data.text);
+    let cue = new Cue(data.start, data.end, '');
     cue.data = data;
     cue.onenter = function() {
       let data = this.data;

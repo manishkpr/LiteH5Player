@@ -624,19 +624,35 @@ export default class UISkinYoutube extends Preact.Component {
 
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
+  updateCaptionOverlay() {
+    let adDstHeight = 0;
+    let controlBarHeight = 0;
+    if (this.flagAdStarted && !this.flagIsLinearAd) {
+      adDstHeight = this.vopAdContainer.clientHeight;
+      controlBarHeight = this.vopControlBar.clientHeight;
+    } else {
+      if (!UITools.hasClass(this.vopPlayer, 'vop-autohide')) {
+        controlBarHeight = this.vopControlBar.clientHeight;
+      }
+    }
+
+    let height = adDstHeight + controlBarHeight;
+    this.vopCaptionOverlay.style.bottom = height.toString() + 'px';
+  }
+
   addAutohideAction() {
-    this.vopCaptionOverlay.style.bottom = '0px';
     UITools.addClass(this.vopPlayer, 'vop-autohide');
+    this.updateCaptionOverlay();
   }
 
   removeAutohideAction() {
-    let height = this.vopControlBar.clientHeight;
-    this.vopCaptionOverlay.style.bottom = height.toString() + 'px';
     UITools.removeClass(this.vopPlayer, 'vop-autohide');
     if (this.timerHideControlBar) {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
+
+    this.updateCaptionOverlay();
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -962,8 +978,7 @@ export default class UISkinYoutube extends Preact.Component {
         this.vopAdContainer.style.zIndex = '1';
 
         // Consider ad height.
-        // let captionBottom = adDstHeight + this.vopControlBar.clientHeight + 10;
-        // this.vopCaptionOverlay.style.bottom = captionBottom.toString() + 'px';
+        this.updateCaptionOverlay();
       }
     }
   }
