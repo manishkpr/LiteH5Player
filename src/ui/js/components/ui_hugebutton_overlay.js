@@ -3,7 +3,7 @@ import Preact from 'preact';
 
 import UITools from '../ui_tools';
 
-class UIGiantButtonOverlay extends Preact.Component {
+class UIHugeButtonOverlay extends Preact.Component {
   constructor(props) {
     super(props);
 
@@ -12,8 +12,8 @@ class UIGiantButtonOverlay extends Preact.Component {
   }
 
   componentDidMount() {
-    this.uiGiantButton = document.querySelector('.vop-giant-button');
-    this.uiGiantBtnContainer = document.querySelector('.vop-giant-button-container');
+    this.uiGiantButton = document.querySelector('.vop-huge-button');
+    this.uiGiantBtnContainer = document.querySelector('.vop-huge-button-container');
 
     this.onMediaPlay = this.onMediaPlay.bind(this);
     this.onMediaPaused = this.onMediaPaused.bind(this);
@@ -27,7 +27,7 @@ class UIGiantButtonOverlay extends Preact.Component {
   }
 
   render() {
-    //printLog('UIGiantButtonOverlay, this.main.playerState: ' + this.main.playerState);
+    //printLog('UIHugeButtonOverlay, this.main.playerState: ' + this.main.playerState);
     
     let style = {};
     switch(this.main.playerState) {
@@ -42,10 +42,10 @@ class UIGiantButtonOverlay extends Preact.Component {
     }
 
     return (
-      <div className="vop-giant-button-container"
+      <div className="vop-huge-button-container"
         style={style}
         onAnimationEnd={this.onGiantAnimationEnd.bind(this)}>
-        <div className="vop-giant-button"></div>
+        <div className="vop-huge-button"></div>
       </div>
     );
   }
@@ -76,4 +76,4 @@ class UIGiantButtonOverlay extends Preact.Component {
   }
 }
 
-export default UIGiantButtonOverlay;
+export default UIHugeButtonOverlay;

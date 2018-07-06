@@ -16,7 +16,7 @@ import UIGradientBottom from './components/ui_gradient_bottom';
 import UIControlBar from './components/ui_control_bar';
 
 import UICaptionOverlay from './components/ui_caption_overlay';
-import UIGiantButtonOverlay from './components/ui_giantbutton_overlay';
+import UIHugeButtonOverlay from './components/ui_hugebutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
@@ -88,7 +88,7 @@ export default class UISkinYoutube extends Preact.Component {
         <UIGradientBottom main={this} />
         <UIControlBar main={this} />
         <UIBufferingOverlay />
-        <UIGiantButtonOverlay main={this} />
+        <UIHugeButtonOverlay main={this} />
         <UIPlayOverlay main={this} />
       </div>
     );
@@ -653,7 +653,6 @@ export default class UISkinYoutube extends Preact.Component {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-
     this.updateCaptionOverlay();
   }
 
