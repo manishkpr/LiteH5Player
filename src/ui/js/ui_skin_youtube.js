@@ -624,7 +624,14 @@ export default class UISkinYoutube extends Preact.Component {
 
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
+  addAutohideAction() {
+    this.vopCaptionOverlay.style.bottom = '0px';
+    UITools.addClass(this.vopPlayer, 'vop-autohide');
+  }
+
   removeAutohideAction() {
+    let height = this.vopControlBar.clientHeight;
+    this.vopCaptionOverlay.style.bottom = height.toString() + 'px';
     UITools.removeClass(this.vopPlayer, 'vop-autohide');
     if (this.timerHideControlBar) {
       clearTimeout(this.timerHideControlBar);
@@ -636,7 +643,7 @@ export default class UISkinYoutube extends Preact.Component {
   onPlayerMouseEnter(e) {
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
     //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
-    UITools.removeClass(this.vopPlayer, 'vop-autohide');
+    this.removeAutohideAction();
   }
 
   onPlayerMouseMove(e) {
@@ -657,7 +664,7 @@ export default class UISkinYoutube extends Preact.Component {
       !this.progressBarContext &&
       !this.flagVolumeSliderMousedown &&
       !fullscreen) {
-      UITools.addClass(this.vopPlayer, 'vop-autohide');
+      this.addAutohideAction();
     }
   }
 
@@ -954,9 +961,9 @@ export default class UISkinYoutube extends Preact.Component {
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
         this.vopAdContainer.style.zIndex = '1';
 
-        //
-        let captionBottom = adDstHeight + this.vopControlBar.clientHeight + 10;
-        this.vopCaptionOverlay.style.bottom = captionBottom.toString() + 'px';
+        // Consider ad height.
+        // let captionBottom = adDstHeight + this.vopControlBar.clientHeight + 10;
+        // this.vopCaptionOverlay.style.bottom = captionBottom.toString() + 'px';
       }
     }
   }
