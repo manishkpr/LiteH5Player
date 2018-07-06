@@ -9,7 +9,6 @@ import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
 
-// Menu Part
 import UIPopupMenu from './components/ui_popup_menu';
 
 import UIGradientBottom from './components/ui_gradient_bottom';
@@ -949,7 +948,7 @@ export default class UISkinYoutube extends Preact.Component {
       } else {
         let adDstWidth = this.vopPlayer.clientWidth;
         let adDstHeight = e.height + 10;
-        this.player.resize(adDstWidth, adDstHeight - 10);
+        this.player.resize(adDstWidth, e.height + 5);
         this.vopAdContainer.style.bottom = this.vopControlBar.clientHeight.toString() + 'px';
         //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';

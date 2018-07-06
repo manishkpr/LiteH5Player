@@ -1,69 +1,70 @@
-var path = require('path');
-
+const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = false;
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-  entry: path.join(__dirname, "src/index.js"),
-  output: {
-    path: path.join(__dirname, "dist"),
-    filename: "js/liteH5Player.debug.js"
-  },
-  mode: 'development',
-  module: {
-    rules: [{
-      test: /\.js$/,
-      include: [
-        path.join(__dirname, 'src'),
-        path.join(__dirname, 'third_party/hlsjs/src')
-      ],
-      use: {
-        loader: 'babel-loader'
-        // If you have .babelrc, the options can be emit. When execute babel-loader,
-        // it will read .babelrc automation.
-      }
-    }, {
-      test: /\.(sa|sc|c)ss$/,
-      include: [
-        path.join(__dirname, "src/ui")
-      ],
-      use: [{
-        loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
+module.exports = (env, options) => {
+  console.log(`This is the Webpack 4 'mode': ${options.mode}`);
+
+  return {
+    entry: path.join(__dirname, "src/index.js"),
+    output: {
+      path: path.join(__dirname, "dist"),
+      filename: "js/liteH5Player.debug.js"
+    },
+    module: {
+      rules: [{
+        test: /\.js$/,
+        include: [
+          path.join(__dirname, 'src'),
+          path.join(__dirname, 'third_party/hlsjs/src')
+        ],
+        use: {
+          loader: 'babel-loader'
+          // If you have .babelrc, the options can be emit. When execute babel-loader,
+          // it will read .babelrc automation.
+        }
       }, {
-        loader: 'css-loader', // translates CSS into CommonJS
+        test: /\.(sa|sc|c)ss$/,
+        include: [
+          path.join(__dirname, "src/ui")
+        ],
+        use: [{
+          //loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader, // 'style-loader' creates style nodes from JS strings;
+          loader: MiniCssExtractPlugin.loader
+        }, {
+          loader: 'css-loader', // translates CSS into CommonJS
+        }, {
+          loader: 'sass-loader' // compiles Sass to CSS
+        }]
       }, {
-        loader: 'sass-loader' // compiles Sass to CSS
-      }]
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      use: [{
-        loader: 'file-loader',
-        options: {
-          name: './assets/img/[name].[ext]'
+        test: /\.(png|jpg|gif)$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: './assets/img/[name].[ext]'
+          }
+        }]
+      }, {
+        test: /\.svg$/,
+        use: {
+          loader: 'svg-url-loader',
+          options: {}
         }
       }]
-    }, {
-      test: /\.svg$/,
-      use: {
-        loader: 'svg-url-loader',
-        options: {}
-      }
-    }]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: 'css/liteH5Player.css',
-      chunkFilename: "[id].css"
-    }),
-    new HtmlWebpackPlugin({  // Also generate a test.html
-      filename: 'index.html',
-      template: 'samples/demo/index.html'
-    })
-  ]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: 'css/liteH5Player.css',
+        chunkFilename: "[id].css"
+      }),
+      new HtmlWebpackPlugin({ // Also generate a test.html
+        filename: 'index.html',
+        template: 'samples/demo/index.html'
+      })
+    ]
+  }
 };
 
 /*

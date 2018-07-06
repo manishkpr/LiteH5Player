@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "babel-node spec/run.js",
-    "build": "webpack --devtool source-map"
+    "dev": "webpack --devtool source-map --mode development",
+    "build": "webpack --devtool source-map --mode production"
   },
   "author": "oldmtn",
   "license": "BSD",
