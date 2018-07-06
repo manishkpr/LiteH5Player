@@ -25,7 +25,7 @@ class UIXSpeedMenu extends Preact.Component {
 
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currSpeed === item.id}
+        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currSpeedId === item.id}
           data-id={item.id} onClick={this.onMenuItemClick_}
           tabIndex="0" onBlur={this.onMenuItemBlur_}>
           <div className="vop-menuitem-label">

@@ -122,7 +122,7 @@ export default class UISkinYoutube extends Preact.Component {
       currMenu: 'none', // none, settings_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitles_menu, xspeed_menu
 
       // main setting menu
-      mainList: [{
+      settingsList: [{
         id: '1',
         text: 'Quality'
       }, {
@@ -289,7 +289,7 @@ export default class UISkinYoutube extends Preact.Component {
       }],
 
       // X-Speed
-      currSpeed: '3',
+      currSpeedId: '3',
       xspeedList: [{
         id: '1',
         value: 0.25
@@ -1232,7 +1232,7 @@ export default class UISkinYoutube extends Preact.Component {
     printLog('+onXSpeedMenuItemClick');
     let nextFocus = e.currentTarget;
 
-    this.settingMenuUIData.currSpeed = nextFocus.dataset.id;
+    this.settingMenuUIData.currSpeedId = nextFocus.dataset.id;
     this.updateUIState();
 
     //
@@ -1248,7 +1248,7 @@ export default class UISkinYoutube extends Preact.Component {
 
       return value;
     }
-    let value = getXSpeedValue.call(this, this.settingMenuUIData.currSpeed);
+    let value = getXSpeedValue.call(this, this.settingMenuUIData.currSpeedId);
     this.player.setAudioPlaybackSpeed(parseFloat(value));
   }
 

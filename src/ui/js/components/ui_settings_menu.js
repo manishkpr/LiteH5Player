@@ -30,18 +30,56 @@ class UISettingsMenu extends Preact.Component {
   render() {
     console.log(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
     if (this.main.settingMenuUIData.currMenu === 'settings_menu') {
-      const menuitems = this.main.settingMenuUIData.mainList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
-          data-id={item.id} onClick={this.onMenuItemClick_}
-          tabIndex="0" onBlur={this.onMenuItemBlur_}>
-          <div className="vop-menuitem-label">
-            { item.text }
+      const menuitems = this.main.settingMenuUIData.settingsList.map(function(item, index) {
+        let currValue = '';
+        switch (item.id) {
+          case '1':
+          for (let i = 0; i < this.main.settingMenuUIData.qualityList.length; i ++) {
+            let currItem = this.main.settingMenuUIData.qualityList[i];
+            if (currItem.id === this.main.settingMenuUIData.currQualityId) {
+              currValue = currItem.bitrate;
+            }
+          }
+          break;
+          case '2':
+          for (let i = 0; i < this.main.settingMenuUIData.audioTrackList.length; i ++) {
+            let currItem = this.main.settingMenuUIData.audioTrackList[i];
+            if (currItem.id === this.main.settingMenuUIData.currAudioTrackId) {
+              currValue = currItem.lang;
+            }
+          }
+          break;
+          case '3':
+          // for (let i = 0; i < this.main.settingMenuUIData.qualityList.length; i ++) {
+          //   let currItem = this.main.settingMenuUIData.qualityList[i];
+          //   if (currItem.id === this.main.settingMenuUIData.currQualityId) {
+          //     currValue = currItem.bitrate;
+          //   }
+          // }
+          break;
+          case '4':
+          for (let i = 0; i < this.main.settingMenuUIData.xspeedList.length; i ++) {
+            let currItem = this.main.settingMenuUIData.xspeedList[i];
+            if (currItem.id === this.main.settingMenuUIData.currSpeedId) {
+              currValue = currItem.value;
+            }
+          }
+          break;
+        }
+
+        return (
+          <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
+            data-id={item.id} onClick={this.onMenuItemClick_}
+            tabIndex="0" onBlur={this.onMenuItemBlur_}>
+            <div className="vop-menuitem-label">
+              { item.text }
+            </div>
+            <div className="vop-menuitem-content">
+              <span className="vop-menuitem-content-text">{currValue}</span>
+            </div>
           </div>
-          <div className="vop-menuitem-content">
-            <span className="vop-menuitem-content-text">360p</span>
-          </div>
-        </div>
-      );
+        );
+      }.bind(this));
 
       return (
         <div className="vop-panel-menu">
@@ -64,6 +102,8 @@ class UISettingsMenu extends Preact.Component {
 
     this.main.onMainMenuItemBlur(e);
   }
+
+
 }
 
 export default UISettingsMenu;
