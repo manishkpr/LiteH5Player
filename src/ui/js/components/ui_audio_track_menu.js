@@ -5,7 +5,11 @@ import Preact from 'preact';
 class UIAudioTrackMenu extends Preact.Component {
   constructor(props) {
     super(props);
+
     this.main = this.props.main;
+    this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
+    this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
+    this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
   }
 
   componentDidUpdate() {
@@ -22,9 +26,10 @@ class UIAudioTrackMenu extends Preact.Component {
 
     if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
       const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.settingMenuUIData.currAudioTrackId === item.id}
-          data-id={item.id} onClick={this.onAudioTrackMenuItemClick.bind(this)}
-          tabIndex="0" onBlur={this.onAudioTrackMenuItemBlur.bind(this)}>
+        <div key={index} className="vop-menuitem" role="menuitemradio"
+          aria-checked={this.main.settingMenuUIData.currAudioTrackId === item.id}
+          data-id={item.id} onClick={this.onMenuItemClick_}
+          tabIndex="0" onBlur={this.onMenuItemBlur_}>
           <div className="vop-menuitem-label">
             <span>{ item.lang }</span>
           </div>
@@ -34,7 +39,7 @@ class UIAudioTrackMenu extends Preact.Component {
       return (
         <div>
           <div className="vop-panel-header">
-            <button className="vop-panel-title" onClick={this.onAudioTrackMenuBack.bind(this)}>AudioTrack</button>
+            <button className="vop-panel-title" onClick={this.onMenuBackClick_}>AudioTrack</button>
           </div>
           <div className="vop-panel-menu">
             { menuitems }
@@ -46,15 +51,18 @@ class UIAudioTrackMenu extends Preact.Component {
     }
   }
 
-  onAudioTrackMenuBack(e) {
+  onMenuBackClick(e) {
     this.main.onAudioTrackMenuBack(e);
   }
 
-  onAudioTrackMenuItemClick(e) {
+  onMenuItemClick(e) {
     this.main.onAudioTrackMenuItemClick(e);
   }
 
-  onAudioTrackMenuItemBlur(e) {
+  onMenuItemBlur(e) {
+    if (this.main.settingMenuUIData.currMenu !== 'fcc_menu') {
+      return;
+    }
     this.main.onAudioTrackMenuItemBlur(e);
   }
 }

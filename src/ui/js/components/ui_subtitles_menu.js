@@ -6,12 +6,16 @@ class UISubtitlesMenu extends Preact.Component {
     super(props);
 
     this.main = this.props.main;
+
+    this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
+    this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
+    this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
   }
 
   componentDidMount(e) {}
 
   componentDidUpdate() {
-    if (this.main.settingMenuUIData.currMenu === 'subtitle_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'subtitles_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
@@ -20,11 +24,12 @@ class UISubtitlesMenu extends Preact.Component {
   }
 
   render() {
-    if (this.main.settingMenuUIData.currMenu === 'subtitle_menu') {
+    if (this.main.settingMenuUIData.currMenu === 'subtitles_menu') {
       const menuitems = this.main.settingMenuUIData.subtitleTracks.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitem" aria-checked={this.main.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
-        data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
-        tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
+        <div key={index} className="vop-menuitem" role="menuitem"
+        aria-checked={this.main.settingMenuUIData.currSubtitleId === item.id ? 'true' : 'false'}
+        data-id={item.id} onClick={this.onMenuItemClick_}
+        tabIndex="0" onBlur={this.onMenuItemBlur_}>
           <div className="vop-menuitem-label">
             { item.lang }
           </div>
@@ -38,7 +43,7 @@ class UISubtitlesMenu extends Preact.Component {
       return (
         <div>
           <div className="vop-panel-header">
-            <button className="vop-panel-title" onClick={this.onMenuBack.bind(this)}>Subtitles</button>
+            <button className="vop-panel-title" onClick={this.onMenuBackClick_}>Subtitles</button>
           </div>
           <div className="vop-panel-menu">
             { menuitems }
@@ -50,7 +55,7 @@ class UISubtitlesMenu extends Preact.Component {
     }
   }
 
-  onMenuBack() {
+  onMenuBackClick() {
     printLog('+onMenuBack');
     this.main.onSubtitleMenuBack();
   }
@@ -62,6 +67,10 @@ class UISubtitlesMenu extends Preact.Component {
 
   onMenuItemBlur(e) {
     printLog('+onMenuItemBlur');
+    if (this.main.settingMenuUIData.currMenu !== 'subtitles_menu') {
+      return;
+    }
+    
     this.main.onSubtitleMenuItemBlur(e);
   }
 }

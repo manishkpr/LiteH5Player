@@ -6,6 +6,9 @@ class UIXSpeedMenu extends Preact.Component {
     super(props);
 
     this.main = this.props.main;
+    this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
+    this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
+    this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
   }
 
   componentDidUpdate() {
@@ -23,8 +26,8 @@ class UIXSpeedMenu extends Preact.Component {
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currSpeed === item.id}
-          data-id={item.id} onClick={this.onMenuItemClick.bind(this)}
-          tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
+          data-id={item.id} onClick={this.onMenuItemClick_}
+          tabIndex="0" onBlur={this.onMenuItemBlur_}>
           <div className="vop-menuitem-label">
             <span>{ item.value }</span>
           </div>
@@ -34,7 +37,7 @@ class UIXSpeedMenu extends Preact.Component {
       return (
         <div>
           <div className="vop-panel-header">
-            <button className="vop-panel-title" onClick={this.onMenuBack.bind(this)}>XSpeed</button>
+            <button className="vop-panel-title" onClick={this.onMenuBackClick_}>XSpeed</button>
           </div>
           <div className="vop-panel-menu">
             { menuitems }
@@ -46,7 +49,7 @@ class UIXSpeedMenu extends Preact.Component {
     }
   }
 
-  onMenuBack(e) {
+  onMenuBackClick(e) {
     this.main.onXSpeedMenuBack(e);
   }
   
@@ -55,6 +58,9 @@ class UIXSpeedMenu extends Preact.Component {
   }
 
   onMenuItemBlur(e) {
+    if (this.main.settingMenuUIData.currMenu !== 'xspeed_menu') {
+      return;
+    }
     this.main.onXSpeedMenuItemBlur(e);
   }
 }

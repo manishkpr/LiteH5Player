@@ -6,6 +6,9 @@ class UIFccPropertyMenu extends Preact.Component {
     super(props);
 
     this.main = this.props.main;
+    this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
+    this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
+    this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
   }
 
   componentDidUpdate() {
@@ -32,8 +35,8 @@ class UIFccPropertyMenu extends Preact.Component {
       if (fccProperty) {
         const menuitems = fccProperty.values.map((value, index) =>
           <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={fccProperty.currValue === value}
-              onClick={this.onMenuItemClick.bind(this)} data-id={value}
-              tabIndex="0" onBlur={this.onMenuItemBlur.bind(this)}>
+              onClick={this.onMenuItemClick_} data-id={value}
+              tabIndex="0" onBlur={this.onMenuItemBlur_}>
             <div className="vop-menuitem-label">
               <span>{ value }</span>
             </div>
@@ -43,7 +46,7 @@ class UIFccPropertyMenu extends Preact.Component {
         return (
           <div>
             <div className="vop-panel-header">
-              <button className="vop-panel-title" onClick={this.onMenuBack.bind(this)}>Fcc</button>
+              <button className="vop-panel-title" onClick={this.onMenuBackClick_}>Fcc</button>
             </div>
             <div className="vop-panel-menu">
               { menuitems }
@@ -62,7 +65,7 @@ class UIFccPropertyMenu extends Preact.Component {
     }
   }
 
-  onMenuBack(e) {
+  onMenuBackClick(e) {
     this.main.onFccPropertyMenuBack(e);
   }
 
@@ -71,6 +74,9 @@ class UIFccPropertyMenu extends Preact.Component {
   }
 
   onMenuItemBlur(e) {
+    if (this.main.settingMenuUIData.currMenu !== 'fcc_property_menu') {
+      return;
+    }
     this.main.onFccPropertyMenuItemBlur(e);
   }
 }

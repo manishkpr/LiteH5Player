@@ -91,7 +91,7 @@ export default class UISkinYoutube extends Preact.Component {
         <UIGiantButtonOverlay main={this} />
         <UIPlayOverlay main={this} />
       </div>
-    )
+    );
   }
 
   ///////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@ export default class UISkinYoutube extends Preact.Component {
 
     // menu context
     this.settingMenuUIData = {
-      currMenu: 'none', // none, main_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitle_menu, xspeed_menu
+      currMenu: 'none', // none, settings_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitles_menu, xspeed_menu
 
       // main setting menu
       mainList: [{
@@ -786,8 +786,8 @@ export default class UISkinYoutube extends Preact.Component {
   onUICmdSubtitles() {
     printLog('+onUICmdSubtitles, currMenu: ' + this.settingMenuUIData.currSubtitleId);
 
-    if (this.settingMenuUIData.currMenu !== 'subtitle_menu') {
-      this.settingMenuUIData.currMenu = 'subtitle_menu';
+    if (this.settingMenuUIData.currMenu !== 'subtitles_menu') {
+      this.settingMenuUIData.currMenu = 'subtitles_menu';
     } else {
       this.settingMenuUIData.currMenu = 'none';
     }
@@ -797,13 +797,13 @@ export default class UISkinYoutube extends Preact.Component {
   onUICmdSettings(e) {
     printLog('+onUICmdSettings, currMenu: ' + this.settingMenuUIData.currMenu);
 
-    if (this.settingMenuUIData.currMenu === 'subtitle_menu') {
-      this.settingMenuUIData.currMenu = 'main_menu';
+    if (this.settingMenuUIData.currMenu === 'subtitles_menu') {
+      this.settingMenuUIData.currMenu = 'settings_menu';
     } else {
       if (this.settingMenuUIData.currMenu !== 'none') {
         this.settingMenuUIData.currMenu = 'none';
       } else {
-        this.settingMenuUIData.currMenu = 'main_menu';
+        this.settingMenuUIData.currMenu = 'settings_menu';
       }
     }
 
@@ -1083,7 +1083,7 @@ export default class UISkinYoutube extends Preact.Component {
   onSubtitleMenuItemBlur(e) {
     if (e.relatedTarget) {
       if (e.relatedTarget === this.vopSubtitlesBtn) {
-        if (this.settingMenuUIData.currMenu === 'main_menu') {
+        if (this.settingMenuUIData.currMenu === 'settings_menu') {
           // do nothing
         }
       }
@@ -1094,7 +1094,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onQualityMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'main_menu';
+    this.settingMenuUIData.currMenu = 'settings_menu';
     this.updateUIState();
   }
 
@@ -1153,7 +1153,7 @@ export default class UISkinYoutube extends Preact.Component {
 
   onAudioTrackMenuBack(e) {
     printLog('+onAudioTrackMenuBack');
-    this.settingMenuUIData.currMenu = 'main_menu';
+    this.settingMenuUIData.currMenu = 'settings_menu';
     this.updateUIState();
   }
 
@@ -1171,7 +1171,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onFccMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'main_menu';
+    this.settingMenuUIData.currMenu = 'settings_menu';
     this.updateUIState();
   }
 
@@ -1224,7 +1224,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onXSpeedMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'main_menu';
+    this.settingMenuUIData.currMenu = 'settings_menu';
     this.updateUIState();
   }
 
