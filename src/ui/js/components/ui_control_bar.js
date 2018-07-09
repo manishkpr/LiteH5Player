@@ -2,7 +2,7 @@ import {
   h, Component
 } from 'preact';
 
-import UIProgressBar from './ui_progressbar';
+import UIProgressBar from './ui_progress_bar';
 import UIControls from './ui_controls';
 
 class UIControlBar extends Component {

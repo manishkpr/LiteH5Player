@@ -152,7 +152,7 @@ function getMediaInfo() {
     //url: 'http://10.2.68.64/2/dash/testpic_2s/video.mpd',
     //url: 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
-    url: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
     
@@ -165,7 +165,7 @@ function getMediaInfo() {
     //url: 'http://10.2.68.64/2/error/1/audio_48kbps.m3u8',
     //--Item: hls part
     //url: 'http://10.2.68.64/2/hls/av_muxed/test.m3u8',
-    //url: 'http://10.2.68.64/2/hls/videoonly01/test.m3u8',
+    url: 'http://10.2.68.64/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://10.2.68.64/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/cmaf.m3u8',
