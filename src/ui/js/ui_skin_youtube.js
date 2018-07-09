@@ -65,7 +65,11 @@ export default class UISkinYoutube extends Preact.Component {
     switch (this.playerState) {
       case 'idle':
         break;
+      case 'opening':
+        this.startBufferingUI();
+        break;
       case 'opened':
+        this.stopBufferingUI();
         break;
       case 'ended':
         this.removeAutohideAction();
@@ -658,6 +662,9 @@ export default class UISkinYoutube extends Preact.Component {
 
   ///////////////////////////////////////////////////////////////////
   onPlayerMouseEnter(e) {
+    if (this.playerState !== 'playing') {
+      return;
+    }
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
     //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
     this.removeAutohideAction();
@@ -666,6 +673,10 @@ export default class UISkinYoutube extends Preact.Component {
   onPlayerMouseMove(e) {
     let element_name = (e && e.target) ? e.target.className : 'null';
     //printLog('+onPlayerMouseMove, element: ' + element_name);
+    if (this.playerState !== 'playing') {
+      return;
+    }
+
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
       //printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
@@ -675,6 +686,10 @@ export default class UISkinYoutube extends Preact.Component {
 
   onPlayerMouseLeave(e) {
     //printLog('+onPlayerMouseLeave');
+    if (this.playerState !== 'playing') {
+      return;
+    }
+
     let paused = this.player.isPaused();
     let fullscreen = this.player.isFullscreen();
     if (!paused &&

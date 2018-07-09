@@ -685,6 +685,11 @@
   display: none;
 }
 
+/* state: opening */
+.vop-player-opening .vop-control-bar {
+  display: none;
+}
+
 /* state: opened */
 .vop-player-opened .vop-play-overlay-container {
   display: block;

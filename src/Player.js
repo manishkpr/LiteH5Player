@@ -68,7 +68,7 @@ function Player(idContainer) {
   let autoplayRequiresMuted_;
 
   // player state machine
-  let playerState_ = 'idle'; // 'idle', opened', 'playing', ended'
+  let playerState_ = 'idle'; // 'idle', 'opening', 'opened', 'playing', 'ended'
 
   // open completed flag
   let flagContentOpenComplete_ = false;
@@ -120,6 +120,8 @@ function Player(idContainer) {
     }
     flagPlayedOnce_ = false;
     flagContentOpenComplete_ = false;
+
+    updateState('opening');
   }
 
   function close() {

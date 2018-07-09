@@ -14,16 +14,16 @@ class UIControlBar extends Component {
 
   render() {
     let style = {};
-    // switch(this.main.playerState) {
-    //   case 'idle':
-    //   case 'opened':
-    //   break;
-    //   case 'playing':
-    //   case 'paused':
-    //   case 'ended':
-    //   style.display = 'block';
-    //   break;
-    // }
+    switch(this.main.playerState) {
+      case 'idle':
+      case 'opening':
+      case 'opened':
+      case 'playing':
+      case 'paused':
+      case 'ended':
+      //style.display = 'block';
+      break;
+    }
 
     return (
       <div className="vop-control-bar"
