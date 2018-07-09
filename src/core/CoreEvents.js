@@ -55,6 +55,8 @@ class CoreEvents {
     this.FOUND_PARSER = 'foundParser';
     this.STREAM_UPDATED = 'streamUpdated'; // Loaded a stream has a specified bitrate.
     this.THUMBNAIL_LOADING = 'thumbnailLoading';
+    this.TEXTTRACK_LOADING = 'textTrackLoading';
+    this.TEXTTRACK_LOADED = 'textTrackLoaded';
 
     // Begin hls.js, for compatible hls.js
     this.MANIFEST_LOADING = 'hlsManifestLoading';

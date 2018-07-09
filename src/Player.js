@@ -19,6 +19,7 @@ import ParserController from './controller/parser_controller';
 import LevelController from './controller/level_controller';
 import BufferController from './controller/buffer_controller';
 import StreamController from './controller/stream_controller';
+import TextTrackController from './controller/texttrack_controller';
 import ThumbnailController from './controller/thumbnail_controller';
 
 import VideoPlayer from './videoplayer';
@@ -57,6 +58,7 @@ function Player(idContainer) {
   let levelController_;
   let streamController_;
   let playbackController_;
+  let textTrackController_;
   let thumbnailController_;
   let fragmentLoader_;
 
@@ -105,6 +107,13 @@ function Player(idContainer) {
     eventBus_.trigger(Events.FINDING_PARSER, {
       url: mediaCfg.url
     });
+
+    // load subtitle url
+    if (mediaCfg.textTrackUrl) {
+      eventBus_.trigger(Events.TEXTTRACK_LOADING, {
+        url: mediaCfg.textTrackUrl
+      })
+    };
 
     // load webvtt thumbnail
     if (mediaCfg.thumbnailUrl) {
@@ -415,6 +424,7 @@ function Player(idContainer) {
     parserController_ = ParserController(context_).getInstance();
     levelController_ = LevelController(context_).getInstance();
     streamController_ = StreamController(context_).getInstance();
+    textTrackController_ = TextTrackController(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
 
     fragmentLoader_ = FragmentLoader(context_).create();

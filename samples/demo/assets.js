@@ -154,8 +154,7 @@ function getMediaInfo() {
     //--Item: pd
     //url: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.mp4',
-    //url: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
-    
+    url: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
     //url: 'http://10.2.68.64/2/dash/testpic_2s/V300_with_cc1_and_cc3/first200.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
@@ -168,7 +167,7 @@ function getMediaInfo() {
     //url: 'http://10.2.68.64/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://10.2.68.64/2/hls/cmaf01/video/180_250000/test.m3u8',
-    url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/cmaf.m3u8',
+    //url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/cmaf.m3u8',
     //url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/test1.m3u8',
     //url: 'http://10.2.68.64/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://10.2.68.64/2/hls/live/02/chunks-enabled-false.m3u8',
@@ -214,6 +213,7 @@ function getMediaInfo() {
     // },
 
     //
+    textTrackUrl: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-en.webvtt',
     thumbnailUrl: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.vtt'
     //thumbnailUrl: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.vtt'
     //thumbnailUrl: 'http://10.2.68.64/2/webvtt_thumbnail/multiple01/thumbnails.vtt'

@@ -16,8 +16,31 @@ function TextEngine() {
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
+  let textTrack_;
+
   function setup() {
+    eventBus_.on(Events.TEXTTRACK_LOADED, onTextTrackLoaded);
     //addTextTrack();
+  }
+
+  function onTextTrackLoaded(e) {
+    if (!textTrack_) {
+      textTrack_ = media_.addTextTrack('subtitles', 'English', 'eng');
+      textTrack_.mode = 'showing';
+    }
+
+    let cues = e.track;
+    for (let i = 0; i < cues.length; i++) {
+      let item = cues[i];
+      let data = {
+        start: item.start,
+        end: item.end,
+        text: item.data
+      }
+
+      let cue = createCue(data);
+      textTrack_.addCue(cue);
+    }
   }
 
   function createCue(data) {
@@ -37,17 +60,17 @@ function TextEngine() {
 
   function addTextTrack() {
     // method1
-    let textTrack = media_.addTextTrack('subtitles', 'English', 'eng');
-    textTrack.mode = 'showing';
-    for (let i = 0; i < 60; i++) {
-      let data = {
-        start: i,
-        end: i + 1,
-        text: 'current time: ' + i.toString()
-      }
-      let cue = createCue(data);
-      textTrack.addCue(cue);
-    }
+    // textTrack_ = media_.addTextTrack('subtitles', 'English', 'eng');
+    // textTrack_.mode = 'showing';
+    // for (let i = 0; i < 60; i++) {
+    //   let data = {
+    //     start: i,
+    //     end: i + 1,
+    //     text: 'current time: ' + i.toString()
+    //   }
+    //   let cue = createCue(data);
+    //   textTrack_.addCue(cue);
+    // }
 
     //// method2
     //let textTrack = document.createElement('track');
