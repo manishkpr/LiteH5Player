@@ -957,14 +957,18 @@ export default class UISkinYoutube extends Preact.Component {
 
   onCueStart(e) {
     this.cue = e.cue;
-    let text = '';
-    if (this.cue) {
+
+    let text;
+    if (this.cue && this.cue.text) {
       text = this.cue.text;
+    } else {
+      text = '';
     }
     this.vopCaptionOverlay.innerText = text;
   }
 
   onCueEnd(e) {
+    this.cue = null;
     this.vopCaptionOverlay.innerText = '';
   }
 

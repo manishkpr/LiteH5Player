@@ -48,10 +48,12 @@ function TextEngine() {
     cue.data = data;
     cue.onenter = function() {
       let data = this.data;
+      console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
       eventBus_.trigger(Events.CUE_START, {cue: data});
     };
-    cue.exit = function() {
+    cue.onexit = function() {
       let data = this.data;
+      console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);
       eventBus_.trigger(Events.CUE_END, {cue: data});
     };
 
