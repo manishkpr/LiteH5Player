@@ -23,6 +23,9 @@ import UIPlayOverlay from './components/ui_play_overlay';
 
 import UIToolTip from './components/ui_tooltip';
 
+// 1. Render all components from React.
+// 2. Just change css in 'html5-player-video' to control components visiblity.
+// 3. 
 export default class UISkinYoutube extends Preact.Component {
   constructor(props) {
     super(props);
