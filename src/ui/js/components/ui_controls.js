@@ -5,8 +5,8 @@ import {
 
 import UIPlayToggleButton from './ui_play_toggle_button';
 import UIVolumeToggleButton from './ui_volume_toggle_button';
-import UIVolumeBar from './ui_volumebar';
-import UITimeDisplay from './ui_time_display';
+import UIVolumeBar from './ui_volume_bar';
+import UITimeLabel from './ui_time_label';
 
 import UIPipToggleButton from './ui_pip_toggle_button';
 import UIAirplayToggleButton from './ui_airplay_toggle_button';
@@ -29,7 +29,7 @@ class UIControls extends Component {
           <UIPlayToggleButton main={this.main} />
           <UIVolumeToggleButton main={this.main} />
           <UIVolumeBar main={this.main} />
-          <UITimeDisplay main={this.main} />
+          <UITimeLabel main={this.main} />
         </div>
         <div className="vop-right-controls">
           <UIPipToggleButton main={this.main} />

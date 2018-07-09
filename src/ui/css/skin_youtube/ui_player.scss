@@ -225,6 +225,15 @@
     color: white;
     display: table-cell;
     vertical-align: middle;
+    padding-left: .2em;
+  }
+  .vop-time-text-live {
+    cursor: pointer
+  }
+  .vop-time-text-live::before {
+    color: #FF0000;
+    content: '●';
+    padding-right: .2em;
   }
   /************ End Time Display ************/
   /************ Begin volume bar ************/

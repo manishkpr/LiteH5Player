@@ -358,7 +358,7 @@ export default class UISkinYoutube extends Preact.Component {
 
     this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
 
-    this.vopTimeDisplay = document.querySelector('.vop-time-text');
+    this.vopTimeLabel = document.querySelector('.vop-time-text');
 
     this.uiLog = document.getElementById('idLog');
 
@@ -628,7 +628,13 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   updateTimeDisplay(position, duration) {
-    this.vopTimeDisplay.innerText = this.getTimeDisplay(position, duration);
+    let text = this.getTimeDisplay(position, duration);
+    if (text === 'Live') {
+      UITools.addClass(this.vopTimeLabel, 'vop-time-text-live');
+    } else {
+      UITools.removeClass(this.vopTimeLabel, 'vop-time-text-live');
+    }
+    this.vopTimeLabel.innerText = text;
   }
 
   ///////////////////////////////////////////////////////////////////////////

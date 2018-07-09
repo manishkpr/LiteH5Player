@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import Preact from 'preact';
 
-class UITimeDisplay extends Preact.Component {
+class UITimeLabel extends Preact.Component {
   constructor(props) {
     super(props);
 
@@ -33,6 +33,6 @@ class UITimeDisplay extends Preact.Component {
   }
 }
 
-export default UITimeDisplay;
+export default UITimeLabel;
 
 

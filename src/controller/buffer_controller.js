@@ -235,7 +235,7 @@ function BufferController() {
     }
 
     if (mediaSource_ && mediaSource_.duration !== streamInfo_.duration) {
-      mediaSource_.duration = streamInfo_.duration;
+      //mediaSource_.duration = streamInfo_.duration;
     }
   }
 
