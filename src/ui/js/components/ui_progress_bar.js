@@ -82,7 +82,7 @@ class UIProgressBar extends Component {
   }
 
   onMediaTimeupdated() {
-    //printLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
+    //myPrintLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
 
     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
     // in this situation, we won't update progress bar ui.
@@ -98,7 +98,7 @@ class UIProgressBar extends Component {
   }
 
   onMediaSeeked() {
-    printLog('+onMediaSeeked, pos: ' + this.player.getPosition() +
+    myPrintLog('+onMediaSeeked, pos: ' + this.player.getPosition() +
       ', paused: ' + this.player.isPaused() +
       ', ended: ' + this.player.isEnded());
 
@@ -113,7 +113,7 @@ class UIProgressBar extends Component {
   onAdTimeUpdate() {
     let position = this.player.getPosition();
     let duration = this.player.getDuration();
-    //printLog('ad position: ' + position + ', duration: ' + duration);
+    //myPrintLog('ad position: ' + position + ', duration: ' + duration);
     this.updateProgressBarUI(position, duration);
   }
 
@@ -143,7 +143,7 @@ class UIProgressBar extends Component {
   }
 
   onProgressBarMouseMove(e) {
-    //printLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
+    //myPrintLog('+onProgressBarMouseMove, clientX: ' + e.clientX + ', clientY: ' + e.clientY);
     e.stopPropagation();
     this.main.removeAutohideAction();
 
@@ -164,7 +164,7 @@ class UIProgressBar extends Component {
 
   onProgressBarMouseLeave(e) {
     this.main.onProgressBarMouseLeave(e);
-    //printLog('+onProgressBarMouseLeave');
+    //myPrintLog('+onProgressBarMouseLeave');
   }
 
   captureProgressBarMouseEvents() {
@@ -181,7 +181,7 @@ class UIProgressBar extends Component {
   }
 
   docProgressBarMousemove(e) {
-    printLog('+docProgressBarMousemove');
+    myPrintLog('+docProgressBarMousemove');
 
     let movePos = this.getProgressMovePosition(e);
     if (this.progressBarContext.movePos === movePos) {
@@ -201,7 +201,7 @@ class UIProgressBar extends Component {
   }
 
   docProgressBarMouseup(e) {
-    printLog('+docProgressBarMouseup');
+    myPrintLog('+docProgressBarMouseup');
     e.preventDefault();
     this.releaseProgressBarMouseEvents();
 
@@ -235,7 +235,7 @@ class UIProgressBar extends Component {
   }
 
   doEnterThumbnailMode() {
-    printLog('+doEnterThumbnailMode');
+    myPrintLog('+doEnterThumbnailMode');
     if (!this.flagThumbnailMode) {
       // need to pause content first before starting a seek operation.
       if (!this.progressBarContext.pausedBeforeMousedown) {
@@ -283,7 +283,7 @@ class UIProgressBar extends Component {
     if (isLive) {
       let seekable = this.player.getSeekableRange();
       let buffered = this.player.getBufferedRanges();
-      printLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
+      myPrintLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
     } else {
       let uiBufferedPos;
       if (this.progressBarContext) {
@@ -336,15 +336,15 @@ class UIProgressBar extends Component {
 
     let movePos = 0;
     if (this.progressBarContext) {
-      //printLog('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
+      //myPrintLog('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
     }
-    //printLog('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
+    //myPrintLog('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
     if (this.progressBarContext) {
       movePos = this.progressBarContext.movePos;
     } else if (this.progressBarMoveContext) {
       movePos = this.progressBarMoveContext.movePos;
     }
-    //printLog('test0703, movePost: ' + movePos);
+    //myPrintLog('test0703, movePost: ' + movePos);
     if (movePos <= position) {
       this.vopHoverProgress.style.transform = 'scaleX(0)';
     } else {

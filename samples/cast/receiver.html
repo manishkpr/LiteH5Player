@@ -44,28 +44,23 @@ The overlay layer holds:
   <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 
   <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"></script>
+  
+  <link rel="stylesheet" href="../../dist/css/liteH5Player.debug.css"></head>
+  <link rel="stylesheet" href="../demo/main.css"/>
   <script type="text/javascript" src="../../dist/js/liteH5Player.debug.js"></script>
-
-  <link rel="stylesheet" href="./receiver/main.css"/>
   <script type="text/javascript" src="./receiver/main.js"></script>
 </head>
 
-<body style="margin: 0">
-    <div id="player" class="player">
-        <div style="position:absolute; z-index:5;">
-          <h2>Chromecast receiver by Joseph</h2>
-          <button onclick="onBtnTest1()">Test1</button>
-        </div>
-        <div class="controls">
-          <span class="controls-play-pause"></span>
-          <span class="controls-cur-time"></span>
-          <span class="controls-total-time"></span>
-          <div class="controls-progress">
-            <div class="controls-progress-inner progressBar"></div>
-            <div class="controls-progress-thumb"></div>
-          </div>
-        </div>
+<body>
+  <h2>LiteH5Player Receiver</h2>
+  <div id="player-container">
+  </div>
+
+  <div>
+    <h3>Log Window</h3>
+    <div id="idLog">
     </div>
+  </div>
 </body>
 </html>
 

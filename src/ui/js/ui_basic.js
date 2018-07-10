@@ -1,10 +1,8 @@
 
-import { h } from 'preact';
-import Preact from 'preact';
-
+import { h, Component } from 'preact';
 import "../css/ui_basic.scss";
 
-export default class UIBasic extends Preact.Component {
+export default class UIBasic extends Component {
   constructor(props) {
     super(props);
   }

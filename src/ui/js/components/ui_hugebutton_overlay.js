@@ -27,7 +27,7 @@ class UIHugeButtonOverlay extends Preact.Component {
   }
 
   render() {
-    //printLog('UIHugeButtonOverlay, this.main.playerState: ' + this.main.playerState);
+    //myPrintLog('UIHugeButtonOverlay, this.main.playerState: ' + this.main.playerState);
     
     let style = {};
     switch(this.main.playerState) {

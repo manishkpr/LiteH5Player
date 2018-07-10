@@ -6,13 +6,18 @@ var mediaCfg_ = getMediaInfo();
 //
 
 var omPlayer = null;
-var uiEngine = null;
+var omUIEngine = null;
 var omCastSender = null;
 
 const LOG_DEBUG = undefined;
 const LOG_INFO = 1;
 const LOG_WARN = 2;
 const LOG_ERROR = 3;
+
+function printLogUI(msg) {
+  var v = document.getElementById('idLog');
+  v.innerHTML = (v.innerHTML + '<br/>' + msg);
+}
 
 function printLog(msg, level) {
   if (!level || level === LOG_DEBUG) {
@@ -24,10 +29,7 @@ function printLog(msg, level) {
   printLogUI(msg);
 }
 
-function printLogUI(msg) {
-  var v = document.getElementById('idLog');
-  v.innerHTML = (v.innerHTML + '<br/>' + msg);
-}
+
 
 /////////////////////////////////////////////////////////////////////////
 // Title: UI Command
@@ -40,7 +42,7 @@ function onBtnUninit() {
 }
 
 function onBtnOpen() {
-  //uiEngine.open(mediaCfg_);
+  //omUIEngine.open(mediaCfg_);
   omPlayer.open(mediaCfg_);
 }
 
@@ -62,11 +64,11 @@ function onBtnPlay() {
 }
 
 function onBtnManualSchedule() {
-  uiEngine.onBtnManualSchedule();
+  omUIEngine.onBtnManualSchedule();
 }
 
 function onBtnInitAD() {
-  uiEngine.playerRequestAds();
+  omUIEngine.playerRequestAds();
 }
 
 function onBtnDelAll() {}
@@ -76,13 +78,13 @@ function onBtnStop() {}
 function onBtnPlayAd() {}
 
 function onBtnTest() {
-  //uiEngine.test();
+  //omUIEngine.test();
   omPlayer.test();
 }
 
 function onBtnTest2() {
   printLog('--onBtnTest2--');
-  uiEngine.player_.setAudioPlaybackSpeed(2);
+  omUIEngine.player_.setAudioPlaybackSpeed(2);
 
   //this.player_.resize(1024, 768);
   //stopBufferingUI();
@@ -103,16 +105,16 @@ function onBtnTest2() {
 }
 
 function onBtnInstallSkin() {
-  uiEngine.installSkin();
+  omUIEngine.installSkin();
 }
 
 function onBtnUninstallSkin() {
-  uiEngine.uninstallSkin();
+  omUIEngine.uninstallSkin();
 }
 
 function onBtnSeek() {
   var time = document.getElementById('seekedTime').value;
-  uiEngine.player_.setPosition(time);
+  omUIEngine.player_.setPosition(time);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -149,15 +151,13 @@ function onUICmdCastAdd() {
   omCastSender.new_add();
 }
 
-function onUICmdCastAddPD() {}
-
 function onUICmdCastPlay() {
   omCastSender.new_play();
 }
 
-function onUICmdCastPause() {}
-
-function onUICmdCastPlayAd() {}
+function onUICmdCastPause() {
+  omCastSender.new_pause();
+}
 
 function onUICmdCastTest() {
   omCastSender.new_test();
@@ -179,13 +179,13 @@ window.onload = function() {
   omPlayer = new oldmtn.Player('player-container');
   omPlayer.init(cfg_);
 
-  uiEngine = new oldmtn.UIEngine(omPlayer);
+  omUIEngine = new oldmtn.UIEngine(omPlayer);
 
   omCastSender = new oldmtn.CastSender('E19ACDB8');
 
-  // Init with UIEngine
-  // uiEngine = new oldmtn.UIEngine('player-container');
-  // uiEngine.init(cfg_);
+  // Init with omUIEngine
+  // omUIEngine = new oldmtn.omUIEngine('player-container');
+  // omUIEngine.init(cfg_);
 
   //oldmtn.test_subtitle_menu();
 };

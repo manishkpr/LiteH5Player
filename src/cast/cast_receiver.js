@@ -1,10 +1,15 @@
 'use strict';
 
 import CastUtils from './cast_utils';
+import UITools from '../ui/js/ui_tools';
+
+function printLog(msg) {
+  console.log('CastReceiver: ' + msg);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 function CastReceiver(elementId) {
-  console.log('receiver, constructor');
+  printLog('receiver, constructor');
 
   let elementId_ = elementId;
   let mediaElement_ = null;
@@ -23,6 +28,7 @@ function CastReceiver(elementId) {
   let isConnected_ = null;
 
   let omPlayer_;
+  let uiEngine_;
 
   function setup() {
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
@@ -35,14 +41,14 @@ function CastReceiver(elementId) {
     receiverManager_.onVisibilityChanged = onVisibilityChanged_;
 
     // custom message bus
-    console.log('CastUtils.GENERIC_MESSAGE_NAMESPACE: ' + CastUtils.GENERIC_MESSAGE_NAMESPACE);
-    console.log('CastUtils.OLDMTN_MESSAGE_NAMESPACE: ' + CastUtils.OLDMTN_MESSAGE_NAMESPACE);
+    printLog('CastUtils.GENERIC_MESSAGE_NAMESPACE: ' + CastUtils.GENERIC_MESSAGE_NAMESPACE);
+    printLog('CastUtils.OLDMTN_MESSAGE_NAMESPACE: ' + CastUtils.OLDMTN_MESSAGE_NAMESPACE);
 
     oldmtnBus_ = receiverManager_.getCastMessageBus(
       CastUtils.OLDMTN_MESSAGE_NAMESPACE);
     oldmtnBus_.onMessage = onOldmtnMessage_;
 
-    omPlayer_ = oldmtn.Player(elementId_);
+    omPlayer_ = new oldmtn.Player(elementId_);
 
     // // Init Video Element
     // let v = document.getElementById(elementId_);
@@ -95,11 +101,11 @@ function CastReceiver(elementId) {
   }
 
   function onReady_() {
-    console.log('onReady');
+    printLog('onReady');
   }
 
   function onSenderDisconnected_(event) {
-    console.log('onSenderDisconnected');
+    printLog('onSenderDisconnected');
     // When the last or only sender is connected to a receiver,
     // tapping Disconnect stops the app running on the receiver.
     if (receiverManager_.getSenders().length === 0 &&
@@ -113,7 +119,7 @@ function CastReceiver(elementId) {
     // var curTime = mediaElement_.currentTime;
     // var totalTime = mediaElement_.duration;
 
-    // //console.log('onTimeupdate, ' + curTime + '/' + totalTime);
+    // //printLog('onTimeupdate, ' + curTime + '/' + totalTime);
 
     // // update local
     // evHandlers['timeupdate'](curTime, totalTime);
@@ -129,15 +135,15 @@ function CastReceiver(elementId) {
   }
 
   function onSeekStart_() {
-    console.log('onSeekStart');
+    printLog('onSeekStart');
   }
 
   function onSeekEnd_() {
-    console.log('onSeekEnd');
+    printLog('onSeekEnd');
   }
 
   function onVisibilityChanged_(event) {
-    console.log('onVisibilityChanged');
+    printLog('onVisibilityChanged');
     // if (!event.isVisible) {
     //     mediaElement_.pause();
     //     mediaManager_.broadcastStatus(false);
@@ -145,16 +151,16 @@ function CastReceiver(elementId) {
   }
 
   function onGenericMessage_(event) {
-    console.log('+onGenericMessage_, type: ' + event.type + ', senderId: ' + event.senderId);
+    printLog('+onGenericMessage_, type: ' + event.type + ', senderId: ' + event.senderId);
     return;
 
-    // console.log('type: ' + event.data.type);
-    // console.log('requestId: ' + event.data.requestId);
-    // console.log('namespace: ' + event.namespace);
-    // console.log('senderId: ' + event.senderId);
+    // printLog('type: ' + event.data.type);
+    // printLog('requestId: ' + event.data.requestId);
+    // printLog('namespace: ' + event.namespace);
+    // printLog('senderId: ' + event.senderId);
 
     // var message = CastUtils.deserialize(event.data);
-    // console.log('+onGenericMessage_: ' + message['type']);
+    // printLog('+onGenericMessage_: ' + message['type']);
 
     // TODO(ismena): error message on duplicate request id from the same sender
     //switch (message['type']) {
@@ -200,18 +206,16 @@ function CastReceiver(elementId) {
 
   function onOldmtnMessage_(event) {
     let message = CastUtils.deserialize(event.data);
-    console.log('onOldmtnMessage_, event.data: ' + event.data);
-    console.log('onOldmtnMessage_, message: ' + message);
+    printLog('onOldmtnMessage_, event.data: ' + event.data);
+    printLog('onOldmtnMessage_, message: ' + message);
 
     if (message.cmdType === 'init') {
-      console.log('poster: ' + message.poster);
+      printLog('poster: ' + message.poster);
       omPlayer_.init(message);
     } else if (message.cmdType === 'open') {
       omPlayer_.open(message);
     } else if (message.cmdType === 'add') {
       omPlayer_.manualSchedule();
-    } else if (message.cmdType === 'addPD') {
-      omPlayer_.addPD();
     } else if (message.cmdType === 'play') {
       omPlayer_.play();
     } else if (message.cmdType === 'pause') {
@@ -221,7 +225,11 @@ function CastReceiver(elementId) {
     } else if (message.cmdType === 'setPosition') {
       omPlayer_.setPosition(message.time);
     } else if (message.cmdType === 'test') {
-      omPlayer_.test();
+      //omPlayer_.test();
+      uiEngine_ = new oldmtn.UIEngine(omPlayer_);
+      uiEngine_.installSkin();
+      let v = document.querySelector('.html5-video-player');
+      UITools.removeClass(v, 'vop-autohide');
     }
     //oldmtnBus_.broadcast("abcd1234");
   }
@@ -243,7 +251,7 @@ function CastReceiver(elementId) {
   ////////////////////////////////////////////////////////////////////////////////////////
   //
   function onLoad_(event) {
-    console.log('onLoad_');
+    printLog('onLoad_');
 
     if (player_) {
       player_.unload();
@@ -263,20 +271,18 @@ function CastReceiver(elementId) {
   };
 
   function onGetStatus_(event) {
-    console.log('--onGetStatus_--', event);
+    printLog('onGetStatus_', event);
   }
 
   function onMetadataLoaded_(info) {
-    console.log('onMetadataLoaded');
-
     var totalTime = mediaElement_.duration;
-    console.log('total time: ' + totalTime);
 
+    printLog('onMetadataLoaded, ' + 'total time: ' + totalTime);
     onMetadataLoadedOrig_(info);
   }
 
   function onLoadMetadataError_(event) {
-    console.log('onLoadMetadataError_');
+    printLog('onLoadMetadataError_');
     onLoadMetadataErrorOrig_(event);
   }
 

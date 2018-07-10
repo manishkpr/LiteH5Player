@@ -32,7 +32,7 @@ class UIFullscreenToggleButton extends Preact.Component {
   }
 
   onUICmdFullscreen() {
-    printLog('+onBtnFullscreen');
+    myPrintLog('+onBtnFullscreen');
     if (this.player.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
@@ -47,7 +47,7 @@ class UIFullscreenToggleButton extends Preact.Component {
 
   onFullscreenChanged() {
     let flagIsFullscreen = this.player.isFullscreen();
-    printLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
+    myPrintLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
 
     if (flagIsFullscreen) {
       UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');

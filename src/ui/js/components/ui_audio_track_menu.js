@@ -22,7 +22,7 @@ class UIAudioTrackMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIAudioTrackMenu: ' + this.main.settingMenuUIData.currMenu);
+    //myPrintLog('+render, UIAudioTrackMenu: ' + this.main.settingMenuUIData.currMenu);
 
     if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
       const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>

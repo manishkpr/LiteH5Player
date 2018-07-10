@@ -27,7 +27,7 @@ class UIToolTip extends Component {
   }
 
   render() {
-    //printLog('UIToolTip, render');
+    //myPrintLog('UIToolTip, render');
 
     let oldTooltipText = '00:00';
     let vopTooltipText = document.querySelector('.vop-tooltip-text');

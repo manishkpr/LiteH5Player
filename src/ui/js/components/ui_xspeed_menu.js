@@ -21,7 +21,7 @@ class UIXSpeedMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
+    //myPrintLog('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
 
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>

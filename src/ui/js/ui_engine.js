@@ -1,6 +1,11 @@
 import { h, render } from 'preact';
-
 import UISkinYoutube from './ui_skin_youtube';
+
+window.myPrintLog = function (msg, level) {
+  if (printLog) {
+    printLog(msg, level);
+  }
+};
 
 class UIEngine {
   constructor(player) {
@@ -18,7 +23,7 @@ class UIEngine {
     }
 
     let root;
-    this.uiPlayer_ = render(<UISkinYoutube player={this.player}/>, this.skinContainerYb_, root);
+    this.uiPlayer_ = render(<UISkinYoutube player={this.player} cbLog={this.cbLog} />, this.skinContainerYb_, root);
   }
 
   uninstallSkin() {

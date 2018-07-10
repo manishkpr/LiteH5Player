@@ -21,7 +21,7 @@ class UIFccMenu extends Preact.Component {
   }
 
   render() {
-    //printLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
+    //myPrintLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
 
     if (this.main.settingMenuUIData.currMenu === 'fcc_menu') {
       const menuitems = this.main.settingMenuUIData.fccPropertyList.map((item, index) =>

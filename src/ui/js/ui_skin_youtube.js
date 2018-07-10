@@ -38,11 +38,11 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   componentWillMount() {
-    printLog('UISkinYoutube, +componentWillMount');
+    myPrintLog('UISkinYoutube, +componentWillMount');
   }
 
   componentDidMount() {
-    printLog('UISkinYoutube, +componentDidMount');
+    myPrintLog('UISkinYoutube, +componentDidMount');
 
     this.initUIElements();
     this.initUIElementsStyles();
@@ -53,7 +53,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   componentWillUnmount() {
-    printLog('+componentWillUnmount');
+    myPrintLog('+componentWillUnmount');
     this.uninitUIEventListeners();
     this.uninitPlayerListeners();
 
@@ -483,7 +483,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   playerClose() {
-    printLog('+onBtnClose');
+    myPrintLog('+onBtnClose');
     this.player.close();
     this.updateUIStateMachine('closed');
   }
@@ -528,7 +528,7 @@ export default class UISkinYoutube extends Preact.Component {
       //h5Player.style.marginLeft = h5Player.style.marginRight = 'auto';
       this.player.resize(dstWidth, dstHeight);
 
-      printLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
+      myPrintLog(('ResizeSensor, dstWidth: ' + dstWidth + ', dstHeight: ' + dstHeight));
       let position = this.player.getPosition();
       let duration = this.player.getDuration();
       //this.updateProgressBarUI(position, duration);
@@ -538,7 +538,7 @@ export default class UISkinYoutube extends Preact.Component {
   // This function is mainly focus on:
   // 1. Record the player state, and refect it to UI
   updateUIStateMachine(state) {
-    printLog('updateUIStateMachine, state: ' + state);
+    myPrintLog('updateUIStateMachine, state: ' + state);
 
     //
     UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState);
@@ -571,14 +571,14 @@ export default class UISkinYoutube extends Preact.Component {
         tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
       }
 
-      //printLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
+      //myPrintLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
 
       return tooltipLeft_RelativeToVideo;
     }
 
     if (thumbnail) {
       UITools.addClass(this.vopTooltip, 'vop-tooltip-preview');
-      //printLog('thumbnail info: ', thumbnail);
+      //myPrintLog('thumbnail info: ', thumbnail);
       let isSprite = (thumbnail.data.w && thumbnail.data.h);
       if (isSprite) {
         this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
@@ -675,26 +675,26 @@ export default class UISkinYoutube extends Preact.Component {
       return;
     }
     // When mouse enter any elements in 'vop-skin-youtube', it needs to remove the 'vop-autohide' attribute.
-    //printLog('+onPlayerMouseEnter, element: ' + e.target.className);
+    //myPrintLog('+onPlayerMouseEnter, element: ' + e.target.className);
     this.removeAutohideAction();
   }
 
   onPlayerMouseMove(e) {
     let element_name = (e && e.target) ? e.target.className : 'null';
-    //printLog('+onPlayerMouseMove, element: ' + element_name);
+    //myPrintLog('+onPlayerMouseMove, element: ' + element_name);
     if (this.playerState !== 'playing') {
       return;
     }
 
     this.removeAutohideAction();
     this.timerHideControlBar = setTimeout(function() {
-      //printLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
+      //myPrintLog('Call onPlayerMouseLeave at timerHideControlBar callback.');
       this.onPlayerMouseLeave();
     }.bind(this), 3000);
   }
 
   onPlayerMouseLeave(e) {
-    //printLog('+onPlayerMouseLeave');
+    //myPrintLog('+onPlayerMouseLeave');
     if (this.playerState !== 'playing') {
       return;
     }
@@ -710,7 +710,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onPlayerMouseDown(e) {
-    //printLog('+onPlayerMouseDown');
+    //myPrintLog('+onPlayerMouseDown');
     // If playerState is 'opened', let ui_play_overlay components handle play action.
     if (this.playerState === 'opened') {
       return;
@@ -720,7 +720,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onPlayerMouseUp(e) {
-    //printLog('+onPlayerMouseUp');
+    //myPrintLog('+onPlayerMouseUp');
     if (this.flagPlayerMouseDown) {
       this.flagPlayerMouseDown = false;
       this.onUICmdPlay();
@@ -807,7 +807,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onUICmdSubtitles() {
-    printLog('+onUICmdSubtitles, currMenu: ' + this.settingMenuUIData.currSubtitleId);
+    myPrintLog('+onUICmdSubtitles, currMenu: ' + this.settingMenuUIData.currSubtitleId);
 
     if (this.settingMenuUIData.currMenu !== 'subtitles_menu') {
       this.settingMenuUIData.currMenu = 'subtitles_menu';
@@ -818,7 +818,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onUICmdSettings(e) {
-    printLog('+onUICmdSettings, currMenu: ' + this.settingMenuUIData.currMenu);
+    myPrintLog('+onUICmdSettings, currMenu: ' + this.settingMenuUIData.currMenu);
 
     if (this.settingMenuUIData.currMenu === 'subtitles_menu') {
       this.settingMenuUIData.currMenu = 'settings_menu';
@@ -900,7 +900,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onProgressBarMouseDown(e) {
-    printLog('+onProgressBarMouseDown');
+    myPrintLog('+onProgressBarMouseDown');
   }
 
   onProgressBarMouseMove(e, movePos) {
@@ -979,7 +979,7 @@ export default class UISkinYoutube extends Preact.Component {
   onAdStarted(e) {
     // BD
     let videos = document.getElementsByTagName('video');
-    printLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
+    myPrintLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
     // ED
 
     // Hide all popup menu.
@@ -1013,7 +1013,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAdComplete() {
-    printLog('onAdComplete, linear: ' + this.flagIsLinearAd);
+    myPrintLog('onAdComplete, linear: ' + this.flagIsLinearAd);
     this.flagAdStarted = false;
     this.updateUIState();
 
@@ -1041,7 +1041,7 @@ export default class UISkinYoutube extends Preact.Component {
   /////////////////////////////////////////////////////////////////////////
   // Title: Sub Components Callbacks
   onQualityMenuClick(e) {
-    printLog('+onQualityMenuClick: ' + e.target.innerText);
+    myPrintLog('+onQualityMenuClick: ' + e.target.innerText);
     this.settingMenuUIData.currMenu = 'quality_menu';
     this.updateUIState();
   }
@@ -1067,7 +1067,7 @@ export default class UISkinYoutube extends Preact.Component {
       text = ', text: ' + e.relatedTarget.innerText;
     }
 
-    printLog('+onMainMenuItemBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
+    myPrintLog('+onMainMenuItemBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
 
     let prevFocus = e.target;
     let nextFocus = e.relatedTarget;
@@ -1089,7 +1089,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onSubtitleMenuBack(e) {
-    printLog('+onSubtitleMenuBack');
+    myPrintLog('+onSubtitleMenuBack');
     this.settingMenuUIData.currMenu = 'none';
     this.updateUIState();
   }
@@ -1126,12 +1126,12 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onMainMenuItemClick(e) {
-    printLog('+onMainMenuItemClick, ' +
+    myPrintLog('+onMainMenuItemClick, ' +
       ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
     let nextFocus = e.currentTarget;
 
-    printLog('id: ' + nextFocus.dataset.id);
+    myPrintLog('id: ' + nextFocus.dataset.id);
     switch (nextFocus.dataset.id) {
       case '1':
         this.onQualityMenuClick(e);
@@ -1150,7 +1150,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onQualityMenuItemClick(e) {
-    printLog('+onQualityMenuItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
+    myPrintLog('+onQualityMenuItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
       ', text: ' + e.target.innerText);
     let nextFocus = e.currentTarget;
 
@@ -1159,10 +1159,10 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onQualityMenuItemBlur(e) {
-    printLog('+onQualityMenuItemBlur');
+    myPrintLog('+onQualityMenuItemBlur');
     let nextFocus = e.relatedTarget;
     if (nextFocus) {
-      printLog('className: ' + nextFocus.className);
+      myPrintLog('className: ' + nextFocus.className);
       if (nextFocus.className.indexOf('vop-panel-title') !== -1 ||
         nextFocus.className.indexOf('vop-menuitem') !== -1 ||
         nextFocus.className.indexOf('vop-settings-button') !== -1) {
@@ -1179,13 +1179,13 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAudioTrackMenuBack(e) {
-    printLog('+onAudioTrackMenuBack');
+    myPrintLog('+onAudioTrackMenuBack');
     this.settingMenuUIData.currMenu = 'settings_menu';
     this.updateUIState();
   }
 
   onAudioTrackMenuItemClick(e) {
-    printLog('+onAudioTrackMenuItemClick');
+    myPrintLog('+onAudioTrackMenuItemClick');
     let nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currAudioTrackId = nextFocus.dataset.id;
@@ -1193,7 +1193,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onAudioTrackMenuItemBlur(e) {
-    printLog('+onAudioTrackMenuItemBlur');
+    myPrintLog('+onAudioTrackMenuItemBlur');
     this.onQualityMenuItemBlur(e);
   }
 
@@ -1203,7 +1203,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onFccMenuItemClick(e) {
-    printLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
+    myPrintLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
     this.settingMenuUIData.currMenu = 'fcc_property_menu';
     this.settingMenuUIData.currFccPropertyName = e.currentTarget.dataset.id;
@@ -1218,7 +1218,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onFccPropertyMenuItemClick(e) {
-    printLog('+onFccPropertyMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
+    myPrintLog('+onFccPropertyMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
     for (let i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
       let fccProperty = this.settingMenuUIData.fccPropertyList[i];
@@ -1256,7 +1256,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onXSpeedMenuItemClick(e) {
-    printLog('+onXSpeedMenuItemClick');
+    myPrintLog('+onXSpeedMenuItemClick');
     let nextFocus = e.currentTarget;
 
     this.settingMenuUIData.currSpeedId = nextFocus.dataset.id;
@@ -1280,7 +1280,7 @@ export default class UISkinYoutube extends Preact.Component {
   }
 
   onXSpeedMenuItemBlur(e) {
-    printLog('+onXSpeedMenuItemBlur');
+    myPrintLog('+onXSpeedMenuItemBlur');
     this.onQualityMenuItemBlur(e);
   }
 

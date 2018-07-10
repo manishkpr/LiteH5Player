@@ -25,7 +25,7 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
-    printLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
+    myPrintLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
 
     if (this.main.settingMenuUIData.currMenu === 'quality_menu') {
       const menuitems = this.main.settingMenuUIData.qualityList.map((item, index) =>

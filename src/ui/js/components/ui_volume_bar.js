@@ -84,7 +84,7 @@ class UIVolumeBar extends Preact.Component {
   }
 
   onVolumeSliderMouseDown(e) {
-    printLog('+onVolumeSliderMouseDown');
+    myPrintLog('+onVolumeSliderMouseDown');
     this.captureVolumeSliderMouseEvents();
     e.preventDefault();
     e.stopPropagation();
@@ -115,7 +115,7 @@ class UIVolumeBar extends Preact.Component {
   }
 
   docVolumeSliderMouseup(e) {
-    printLog('+docVolumeSliderMouseup');
+    myPrintLog('+docVolumeSliderMouseup');
     this.releaseVolumeSliderMouseEvents();
     e.preventDefault();
 
