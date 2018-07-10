@@ -243,8 +243,6 @@ function CastSender(receiverAppId) {
     castSession.endSession(true);
   }
 
-  function stopCast() {}
-
   function loadMedia(url, type) {
     console.log('+loadMedia');
 
@@ -269,15 +267,16 @@ function CastSender(receiverAppId) {
   }
 
   function onMessageReceived_(namespace, serialized) {
-    console.log('receive msg, namespace: ' + namespace);
-    console.log('receive msg, serialized: ' + serialized);
+    let message = CastUtils.deserialize(serialized);
+    let e = message.data;
 
-    var message = CastUtils.deserialize(serialized);
+    console.log('receive msg, namespace: ' + namespace + ', serialized: ' + serialized + ', type: ' + message.type);
     switch (message.type) {
+      case Events.STATE_CHANGE:
+      //eventBus_.trigger(Events.STATE_CHANGE, e);
+      break;
       case 'timeupdate':
-        {
-          console.log(`timeupdate: curTime: ${message.data.curTime}/${message.data.totalTime}`);
-        }
+        console.log(`timeupdate: curTime: ${message.data.curTime}/${message.data.totalTime}`);
         break;
       default:
         break;
@@ -368,10 +367,9 @@ function CastSender(receiverAppId) {
     new_pause: new_pause,
     new_setPosition: new_setPosition,
     new_test: new_test,
-    // old left
     requestSession: requestSession,
     endSession: endSession,
-    stopCast: stopCast,
+    // old left
     loadMedia: loadMedia,
     stop: stop,
     play: play,

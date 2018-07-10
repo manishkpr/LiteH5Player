@@ -3,6 +3,9 @@
 import CastUtils from './cast_utils';
 import UITools from '../ui/js/ui_tools';
 
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 function printLog(msg) {
   console.log('CastReceiver: ' + msg);
 }
@@ -48,7 +51,7 @@ function CastReceiver(elementId) {
       CastUtils.OLDMTN_MESSAGE_NAMESPACE);
     oldmtnBus_.onMessage = onOldmtnMessage_;
 
-    omPlayer_ = new oldmtn.Player(elementId_);
+    omPlayer_ = initPlayer();
 
     // // Init Video Element
     // let v = document.getElementById(elementId_);
@@ -87,6 +90,22 @@ function CastReceiver(elementId) {
     // onErrorOrig_ = mediaManager_.onError.bind(mediaManager_);
     // mediaManager_.onError = onError_;
   }
+
+  function initPlayer() {
+    let player = new oldmtn.Player(elementId_);
+    player.on(Events.STATE_CHANGE, onStateChange);
+
+    return player;
+  }
+
+  function onStateChange(e) {
+    let newState = e.newState;
+    sendMessage_({
+        type: Events.STATE_CHANGE,
+        data: e
+    }, oldmtnBus_);
+  }
+
   //
   function getMediaElement() {
     return mediaElement_;
@@ -225,11 +244,11 @@ function CastReceiver(elementId) {
     } else if (message.cmdType === 'setPosition') {
       omPlayer_.setPosition(message.time);
     } else if (message.cmdType === 'test') {
-      //omPlayer_.test();
-      uiEngine_ = new oldmtn.UIEngine(omPlayer_);
-      uiEngine_.installSkin();
-      let v = document.querySelector('.html5-video-player');
-      UITools.removeClass(v, 'vop-autohide');
+      omPlayer_.test();
+      // uiEngine_ = new oldmtn.UIEngine(omPlayer_);
+      // uiEngine_.installSkin();
+      // let v = document.querySelector('.html5-video-player');
+      // UITools.removeClass(v, 'vop-autohide');
     }
     //oldmtnBus_.broadcast("abcd1234");
   }
@@ -240,7 +259,7 @@ function CastReceiver(elementId) {
       return;
     }
 
-    var serialized = CastUtils.serialize(message);
+    let serialized = CastUtils.serialize(message);
     if (opt_senderId) {
       bus.getCastChannel(opt_senderId).send(serialized);
     } else {

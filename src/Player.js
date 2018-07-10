@@ -360,10 +360,12 @@ function Player(idContainer) {
       return undefined;
     }
   }
-
   // chromecast
   function castVideo() {
     castSender_.requestSession();
+  }
+  function castStop() {
+    castSender_.stopSession();
   }
   function castInit(cfg) {
     castSender_.new_init(cfg);
@@ -702,6 +704,7 @@ function Player(idContainer) {
     getThumbnail: getThumbnail,
     // chromecast
     castVideo: castVideo,
+    castStop: castStop,
     castInit: castInit,
     castOpen: castOpen,
     castAdd: castAdd,

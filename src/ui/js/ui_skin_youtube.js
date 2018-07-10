@@ -20,6 +20,8 @@ import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 
+import UIChromecastOverlay from './components/ui_chromecast_overlay';
+
 import UIToolTip from './components/ui_tooltip';
 
 // 1. Render all components from React.
@@ -86,6 +88,7 @@ class UISkinYoutube extends Component {
 
     return (
       <div className="vop-skin-youtube">
+        <UIChromecastOverlay main={this} />
         <UITitleBar main={this} />
         <UILogoOverlay />
         <UIPopupMenu main={this} />
