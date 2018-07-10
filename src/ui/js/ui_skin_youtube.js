@@ -1,7 +1,6 @@
 import {
-  h
+  h, Component
 } from 'preact';
-import Preact from 'preact';
 
 import ResizeSensor from 'resize-sensor';
 
@@ -26,7 +25,7 @@ import UIToolTip from './components/ui_tooltip';
 // 1. Render all components from React.
 // 2. Just change css in 'html5-player-video' to control components visiblity.
 // 3. 
-export default class UISkinYoutube extends Preact.Component {
+class UISkinYoutube extends Component {
   constructor(props) {
     super(props);
 
@@ -114,8 +113,6 @@ export default class UISkinYoutube extends Preact.Component {
     
     this.vopSubtitlesBtn;
     this.vopSettingsBtn;
-
-    this.uiLog = null;
 
     // UI Data
     this.metaWidth;
@@ -359,8 +356,6 @@ export default class UISkinYoutube extends Preact.Component {
     this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
 
     this.vopTimeLabel = document.querySelector('.vop-time-text');
-
-    this.uiLog = document.getElementById('idLog');
 
     this.vopPlayButton = document.querySelector('.vop-play-button');
     this.vopPauseButton = document.querySelector('.vop-pause-button');
@@ -1313,3 +1308,5 @@ export default class UISkinYoutube extends Preact.Component {
     return false;
   }
 }
+
+export default UISkinYoutube;
