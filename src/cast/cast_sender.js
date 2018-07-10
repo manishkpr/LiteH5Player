@@ -80,7 +80,7 @@ function CastSender(receiverAppId) {
   let remotePlayerHandler = new RemotePlayerHandler();
 
   function setup() {
-    console.log('cast, init');
+    console.log('cast, setup');
 
     var options = {};
 
