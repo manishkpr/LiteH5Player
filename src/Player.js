@@ -365,6 +365,27 @@ function Player(idContainer) {
   function castVideo() {
     castSender_.requestSession();
   }
+  function castInit(cfg) {
+    castSender_.new_init(cfg);
+  }
+  function castOpen(mediaCfg) {
+    castSender_.new_open(mediaCfg);
+  }
+  function castAdd() {
+    castSender_.new_add();
+  }
+  function castPlay() {
+    castSender_.new_play();
+  }
+  function castPause() {
+    castSender_.new_pause();
+  }
+  function castSetPosition(time) {
+    castSender_.new_setPosition(time);
+  }
+  function castTest() {
+    castSender_.new_test();
+  }
 
   // airplay
   function isAirplaySupported() {
@@ -681,6 +702,13 @@ function Player(idContainer) {
     getThumbnail: getThumbnail,
     // chromecast
     castVideo: castVideo,
+    castInit: castInit,
+    castOpen: castOpen,
+    castAdd: castAdd,
+    castPlay: castPlay,
+    castPause: castPause,
+    castSetPosition: castSetPosition,
+    castTest: castTest,
     // pip(Safari only)
     setPipPresentation: setPipPresentation,
     // airplay(Safari only)

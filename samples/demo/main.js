@@ -7,7 +7,6 @@ var mediaCfg_ = getMediaInfo();
 
 var omPlayer = null;
 var omUIEngine = null;
-var omCastSender = null;
 
 const LOG_DEBUG = undefined;
 const LOG_INFO = 1;
@@ -130,42 +129,32 @@ function onBtnTmp1() {
 /////////////////////////////////////////////////////////////////////////
 // Title: chromecast cmd part
 function onUICmdCastInit() {
-  omCastSender.new_init(cfg_);
-
-  //omCastSender.new_init(cfg_);
-  // new_init: new_init,
-  // new_open: new_open,
-  // new_addV: new_addV,
-  // new_addPD: new_addPD,
-  // new_play: new_play,
-  // new_pause: new_pause,
-  // new_playAd: new_playAd,
-  // new_test: new_test,
+  omPlayer.castInit(cfg_);
 }
 
 function onUICmdCastOpen() {
-  omCastSender.new_open(mediaCfg_);
+  omPlayer.castOpen(mediaCfg_);
 }
 
 function onUICmdCastAdd() {
-  omCastSender.new_add();
+  omPlayer.castAdd();
 }
 
 function onUICmdCastPlay() {
-  omCastSender.new_play();
+  omPlayer.castPlay();
 }
 
 function onUICmdCastPause() {
-  omCastSender.new_pause();
-}
-
-function onUICmdCastTest() {
-  omCastSender.new_test();
+  omPlayer.castPause();
 }
 
 function onUICmdCastSeek() {
   var time = document.getElementById('castSeekedTime').value;
-  omCastSender.new_setPosition(time);
+  omPlayer.castSetPosition(time);
+}
+
+function onUICmdCastTest() {
+  omPlayer.castTest();
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -180,8 +169,6 @@ window.onload = function() {
   omPlayer.init(cfg_);
 
   omUIEngine = new oldmtn.UIEngine(omPlayer);
-
-  //omCastSender = new oldmtn.CastSender('E19ACDB8');
 
   // Init with omUIEngine
   // omUIEngine = new oldmtn.omUIEngine('player-container');

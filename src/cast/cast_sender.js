@@ -191,13 +191,6 @@ function CastSender(receiverAppId) {
     sendMessage_(msg);
   }
 
-  function new_addPD() {
-    let msg = {
-      'cmdType': 'addPD'
-    };
-    sendMessage_(msg);
-  }
-
   function new_play() {
     let msg = {
       'cmdType': 'play'
@@ -221,10 +214,12 @@ function CastSender(receiverAppId) {
   }
 
   function new_test() {
-    let msg = {
-      'cmdType': 'test'
-    };
-    sendMessage_(msg);
+    play();
+
+    // let msg = {
+    //   'cmdType': 'test'
+    // };
+    // sendMessage_(msg);
   }
 
   // Opens the cast selection UI, to allow user to start or stop session.
@@ -369,7 +364,6 @@ function CastSender(receiverAppId) {
     new_init: new_init,
     new_open: new_open,
     new_add: new_add,
-    new_addPD: new_addPD,
     new_play: new_play,
     new_pause: new_pause,
     new_setPosition: new_setPosition,
@@ -395,3 +389,6 @@ function CastSender(receiverAppId) {
 
 CastSender.__h5player_factory_name = 'CastSender';
 export default FactoryMaker.getSingletonFactory(CastSender);
+
+
+
