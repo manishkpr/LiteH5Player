@@ -335,6 +335,10 @@ class UISkinYoutube extends Component {
     this.onAdComplete = this.onAdComplete.bind(this);
     this.onAdCompanions = this.onAdCompanions.bind(this);
 
+    // chromecast
+    this.onCastConnected = this.onCastConnected.bind(this);
+    this.onCastDisconnected = this.onCastDisconnected.bind(this);
+
     //
     this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
   }
@@ -440,6 +444,9 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
     this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
+    // chrome cast
+    this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
+    this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
 
     // chrome cast part
     if (0) {
@@ -462,15 +469,21 @@ class UISkinYoutube extends Component {
     this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
+    // subtitle
     this.player.off(oldmtn.Events.CUE_START, this.onCueStart);
     this.player.off(oldmtn.Events.CUE_END, this.onCueEnd);
 
+    // log
     this.player.off(oldmtn.Events.LOG, this.onLog);
 
     // ad callback event
     this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
     this.player.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
+
+    // chrome cast
+    this.player.off(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
+    this.player.off(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
   }
 
   playerOpen(mediaCfg) {
@@ -1031,6 +1044,14 @@ class UISkinYoutube extends Component {
         v.innerHTML = companion.content;
       }
     }
+  }
+
+  onCastConnected() {
+    
+  }
+
+  onCastDisconnected() {
+
   }
 
   /////////////////////////////////////////////////////////////////////////

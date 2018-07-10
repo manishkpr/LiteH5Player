@@ -2,6 +2,11 @@
 
 import CastUtils from './cast_utils'
 
+import FactoryMaker from '../core/FactoryMaker';
+import EventBus from '../core/EventBus';
+import Events from '../core/CoreEvents';
+import Debug from '../core/Debug';
+
 ///////////////////////////////////////////////////////////////////////////////
 // RemotePlayerHandler
 function RemotePlayerHandler() {
@@ -71,7 +76,11 @@ function RemotePlayerHandler() {
 ////////////////////////////////////////////////////////////////////////////////////
 // CastSender
 function CastSender(receiverAppId) {
+  let context_ = this.context;
   let receiverAppId_ = receiverAppId;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
+
   let remotePlayer = null;
   let remotePlayerController = null;
   let castContext_ = null;
@@ -143,6 +152,13 @@ function CastSender(receiverAppId) {
         onMessageReceived_);
     } else {
       console.log('cast, session_ is null');
+    }
+
+    // Notify upper layer
+    if (remotePlayer.isConnected) {
+      eventBus_.trigger(Events.CAST_CONNECTED);
+    } else {
+      eventBus_.trigger(Events.CAST_DISCONNECTED);
     }
   }
 
@@ -377,4 +393,5 @@ function CastSender(receiverAppId) {
   return instance;
 };
 
-export default CastSender;
+CastSender.__h5player_factory_name = 'CastSender';
+export default FactoryMaker.getSingletonFactory(CastSender);

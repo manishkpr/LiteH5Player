@@ -181,7 +181,7 @@ window.onload = function() {
 
   omUIEngine = new oldmtn.UIEngine(omPlayer);
 
-  omCastSender = new oldmtn.CastSender('E19ACDB8');
+  //omCastSender = new oldmtn.CastSender('E19ACDB8');
 
   // Init with omUIEngine
   // omUIEngine = new oldmtn.omUIEngine('player-container');

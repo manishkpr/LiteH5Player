@@ -36,13 +36,13 @@ class UIFullscreenToggleButton extends Preact.Component {
     if (this.player.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
-      let v = this.props.main.playerContainer
+      let v = this.main.playerContainer
       UITools.enterFullscreen(v);
     }
   }
 
   onControlMouseMove(e) {
-    this.props.main.onControlMouseMove(e);
+    this.main.onControlMouseMove(e);
   }
 
   onFullscreenChanged() {

@@ -24,6 +24,8 @@ import ThumbnailController from './controller/thumbnail_controller';
 
 import VideoPlayer from './videoplayer';
 
+import CastSender from './cast/cast_sender';
+
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
@@ -62,7 +64,10 @@ function Player(idContainer) {
   let thumbnailController_;
   let fragmentLoader_;
 
-  // Ads part
+  // chromecast
+  let castSender_;
+
+  // ads
   let adsEngine_;
 
   // Autoplay reference
@@ -347,6 +352,7 @@ function Player(idContainer) {
     // }
   }
 
+  // thumbnail
   function getThumbnail(time) {
     if (thumbnailController_) {
       return thumbnailController_.getThumbnail(time);
@@ -355,6 +361,12 @@ function Player(idContainer) {
     }
   }
 
+  // chromecast
+  function castVideo() {
+    castSender_.requestSession();
+  }
+
+  // airplay
   function isAirplaySupported() {
     if (window.WebKitPlaybackTargetAvailabilityEvent) {
       return true;
@@ -369,6 +381,7 @@ function Player(idContainer) {
     }
   }
 
+  // pip
   function isPipSupported() {
     let videoElement = media_;
     if (videoElement &&
@@ -432,8 +445,15 @@ function Player(idContainer) {
     if (context_.cfg.poster) {
       media_.poster = context_.cfg.poster;
     }
+    // ads
     if (context_.cfg.advertising) {
       adsEngine_ = AdsController(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
+    }
+    // chromecast
+    if (window.cast && window.cast.__platform__) {
+      // receiver don't need new CastSender
+    } else {
+      castSender_ = CastSender(context_).getInstance('E19ACDB8');
     }
   }
 
@@ -655,10 +675,12 @@ function Player(idContainer) {
     isFullscreen: isFullscreen,
     // buffer
     getValidBufferPosition: getValidBufferPosition,
-    // Ads
+    // ads
     playAd: playAd,
     // thumbnail
     getThumbnail: getThumbnail,
+    // chromecast
+    castVideo: castVideo,
     // pip(Safari only)
     setPipPresentation: setPipPresentation,
     // airplay(Safari only)

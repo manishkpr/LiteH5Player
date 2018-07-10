@@ -23,10 +23,6 @@ class CoreEvents {
     this.MEDIA_VOLUME_CHANGED = 'mediaVolumeChanged';
     this.MEDIA_WAITING = 'mediaWaiting';
 
-    // TEXT_TRACK events
-    this.CUE_START = 'cueStart';
-    this.CUE_END = 'cueEnd';
-
     // ads internal events
     this.AD_ERROR = 'adError';
     this.AD_STARTED = 'adStarted';
@@ -54,9 +50,16 @@ class CoreEvents {
     this.FINDING_PARSER = 'findingParser';
     this.FOUND_PARSER = 'foundParser';
     this.STREAM_UPDATED = 'streamUpdated'; // Loaded a stream has a specified bitrate.
+    // thumbnail
     this.THUMBNAIL_LOADING = 'thumbnailLoading';
+    // subtitles
     this.TEXTTRACK_LOADING = 'textTrackLoading';
     this.TEXTTRACK_LOADED = 'textTrackLoaded';
+    this.CUE_START = 'cueStart';
+    this.CUE_END = 'cueEnd';
+    // chromecast
+    this.CAST_CONNECTED = 'castConnected';
+    this.CAST_DISCONNECTED = 'castDisconnected';
 
     // Begin hls.js, for compatible hls.js
     this.MANIFEST_LOADING = 'hlsManifestLoading';

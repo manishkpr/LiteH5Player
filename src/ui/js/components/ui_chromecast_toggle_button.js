@@ -6,6 +6,7 @@ class UIChromecastToggleButton extends Component {
   constructor(props) {
     super(props);
     this.main = this.props.main;
+    this.player = this.main.player;
   }
 
   render() {
@@ -18,9 +19,19 @@ class UIChromecastToggleButton extends Component {
 
     return (
       <button className={"vop-button vop-cast-button vop-style-cast"} title="chromecast"
-        style={btnStyle}>
+        style={btnStyle}
+        onClick={this.onUIComponentClick.bind(this)}
+        onMouseMove={this.onUIComponentMouseMove.bind(this)}>
       </button>
     );
+  }
+
+  onUIComponentClick() {
+    this.player.castVideo();
+  }
+
+  onUIComponentMouseMove(e) {
+    this.main.onControlMouseMove(e);
   }
 }
 

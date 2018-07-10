@@ -18,7 +18,7 @@ class UISettingsMenu extends Preact.Component {
   }
 
   componentDidUpdate() {
-    console.log(`UISettingsMenu, componentDidUpdate, ${this.main.settingMenuUIData.currMenu}`);
+    //myPrintLog(`UISettingsMenu, componentDidUpdate, ${this.main.settingMenuUIData.currMenu}`);
     if (this.main.settingMenuUIData.currMenu === 'settings_menu') {
       let v = document.querySelector('.vop-menuitem');
       if (v) {
@@ -28,7 +28,7 @@ class UISettingsMenu extends Preact.Component {
   }
 
   render() {
-    console.log(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
+    //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
     if (this.main.settingMenuUIData.currMenu === 'settings_menu') {
       const menuitems = this.main.settingMenuUIData.settingsList.map(function(item, index) {
         let currValue = '';
