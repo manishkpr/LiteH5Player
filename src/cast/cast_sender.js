@@ -88,6 +88,10 @@ function CastSender(receiverAppId) {
 
   let remotePlayerHandler = new RemotePlayerHandler();
 
+  // 
+  let position_ = 0;
+  let duration_ = 0;
+
   function setup() {
     console.log('cast, setup');
 
@@ -213,13 +217,12 @@ function CastSender(receiverAppId) {
     sendMessage_(msg);
   }
 
-  function new_test() {
-    play();
+  function getPosition() {
+    return position_;
+  }
 
-    // let msg = {
-    //   'cmdType': 'test'
-    // };
-    // sendMessage_(msg);
+  function getDuration() {
+    return duration_;
   }
 
   // Opens the cast selection UI, to allow user to start or stop session.
@@ -241,6 +244,15 @@ function CastSender(receiverAppId) {
     // End the session and pass 'true' to indicate
     // that receiver application should be stopped.
     castSession.endSession(true);
+  }
+
+  function new_test() {
+    play();
+
+    // let msg = {
+    //   'cmdType': 'test'
+    // };
+    // sendMessage_(msg);
   }
 
   function loadMedia(url, type) {
@@ -269,14 +281,18 @@ function CastSender(receiverAppId) {
   function onMessageReceived_(namespace, serialized) {
     let message = CastUtils.deserialize(serialized);
     let e = message.data;
+    e.from = 'chromecast';
 
     console.log('receive msg, namespace: ' + namespace + ', serialized: ' + serialized + ', type: ' + message.type);
     switch (message.type) {
       case Events.STATE_CHANGE:
       //eventBus_.trigger(Events.STATE_CHANGE, e);
       break;
-      case 'timeupdate':
-        console.log(`timeupdate: curTime: ${message.data.curTime}/${message.data.totalTime}`);
+      case Events.MEDIA_TIMEUPDATE:
+        position_ = e.position;
+        duration_ = e.duration;
+        eventBus_.trigger(Events.MEDIA_TIMEUPDATE, e);
+        console.log(`timeupdate, ${message.data.position}/${message.data.duration}`);
         break;
       default:
         break;
@@ -366,9 +382,11 @@ function CastSender(receiverAppId) {
     new_play: new_play,
     new_pause: new_pause,
     new_setPosition: new_setPosition,
-    new_test: new_test,
+    getPosition: getPosition,
+    getDuration: getDuration,
     requestSession: requestSession,
     endSession: endSession,
+    new_test: new_test,
     // old left
     loadMedia: loadMedia,
     stop: stop,

@@ -1,10 +1,11 @@
 'use strict';
 
-import CastUtils from './cast_utils';
-import UITools from '../ui/js/ui_tools';
-
+import EventBus from '../core/EventBus';
 import Events from '../core/CoreEvents';
 import Debug from '../core/Debug';
+
+import CastUtils from './cast_utils';
+import UITools from '../ui/js/ui_tools';
 
 function printLog(msg) {
   console.log('CastReceiver: ' + msg);
@@ -13,6 +14,10 @@ function printLog(msg) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 function CastReceiver(elementId) {
   printLog('receiver, constructor');
+
+  let context_ = {};
+  let eventBus_;
+  let debug_;
 
   let elementId_ = elementId;
   let mediaElement_ = null;
@@ -34,6 +39,10 @@ function CastReceiver(elementId) {
   let uiEngine_;
 
   function setup() {
+    // init html5 reference
+    eventBus_ = EventBus(context_).getInstance();
+    debug_ = Debug(context_).getInstance();
+
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
 
@@ -51,8 +60,7 @@ function CastReceiver(elementId) {
       CastUtils.OLDMTN_MESSAGE_NAMESPACE);
     oldmtnBus_.onMessage = onOldmtnMessage_;
 
-    omPlayer_ = initPlayer();
-
+    initPlayer();
     // // Init Video Element
     // let v = document.getElementById(elementId_);
     // mediaElement_ = v.querySelector('.h5p-video');
@@ -92,18 +100,9 @@ function CastReceiver(elementId) {
   }
 
   function initPlayer() {
-    let player = new oldmtn.Player(elementId_);
-    player.on(Events.STATE_CHANGE, onStateChange);
-
-    return player;
-  }
-
-  function onStateChange(e) {
-    let newState = e.newState;
-    sendMessage_({
-        type: Events.STATE_CHANGE,
-        data: e
-    }, oldmtnBus_);
+    omPlayer_ = new oldmtn.Player(elementId_);
+    omPlayer_.on(Events.STATE_CHANGE, onStateChange);
+    omPlayer_.on(Events.MEDIA_TIMEUPDATE, onMediaTimeupdated);
   }
 
   //
@@ -121,6 +120,7 @@ function CastReceiver(elementId) {
 
   function onReady_() {
     printLog('onReady');
+    isConnected_ = true;
   }
 
   function onSenderDisconnected_(event) {
@@ -134,23 +134,27 @@ function CastReceiver(elementId) {
     }
   }
 
-  function onTimeupdate() {
-    // var curTime = mediaElement_.currentTime;
-    // var totalTime = mediaElement_.duration;
+  function onStateChange(e) {
+    let newState = e.newState;
+    sendMessage_({
+      type: Events.STATE_CHANGE,
+      data: e
+    }, oldmtnBus_);
+  }
 
-    // //printLog('onTimeupdate, ' + curTime + '/' + totalTime);
+  function onMediaTimeupdated() {
+    let position = omPlayer_.getPosition();
+    let duration = omPlayer_.getDuration();
 
-    // // update local
-    // evHandlers['timeupdate'](curTime, totalTime);
-
-    // // send message to sender
-    // sendMessage_({
-    //     type: 'timeupdate',
-    //     data: {
-    //         curTime: curTime,
-    //         totalTime: totalTime
-    //     }
-    // }, oldmtnBus_);
+    printLog(`position: ${position}, duration: ${duration}`);
+    // send message to sender
+    sendMessage_({
+      type: Events.MEDIA_TIMEUPDATE,
+      data: {
+        position: position,
+        duration: duration
+      }
+    }, oldmtnBus_);
   }
 
   function onSeekStart_() {

@@ -689,6 +689,7 @@
     height: 100%;
     z-index: $zIndex_chromecast_overlay;
     background-color: rgba(0, 0, 0, 0.5);
+    display: none;
   }
   .vop-chromecast-overlay .vop-chromecast-status {
     position: absolute;
@@ -762,7 +763,6 @@
 }
 /************ End buffering ************/
 
-
 /************ Begin auto-hide ************/
 .vop-autohide {
   cursor: none
@@ -784,5 +784,8 @@
 }
 /************ End auto-hide ************/
 
-
-
+/************ Begin chromecast connected ************/
+.vop-chromecast-connected .vop-chromecast-overlay {
+  display: block;
+}
+/************ End chromecast connected ************/

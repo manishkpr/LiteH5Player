@@ -1050,11 +1050,11 @@ class UISkinYoutube extends Component {
   }
 
   onCastConnected() {
-    
+    UITools.addClass(this.vopPlayer, 'vop-chromecast-connected');
   }
 
   onCastDisconnected() {
-
+    UITools.removeClass(this.vopPlayer, 'vop-chromecast-connected');
   }
 
   /////////////////////////////////////////////////////////////////////////

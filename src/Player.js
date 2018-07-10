@@ -48,8 +48,8 @@ function Player(idContainer) {
   let media_ = document.querySelector('.vop-video');
   let adContainer_ = document.querySelector('.vop-ads-container');
 
-  let eventBus_;
-  let debug_;
+  let eventBus_ = EventBus(context_).getInstance();
+  let debug_ = Debug(context_).getInstance();
 
   let playlistLoader_;
 
@@ -66,6 +66,7 @@ function Player(idContainer) {
 
   // chromecast
   let castSender_;
+  let flagCastConnected_ = false;
 
   // ads
   let adsEngine_;
@@ -218,7 +219,9 @@ function Player(idContainer) {
   }
 
   function getPosition() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      return castSender_.getPosition();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getPosition();
     } else {
       if (!playbackController_) {
@@ -229,7 +232,9 @@ function Player(idContainer) {
   }
 
   function getDuration() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      return castSender_.getDuration();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getDuration();
     } else {
       if (!playbackController_) {
@@ -449,9 +454,6 @@ function Player(idContainer) {
   /////////////////////////////////////////////////////////////////////////////////
   // private functions
   function initComponent() {
-    eventBus_ = EventBus(context_).getInstance();
-    debug_ = Debug(context_).getInstance();
-
     playlistLoader_ = PlaylistLoader(context_).getInstance();
     playbackController_ = PlaybackController(context_).getInstance();
     textEngine_ = TextEngine(context_).getInstance();
@@ -498,6 +500,10 @@ function Player(idContainer) {
     eventBus_.on(Events.AD_LOADING_COMPLETE, onAdLoadingComplete, {});
     eventBus_.on(Events.AD_PAUSED, onAdPaused, {});
     eventBus_.on(Events.AD_RESUMED, onAdResumed, {});
+
+    // chromecast
+    eventBus_.on(Events.CAST_CONNECTED, onCastConnected);
+    eventBus_.on(Events.CAST_DISCONNECTED, onCastDisconnected);
 
     // fullscreen listener
     document.addEventListener("fullscreenchange", onFullScreenChange);
@@ -606,6 +612,14 @@ function Player(idContainer) {
 
   function onAdResumed() {
     updateState('playing');
+  }
+
+  function onCastConnected() {
+    flagCastConnected_ = true;
+  }
+
+  function onCastDisconnected() {
+    flagCastConnected_ = false;
   }
   // End -- internal events listener functions
 
