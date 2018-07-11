@@ -180,24 +180,30 @@ function Player(idContainer) {
   }
 
   function play() {
-    if (!flagPlayedOnce_) {
-      if (adsEngine_) {
-        adsEngine_.playAd();
-      } else {
-        playbackController_.play();
-      }
-      flagPlayedOnce_ = true;
+    if (flagCastConnected_) {
+      castSender_.play();
     } else {
-      if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-        adsEngine_.play();
+      if (!flagPlayedOnce_) {
+        if (adsEngine_) {
+          adsEngine_.playAd();
+        } else {
+          playbackController_.play();
+        }
+        flagPlayedOnce_ = true;
       } else {
-        playbackController_.play();
+        if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+          adsEngine_.play();
+        } else {
+          playbackController_.play();
+        }
       }
     }
   }
 
   function pause() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      castSender_.pause();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.pause();
     } else {
       if (!playbackController_) {
@@ -208,13 +214,17 @@ function Player(idContainer) {
   }
 
   function isPaused() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
-      return adsEngine_.isPaused();
+    if (flagCastConnected_) {
+      return castSender_.isPaused();
     } else {
-      if (!playbackController_) {
-        return;
+      if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+        return adsEngine_.isPaused();
+      } else {
+        if (!playbackController_) {
+          return;
+        }
+        return playbackController_.isPaused();
       }
-      return playbackController_.isPaused();
     }
   }
 
@@ -327,8 +337,12 @@ function Player(idContainer) {
     playbackController_.setAudioPlaybackSpeed(speed);
   }
 
-  function setPosition(time) {
-    playbackController_.setPosition(time);
+  function setPosition(pos) {
+    if (flagCastConnected_) {
+      castSender_.setPosition(pos);
+    } else {
+      playbackController_.setPosition(pos);
+    }
   }
 
   function getWidth() {
@@ -373,25 +387,25 @@ function Player(idContainer) {
     castSender_.stopSession();
   }
   function castInit(cfg) {
-    castSender_.new_init(cfg);
+    castSender_.init(cfg);
   }
   function castOpen(mediaCfg) {
-    castSender_.new_open(mediaCfg);
+    castSender_.open(mediaCfg);
   }
   function castAdd() {
-    castSender_.new_add();
+    castSender_.add();
   }
   function castPlay() {
-    castSender_.new_play();
+    castSender_.play();
   }
   function castPause() {
-    castSender_.new_pause();
+    castSender_.pause();
   }
   function castSetPosition(time) {
-    castSender_.new_setPosition(time);
+    castSender_.setPosition(time);
   }
   function castTest() {
-    castSender_.new_test();
+    castSender_.test();
   }
 
   // airplay

@@ -91,6 +91,7 @@ function CastSender(receiverAppId) {
   // 
   let position_ = 0;
   let duration_ = 0;
+  let paused_ = false;
 
   function setup() {
     console.log('cast, setup');
@@ -178,42 +179,48 @@ function CastSender(receiverAppId) {
     console.log('--loadMedia_ErrorCb--');
   }
 
-  function new_init(message) {
+  function init(message) {
     message.cmdType = 'init';
     sendMessage_(message);
   }
 
-  function new_open(message) {
+  function open(message) {
     message.cmdType = 'open';
     sendMessage_(message);
   }
 
-  function new_add() {
+  function add() {
     let msg = {
       'cmdType': 'add'
     };
     sendMessage_(msg);
   }
 
-  function new_play() {
+  function play() {
     let msg = {
       'cmdType': 'play'
     };
     sendMessage_(msg);
   }
 
-  function new_pause() {
+  function pause() {
     let msg = {
       'cmdType': 'pause'
     };
     sendMessage_(msg);
   }
 
-  function new_setPosition(time) {
+  function isPaused() {
+    return paused_;
+  }
+
+  function setPosition(pos) {
     let msg = {
-      'cmdType': 'setPosition'
+      cmdType: 'setPosition',
+      data: {
+        position: pos
+      }
     };
-    msg.time = time;
     sendMessage_(msg);
   }
 
@@ -246,7 +253,16 @@ function CastSender(receiverAppId) {
     castSession.endSession(true);
   }
 
-  function new_test() {
+  var tmp = 1;
+  function test() {
+    //console.log('--test--');
+
+    session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
+      tmp.toString(),
+      function() {}, // success callback
+      function() {}); // error callback
+    tmp++;
+
     play();
 
     // let msg = {
@@ -280,7 +296,7 @@ function CastSender(receiverAppId) {
 
   function onMessageReceived_(namespace, serialized) {
     let message = CastUtils.deserialize(serialized);
-    let e = message.data;
+    let e = message.data || {};
     e.from = 'chromecast';
 
     console.log('receive msg, namespace: ' + namespace + ', serialized: ' + serialized + ', type: ' + message.type);
@@ -291,19 +307,37 @@ function CastSender(receiverAppId) {
       case Events.MEDIA_TIMEUPDATE:
         position_ = e.position;
         duration_ = e.duration;
-        eventBus_.trigger(Events.MEDIA_TIMEUPDATE, e);
+        eventBus_.trigger(Events.MEDIA_TIMEUPDATE);
         console.log(`timeupdate, ${message.data.position}/${message.data.duration}`);
+        break;
+      case Events.MEDIA_PLAYING:
+        paused_ = false;
+        eventBus_.trigger(Events.MEDIA_PLAYING);
+        break;
+      case Events.MEDIA_PAUSED:
+        paused_ = true;
+        eventBus_.trigger(Events.MEDIA_PAUSED);
+        break;
+      case Events.MEDIA_SEEKING:
+        position_ = e.position;
+        duration_ = e.duration;
+        eventBus_.trigger(Events.MEDIA_SEEKING);
+        break;
+      case Events.MEDIA_SEEKED:
+        position_ = e.position;
+        duration_ = e.duration;
+        eventBus_.trigger(Events.MEDIA_SEEKED);
         break;
       default:
         break;
     }
   }
 
-  function play() {
+  function old_play() {
     remotePlayerHandler.play();
   }
 
-  function pause() {
+  function old_pause() {
     remotePlayerHandler.pause();
   }
 
@@ -341,18 +375,6 @@ function CastSender(receiverAppId) {
     }
   }
 
-  var tmp = 1;
-
-  function test() {
-    //console.log('--test--');
-
-    session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
-      tmp.toString(),
-      function() {}, // success callback
-      function() {}); // error callback
-    tmp++;
-  }
-
   function remoteCall_(targetName, methodName) {
     var args = Array.prototype.slice.call(arguments, 2);
     sendMessage_({
@@ -376,27 +398,27 @@ function CastSender(receiverAppId) {
 
   let instance = {
     // 
-    new_init: new_init,
-    new_open: new_open,
-    new_add: new_add,
-    new_play: new_play,
-    new_pause: new_pause,
-    new_setPosition: new_setPosition,
+    init: init,
+    open: open,
+    add: add,
+    play: play,
+    pause: pause,
+    isPaused: isPaused,
+    setPosition: setPosition,
     getPosition: getPosition,
     getDuration: getDuration,
     requestSession: requestSession,
     endSession: endSession,
-    new_test: new_test,
+    test: test,
     // old left
     loadMedia: loadMedia,
     stop: stop,
-    play: play,
-    pause: pause,
+    old_play: old_play,
+    old_pause: old_pause,
     addVolume: addVolume,
     delVolume: delVolume,
     seek: seek,
-    attribute: attribute,
-    test: test
+    attribute: attribute
   };
 
   setup();

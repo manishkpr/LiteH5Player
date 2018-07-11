@@ -103,6 +103,10 @@ function CastReceiver(elementId) {
     omPlayer_ = new oldmtn.Player(elementId_);
     omPlayer_.on(Events.STATE_CHANGE, onStateChange);
     omPlayer_.on(Events.MEDIA_TIMEUPDATE, onMediaTimeupdated);
+    omPlayer_.on(Events.MEDIA_PLAYING, onMediaPlaying);
+    omPlayer_.on(Events.MEDIA_PAUSED, onMediaPaused);
+    omPlayer_.on(Events.MEDIA_SEEKING, onMediaSeeking);
+    omPlayer_.on(Events.MEDIA_SEEKED, onMediaSeeked);
   }
 
   //
@@ -150,6 +154,44 @@ function CastReceiver(elementId) {
     // send message to sender
     sendMessage_({
       type: Events.MEDIA_TIMEUPDATE,
+      data: {
+        position: position,
+        duration: duration
+      }
+    }, oldmtnBus_);
+  }
+
+  function onMediaPlaying() {
+    sendMessage_({
+      type: Events.MEDIA_PLAYING
+    }, oldmtnBus_);
+  }
+
+  function onMediaPaused() {
+    sendMessage_({
+      type: Events.MEDIA_PAUSED
+    }, oldmtnBus_);
+  }
+
+  function onMediaSeeking() {
+    let position = omPlayer_.getPosition();
+    let duration = omPlayer_.getDuration();
+
+    sendMessage_({
+      type: Events.MEDIA_SEEKING,
+      data: {
+        position: position,
+        duration: duration
+      }
+    }, oldmtnBus_);
+  }
+
+  function onMediaSeeked() {
+    let position = omPlayer_.getPosition();
+    let duration = omPlayer_.getDuration();
+
+    sendMessage_({
+      type: Events.MEDIA_SEEKED,
       data: {
         position: position,
         duration: duration
@@ -229,6 +271,7 @@ function CastReceiver(elementId) {
 
   function onOldmtnMessage_(event) {
     let message = CastUtils.deserialize(event.data);
+    let data = message.data;
     printLog('onOldmtnMessage_, event.data: ' + event.data);
     printLog('onOldmtnMessage_, message: ' + message);
 
@@ -246,7 +289,7 @@ function CastReceiver(elementId) {
     } else if (message.cmdType === 'playAd') {
       omPlayer_.playAd();
     } else if (message.cmdType === 'setPosition') {
-      omPlayer_.setPosition(message.time);
+      omPlayer_.setPosition(data.position);
     } else if (message.cmdType === 'test') {
       omPlayer_.test();
       // uiEngine_ = new oldmtn.UIEngine(omPlayer_);
