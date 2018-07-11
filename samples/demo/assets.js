@@ -164,11 +164,11 @@ function getMediaInfo() {
     //url: 'http://10.2.68.64/2/error/1/audio_48kbps.m3u8',
     //--Item: hls part
     //url: 'http://10.2.68.64/2/hls/av_muxed/test.m3u8',
-    url: 'http://10.2.68.64/2/hls/videoonly01/test.m3u8',
+    //url: 'http://10.2.68.64/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://10.2.68.64/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/cmaf.m3u8',
-    //url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/test1.m3u8',
+    url: 'http://10.2.68.64/2/dash/test2_main_index/Video1/test1.m3u8',
     //url: 'http://10.2.68.64/1/dash_to_hls/111/cmaf.m3u8',
     //url: 'http://10.2.68.64/2/hls/live/02/chunks-enabled-false.m3u8',
     //url: 'http://10.2.68.64/6/dash1/project/verizon/envivio/2/clear/audio.m3u8',

@@ -283,7 +283,7 @@ class UIProgressBar extends Component {
     if (isLive) {
       let seekable = this.player.getSeekableRange();
       let buffered = this.player.getBufferedRanges();
-      myPrintLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
+      //myPrintLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
     } else {
       let uiBufferedPos;
       if (this.progressBarContext) {

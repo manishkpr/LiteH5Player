@@ -113,7 +113,7 @@ function onBtnUninstallSkin() {
 
 function onBtnSeek() {
   var time = document.getElementById('seekedTime').value;
-  omUIEngine.player_.setPosition(time);
+  omPlayer.setPosition(time);
 }
 
 /////////////////////////////////////////////////////////////////////////

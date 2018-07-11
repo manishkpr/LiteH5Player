@@ -89,9 +89,11 @@ function CastSender(receiverAppId) {
   let remotePlayerHandler = new RemotePlayerHandler();
 
   // 
-  let position_ = 0;
-  let duration_ = 0;
-  let paused_ = false;
+  let position_;
+  let duration_;
+  let paused_;
+  let muted_;
+  let volume_;
 
   function setup() {
     console.log('cast, setup');
@@ -179,9 +181,12 @@ function CastSender(receiverAppId) {
     console.log('--loadMedia_ErrorCb--');
   }
 
-  function init(message) {
-    message.cmdType = 'init';
-    sendMessage_(message);
+  function init(cfg) {
+    let msg = {
+      cmdType: 'init',
+      data: cfg
+    }
+    sendMessage_(msg);
   }
 
   function open(message) {
@@ -232,6 +237,41 @@ function CastSender(receiverAppId) {
     return duration_;
   }
 
+  function setVolume(volume) {
+    let msg = {
+      cmdType: 'setVolume',
+      data: {
+        volume: volume
+      }
+    };
+    sendMessage_(msg);
+
+    // old
+    //remotePlayerHandler.setVolume(volume);
+  }
+  
+  function getVolume() {
+    return volume_;
+  }
+
+  function mute() {
+    let msg = {
+      cmdType: 'mute'
+    };
+    sendMessage_(msg);
+  }
+
+  function unmute() {
+    let msg = {
+      cmdType: 'unmute'
+    };
+    sendMessage_(msg);
+  }
+
+  function isMuted() {
+    return muted_;
+  }
+
   // Opens the cast selection UI, to allow user to start or stop session.
   function requestSession() {
     if (!castContext_) {
@@ -256,15 +296,12 @@ function CastSender(receiverAppId) {
   var tmp = 1;
   function test() {
     //console.log('--test--');
-
     session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
       tmp.toString(),
       function() {}, // success callback
       function() {}); // error callback
     tmp++;
-
     play();
-
     // let msg = {
     //   'cmdType': 'test'
     // };
@@ -302,6 +339,14 @@ function CastSender(receiverAppId) {
     console.log('receive msg, namespace: ' + namespace + ', serialized: ' + serialized + ', type: ' + message.type);
     switch (message.type) {
       case Events.STATE_CHANGE:
+      if (e.newState === 'opened') {
+        // do some initialization here
+        position_ = e.position;
+        duration_ = e.duration;
+        muted_ = e.muted;
+        volume_ = e.volume;
+        paused_ = e.paused;
+      }
       //eventBus_.trigger(Events.STATE_CHANGE, e);
       break;
       case Events.MEDIA_TIMEUPDATE:
@@ -328,6 +373,11 @@ function CastSender(receiverAppId) {
         duration_ = e.duration;
         eventBus_.trigger(Events.MEDIA_SEEKED);
         break;
+      case Events.MEDIA_VOLUME_CHANGED:
+        muted_ = e.muted;
+        volume_ = e.volume;
+        eventBus_.trigger(Events.MEDIA_VOLUME_CHANGED);
+        break;
       default:
         break;
     }
@@ -349,10 +399,6 @@ function CastSender(receiverAppId) {
 
   function delVolume(volume) {
     var volume = RemotePlayerHandler.getVolume() - 0.1;
-    remotePlayerHandler.setVolume(volume);
-  }
-
-  function setVolume(volume) {
     remotePlayerHandler.setVolume(volume);
   }
 
@@ -398,6 +444,8 @@ function CastSender(receiverAppId) {
 
   let instance = {
     // 
+    requestSession: requestSession,
+    endSession: endSession,
     init: init,
     open: open,
     add: add,
@@ -407,8 +455,11 @@ function CastSender(receiverAppId) {
     setPosition: setPosition,
     getPosition: getPosition,
     getDuration: getDuration,
-    requestSession: requestSession,
-    endSession: endSession,
+    setVolume: setVolume,
+    getVolume: getVolume,
+    mute: mute,
+    unmute: unmute,
+    isMuted: isMuted,
     test: test,
     // old left
     loadMedia: loadMedia,

@@ -278,7 +278,9 @@ function Player(idContainer) {
   }
 
   function mute() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      castSender_.mute();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.mute();
     } else {
       if (!playbackController_) {
@@ -289,7 +291,9 @@ function Player(idContainer) {
   }
 
   function unmute() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      castSender_.unmute();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.unmute();
     } else {
       if (!playbackController_) {
@@ -300,7 +304,9 @@ function Player(idContainer) {
   }
 
   function isMuted() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      return castSender_.isMuted();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.isMuted();
     } else {
       if (!playbackController_) {
@@ -311,7 +317,9 @@ function Player(idContainer) {
   }
 
   function setVolume(volume) {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      castSender_.setVolume(volume);
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       adsEngine_.setVolume(volume);
     } else {
       if (!playbackController_) {
@@ -322,7 +330,9 @@ function Player(idContainer) {
   }
 
   function getVolume() {
-    if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
+    if (flagCastConnected_) {
+      return castSender_.getVolume();
+    } else if (adsEngine_ && adsEngine_.isPlayingAd() && adsEngine_.isLinearAd()) {
       return adsEngine_.getVolume();
     } else {
       if (!playbackController_) {
@@ -383,27 +393,35 @@ function Player(idContainer) {
   function castVideo() {
     castSender_.requestSession();
   }
+
   function castStop() {
     castSender_.stopSession();
   }
+
   function castInit(cfg) {
     castSender_.init(cfg);
   }
+
   function castOpen(mediaCfg) {
     castSender_.open(mediaCfg);
   }
+
   function castAdd() {
     castSender_.add();
   }
+
   function castPlay() {
     castSender_.play();
   }
+
   function castPause() {
     castSender_.pause();
   }
+
   function castSetPosition(time) {
     castSender_.setPosition(time);
   }
+
   function castTest() {
     castSender_.test();
   }

@@ -36,7 +36,7 @@ function CastReceiver(elementId) {
   let isConnected_ = null;
 
   let omPlayer_;
-  let uiEngine_;
+  let omUIEngine_;
 
   function setup() {
     // init html5 reference
@@ -60,7 +60,6 @@ function CastReceiver(elementId) {
       CastUtils.OLDMTN_MESSAGE_NAMESPACE);
     oldmtnBus_.onMessage = onOldmtnMessage_;
 
-    initPlayer();
     // // Init Video Element
     // let v = document.getElementById(elementId_);
     // mediaElement_ = v.querySelector('.h5p-video');
@@ -101,12 +100,16 @@ function CastReceiver(elementId) {
 
   function initPlayer() {
     omPlayer_ = new oldmtn.Player(elementId_);
+    omUIEngine_ = new oldmtn.UIEngine(omPlayer_);
+    omUIEngine_.installSkin();
+
     omPlayer_.on(Events.STATE_CHANGE, onStateChange);
     omPlayer_.on(Events.MEDIA_TIMEUPDATE, onMediaTimeupdated);
     omPlayer_.on(Events.MEDIA_PLAYING, onMediaPlaying);
     omPlayer_.on(Events.MEDIA_PAUSED, onMediaPaused);
     omPlayer_.on(Events.MEDIA_SEEKING, onMediaSeeking);
     omPlayer_.on(Events.MEDIA_SEEKED, onMediaSeeked);
+    omPlayer_.on(Events.MEDIA_VOLUME_CHANGED, onMediaVolumeChanged);
   }
 
   //
@@ -140,6 +143,13 @@ function CastReceiver(elementId) {
 
   function onStateChange(e) {
     let newState = e.newState;
+    if (newState === 'opened') {
+      e.position = omPlayer_.getPosition();
+      e.duration = omPlayer_.getDuration();
+      e.volume = omPlayer_.getVolume();
+      e.muted = omPlayer_.isMuted();
+      e.paused = omPlayer_.isPaused();
+    }
     sendMessage_({
       type: Events.STATE_CHANGE,
       data: e
@@ -195,6 +205,18 @@ function CastReceiver(elementId) {
       data: {
         position: position,
         duration: duration
+      }
+    }, oldmtnBus_);
+  }
+
+  function onMediaVolumeChanged() {
+    let muted = omPlayer_.isMuted();
+    let volume = omPlayer_.getVolume();
+    sendMessage_({
+      type: Events.MEDIA_VOLUME_CHANGED,
+      data: {
+        muted: muted,
+        volume: volume
       }
     }, oldmtnBus_);
   }
@@ -276,8 +298,9 @@ function CastReceiver(elementId) {
     printLog('onOldmtnMessage_, message: ' + message);
 
     if (message.cmdType === 'init') {
-      printLog('poster: ' + message.poster);
-      omPlayer_.init(message);
+      initPlayer(data);
+      //printLog('poster: ' + message.poster);
+      omPlayer_.init(data);
     } else if (message.cmdType === 'open') {
       omPlayer_.open(message);
     } else if (message.cmdType === 'add') {
@@ -290,6 +313,12 @@ function CastReceiver(elementId) {
       omPlayer_.playAd();
     } else if (message.cmdType === 'setPosition') {
       omPlayer_.setPosition(data.position);
+    } else if (message.cmdType === 'setVolume') {
+      omPlayer_.setVolume(data.volume);
+    } else if (message.cmdType === 'mute') {
+      omPlayer_.mute();
+    } else if (message.cmdType === 'unmute') {
+      omPlayer_.unmute();
     } else if (message.cmdType === 'test') {
       omPlayer_.test();
       // uiEngine_ = new oldmtn.UIEngine(omPlayer_);
