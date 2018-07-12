@@ -389,6 +389,7 @@ function Player(idContainer) {
       return undefined;
     }
   }
+
   // chromecast
   function castVideo() {
     castSender_.requestSession();
@@ -464,6 +465,7 @@ function Player(idContainer) {
     }
   }
 
+  // 1. If loading UI when player is playing, need sync UI state to player state.
   function getState() {
     return playerState_;
   }
