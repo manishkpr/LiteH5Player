@@ -111,7 +111,7 @@ class UISkinYoutube extends Component {
 
     // UI Controls
     this.vopPlayer = null;
-    this.vopControlBar = null;
+    this.vopBottomBar = null;
     
     this.vopSubtitlesBtn;
     this.vopSettingsBtn;
@@ -350,7 +350,7 @@ class UISkinYoutube extends Component {
     this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
-    this.vopControlBar = document.querySelector('.vop-bottom-bar');
+    this.vopBottomBar = document.querySelector('.vop-bottom-bar');
 
     this.vopProgressBar = document.querySelector('.vop-progress-bar');
 
@@ -640,10 +640,10 @@ class UISkinYoutube extends Component {
     let controlBarHeight = 0;
     if (this.flagAdStarted && !this.flagIsLinearAd) {
       adDstHeight = this.vopAdContainer.clientHeight;
-      controlBarHeight = this.vopControlBar.clientHeight;
+      controlBarHeight = this.vopBottomBar.clientHeight;
     } else {
       if (!UITools.hasClass(this.vopPlayer, 'vop-autohide')) {
-        controlBarHeight = this.vopControlBar.clientHeight;
+        controlBarHeight = this.vopBottomBar.clientHeight;
       }
     }
 
@@ -769,7 +769,7 @@ class UISkinYoutube extends Component {
       y: e.clientY
     };
     if (UITools.isPtInElement(pt, this.vopPlayer)) {
-      if (UITools.isPtInElement(pt, this.vopControlBar)) {
+      if (UITools.isPtInElement(pt, this.vopBottomBar)) {
         // do nothing
         this.removeAutohideAction();
       } else {
@@ -928,7 +928,7 @@ class UISkinYoutube extends Component {
         let adDstWidth = this.vopPlayer.clientWidth;
         let adDstHeight = e.height + 10;
         this.player.resize(adDstWidth, e.height + 5);
-        this.vopAdContainer.style.bottom = this.vopControlBar.clientHeight.toString() + 'px';
+        this.vopAdContainer.style.bottom = this.vopBottomBar.clientHeight.toString() + 'px';
         //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
         this.vopAdContainer.style.zIndex = '1';
