@@ -1,0 +1,20 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-caption-overlay {
+    position: absolute;
+    width: 100%;
+    font-size: 24px;
+    color: #0FF0FF;
+    background-color: transparent;
+    display: block;
+    line-height: normal;
+    text-align: center;
+    z-index: $zIndex_caption_overlay;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none
+  }
+}
+
+

@@ -1,0 +1,14 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-logo-container {
+    position: absolute;
+    z-index: $zIndex_logo;
+    top: 32px;
+    right: 32px;
+    cursor: pointer;
+  }
+}
+
+
+

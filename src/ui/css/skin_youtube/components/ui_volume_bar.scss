@@ -1,0 +1,30 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-volume-panel {
+    width: 52px;
+    height: 100%;
+    cursor: pointer;
+  }
+  .vop-volume-panel {
+    float: left;
+  }
+
+  .vop-volume-slider {
+    position: relative;
+    top: 50%;
+    height: 3px;
+    background-color: #fff;
+  }
+  .vop-volume-slider-handle {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-top: -5px;
+    background: #fff;
+  }
+}
+
+

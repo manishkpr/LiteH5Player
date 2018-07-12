@@ -1,0 +1,39 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-control-bar {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 0px;
+    height: 41px;
+    z-index: $zIndex_control_bar;
+    text-align: left;
+    direction: ltr;
+    text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+    -moz-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+    -webkit-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+    transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+  
+  .vop-controls {
+    position: relative;
+    height: 36px;
+    overflow: hidden;
+    /*Hide controls if the rectangle is too small.*/
+  }
+  .vop-left-controls {
+    height: 100%;
+    float: left;
+  }
+  .vop-right-controls {
+    height: 100%;
+    float: right;
+  }
+
+}
+
+
+
+
+
