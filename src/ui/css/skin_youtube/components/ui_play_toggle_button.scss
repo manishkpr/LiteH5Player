@@ -2,8 +2,6 @@
 
 .#{$skinYoutube} {
   .vop-play-button {
-    float: left;
-
     &.icon-play {
       background-image: url(../assets/svg/ic_play_arrow_24px.svg);
       background-position: center;
@@ -21,16 +19,6 @@
       background-position: center;
       background-repeat: no-repeat;
     }
-  }
-
-  .vop-play-button::before {
-    content: '';
-    display: block;
-    height: 100%;
-    width: 12px;
-    position: absolute;
-    top: 0;
-    left: -12px;
   }
 }
 

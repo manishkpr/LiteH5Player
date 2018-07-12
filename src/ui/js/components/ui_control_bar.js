@@ -1,7 +1,7 @@
 import {
-  h, Component
+  h,
+  Component
 } from 'preact';
-
 
 import UIPlayToggleButton from './ui_play_toggle_button';
 import UIVolumeToggleButton from './ui_volume_toggle_button';
@@ -15,6 +15,8 @@ import UISubtitlesToggleButton from './ui_subtitles_toggle_button';
 import UISettingsToggleButton from './ui_settings_toggle_button';
 import UIFullscreenToggleButton from './ui_fullscreen_toggle_button';
 
+import UIProgressBar from './ui_progress_bar';
+
 class UIControlBar extends Component {
   constructor(props) {
     super(props);
@@ -25,27 +27,20 @@ class UIControlBar extends Component {
   render() {
     return (
       <div className="vop-control-bar">
-        <div className="vop-left-controls">
-          <UIPlayToggleButton main={this.main} />
-          <UIVolumeToggleButton main={this.main} />
-          <UIVolumeBar main={this.main} />
-          <UITimeLabel main={this.main} />
-        </div>
-        <div className="vop-right-controls">
-          <UIPipToggleButton main={this.main} />
-          <UIAirplayToggleButton main={this.main} />
-          <UIChromecastToggleButton main={this.main} />
-          <UISubtitlesToggleButton main={this.main} />
-          <UISettingsToggleButton main={this.main} />
-          <UIFullscreenToggleButton main={this.main} />
-        </div>
+        <UIPlayToggleButton main={this.main} />
+        <UIVolumeToggleButton main={this.main} />
+        <UIVolumeBar main={this.main} />
+        <UITimeLabel main={this.main} />
+        <div style="width: 100%; height: 100%; background-color: transparent;"></div>
+        <UIPipToggleButton main={this.main} />
+        <UIAirplayToggleButton main={this.main} />
+        <UIChromecastToggleButton main={this.main} />
+        <UISubtitlesToggleButton main={this.main} />
+        <UISettingsToggleButton main={this.main} />
+        <UIFullscreenToggleButton main={this.main} />
       </div>
     );
   }
 }
 
 export default UIControlBar;
-
-
-
-

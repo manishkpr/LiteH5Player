@@ -2,11 +2,8 @@
 
 .#{$skinYoutube} {
   .vop-button {
-    width: 36px;
+    min-width: 36px;
     height: 36px;
-    border: 0;
-    background-color: transparent;
-    color: white;
     cursor: pointer;
     /*Don't enable select state*/
     -webkit-touch-callout: none;
@@ -15,13 +12,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
-  .vop-button:focus,
-  .vop-button {
-    outline: 0
-  }
-  .vop-button::-moz-focus-inner {
-    padding: 0;
     border: 0;
+    padding: 0;
+    outline: 0;
+    background-color: transparent;
   }
 }
+

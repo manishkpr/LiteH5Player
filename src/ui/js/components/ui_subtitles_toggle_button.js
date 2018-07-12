@@ -18,9 +18,9 @@ class UISubtitleToggleButton extends Preact.Component {
 
     return (
       <button className="vop-button vop-subtitles-button" title="subtitles"
-        style={btnStyle}
         onClick={this.onUICmdSubtitles.bind(this)}
-        onMouseMove={this.onControlMouseMove.bind(this)}>
+        onMouseMove={this.onControlMouseMove.bind(this)}
+        style={btnStyle}>
       </button>
     );
   }

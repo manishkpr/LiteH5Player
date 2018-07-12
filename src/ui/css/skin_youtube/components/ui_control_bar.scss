@@ -2,11 +2,14 @@
 
 .#{$skinYoutube} {
   .vop-control-bar {
-    position: relative;
+    width: 100%;
     height: 36px;
-    overflow: hidden;
-    /*Hide controls if the rectangle is too small.*/
+    overflow: hidden; // Hide controls if the rectangle is too small.
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
   .vop-left-controls {
     height: 100%;
     float: left;

@@ -20,10 +20,10 @@ class UIPipToggleButton extends Component {
     }
 
     return (
-      <button className={"vop-button vop-pip-button"} title="picture in picture"
+      <div className={"vop-button vop-pip-button"} title="picture in picture"
         onClick={this.onUICmdPip.bind(this)}
         style={btnStyle}>
-      </button>
+      </div>
     );
   }
 

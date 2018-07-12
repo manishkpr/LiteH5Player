@@ -39,10 +39,11 @@ class UIVolumeBar extends Preact.Component {
     let left = info.uiVolumeHandleLeft;
 
     return (
-      <div className="vop-volume-panel" onMouseMove={this.onVolumeBarMouseMove.bind(this)}>
+      <div className="vop-volume-panel" onMouseMove={this.onVolumeBarMouseMove.bind(this)}
+        style={{display: 'inline-block'}}>
         <div className="vop-volume-slider" style={{background: background}}
           onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
-          <div className="vop-volume-slider-handle" style={{left: left}}>
+          <div className="vop-volume-slider-handle">
           </div>
         </div>
       </div>
