@@ -12,7 +12,7 @@ import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
 
 import UIGradientBottom from './components/ui_gradient_bottom';
-import UIControlBar from './components/ui_control_bar';
+import UIBottomBar from './components/ui_bottom_bar';
 
 import UICaptionOverlay from './components/ui_caption_overlay';
 import UIHugeButtonOverlay from './components/ui_hugebutton_overlay';
@@ -95,7 +95,7 @@ class UISkinYoutube extends Component {
         <UICaptionOverlay main={this} />
         <UIToolTip main={this} />
         <UIGradientBottom main={this} />
-        <UIControlBar main={this} />
+        <UIBottomBar main={this} />
         <UIBufferingOverlay />
         <UIHugeButtonOverlay main={this} />
         <UIPlayOverlay main={this} />
@@ -107,7 +107,6 @@ class UISkinYoutube extends Component {
   initVariable() {
     this.player = null;
     this.playerState = '';
-    this.castSender_ = null;
     this.ratio = 0.5625;
 
     // UI Controls
@@ -351,7 +350,7 @@ class UISkinYoutube extends Component {
     this.vopPlayer = document.querySelector('.html5-video-player');
 
     this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
-    this.vopControlBar = document.querySelector('.vop-control-bar');
+    this.vopControlBar = document.querySelector('.vop-bottom-bar');
 
     this.vopProgressBar = document.querySelector('.vop-progress-bar');
 
@@ -448,22 +447,11 @@ class UISkinYoutube extends Component {
     // chrome cast
     this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
     this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
-
-    // chrome cast part
-    if (0) {
-      let receiverAppId = 'E19ACDB8'; // joseph test app1
-      //let receiverAppId = 'CBEF8A9C'; // joseph, css.visualon.info
-      //let receiverAppId = 'FAC6871E'; // joseph, css.visualon.info
-
-      // init chromecast sender
-      this.castSender_ = new oldmtn.CastSender(receiverAppId);
-    }
   }
 
   uninitPlayerListeners() {
     this.player.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
-    this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
 
     this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);

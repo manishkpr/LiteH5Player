@@ -3,7 +3,7 @@
 /*********************************************************************************************/
 /************ Begin Player State ************/
 /* state: idle */
-.vop-player-idle .vop-control-bar {
+.vop-player-idle .vop-bottom-bar {
   display: none;
 }
 
@@ -12,7 +12,7 @@
 }
 
 /* state: opening */
-.vop-player-opening .vop-control-bar {
+.vop-player-opening .vop-bottom-bar {
   display: none;
 }
 
@@ -21,7 +21,7 @@
   display: block;
 }
 
-.vop-player-opened .vop-control-bar {
+.vop-player-opened .vop-bottom-bar {
   display: none;
 }
 
@@ -41,7 +41,7 @@
   display: none;
 }
 
-.vop-autohide .vop-control-bar {
+.vop-autohide .vop-bottom-bar {
   opacity: 0;
   -moz-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
   -webkit-transition: opacity .25s cubic-bezier(0.0, 0.0, 0.2, 1);
