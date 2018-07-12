@@ -19,16 +19,16 @@ class UIPlayToggleButton extends Component {
     switch(this.main.playerState) {
       case 'idle':
       case 'opened':
-      btnStyle = 'vop-style-play';
+      btnStyle = 'icon-play';
       break;
       case 'playing':
-      btnStyle = 'vop-style-pause';
+      btnStyle = 'icon-pause';
       break;
       case 'paused':
-      btnStyle = 'vop-style-play';
+      btnStyle = 'icon-play';
       break;
       case 'ended':
-      btnStyle = 'vop-style-replay';
+      btnStyle = 'icon-replay';
       break;
     }
 

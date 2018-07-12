@@ -18,7 +18,7 @@ class UIChromecastToggleButton extends Component {
     }
 
     return (
-      <button className={"vop-button vop-cast-button vop-style-cast"} title="chromecast"
+      <button className={"vop-button vop-cast-button"} title="chromecast"
         style={btnStyle}
         onClick={this.onUIComponentClick.bind(this)}
         onMouseMove={this.onUIComponentMouseMove.bind(this)}>

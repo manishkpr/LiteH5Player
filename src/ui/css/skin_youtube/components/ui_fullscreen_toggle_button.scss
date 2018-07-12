@@ -1,18 +1,20 @@
 @import '../ui_variables';
 
 .#{$skinYoutube} {
-  
-  .vop-style-fullscreen {
-    background-image: url(../assets/svg/ic_fullscreen_24px.svg);
-  }
-  .vop-style-fullscreen-exit {
-    background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg);
-  }
+  .vop-fullscreen-button {
 
-  .vop-style-fullscreen,
-  .vop-style-fullscreen-exit {
-    background-position: center;
-    background-repeat: no-repeat;
+    // & means .#{$skinYoutube} itself here.
+    &.icon-on {
+      background-image: url(../assets/svg/ic_fullscreen_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &.icon-off {
+      background-image: url(../assets/svg/ic_fullscreen_exit_24px.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
   }
 }
 

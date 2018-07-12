@@ -19,7 +19,7 @@ class UISettingsToggleButton extends Preact.Component {
     }
 
     return (
-      <button className="vop-button vop-settings-button vop-style-settings" title="settings"
+      <button className="vop-button vop-settings-button" title="settings"
         style={btnStyle}
         onClick={this.onUICmdSettings.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>

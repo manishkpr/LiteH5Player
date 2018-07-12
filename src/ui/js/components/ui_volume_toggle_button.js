@@ -9,7 +9,7 @@ class UIVolumeToggleButton extends Component {
     this.main = this.props.main;
     this.player = this.main.player;
 
-    this.vopVolumeBtnStyle = 'vop-style-volumeup';
+    this.vopVolumeBtnStyle = 'icon-up';
   }
 
   componentDidMount() {
@@ -43,12 +43,12 @@ class UIVolumeToggleButton extends Component {
     let muted = this.player.isMuted();
     let volume = this.player.getVolume();
     if (volume === 0 || muted) {
-      newVolumeBtnStyle = 'vop-style-volumeoff';
+      newVolumeBtnStyle = 'icon-off';
     } else {
       if (volume >= 0.5) {
-        newVolumeBtnStyle = 'vop-style-volumeup';
+        newVolumeBtnStyle = 'icon-up';
       } else {
-        newVolumeBtnStyle = 'vop-style-volumedown';
+        newVolumeBtnStyle = 'icon-down';
       }
     }
 

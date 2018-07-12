@@ -18,7 +18,7 @@ class UIAirplayToggleButton extends Component {
     }
 
     return (
-      <button className={"vop-button vop-airplay-button vop-style-airplay"} title="airplay"
+      <button className={"vop-button vop-airplay-button"} title="airplay"
         style={btnStyle}
         onClick={this.onUICmdAirplay.bind(this)}>
       </button>

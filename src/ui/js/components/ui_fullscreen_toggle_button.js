@@ -24,7 +24,7 @@ class UIFullscreenToggleButton extends Preact.Component {
 
   render() {
     return (
-      <button className="vop-button vop-fullscreen-button vop-style-fullscreen" title="fullscreen"
+      <button className="vop-button vop-fullscreen-button icon-on" title="fullscreen"
         onClick={this.onUICmdFullscreen.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>
@@ -50,11 +50,11 @@ class UIFullscreenToggleButton extends Preact.Component {
     myPrintLog('fullscreen changed, ret: ' + flagIsFullscreen + ', width: ' + window.screen.width + ', height: ' + window.screen.height);
 
     if (flagIsFullscreen) {
-      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
-      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
+      UITools.removeClass(this.vopFullscreenBtn, 'icon-on');
+      UITools.addClass(this.vopFullscreenBtn, 'icon-off');
     } else {
-      UITools.removeClass(this.vopFullscreenBtn, 'vop-style-fullscreen-exit');
-      UITools.addClass(this.vopFullscreenBtn, 'vop-style-fullscreen');
+      UITools.removeClass(this.vopFullscreenBtn, 'icon-off');
+      UITools.addClass(this.vopFullscreenBtn, 'icon-on');
     }
   }
 }
