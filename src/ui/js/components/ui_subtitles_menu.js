@@ -24,6 +24,8 @@ class UISubtitlesMenu extends Preact.Component {
   }
 
   render() {
+    let ret = (<div></div>);
+
     if (this.main.settingMenuUIData.currMenu === 'subtitles_menu') {
       const menuitems = this.main.settingMenuUIData.subtitleTracks.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitem"
@@ -40,7 +42,7 @@ class UISubtitlesMenu extends Preact.Component {
         </div>
       );
 
-      return (
+      ret = (
         <div>
           <div className="vop-panel-header">
             <button className="vop-panel-title" onClick={this.onMenuBackClick_}>Subtitles</button>
@@ -50,9 +52,9 @@ class UISubtitlesMenu extends Preact.Component {
           </div>
         </div>
       );
-    } else {
-      return (<div></div>);
     }
+
+    return ret;
   }
 
   onMenuBackClick() {
