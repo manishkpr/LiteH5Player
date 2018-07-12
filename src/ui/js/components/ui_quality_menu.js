@@ -25,7 +25,8 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
-    myPrintLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
+    //myPrintLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
+    let ret = (<div></div>);
 
     if (this.main.settingMenuUIData.currMenu === 'quality_menu') {
       const menuitems = this.main.settingMenuUIData.qualityList.map((item, index) =>
@@ -39,7 +40,7 @@ class UIQualityMenu extends Preact.Component {
         </div>
       );
 
-      return (
+      ret = (
         <div>
           <div className="vop-panel-header">
             <button className="vop-panel-title" onClick={this.onMenuBackClick_}>Quality</button>
@@ -49,9 +50,9 @@ class UIQualityMenu extends Preact.Component {
           </div>
         </div>
       );
-    } else {
-      return (<div></div>);
     }
+
+    return ret;
   }
 
   onMenuBackClick(e) {

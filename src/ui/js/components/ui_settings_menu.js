@@ -50,12 +50,12 @@ class UISettingsMenu extends Preact.Component {
           }
           break;
           case '3':
-          // for (let i = 0; i < this.main.settingMenuUIData.qualityList.length; i ++) {
-          //   let currItem = this.main.settingMenuUIData.qualityList[i];
-          //   if (currItem.id === this.main.settingMenuUIData.currQualityId) {
-          //     currValue = currItem.bitrate;
-          //   }
-          // }
+          for (let i = 0; i < this.main.settingMenuUIData.subtitleTracks.length; i ++) {
+            let currItem = this.main.settingMenuUIData.subtitleTracks[i];
+            if (currItem.id === this.main.settingMenuUIData.currSubtitleId) {
+              currValue = currItem.lang;
+            }
+          }
           break;
           case '4':
           for (let i = 0; i < this.main.settingMenuUIData.xspeedList.length; i ++) {

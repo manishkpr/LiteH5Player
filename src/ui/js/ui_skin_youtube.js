@@ -172,22 +172,22 @@ class UISkinYoutube extends Component {
       // audio track settings menu
       audioTrackList: [{
         id: '1',
-        lang: 'Bipbop1'
+        lang: 'English'
       }, {
         id: '2',
-        lang: 'Bipbop2'
+        lang: 'French'
       }, {
         id: '3',
-        lang: 'Bipbop3'
+        lang: 'Chinese'
       }, {
         id: '4',
-        lang: 'Bipbop4'
+        lang: 'Dutch'
       }, {
         id: '5',
-        lang: 'Bipbop5'
+        lang: 'Spanish'
       }, {
         id: '6',
-        lang: 'Bipbop6'
+        lang: 'Korean'
       }],
       currAudioTrackId: '1',
 
@@ -197,24 +197,24 @@ class UISkinYoutube extends Component {
         lang: 'English'
       }, {
         id: '2',
-        lang: 'France'
+        lang: 'French'
       }, {
         id: '3',
         lang: 'Chinese'
       }, {
         id: '4',
-        lang: '444'
+        lang: 'Dutch'
       }, {
         id: '5',
-        lang: '5555'
+        lang: 'Spanish'
       }, {
         id: '6',
-        lang: '666'
+        lang: 'Korean'
       }, {
         id: '7',
-        lang: '777'
+        lang: 'Thai'
       }],
-      currSubtitleId: '',
+      currSubtitleId: '2',
 
       // FCC settings menu
       currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
@@ -322,7 +322,6 @@ class UISkinYoutube extends Component {
     //
     this.onStateChange = this.onStateChange.bind(this);
 
-    this.onMediaEnded = this.onMediaEnded.bind(this);
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
     
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
@@ -431,7 +430,6 @@ class UISkinYoutube extends Component {
   initPlayerListeners() {
     this.player.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
-    this.player.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
 
     this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
@@ -466,7 +464,6 @@ class UISkinYoutube extends Component {
     this.player.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
-    this.player.off(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
     this.player.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
 
     this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
@@ -844,72 +841,6 @@ class UISkinYoutube extends Component {
     this.updateUIState();
   }
 
-  onBtnSeek() {
-    let time = document.getElementById('seekedTime').value;
-    this.player.setPosition(time);
-  }
-
-  onBtnAddTextTrack() {
-    if (this.player) {
-      this.player.addTextTrack();
-    }
-  }
-
-  onBtnRemoveTextTrack() {
-    this.player.removeTextTrack();
-  }
-
-  setTextTrackHidden() {
-    this.player.setTextTrackHidden();
-  }
-
-  setCueAlign(align) {
-    this.player.setCueAlign(align);
-  }
-
-  onFruitClick() {
-    alert('aaaa');
-  }
-
-  onBtnAttribute() {
-    //this.player.attribute();
-  }
-
-  //
-  onUICmdCastInit() {
-    let cfg = getInitConfig();
-    this.castSender.new_init(cfg);
-  }
-
-  onUICmdCastOpen() {
-    let info = getMediaInfo();
-    this.castSender.new_open(info);
-  }
-
-  onUICmdCastAddV() {
-    this.castSender.new_addV();
-  }
-
-  onUICmdCastAddPD() {
-    this.castSender.new_addPD();
-  }
-
-  onUICmdCastPlay() {
-    this.castSender.new_play();
-  }
-
-  onUICmdCastPause() {
-    this.castSender.new_pause();
-  }
-
-  onUICmdCastPlayAd() {
-    this.castSender.new_playAd();
-  }
-
-  onUICmdCastTest() {
-    this.castSender.new_test();
-  }
-
   onProgressBarMouseDown(e) {
     myPrintLog('+onProgressBarMouseDown');
   }
@@ -927,9 +858,6 @@ class UISkinYoutube extends Component {
   onStateChange(e) {
     let newState = e.newState;
     this.updateUIStateMachine(newState);
-  }
-
-  onMediaEnded() {
   }
 
   onMediaLoadedMetaData(e) {
