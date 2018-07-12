@@ -1,0 +1,19 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-style-play-giant {
+    background-image: url(../assets/svg/ic_play_arrow_48px.svg);
+  }
+  .vop-style-pause-giant {
+    background-image: url(../assets/svg/ic_pause_48px.svg);
+  }
+
+  .vop-style-play-giant,
+  .vop-style-pause-giant {
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+
+

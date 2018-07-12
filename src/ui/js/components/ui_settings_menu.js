@@ -102,8 +102,8 @@ class UISettingsMenu extends Preact.Component {
 
     this.main.onMainMenuItemBlur(e);
   }
-
-
 }
 
 export default UISettingsMenu;
+
+

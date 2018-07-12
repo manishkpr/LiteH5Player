@@ -1209,7 +1209,7 @@ class UISkinYoutube extends Component {
     this.settingMenuUIData.currSpeedId = nextFocus.dataset.id;
     this.updateUIState();
 
-    //
+    // Change Player X-Speed
     function getXSpeedValue(id) {
       let value = '';
       for (let i = 0; i < this.settingMenuUIData.xspeedList.length; i++) {

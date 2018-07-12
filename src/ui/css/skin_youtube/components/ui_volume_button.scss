@@ -1,0 +1,29 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-volume-button {
+    float: left;
+  }
+
+  .vop-style-volumedown {
+    background-image: url(../assets/svg/ic_volume_down_24px.svg);
+  }
+  .vop-style-volumeup {
+    background-image: url(../assets/svg/ic_volume_up_24px.svg);
+  }
+  .vop-style-volumeoff {
+    background-image: url(../assets/svg/ic_volume_off_24px.svg);
+  }
+
+  .vop-style-volumedown,
+  .vop-style-volumeup,
+  .vop-style-volumeoff {
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+
+
+
+

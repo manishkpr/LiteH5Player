@@ -1,7 +1,16 @@
 @import './skin_youtube/ui_variables';
 
 @import './skin_youtube/ui_player';
-@import './skin_youtube/ui_buttons';
+
+@import './skin_youtube/components/ui_airplay_button';
+@import './skin_youtube/components/ui_cast_button';
+@import './skin_youtube/components/ui_fullscreen_button';
+@import './skin_youtube/components/ui_huge_play_button';
+@import './skin_youtube/components/ui_pip_button';
+@import './skin_youtube/components/ui_play_button';
+@import './skin_youtube/components/ui_settings_button';
+@import './skin_youtube/components/ui_subtitles_button';
+@import './skin_youtube/components/ui_volume_button';
 
 
 

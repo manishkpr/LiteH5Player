@@ -191,21 +191,11 @@
     padding: 0;
     border: 0;
   }
-  .vop-play-button,
-  .vop-volume-button,
   .vop-volume-panel,
   .vop-time-display {
     float: left;
   }
-  .vop-play-button::before {
-    content: '';
-    display: block;
-    height: 100%;
-    width: 12px;
-    position: absolute;
-    top: 0;
-    left: -12px;
-  }
+
   /************ End custom button ************/
   /************ Begin Time Display ************/
   .vop-time-display {
