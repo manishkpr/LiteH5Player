@@ -31,12 +31,7 @@
 }
 /************ End Player State ************/
 
-/************ Begin buffering ************/
-.vop-buffering .vop-spinner {
-  display: block;
-}
-/************ End buffering ************/
-
+/*********************************************************************************************/
 /************ Begin auto-hide ************/
 .vop-autohide {
   cursor: none
@@ -58,6 +53,14 @@
 }
 /************ End auto-hide ************/
 
+/*********************************************************************************************/
+/************ Begin buffering ************/
+.vop-buffering .vop-spinner {
+  display: block;
+}
+/************ End buffering ************/
+
+/*********************************************************************************************/
 /************ Begin chromecast connected ************/
 .vop-chromecast-connected .vop-chromecast-overlay {
   display: block;
