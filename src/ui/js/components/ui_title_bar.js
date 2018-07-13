@@ -18,6 +18,7 @@ class UITitleBar extends Component {
     // let description = 'Tired of being picked on by Frankie the squirrel and his band of puny forest creatures, JC the bunny finally decides to fight back.';
 
     let ret = (<div></div>);
+    
     switch(this.main.playerState) {
       case 'idle':
       case 'opening':

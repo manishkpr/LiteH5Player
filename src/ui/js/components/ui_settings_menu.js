@@ -28,6 +28,7 @@ class UISettingsMenu extends Preact.Component {
   }
 
   render() {
+    let ret = (<div></div>);
     //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
     if (this.main.settingMenuUIData.currMenu === 'settings_menu') {
       const menuitems = this.main.settingMenuUIData.settingsList.map(function(item, index) {
@@ -81,14 +82,14 @@ class UISettingsMenu extends Preact.Component {
         );
       }.bind(this));
 
-      return (
+      ret = (
         <div className="vop-panel-menu">
           { menuitems }
         </div>
       );
-    } else {
-      return (<div></div>);
     }
+
+    return ret;
   }
 
   onMenuItemClick(e) {

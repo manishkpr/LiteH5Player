@@ -23,6 +23,7 @@ class UIAudioTrackMenu extends Preact.Component {
 
   render() {
     //myPrintLog('+render, UIAudioTrackMenu: ' + this.main.settingMenuUIData.currMenu);
+    let ret = (<div></div>);
 
     if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
       const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
@@ -36,7 +37,7 @@ class UIAudioTrackMenu extends Preact.Component {
         </div>
       );
 
-      return (
+      ret = (
         <div>
           <div className="vop-panel-header">
             <button className="vop-panel-title" onClick={this.onMenuBackClick_}>AudioTrack</button>
@@ -46,9 +47,9 @@ class UIAudioTrackMenu extends Preact.Component {
           </div>
         </div>
       );
-    } else {
-      return (<div></div>);
     }
+
+    return ret;
   }
 
   onMenuBackClick(e) {

@@ -13,21 +13,8 @@ class UIBottomBar extends Component {
   }
 
   render() {
-    let style = {};
-    switch(this.main.playerState) {
-      case 'idle':
-      case 'opening':
-      case 'opened':
-      case 'playing':
-      case 'paused':
-      case 'ended':
-      //style.display = 'block';
-      break;
-    }
-
     return (
       <div className="vop-bottom-bar"
-        style={style}
         onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
         <UIProgressBar main={this.main} />
         <UIControlBar main={this.main} />

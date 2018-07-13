@@ -19,8 +19,6 @@ class UIToolTip extends Component {
     this.vopTooltip = document.querySelector('.vop-tooltip');
     this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
     this.vopTooltipText = document.querySelector('.vop-tooltip-text');
-
-
   }
 
   componentDidUpdate() {
