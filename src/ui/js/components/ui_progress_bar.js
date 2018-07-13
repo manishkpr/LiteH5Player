@@ -29,7 +29,6 @@ class UIProgressBar extends Component {
     this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
-
     this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
@@ -37,7 +36,6 @@ class UIProgressBar extends Component {
     this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
-
     this.player.off(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
