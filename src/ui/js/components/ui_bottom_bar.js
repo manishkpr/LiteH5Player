@@ -29,7 +29,6 @@ class UIBottomBar extends Component {
       <div className="vop-bottom-bar"
         style={style}
         onMouseDown={this.onUICmdControlBarMouseDown.bind(this)}>
-        <UIProgressBar main={this.main} />
         <UIControlBar main={this.main} />
       </div>
     );

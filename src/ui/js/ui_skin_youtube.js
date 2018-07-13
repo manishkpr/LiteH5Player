@@ -550,8 +550,8 @@ class UISkinYoutube extends Component {
       // part - input
       // bounding client rect can return the progress bar's rect relative to current page.
       let rect = this.vopProgressBar.getBoundingClientRect();
-      let leftMin = 12;
-      let rightMax = 12 + rect.width;
+      let leftMin = 12 + this.vopProgressBar.offsetLeft;
+      let rightMax = leftMin + rect.width;
 
       let duration = this.player.getDuration();
         

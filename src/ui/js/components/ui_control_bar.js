@@ -31,7 +31,7 @@ class UIControlBar extends Component {
         <UIVolumeToggleButton main={this.main} />
         <UIVolumeBar main={this.main} />
         <UITimeLabel main={this.main} />
-        <div style="width: 100%; height: 100%; background-color: transparent;"></div>
+        <UIProgressBar main={this.main} />
         <UIPipToggleButton main={this.main} />
         <UIAirplayToggleButton main={this.main} />
         <UIChromecastToggleButton main={this.main} />
