@@ -109,7 +109,7 @@ class UIProgressBar extends Component {
       this.progressBarContext = null;
     }
   }
- 
+
   onAdTimeUpdate() {
     let position = this.player.getPosition();
     let duration = this.player.getDuration();
@@ -326,8 +326,6 @@ class UIProgressBar extends Component {
       // update time progress scrubber button
       this.vopScrubberContainer.style.transform = ret.scrubberContainerTransform;
     }
-
-    this.main.updateTimeDisplay(ret.uiPosition, duration);
   }
 
   updateProgressBarHoverUI() {

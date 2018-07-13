@@ -43,7 +43,7 @@ class UIVolumeBar extends Preact.Component {
         style={{display: 'inline-block'}}>
         <div className="vop-volume-slider" style={{background: background}}
           onMouseDown={this.onVolumeSliderMouseDown.bind(this)}>
-          <div className="vop-volume-slider-handle">
+          <div className="vop-volume-slider-handle" style={{left: left}}>
           </div>
         </div>
       </div>

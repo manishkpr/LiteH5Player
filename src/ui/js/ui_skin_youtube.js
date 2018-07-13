@@ -360,8 +360,6 @@ class UISkinYoutube extends Component {
 
     this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
 
-    this.vopTimeLabel = document.querySelector('.vop-time-text');
-
     this.vopPlayButton = document.querySelector('.vop-play-button');
     this.vopPauseButton = document.querySelector('.vop-pause-button');
     this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
@@ -604,33 +602,6 @@ class UISkinYoutube extends Component {
     // set the correct offset of tooltip.
     let offsetX = getTooltipOffsetX.call(this, currMovePos, this.vopTooltip.clientWidth);
     this.vopTooltip.style.left = offsetX.toString() + 'px';
-  }
-
-  getTimeDisplay(position, duration) {
-    let isLive = (duration === Infinity) ? true : false;
-
-    let timeText = '';
-    if (isLive) {
-      // update time display label
-      timeText = 'Live';
-    } else {
-      // update time display label
-      let c = oldmtn.CommonUtils.timeToString(position);
-      let d = oldmtn.CommonUtils.timeToString(duration);
-      timeText = c + '/' + d;
-    }
-
-    return timeText;
-  }
-
-  updateTimeDisplay(position, duration) {
-    let text = this.getTimeDisplay(position, duration);
-    if (text === 'Live') {
-      UITools.addClass(this.vopTimeLabel, 'vop-time-text-live');
-    } else {
-      UITools.removeClass(this.vopTimeLabel, 'vop-time-text-live');
-    }
-    this.vopTimeLabel.innerText = text;
   }
 
   ///////////////////////////////////////////////////////////////////////////
