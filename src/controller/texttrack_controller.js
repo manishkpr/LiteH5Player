@@ -25,7 +25,7 @@ function TextTrackController() {
 
   function onTextTrackLoaded(e) {
     if (currTrackId_ === '') {
-      currTrackId_ = 0;
+      currTrackId_ = '0';
     }
     textTracks_.push(e.track);
 
@@ -224,16 +224,9 @@ function TextTrackController() {
   }
 
   function selectSubtitleTrack(id) {
-    for (let i = 0; i < media_.textTracks.length; i ++) {
-      let track = media_.textTracks[i];
-      if (i.toString() === id) {
-        track.mode = 'showing';
-      } else {
-        track.mode = 'hidden';
-      }
-    }
-
     currTrackId_ = id;
+
+    eventBus_.trigger(Events.TRACK_CHANGED, {currTrackId: currTrackId_});
   }
 
   let instance = {

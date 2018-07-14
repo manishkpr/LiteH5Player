@@ -23,7 +23,9 @@ class UICaptionOverlay extends Component {
     this.evEmitter = this.main.evEmitter;
 
     this.onTrackAdded = this.onTrackAdded.bind(this);
+    this.onTrackChanged = this.onTrackChanged.bind(this);
     this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
+    this.player.on(oldmtn.Events.TRACK_CHANGED, this.onTrackChanged);
 
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
     this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
@@ -53,14 +55,11 @@ class UICaptionOverlay extends Component {
   onMediaTimeupdated(e) {
     let pos = this.player.getPosition();
 
-    const cues = this.getCurrentCues(this.textTrack_.data, pos);
-    // BD
-    if (cues.length > 0) {
-      cues.forEach((item) => {
-        console.log('item: ', item);
-      });
+    let cues = [];
+    if (this.textTrack_) {
+      cues = this.getCurrentCues(this.textTrack_.data, pos);
     }
-    // ED
+
     this.updateCurrentCues(cues);
     this.renderCues();
   }
@@ -76,8 +75,15 @@ class UICaptionOverlay extends Component {
 
   onTrackAdded(e) {
     if (this.currTrackId_ !== e.currTrackId) {
-      this.textTrack_ = e.track;
       this.currTrackId_ = e.currTrackId;
+      this.textTrack_ = e.track;
+    }
+  }
+
+  onTrackChanged(e) {
+    if (this.currTrackId_ !== e.currTrackId) {
+      this.currTrackId_ = e.currTrackId;
+      this.textTrack_ = this.player.getCurrentSubtitleTrack();
     }
   }
 

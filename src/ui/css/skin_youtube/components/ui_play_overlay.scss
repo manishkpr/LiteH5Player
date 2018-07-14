@@ -20,6 +20,10 @@
   }
 }
 
-.vop-player-opened .#{$skinYoutube} .vop-play-overlay-container {
+.vop-player-opened .vop-play-overlay-container {
+  display: block;
+}
+
+.vop-player-ended .vop-play-overlay-container {
   display: block;
 }

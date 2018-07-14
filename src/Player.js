@@ -122,6 +122,15 @@ function Player(idContainer) {
       // load captions tracks
       for (let i = 0; i < mediaCfg.tracks.length; i++) {
         let track = mediaCfg.tracks[i];
+        //
+        track.id = i.toString();
+        if (!track.lang) {
+          if (track.label) {
+            track.lang = track.label;
+          } else {
+            track.lang = track.label = 'texttrack_' + i.toString();
+          }
+        }
         if (track.kind === 'captions') {
           eventBus_.trigger(Events.TRACK_LOADING, {
             track: track

@@ -56,6 +56,7 @@ class CoreEvents {
     this.TRACK_LOADING = 'trackLoading';
     this.TRACK_LOADED = 'trackLoaded';
     this.TRACK_ADDED = 'trackAdded';
+    this.TRACK_CHANGED = 'trackChanged';
     // chromecast
     this.CAST_CONNECTED = 'castConnected';
     this.CAST_DISCONNECTED = 'castDisconnected';

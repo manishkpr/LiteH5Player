@@ -19,6 +19,11 @@
   }
 }
 
+.vop-player-ended {
+  .#{$skinYoutube} .vop-play-button {
+    background-image: url(../assets/svg/ic_replay_24px.svg);
+  }
+}
 
 
 
