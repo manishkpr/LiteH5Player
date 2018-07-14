@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import ID from '../id';
@@ -56,13 +59,15 @@ class UIQualityMenu extends Component {
   render() {
     console.log('UIQualityMenu, render');
 
-    const { qualityData } = this.state;
+    const {
+      qualityData
+    } = this.state;
 
     const menuitems = qualityData.qualityList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitemradio"
-          aria-checked={qualityData.currQualityId === item.id}
-          data-id={item.id} onClick={this.onMenuItemClick_}
-          tabIndex="0" onBlur={this.onMenuItemBlur_}>
+        aria-checked={qualityData.currQualityId === item.id}
+        data-id={item.id} onClick={this.onMenuItemClick_}
+        tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
           <span>{ item.bitrate }</span>
         </div>
@@ -94,7 +99,9 @@ class UIQualityMenu extends Component {
     let nextFocus = e.currentTarget;
 
     this.qualityData.currQualityId = nextFocus.dataset.id;
-    this.setState({qualityData: this.qualityData});
+    this.setState({
+      qualityData: this.qualityData
+    });
   }
 
   onMenuItemBlur(e) {
@@ -119,8 +126,3 @@ class UIQualityMenu extends Component {
 }
 
 export default UIQualityMenu;
-
-
-
-
-

@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 import Events from '../events';
 import UITools from '../ui_tools';
 
@@ -64,7 +67,7 @@ class UIToolTip extends Component {
       let rightMax = leftMin + rect.width;
 
       let duration = this.player.getDuration();
-        
+
       let currPosWidth = (currMovePos / duration) * rect.width;
       let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
       let tooltipRight_RelativeToVideo = leftMin + currPosWidth + tooltipWidth / 2;
@@ -124,7 +127,3 @@ class UIToolTip extends Component {
 }
 
 export default UIToolTip;
-
-
-
-

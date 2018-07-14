@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -38,7 +41,9 @@ class UISettingsToggleButton extends Component {
         this.main.settingMenuUIData.currMenu = 'settings_menu';
       }
     }
-    this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu
+    });
   }
 
   onControlMouseMove(e) {
@@ -48,4 +53,3 @@ class UISettingsToggleButton extends Component {
 }
 
 export default UISettingsToggleButton;
-

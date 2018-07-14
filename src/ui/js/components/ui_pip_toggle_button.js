@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -27,7 +30,7 @@ class UIPipToggleButton extends Component {
 
   render() {
     return (
-      <button className={"vop-button vop-pip-button"} title="picture in picture"
+      <button className={'vop-button vop-pip-button'} title='picture in picture'
         onClick={this.onUICmdPip.bind(this)}>
       </button>
     );
@@ -55,6 +58,4 @@ class UIPipToggleButton extends Component {
   }
 }
 
-
 export default UIPipToggleButton;
-

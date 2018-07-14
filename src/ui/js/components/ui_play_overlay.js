@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 class UIPlayOverlay extends Component {
   constructor(props) {
@@ -6,11 +9,9 @@ class UIPlayOverlay extends Component {
     this.main = this.props.main;
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   render() {
     return (
@@ -49,4 +50,3 @@ class UIPlayOverlay extends Component {
 }
 
 export default UIPlayOverlay;
-

@@ -1,8 +1,10 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import ID from '../id';
-
 
 class UIFccPropertyMenu extends Component {
   constructor(props) {
@@ -36,7 +38,9 @@ class UIFccPropertyMenu extends Component {
   }
 
   render() {
-    const { fccProperty } = this.state;
+    const {
+      fccProperty
+    } = this.state;
 
     if (fccProperty) {
       const menuitems = fccProperty.values.map((value, index) =>
@@ -67,15 +71,21 @@ class UIFccPropertyMenu extends Component {
 
   onMenuBackClick(e) {
     this.main.settingMenuUIData.currMenu = 'fcc_menu';
-    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {menu: this.main.settingMenuUIData.currMenu});
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu
+    });
   }
 
   onMenuItemClick(e) {
     let currValue = e.currentTarget.dataset.id;
     this.fccProperty.currValue = currValue;
-    this.setState({fccProperty: this.fccProperty});
+    this.setState({
+      fccProperty: this.fccProperty
+    });
 
-    this.evEmitter.emit(Events.FCC_PROPERTY_VALUE_CHANGE, {fccProperty: this.fccProperty});
+    this.evEmitter.emit(Events.FCC_PROPERTY_VALUE_CHANGE, {
+      fccProperty: this.fccProperty
+    });
   }
 
   onMenuItemBlur(e) {
@@ -98,7 +108,9 @@ class UIFccPropertyMenu extends Component {
       }
     } else {
       this.main.settingMenuUIData.currMenu = 'none';
-      this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
+      this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+        menu: this.main.settingMenuUIData.currMenu
+      });
     }
   }
 
@@ -108,7 +120,9 @@ class UIFccPropertyMenu extends Component {
     } else {
       this.fccProperty = null;
     }
-    this.setState({fccProperty: this.fccProperty});
+    this.setState({
+      fccProperty: this.fccProperty
+    });
   }
 }
 

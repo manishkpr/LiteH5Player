@@ -72,7 +72,7 @@ function ProtectionModel_3Feb2014(media) {
   function onSessionError(ev) {}
 
   function onSessionMessage(ev) {
-    console.log("DRM: Key Message");
+    console.log('DRM: Key Message');
 
     let abMessage = ev.message;
     if (ArrayBuffer.isView(abMessage)) {
@@ -87,13 +87,13 @@ function ProtectionModel_3Feb2014(media) {
       if (this.status === 200) {
         session_.update(new Uint8Array(this.response));
       }
-    }
+    };
     xhr.onabort = function() {
       console.log('DRM: xhr abort');
-    }
+    };
     xhr.onerror = function() {
       console.log('DRM: xhr error');
-    }
+    };
 
     // 
     let headers = keySystem_.getRequestHeadersFromMessage(abMessage);
@@ -172,4 +172,3 @@ function ProtectionModel_3Feb2014(media) {
 }
 
 export default ProtectionModel_3Feb2014;
-

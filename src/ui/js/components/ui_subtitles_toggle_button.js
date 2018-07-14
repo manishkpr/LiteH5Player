@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import ID from '../id';
@@ -20,8 +23,7 @@ class UISubtitlesToggleButton extends Component {
     this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {
     this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
@@ -46,7 +48,9 @@ class UISubtitlesToggleButton extends Component {
     } else {
       this.main.settingMenuUIData.currMenu = 'none';
     }
-    this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu
+    });
   }
 
   onControlMouseMove(e) {

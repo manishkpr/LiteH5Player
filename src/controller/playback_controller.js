@@ -20,7 +20,7 @@ function PlaybackController() {
   let context_ = this.context;
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
-  
+
   let media_ = context_.media;
   let cfg_ = context_.cfg;
 
@@ -228,22 +228,22 @@ function PlaybackController() {
     debug_.log('+Native video element event: loadeddata');
 
     function hasAudio() {
-      if (typeof media_.webkitAudioDecodedByteCount !== "undefined") {
+      if (typeof media_.webkitAudioDecodedByteCount !== 'undefined') {
         // non-zero if video has audio track
         if (media_.webkitAudioDecodedByteCount > 0) {
-          console.log("video has audio");
+          console.log('video has audio');
         } else {
-          console.log("video doesn't have audio");
+          console.log('video doesn\'t have audio');
         }
-      } else if (typeof media_.mozHasAudio !== "undefined") {
+      } else if (typeof media_.mozHasAudio !== 'undefined') {
         // true if video has audio track
         if (media_.mozHasAudio) {
-          console.log("video has audio");
+          console.log('video has audio');
         } else {
-          console.log("video doesn't have audio");
+          console.log('video doesn\'t have audio');
         }
       } else {
-        console.log("can't tell if video has audio");
+        console.log('can\'t tell if video has audio');
       }
     }
 
@@ -391,7 +391,7 @@ function PlaybackController() {
     let bufferedEnd;
     for (let i = 0; i < media_.buffered.length; ++i) {
       let start = media_.buffered.start(i);
-      let end = media_.buffered.end(i)
+      let end = media_.buffered.end(i);
 
       if (currentPos >= start && currentPos <= end) {
         bufferedEnd = end;

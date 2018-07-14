@@ -1,7 +1,10 @@
-import { h, render } from 'preact';
+import {
+  h,
+  render
+} from 'preact';
 import UISkinYoutube from './ui_skin_youtube';
 
-window.myPrintLog = function (msg, level) {
+window.myPrintLog = function(msg, level) {
   if (printLog) {
     printLog(msg, level);
   }
@@ -32,8 +35,3 @@ class UIEngine {
 }
 
 export default UIEngine;
-
-
-
-
-

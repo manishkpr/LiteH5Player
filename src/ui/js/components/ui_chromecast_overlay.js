@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 class UIChromecastOverlay extends Component {
   constructor(props) {
@@ -44,7 +47,3 @@ class UIChromecastOverlay extends Component {
 }
 
 export default UIChromecastOverlay;
-
-
-
-

@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -25,7 +28,7 @@ class UIAirplayToggleButton extends Component {
 
   render() {
     return (
-      <button className={"vop-button vop-airplay-button"} title="airplay"
+      <button className={'vop-button vop-airplay-button'} title='airplay'
         onClick={this.onUICmdAirplay.bind(this)}>
       </button>
     );
@@ -53,4 +56,3 @@ class UIAirplayToggleButton extends Component {
 }
 
 export default UIAirplayToggleButton;
-

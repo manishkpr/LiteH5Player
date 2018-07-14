@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -30,7 +33,7 @@ class UIVolumeToggleButton extends Component {
     this.vopVolumeBtnStyle = this.getNewVolumeBtnStyle();
 
     return (
-      <button className={"vop-button vop-volume-button" + " " + this.vopVolumeBtnStyle} title="mute"
+      <button className={'vop-button vop-volume-button' + ' ' + this.vopVolumeBtnStyle} title='mute'
         onClick={this.onUICmdVolume.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>
@@ -94,8 +97,4 @@ class UIVolumeToggleButton extends Component {
   }
 }
 
-
 export default UIVolumeToggleButton;
-
-
-

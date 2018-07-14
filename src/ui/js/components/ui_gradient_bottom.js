@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 class UIGradientBottom extends Component {
   constructor(props) {
@@ -16,5 +19,3 @@ class UIGradientBottom extends Component {
 }
 
 export default UIGradientBottom;
-
-

@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 import Events from '../events';
 import ID from '../id';
 
@@ -50,14 +53,16 @@ class UIAudioTrackMenu extends Component {
 
   render() {
     console.log('UIAudioTrackMenu, render');
-    
-    const { audioTrackData } = this.state;
+
+    const {
+      audioTrackData
+    } = this.state;
 
     const menuitems = audioTrackData.audioTrackList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitemradio"
-          aria-checked={audioTrackData.currAudioTrackId === item.id}
-          data-id={item.id} onClick={this.onMenuItemClick_}
-          tabIndex="0" onBlur={this.onMenuItemBlur_}>
+        aria-checked={audioTrackData.currAudioTrackId === item.id}
+        data-id={item.id} onClick={this.onMenuItemClick_}
+        tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
           <span>{ item.lang }</span>
         </div>
@@ -86,7 +91,9 @@ class UIAudioTrackMenu extends Component {
   onMenuItemClick(e) {
     let nextFocus = e.currentTarget;
     this.audioTrackData.currAudioTrackId = nextFocus.dataset.id;
-    this.setState({audioTrackData: this.audioTrackData});
+    this.setState({
+      audioTrackData: this.audioTrackData
+    });
   }
 
   onMenuItemBlur(e) {
@@ -110,7 +117,3 @@ class UIAudioTrackMenu extends Component {
 }
 
 export default UIAudioTrackMenu;
-
-
-
-

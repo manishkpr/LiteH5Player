@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import ID from '../id';
@@ -18,7 +21,7 @@ class UIFccMenu extends Component {
     this.onFccPropertyValueChange = this.onFccPropertyValueChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
     this.evEmitter.on(Events.FCC_PROPERTY_VALUE_CHANGE, this.onFccPropertyValueChange);
-    
+
     this.fccData = {
       currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
       isEnableFCC: true,
@@ -100,7 +103,7 @@ class UIFccMenu extends Component {
     };
     this.state = {
       fccData: this.fccData
-    }
+    };
   }
 
   componentDidMount() {
@@ -109,12 +112,14 @@ class UIFccMenu extends Component {
 
   render() {
     myPrintLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
-    const { fccData } = this.state;
+    const {
+      fccData
+    } = this.state;
 
     const menuitems = fccData.fccPropertyList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
-          data-id={item.name} onClick={this.onMenuItemClick_}
-          tabIndex="0" onBlur={this.onMenuItemBlur_}>
+        data-id={item.name} onClick={this.onMenuItemClick_}
+        tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
           <span>{ item.name }</span>
         </div>
@@ -150,13 +155,16 @@ class UIFccMenu extends Component {
 
     let currFccPropertyName = e.currentTarget.dataset.id;
     let fccProperty;
-    for (let i = 0; i < this.fccData.fccPropertyList.length; i ++) {
+    for (let i = 0; i < this.fccData.fccPropertyList.length; i++) {
       fccProperty = this.fccData.fccPropertyList[i];
       if (currFccPropertyName === fccProperty.name) {
         break;
       }
     }
-    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {menu: this.main.settingMenuUIData.currMenu, fccProperty: fccProperty});
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu,
+      fccProperty: fccProperty
+    });
   }
 
   onMenuItemBlur(e) {
@@ -180,11 +188,13 @@ class UIFccMenu extends Component {
 
   onFccPropertyValueChange(e) {
     let fccProperty = e.fccProperty;
-    for (let i = 0; i < this.fccData.fccPropertyList.length; i ++) {
+    for (let i = 0; i < this.fccData.fccPropertyList.length; i++) {
       let tmpFccProperty = this.fccData.fccPropertyList[i];
       if (tmpFccProperty.name === fccProperty.name) {
         this.fccData.fccPropertyList[i] = fccProperty;
-        this.setState({fccData: this.fccData});
+        this.setState({
+          fccData: this.fccData
+        });
         break;
       }
     }
@@ -192,7 +202,3 @@ class UIFccMenu extends Component {
 }
 
 export default UIFccMenu;
-
-
-
-

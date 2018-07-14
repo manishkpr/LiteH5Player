@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import '../../assets/img/logo.png';

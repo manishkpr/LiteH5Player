@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import UITools from '../ui_tools';
@@ -6,7 +8,7 @@ import UITools from '../ui_tools';
 class UIFullscreenToggleButton extends Preact.Component {
   constructor(props) {
     super(props);
-    
+
     this.main = this.props.main;
     this.player = this.main.player;
   }
@@ -36,7 +38,7 @@ class UIFullscreenToggleButton extends Preact.Component {
     if (this.player.isFullscreen()) {
       UITools.leaveFullscreen();
     } else {
-      let v = this.main.playerContainer
+      let v = this.main.playerContainer;
       UITools.enterFullscreen(v);
     }
   }
@@ -58,6 +60,5 @@ class UIFullscreenToggleButton extends Preact.Component {
     }
   }
 }
-
 
 export default UIFullscreenToggleButton;

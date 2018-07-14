@@ -3,5 +3,4 @@ export const ErrorTypes = {
   LICENSE_ERROR: 'licenseError'
 };
 
-export const ErrorDetails = {
-};
+export const ErrorDetails = {};

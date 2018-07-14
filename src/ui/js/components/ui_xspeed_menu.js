@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 import Events from '../events';
 import ID from '../id';
 
@@ -48,13 +51,15 @@ class UIXSpeedMenu extends Component {
   render() {
     console.log('UIXSpeedMenu, render');
 
-    const { xspeedData } = this.state;
+    const {
+      xspeedData
+    } = this.state;
 
     const menuitems = xspeedData.xspeedList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitemradio"
-          aria-checked={xspeedData.currSpeedId === item.id}
-          data-id={item.id} onClick={this.onMenuItemClick_}
-          tabIndex="0" onBlur={this.onMenuItemBlur_}>
+        aria-checked={xspeedData.currSpeedId === item.id}
+        data-id={item.id} onClick={this.onMenuItemClick_}
+        tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
           <span>{ item.value }</span>
         </div>
@@ -85,7 +90,9 @@ class UIXSpeedMenu extends Component {
     let nextFocus = e.currentTarget;
 
     this.xspeedData.currSpeedId = nextFocus.dataset.id;
-    this.setState({xspeedData: this.xspeedData});
+    this.setState({
+      xspeedData: this.xspeedData
+    });
 
     // Change Player X-Speed
     function getXSpeedValue(id) {
@@ -128,5 +135,3 @@ class UIXSpeedMenu extends Component {
 }
 
 export default UIXSpeedMenu;
-
-

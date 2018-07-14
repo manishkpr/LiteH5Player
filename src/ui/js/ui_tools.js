@@ -1,6 +1,5 @@
 var UITools = {};
 
-
 UITools.enterFullscreen = function(v) {
   // Try to enter fullscreen mode in the browser
   let requestFullscreen =
@@ -14,7 +13,7 @@ UITools.enterFullscreen = function(v) {
     v.msRequestFullScreen;
 
   requestFullscreen.call(v);
-}
+};
 
 UITools.leaveFullscreen = function() {
   let cancelFullscreen =
@@ -27,21 +26,21 @@ UITools.leaveFullscreen = function() {
   if (cancelFullscreen) {
     cancelFullscreen.call(document);
   }
-}
+};
 
 UITools.hasClass = function(elements, cName) {
-  return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
+  return !!elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'));
 };
 
 UITools.addClass = function(elements, cName) {
   if (!UITools.hasClass(elements, cName)) {
-    elements.className = (elements.className + " " + cName).trim();
+    elements.className = (elements.className + ' ' + cName).trim();
   }
 };
 
 UITools.removeClass = function(elements, cName) {
   if (UITools.hasClass(elements, cName)) {
-    elements.className = (elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ")).trim();
+    elements.className = (elements.className.replace(new RegExp('(\\s|^)' + cName + '(\\s|$)'), ' ')).trim();
   }
 };
 
@@ -75,11 +74,4 @@ UITools.isPtInElement = function(pt, element) {
   }
 };
 
-
-
 export default UITools;
-
-
-
-
-

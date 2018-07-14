@@ -29,7 +29,10 @@ function TextTrackController() {
     }
     textTracks_.push(e.track);
 
-    eventBus_.trigger(Events.TRACK_ADDED, { track: e.track, currTrackId: currTrackId_ });
+    eventBus_.trigger(Events.TRACK_ADDED, {
+      track: e.track,
+      currTrackId: currTrackId_
+    });
   }
 
   function onTextTrackLoaded_old(e) {
@@ -59,7 +62,7 @@ function TextTrackController() {
         start: item.start,
         end: item.end,
         text: item.data,
-      }
+      };
 
       let cue = createCue(data);
       textTrack.addCue(cue);
@@ -81,13 +84,16 @@ function TextTrackController() {
     }
 
     // Trigger text track found event.
-    eventBus_.trigger(Events.TRACK_ADDED, { track: track, currTrackId: currTrackId_ });
+    eventBus_.trigger(Events.TRACK_ADDED, {
+      track: track,
+      currTrackId: currTrackId_
+    });
   }
 
   function createCue(data) {
     function findTrackById(id) {
       let ret;
-      for (let i = 0; i < media_.textTracks.length; i ++) {
+      for (let i = 0; i < media_.textTracks.length; i++) {
         let track = media_.textTracks[i];
         if (id === i.toString()) {
           ret = track;
@@ -218,7 +224,7 @@ function TextTrackController() {
    */
   function getCurrentSubtitleTrack() {
     let currTrack;
-    for (let i = 0; i < textTracks_.length; i ++) {
+    for (let i = 0; i < textTracks_.length; i++) {
       let track = textTracks_[i];
       if (track.id === currTrackId_) {
         currTrack = track;
@@ -230,7 +236,9 @@ function TextTrackController() {
   function selectSubtitleTrack(id) {
     currTrackId_ = id;
 
-    eventBus_.trigger(Events.TRACK_CHANGED, {currTrackId: currTrackId_});
+    eventBus_.trigger(Events.TRACK_CHANGED, {
+      currTrackId: currTrackId_
+    });
   }
 
   let instance = {
@@ -246,8 +254,3 @@ function TextTrackController() {
 
 TextTrackController.__h5player_factory_name = 'TextTrackController';
 export default FactoryMaker.getSingletonFactory(TextTrackController);
-
-
-
-
-

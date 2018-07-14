@@ -30,7 +30,7 @@ function ThumbnailController() {
     };
     let callbacks = {
       onSuccess: onRequestThumbnailSuccess
-    }
+    };
     xhrLoader_.load(request, null, callbacks);
   }
 

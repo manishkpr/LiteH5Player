@@ -1,6 +1,6 @@
 'use strict';
 
-import CastUtils from './cast_utils'
+import CastUtils from './cast_utils';
 
 import FactoryMaker from '../core/FactoryMaker';
 import EventBus from '../core/EventBus';
@@ -17,7 +17,7 @@ function RemotePlayerHandler() {
     remotePlayerController.addEventListener(
       cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
       function() {
-        console.log("muted: " + remotePlayer.isMuted);
+        console.log('muted: ' + remotePlayer.isMuted);
       });
 
     remotePlayerController.addEventListener(
@@ -185,7 +185,7 @@ function CastSender(receiverAppId) {
     let msg = {
       cmdType: 'init',
       data: cfg
-    }
+    };
     sendMessage_(msg);
   }
 
@@ -249,7 +249,7 @@ function CastSender(receiverAppId) {
     // old
     //remotePlayerHandler.setVolume(volume);
   }
-  
+
   function getVolume() {
     return volume_;
   }
@@ -294,6 +294,7 @@ function CastSender(receiverAppId) {
   }
 
   var tmp = 1;
+
   function test() {
     //console.log('--test--');
     session_.sendMessage(CastUtils.OLDMTN_MESSAGE_NAMESPACE,
@@ -339,16 +340,16 @@ function CastSender(receiverAppId) {
     console.log('receive msg, namespace: ' + namespace + ', serialized: ' + serialized + ', type: ' + message.type);
     switch (message.type) {
       case Events.STATE_CHANGE:
-      if (e.newState === 'opened') {
-        // do some initialization here
-        position_ = e.position;
-        duration_ = e.duration;
-        muted_ = e.muted;
-        volume_ = e.volume;
-        paused_ = e.paused;
-      }
-      //eventBus_.trigger(Events.STATE_CHANGE, e);
-      break;
+        if (e.newState === 'opened') {
+          // do some initialization here
+          position_ = e.position;
+          duration_ = e.duration;
+          muted_ = e.muted;
+          volume_ = e.volume;
+          paused_ = e.paused;
+        }
+        //eventBus_.trigger(Events.STATE_CHANGE, e);
+        break;
       case Events.MEDIA_TIMEUPDATE:
         position_ = e.position;
         duration_ = e.duration;
@@ -478,6 +479,3 @@ function CastSender(receiverAppId) {
 
 CastSender.__h5player_factory_name = 'CastSender';
 export default FactoryMaker.getSingletonFactory(CastSender);
-
-
-

@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 import Events from '../events';
@@ -82,8 +85,3 @@ class UIAdsContainer {
 }
 
 export default UIAdsContainer;
-
-
-
-
-

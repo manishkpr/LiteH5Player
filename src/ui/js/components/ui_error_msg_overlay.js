@@ -1,7 +1,12 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
-import { ErrorTypes } from '../../../core/errors';
+import {
+  ErrorTypes
+} from '../../../core/errors';
 
 import UITools from '../ui_tools';
 

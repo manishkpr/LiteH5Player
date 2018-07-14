@@ -7,12 +7,12 @@ import Debug from '../core/Debug';
  * 3. https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
  */
 
-class FetchLoaderContext {
-  constructor() {
-    this.url = null;
-    this.cbSuccess = null;
-  }
-}
+// class FetchLoaderContext {
+//   constructor() {
+//     this.url = null;
+//     this.cbSuccess = null;
+//   }
+// }
 
 function FetchLoader() {
   let context_ = this.context;
@@ -39,7 +39,7 @@ function FetchLoader() {
     let totalBytes = 0;
     let fetchPromise = fetch(fetchRequest, initParams);
     // process fetchPromise
-    let responsePromise = fetchPromise.then(function(response) {
+    fetchPromise.then(function(response) {
       if (response.ok) {
         var pump = function(reader) {
           return reader.read().then(function(result) {
@@ -66,7 +66,7 @@ function FetchLoader() {
       } else {
         //callbacks.onError({ text: 'fetch, bad network response' }, context);
       }
-    }).catch(function(error) {
+    }).catch(function() {
       //callbacks.onError({ text: error.message }, context);
     });
   }

@@ -125,11 +125,11 @@ function Debug() {
   function error(...params) {
     doLog(LOG_LEVEL_ERROR, ...params);
   }
-  
+
   function warn(...params) {
     doLog(LOG_LEVEL_WARNING, ...params);
   }
-  
+
   function info(...params) {
     doLog(LOG_LEVEL_INFO, ...params);
   }

@@ -1,5 +1,6 @@
 import {
-  h, Component
+  h,
+  Component
 } from 'preact';
 
 import UIProgressBar from './ui_progress_bar';
@@ -28,4 +29,3 @@ class UIBottomBar extends Component {
 }
 
 export default UIBottomBar;
-

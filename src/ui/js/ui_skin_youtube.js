@@ -1,5 +1,6 @@
 import {
-  h, Component
+  h,
+  Component
 } from 'preact';
 
 import ResizeSensor from 'resize-sensor';
@@ -8,7 +9,9 @@ import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
 import Events from './events';
-import { ErrorTypes } from '../../core/errors';
+import {
+  ErrorTypes
+} from '../../core/errors';
 
 import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
@@ -40,7 +43,9 @@ class UISkinYoutube extends Component {
     this.player = props.player;
     this.evEmitter = new EventEmitter();
 
-    this.adsContainer = new UIAdsContainer({main: this});
+    this.adsContainer = new UIAdsContainer({
+      main: this
+    });
   }
 
   componentWillMount() {
@@ -71,7 +76,7 @@ class UISkinYoutube extends Component {
 
   render() {
     return (
-      <div className="vop-skin-youtube">
+      <div className='vop-skin-youtube'>
         <UIChromecastOverlay main={this} />
         <UITitleBar main={this} />
         <UILogoOverlay />
@@ -97,7 +102,7 @@ class UISkinYoutube extends Component {
     // UI Controls
     this.vopPlayer = null;
     this.vopBottomBar = null;
-    
+
     // UI Data
     this.metaWidth;
     this.metaHeight;
@@ -212,7 +217,7 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-   
+
     this.player.on(oldmtn.Events.LOG, this.onLog);
     this.player.on(oldmtn.Events.ERROR, this.onError);
 
@@ -333,7 +338,9 @@ class UISkinYoutube extends Component {
 
   addAutohideAction() {
     UITools.addClass(this.vopPlayer, 'vop-autohide');
-    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, { autohide: true });
+    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, {
+      autohide: true
+    });
   }
 
   removeAutohideAction() {
@@ -342,7 +349,9 @@ class UISkinYoutube extends Component {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, { autohide: false });
+    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, {
+      autohide: false
+    });
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -517,8 +526,7 @@ class UISkinYoutube extends Component {
     this.settingMenuUIData.currMenu = 'none';
   }
 
-  onAdComplete() {
-  }
+  onAdComplete() {}
 
   onAdCompanions(e) {
     let v = document.getElementById('idCompanionAd');

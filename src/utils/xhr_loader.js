@@ -1,26 +1,26 @@
 ﻿// Define xhr_loader internal structure FYI.
 
-class XHRLoaderRequest {
-  constructor() {
-    this.url = null;
-    this.rangeStart = null;
-    this.rangeEnd = null;
-    this.cbSuccess = null;
-  }
-}
+// class XHRLoaderRequest {
+//   constructor() {
+//     this.url = null;
+//     this.rangeStart = null;
+//     this.rangeEnd = null;
+//     this.cbSuccess = null;
+//   }
+// }
 
-class XHRLoaderConfig {
-  constructor() {
-    this.remainingAttempts = 0;
-    this.retryInterval = 4000;
-  }
-}
+// class XHRLoaderConfig {
+//   constructor() {
+//     this.remainingAttempts = 0;
+//     this.retryInterval = 4000;
+//   }
+// }
 
-class XHRLoaderCallback {
-  constructor() {
+// class XHRLoaderCallback {
+//   constructor() {
 
-  }
-}
+//   }
+// }
 
 function XHRLoader() {
   let request_ = null;
@@ -31,7 +31,7 @@ function XHRLoader() {
   let needFailureReport_ = false;
 
   function load(request, config, callbacks) {
-    printlog('begin load time: ' + (new Date().getTime())/1000);
+    printlog('begin load time: ' + (new Date().getTime()) / 1000);
     // save input parameters
     request_ = request;
     config_ = config || {
@@ -56,23 +56,23 @@ function XHRLoader() {
       printlog('--onloadstart--');
     };
 
-    const onload = function(ev) {
+    const onload = function() {
       //printlog(`--onload--, status:${xhr_.status}, length: ${xhr_.response.byteLength}, readyState:${xhr_.readyState}`);
       printlog(`--onload--, status:${xhr_.status}, readyState:${xhr_.readyState}`);
 
       if (xhr_.status >= 200 && xhr_.status <= 299) {
         callbacks_.onSuccess(xhr_.response);
         needFailureReport_ = false;
-      };
-    }
+      }
+    };
 
-    const onloadend = function () {
+    const onloadend = function() {
       printlog('--onloadend--, remainingAttempts_: ' + config_.remainingAttempts + ', readystate: ' + xhr_.readyState);
       printlog('--------------------------------------------------------------');
 
       if (needFailureReport_) {
         if (config_.remainingAttempts > 0) {
-          config_.remainingAttempts --;
+          config_.remainingAttempts--;
 
           // BD, test retry counts
           // if (config_.remainingAttempts === 0) {
@@ -80,7 +80,7 @@ function XHRLoader() {
           // }
           // // ED
 
-          printlog('begin load timeout: ' + (new Date().getTime())/1000);
+          printlog('begin load timeout: ' + (new Date().getTime()) / 1000);
 
           //setTimeout(retryFunc, config_.retryInterval);
           setTimeout(load.bind(this, request_), config_.retryInterval);
@@ -88,23 +88,23 @@ function XHRLoader() {
       }
     };
 
-    xhr_.onprogress = function (ev) {
+    xhr_.onprogress = function(ev) {
       printlog(`--onprogress--, loaded:${ev.loaded}, total:${ev.total}, readyState:${xhr_.readyState}`);
     };
 
-    xhr_.ontimeout = function () {
+    xhr_.ontimeout = function() {
       printlog('--ontimeout--, readystate: ' + xhr_.readyState);
     };
 
-    xhr_.onabort = function () {
+    xhr_.onabort = function() {
       printlog('--onabort--, readystate: ' + xhr_.readyState);
     };
 
-    xhr_.onerror = function (e) {
+    xhr_.onerror = function() {
       printlog('--onerror--, readystate: ' + xhr_.readyState);
     };
 
-    xhr_.onreadystatechange = function (ev) {
+    xhr_.onreadystatechange = function() {
       printlog('--onreadystatechange--, readystate: ' + xhr_.readyState);
     };
 
@@ -128,5 +128,3 @@ function XHRLoader() {
 }
 
 export default XHRLoader;
-
-

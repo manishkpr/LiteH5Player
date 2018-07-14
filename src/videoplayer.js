@@ -4,7 +4,6 @@ function VideoPlayer() {
   let context_ = this.context;
 
   function setup() {
-    
   }
 
   function setSrc(url) {
@@ -12,7 +11,7 @@ function VideoPlayer() {
     // mediaElement.src='';
     context_.media.src = url;
 
-    let media_ = context_.media;
+    //let media_ = context_.media;
     //console.log(`timeupdate, main buffered: ${TimeRanges.toString(media_.buffered)}, position: ${media_.currentTime}, duration: ${media_.duration}`);
   }
 

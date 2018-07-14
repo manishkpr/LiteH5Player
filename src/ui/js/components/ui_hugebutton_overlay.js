@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import UITools from '../ui_tools';
@@ -28,17 +30,17 @@ class UIHugeButtonOverlay extends Preact.Component {
 
   render() {
     //myPrintLog('UIHugeButtonOverlay, this.main.playerState: ' + this.main.playerState);
-    
+
     let style = {};
-    switch(this.main.playerState) {
+    switch (this.main.playerState) {
       case 'idle':
       case 'opened':
       case 'ended':
-      style.display = 'none';
-      break;
+        style.display = 'none';
+        break;
       case 'playing':
       case 'paused':
-      break;
+        break;
     }
 
     return (

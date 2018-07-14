@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 class UIPlayToggleButton extends Component {
   constructor(props) {
@@ -8,11 +11,9 @@ class UIPlayToggleButton extends Component {
     this.player = this.main.player;
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   render() {
     return (

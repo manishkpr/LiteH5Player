@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -16,11 +19,9 @@ class UIBufferingOverlay extends Component {
     this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   render() {
     return (
@@ -57,5 +58,3 @@ class UIBufferingOverlay extends Component {
 }
 
 export default UIBufferingOverlay;
-
-

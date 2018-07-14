@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import ID from '../id';
@@ -52,7 +55,7 @@ class UISubtitlesMenu extends Component {
     };
     this.state = {
       textTracksData: this.textTracksData
-    }
+    };
   }
 
   componentDidMount(e) {
@@ -60,7 +63,9 @@ class UISubtitlesMenu extends Component {
   }
 
   render() {
-    const { textTracksData } = this.state;
+    const {
+      textTracksData
+    } = this.state;
 
     const menuitems = textTracksData.tracks.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitem"
@@ -94,14 +99,16 @@ class UISubtitlesMenu extends Component {
   onMenuItemClick(e) {
     myPrintLog('+onMenuItemClick');
     e.stopPropagation();
-    
+
     let id = e.currentTarget.dataset.id;
     if (this.textTracksData.currTrackId === id) {
       this.textTracksData.currTrackId = '';
     } else {
       this.textTracksData.currTrackId = id;
     }
-    this.setState({textTracksData: this.textTracksData});
+    this.setState({
+      textTracksData: this.textTracksData
+    });
 
     // apply changes to player instance
     this.player.selectSubtitleTrack(this.textTracksData.currTrackId);
@@ -152,7 +159,3 @@ class UISubtitlesMenu extends Component {
 }
 
 export default UISubtitlesMenu;
-
-
-
-

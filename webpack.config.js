@@ -15,7 +15,18 @@ module.exports = (env, options) => {
       filename: path.join('js', jsOutputName)
     },
     module: {
-      rules: [{
+      rules: [
+      // {
+      //   enforce: "pre",
+      //   test: /\.js$/,
+      //   include: [
+      //     path.join(__dirname, 'src')
+      //   ],
+      //   use: {
+      //     loader: "eslint-loader"
+      //   }
+      // },
+      {
         test: /\.js$/,
         include: [
           path.join(__dirname, 'src'),

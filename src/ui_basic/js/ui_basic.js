@@ -2,7 +2,7 @@ import {
   h,
   Component
 } from 'preact';
-import "../css/ui_basic.scss";
+import '../css/ui_basic.scss';
 
 export default class UIBasic extends Component {
   constructor(props) {
@@ -15,12 +15,12 @@ export default class UIBasic extends Component {
 
   render() {
     return (
-      <div className="html5-video-player">
-        <div className="vop-video-container">
-          <video className="vop-video" playsInline="true" webkit-playsinline="true">
+      <div className='html5-video-player'>
+        <div className='vop-video-container'>
+          <video className='vop-video' playsInline='true' webkit-playsinline='true'>
           </video>
         </div>
-        <div className="vop-ads-container"></div>
+        <div className='vop-ads-container'></div>
       </div>
     );
   }

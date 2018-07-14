@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import UITools from '../ui_tools';
 
@@ -18,7 +21,7 @@ class UIChromecastToggleButton extends Component {
     }
 
     return (
-      <button className={"vop-button vop-cast-button"} title="chromecast"
+      <button className={'vop-button vop-cast-button'} title='chromecast'
         onClick={this.onUIComponentClick.bind(this)}
         onMouseMove={this.onUIComponentMouseMove.bind(this)}
         style={btnStyle}>
@@ -35,6 +38,4 @@ class UIChromecastToggleButton extends Component {
   }
 }
 
-
 export default UIChromecastToggleButton;
-

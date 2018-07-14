@@ -1,5 +1,6 @@
 import {
-  h, Component
+  h,
+  Component
 } from 'preact';
 
 class UITitleBar extends Component {

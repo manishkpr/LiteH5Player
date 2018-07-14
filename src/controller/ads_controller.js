@@ -134,7 +134,7 @@ function AdsController(adContainer, media, advertising) {
     height_ = adContainer_.parentNode.clientHeight;
     debug_.log('width_: ' + width_ + ', height: ' + height_);
     // var item = getVMAPItem('myAds', advertising_.offset, advertising_.tag);
-    // var ads = '<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">' + item + "</vmap:VMAP>"
+    // var ads = '<vmap:VMAP xmlns:vmap='http://www.iab.net/videosuite/vmap' version='1.0'>' + item + '</vmap:VMAP>'
     // console.log('ads: ' + ads);
 
     debug_.log('+request ads, advertising_.tag: ' + advertising_.tag);
@@ -341,7 +341,7 @@ function AdsController(adContainer, media, advertising) {
           //     console.log('AD_METADATA: ' + i);
           // }
           cuePoints_ = adEvent.getAdCuePoints();
-          debug_.log('cue points: ' + cuePoints_.h.join(","));
+          debug_.log('cue points: ' + cuePoints_.h.join(','));
         }
         break;
       case google.ima.AdEvent.Type.CLICK:
@@ -400,7 +400,7 @@ function AdsController(adContainer, media, advertising) {
         break;
       case google.ima.AdEvent.Type.SKIPPED:
         {
-          // for "skippable ads", if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
+          // for 'skippable ads', if we skip it, we won't receive COMPLETED event, but only receive SKIPPED event.
           processWhenAdComplete();
         }
         break;
@@ -488,7 +488,7 @@ function AdsController(adContainer, media, advertising) {
     //
     isPlayingAd_ = true;
     isLinearAd_ = ad.isLinear();
-    
+
     // How to know the ad is VPAID or not?
     // Method1
     // isVpaidAd_ = ad.g.vpaid;

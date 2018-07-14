@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 import UITools from '../ui_tools';
 
 class UITimeLabel extends Component {
@@ -79,5 +82,3 @@ class UITimeLabel extends Component {
 }
 
 export default UITimeLabel;
-
-

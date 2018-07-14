@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import UISubtitlesMenu from './ui_subtitles_menu';
@@ -40,4 +42,3 @@ class UIPopupMenu extends Preact.Component {
 }
 
 export default UIPopupMenu;
-

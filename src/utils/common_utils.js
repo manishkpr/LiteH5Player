@@ -7,7 +7,6 @@ CommonUtils.getBrowserInfo = function() {
   var sys = {};
   var ua = navigator.userAgent.toLowerCase();
   var s;
-  var s;
   if (s = ua.match(/edge\/([\d.]+)/)) {
     sys.edge = s[1];
   } else if (s = ua.match(/rv:([\d.]+)\) like gecko/)) {
@@ -24,34 +23,46 @@ CommonUtils.getBrowserInfo = function() {
     sys.safari = s[1];
   }
 
-  if (sys.edge) return {
-    browser: "Edge",
-    version: sys.edge
-  };
-  if (sys.ie) return {
-    browser: "IE",
-    version: sys.ie
-  };
-  if (sys.firefox) return {
-    browser: "Firefox",
-    version: sys.firefox
-  };
-  if (sys.chrome) return {
-    browser: "Chrome",
-    version: sys.chrome
-  };
-  if (sys.opera) return {
-    browser: "Opera",
-    version: sys.opera
-  };
-  if (sys.safari) return {
-    browser: "Safari",
-    version: sys.safari
-  };
+  if (sys.edge) {
+    return {
+      browser: 'Edge',
+      version: sys.edge
+    };
+  }
+  if (sys.ie) {
+    return {
+      browser: 'IE',
+      version: sys.ie
+    };
+  }
+  if (sys.firefox) {
+    return {
+      browser: 'Firefox',
+      version: sys.firefox
+    };
+  }
+  if (sys.chrome) {
+    return {
+      browser: 'Chrome',
+      version: sys.chrome
+    };
+  }
+  if (sys.opera) {
+    return {
+      browser: 'Opera',
+      version: sys.opera
+    };
+  }
+  if (sys.safari) {
+    return {
+      browser: 'Safari',
+      version: sys.safari
+    };
+  }
 
   return {
-    browser: "",
-    version: "0"
+    browser: '',
+    version: '0'
   };
 };
 
@@ -89,12 +100,12 @@ CommonUtils.isChromecast = function() {
 
 CommonUtils.isEdge = function() {
   var userAgent = navigator.userAgent;
-  var isEdge = userAgent.indexOf("Edge") > -1;
+  var isEdge = userAgent.indexOf('Edge') > -1;
   return isEdge;
 };
 
 CommonUtils.isIE = function() {
-  if (!!window.ActiveXObject || "ActiveXObject" in window) {
+  if (!!window.ActiveXObject || 'ActiveXObject' in window) {
     return true;
   } else {
     return false;
@@ -207,11 +218,9 @@ CommonUtils.getOSVersion = function() {
     case 'Mac OS X':
       osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
       break;
-
     case 'Android':
       osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
       break;
-
     case 'iOS':
       osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
       osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
@@ -309,7 +318,7 @@ CommonUtils.TimeRangesToString = function(r) {
 CommonUtils.test1 = function(aa) {
   CommonUtils.init();
 
-  var s1 = "aaabbcder";
+  var s1 = 'aaabbcder';
   var ret = s1.startsWith('aaa', 0);
   var ret2 = s1.startsWith('abc', 0);
   console.log('startsWith ret: ' + ret);

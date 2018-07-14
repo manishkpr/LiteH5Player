@@ -1,4 +1,6 @@
-import { h } from 'preact';
+import {
+  h
+} from 'preact';
 import Preact from 'preact';
 
 import UITools from '../ui_tools';
@@ -72,7 +74,10 @@ class UIVolumeBar extends Preact.Component {
       uiVolumeHandleLeft = vLeft.toString() + 'px';
     }
 
-    return { uiVolumeList: uiVolumeList, uiVolumeHandleLeft: uiVolumeHandleLeft};
+    return {
+      uiVolumeList: uiVolumeList,
+      uiVolumeHandleLeft: uiVolumeHandleLeft
+    };
   }
 
   onMediaVolumeChanged() {
@@ -161,4 +166,3 @@ class UIVolumeBar extends Preact.Component {
 }
 
 export default UIVolumeBar;
-

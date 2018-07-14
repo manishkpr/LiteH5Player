@@ -33,11 +33,11 @@
  * @ignore
  */
 class Error {
-    constructor(code, message, data) {
-        this.code = code || null;
-        this.message = message || null;
-        this.data = data || null;
-    }
+  constructor(code, message, data) {
+    this.code = code || null;
+    this.message = message || null;
+    this.data = data || null;
+  }
 }
 
 export default Error;

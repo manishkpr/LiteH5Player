@@ -13,10 +13,8 @@ const XHR_READYSTATE_HEADERS_RECEIVED = 2;
 const XHR_READYSTATE_LOADING = 3;
 const XHR_READYSTATE_DONE = 4;
 
-
 // HTTP Error Code
 // 200 OK
-
 
 let xhr = null;
 
@@ -39,10 +37,10 @@ function _requestError(options) {
   return function(e) {
     const xhr = e.currentTarget || options.xhr;
     options.onerror(xhr);
-  }
+  };
 }
 
-export function ajax(url, completeCallback, errorCallback, args) {
+export function ajax(url, completeCallback, errorCallback) {
   printlog('begin load time: ' + (new Date().getTime()) / 1000);
 
   // save input parameters
@@ -69,5 +67,3 @@ export function ajax(url, completeCallback, errorCallback, args) {
 
   return xhr;
 };
-
-

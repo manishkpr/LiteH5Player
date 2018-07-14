@@ -35,85 +35,85 @@ const EVENT_PRIORITY_HIGH = 5000;
 
 function EventBus() {
 
-    let handlers = {};
+  let handlers = {};
 
-    function on(evType, listener, scope, priority = EVENT_PRIORITY_LOW) {
+  function on(evType, listener, scope, priority = EVENT_PRIORITY_LOW) {
 
-        if (!evType) {
-            throw new Error('event evType cannot be null or undefined');
-        }
-        if (!listener || typeof (listener) !== 'function') {
-            throw new Error('listener must be a function: ' + listener);
-        }
-
-        if (getHandlerIdx(evType, listener, scope) >= 0) return;
-
-        handlers[evType] = handlers[evType] || [];
-
-        const handler = {
-            callback: listener,
-            scope: scope,
-            priority: priority
-        };
-
-        const inserted = handlers[evType].some((item , idx) => {
-            if (priority > item.priority ) {
-                handlers[evType].splice(idx, 0, handler);
-                return true;
-            }
-        });
-
-        if (!inserted) {
-            handlers[evType].push(handler);
-        }
+    if (!evType) {
+      throw new Error('event evType cannot be null or undefined');
+    }
+    if (!listener || typeof(listener) !== 'function') {
+      throw new Error('listener must be a function: ' + listener);
     }
 
-    function off(evType, listener, scope) {
-        if (!evType || !listener || !handlers[evType]) return;
-        const idx = getHandlerIdx(evType, listener, scope);
-        if (idx < 0) return;
-        handlers[evType].splice(idx, 1);
-    }
+    if (getHandlerIdx(evType, listener, scope) >= 0) return;
 
-    function trigger(evType, payload) {
-        if (!evType || !handlers[evType]) return;
+    handlers[evType] = handlers[evType] || [];
 
-        payload = payload || {};
-
-        if (payload.hasOwnProperty('evType')) throw new Error('\'evType\' is a reserved word for event dispatching');
-
-        payload.evType = evType;
-
-        handlers[evType].forEach( handler => handler.callback.call(handler.scope, payload) );
-    }
-
-    function getHandlerIdx(evType, listener, scope) {
-
-        let idx = -1;
-
-        if (!handlers[evType]) return idx;
-
-        handlers[evType].some( (item, index) => {
-            if (item.callback === listener && (!scope || scope === item.scope)) {
-                idx = index;
-                return true;
-            }
-        });
-        return idx;
-    }
-
-    function reset() {
-        handlers = {};
-    }
-
-    const instance = {
-        on: on,
-        off: off,
-        trigger: trigger,
-        reset: reset
+    const handler = {
+      callback: listener,
+      scope: scope,
+      priority: priority
     };
 
-    return instance;
+    const inserted = handlers[evType].some((item, idx) => {
+      if (priority > item.priority) {
+        handlers[evType].splice(idx, 0, handler);
+        return true;
+      }
+    });
+
+    if (!inserted) {
+      handlers[evType].push(handler);
+    }
+  }
+
+  function off(evType, listener, scope) {
+    if (!evType || !listener || !handlers[evType]) return;
+    const idx = getHandlerIdx(evType, listener, scope);
+    if (idx < 0) return;
+    handlers[evType].splice(idx, 1);
+  }
+
+  function trigger(evType, payload) {
+    if (!evType || !handlers[evType]) return;
+
+    payload = payload || {};
+
+    if (payload.hasOwnProperty('evType')) throw new Error('\'evType\' is a reserved word for event dispatching');
+
+    payload.evType = evType;
+
+    handlers[evType].forEach(handler => handler.callback.call(handler.scope, payload));
+  }
+
+  function getHandlerIdx(evType, listener, scope) {
+
+    let idx = -1;
+
+    if (!handlers[evType]) return idx;
+
+    handlers[evType].some((item, index) => {
+      if (item.callback === listener && (!scope || scope === item.scope)) {
+        idx = index;
+        return true;
+      }
+    });
+    return idx;
+  }
+
+  function reset() {
+    handlers = {};
+  }
+
+  const instance = {
+    on: on,
+    off: off,
+    trigger: trigger,
+    reset: reset
+  };
+
+  return instance;
 }
 
 EventBus.__h5player_factory_name = 'EventBus';

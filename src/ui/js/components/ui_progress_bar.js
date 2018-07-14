@@ -1,4 +1,7 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 import Events from '../events';
 
 class UIProgressBar extends Component {
@@ -50,28 +53,28 @@ class UIProgressBar extends Component {
       uiPosition: 0
     };
 
-    switch(this.main.playerState) {
+    switch (this.main.playerState) {
       case 'ended':
-      let position = this.player.getPosition();
-      let duration = this.player.getDuration();
-      if (this.progressBarContext) {
-        this.progressBarContext.movePos = position;
-      }
-      endStyle = this.getProgressBarUIStyle(position, duration);
-      break;
+        let position = this.player.getPosition();
+        let duration = this.player.getDuration();
+        if (this.progressBarContext) {
+          this.progressBarContext.movePos = position;
+        }
+        endStyle = this.getProgressBarUIStyle(position, duration);
+        break;
     }
 
     return (
-      <div className="vop-progress-bar"
+      <div className='vop-progress-bar'
         onMouseDown={this.onProgressBarMouseDown.bind(this)}
         onMouseMove={this.onProgressBarMouseMove.bind(this)}
         onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
-        <div className="vop-progress-list">
+        <div className='vop-progress-list'>
           <div className={'vop-load-progress' + ' ' + endStyle.loadProgressTransform} ></div>
           <div className={'vop-hover-progress'}></div>
           <div className={'vop-play-progress' + ' ' + endStyle.playProgressTransform}></div>
         </div>
-        <div className={"vop-scrubber-container" + ' ' + endStyle.scrubberContainerTransform}></div>
+        <div className={'vop-scrubber-container' + ' ' + endStyle.scrubberContainerTransform}></div>
       </div>
     );
   }
@@ -157,7 +160,9 @@ class UIProgressBar extends Component {
     this.updateProgressBarHoverUI();
 
     // 
-    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, { movePos: movePos });
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, {
+      movePos: movePos
+    });
   }
 
   onProgressBarMouseLeave(e) {
@@ -195,7 +200,9 @@ class UIProgressBar extends Component {
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
-    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, { movePos: movePos });
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, {
+      movePos: movePos
+    });
   }
 
   docProgressBarMouseup(e) {
@@ -316,8 +323,7 @@ class UIProgressBar extends Component {
 
     // part - logic process
     let isLive = (duration === Infinity) ? true : false;
-    if (isLive) {
-    } else {
+    if (isLive) {} else {
       this.vopLoadProgress.style.transform = ret.loadProgressTransform;
       this.vopPlayProgress.style.transform = ret.playProgressTransform;
 
@@ -353,4 +359,3 @@ class UIProgressBar extends Component {
 }
 
 export default UIProgressBar;
-

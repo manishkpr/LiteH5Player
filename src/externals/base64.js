@@ -78,7 +78,7 @@ var BASE64 = {};
       a.push('==');
     }
     return a.join('');
-  }
+  };
   var R = (function() {
     var a = [];
     for (var i = 0; i < T.length; ++i) {
@@ -97,7 +97,7 @@ var BASE64 = {};
       u.push(255 & (v >> 8));
       u.push(255 & v);
       i += 4;
-    }
+    };
     if (u) {
       if ('=' == s.charAt(i - 2)) {
         u.pop();
@@ -107,7 +107,7 @@ var BASE64 = {};
       }
     }
     return u;
-  }
+  };
   var ASCII = {};
   ASCII.encode = function(s) {
     var u = [];
@@ -142,7 +142,7 @@ var BASE64 = {};
     var u = decodeArray(s);
     return UTF8.decode(u);
   };
-})("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+})('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/');
 
 /*The following polyfills are not used in dash.js but have caused multiplayer integration issues.
  Therefore commenting them out.

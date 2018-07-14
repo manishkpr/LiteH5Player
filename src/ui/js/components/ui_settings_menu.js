@@ -41,11 +41,12 @@ class UISettingsMenu extends Component {
     };
 
     //
-    this.menuStyle = {display: 'none'};
+    this.menuStyle = {
+      display: 'none'
+    };
   }
 
-  componentDidMount(e) {
-  }
+  componentDidMount(e) {}
 
   componentDidUpdate(e) {
     if (!this.vopSettingsMenu) {
@@ -171,14 +172,22 @@ class UISettingsMenu extends Component {
         }
       }
 
-      this.menuStyle = {display: 'block'};
+      this.menuStyle = {
+        display: 'block'
+      };
 
       // Display popup menu ui
-      this.setState({settingsData: this.settingsData});
+      this.setState({
+        settingsData: this.settingsData
+      });
     } else {
-      this.menuStyle = {display: 'none'};
+      this.menuStyle = {
+        display: 'none'
+      };
       this.settingsData = {};
-      this.setState({settingsData: this.settingsData});
+      this.setState({
+        settingsData: this.settingsData
+      });
     }
   }
 }

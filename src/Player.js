@@ -1,9 +1,11 @@
-﻿'use strict'
+﻿'use strict';
 
 import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/events';
-import { ErrorTypes } from './core/errors';
+import {
+  ErrorTypes
+} from './core/errors';
 import Debug from './core/Debug';
 
 import FetchLoader from './utils/fetch_loader';
@@ -32,7 +34,9 @@ import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 // UI
-import { dom_initUI } from './ui_basic/js/ui_basic';
+import {
+  dom_initUI
+} from './ui_basic/js/ui_basic';
 
 // License
 import LicenseController from './controller/license_controller';
@@ -103,7 +107,9 @@ function Player(idContainer) {
     debug_.log('Player, +open');
 
     if (!licenseController_.checkUrl(document.domain)) {
-      eventBus_.trigger(Events.ERROR, { type: ErrorTypes.LICENSE_ERROR });
+      eventBus_.trigger(Events.ERROR, {
+        type: ErrorTypes.LICENSE_ERROR
+      });
       return false;
     }
 
@@ -536,7 +542,6 @@ function Player(idContainer) {
     streamController_ = StreamController(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
 
-
     // html5 video poster
     if (context_.cfg.poster) {
       media_.poster = context_.cfg.poster;
@@ -579,11 +584,11 @@ function Player(idContainer) {
     eventBus_.on(Events.CAST_DISCONNECTED, onCastDisconnected);
 
     // fullscreen listener
-    document.addEventListener("fullscreenchange", onFullScreenChange);
-    document.addEventListener("mozfullscreenchange", onFullScreenChange);
-    document.addEventListener("webkitfullscreenchange", onFullScreenChange);
-    document.addEventListener("msfullscreenchange", onFullScreenChange);
-    document.addEventListener("MSFullscreenChange", onFullScreenChange);
+    document.addEventListener('fullscreenchange', onFullScreenChange);
+    document.addEventListener('mozfullscreenchange', onFullScreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullScreenChange);
+    document.addEventListener('msfullscreenchange', onFullScreenChange);
+    document.addEventListener('MSFullscreenChange', onFullScreenChange);
   }
 
   function removeEventListeners() {
@@ -605,11 +610,11 @@ function Player(idContainer) {
     eventBus_.off(Events.AD_PAUSED, onAdPaused, {});
     eventBus_.off(Events.AD_RESUMED, onAdResumed, {});
 
-    document.removeEventListener("fullscreenchange", onFullScreenChange);
-    document.removeEventListener("mozfullscreenchange", onFullScreenChange);
-    document.removeEventListener("webkitfullscreenchange", onFullScreenChange);
-    document.removeEventListener("msfullscreenchange", onFullScreenChange);
-    document.removeEventListener("MSFullscreenChange", onFullScreenChange);
+    document.removeEventListener('fullscreenchange', onFullScreenChange);
+    document.removeEventListener('mozfullscreenchange', onFullScreenChange);
+    document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
+    document.removeEventListener('msfullscreenchange', onFullScreenChange);
+    document.removeEventListener('MSFullscreenChange', onFullScreenChange);
   }
 
   function onFullScreenChange() {
