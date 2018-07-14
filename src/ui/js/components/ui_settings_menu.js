@@ -19,7 +19,7 @@ class UISettingsMenu extends Component {
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
 
-    this.settingsData = {
+    this.SETTINGS_DATA = {
       settingsList: [{
         id: '1',
         text: 'Quality'
@@ -35,37 +35,56 @@ class UISettingsMenu extends Component {
       }]
     };
 
+    this.settingsData = {};
     this.state = {
       settingsData: this.settingsData
-    }
+    };
+
+    //
+    this.menuStyle = {display: 'none'};
   }
 
   componentDidMount(e) {
-    this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
+  }
+
+  componentDidUpdate(e) {
+    if (!this.vopSettingsMenu) {
+      this.vopSettingsMenu = document.querySelector('.vop-settings-menu');
+    }
+    let item = this.vopSettingsMenu.querySelector('.vop-menuitem');
+    if (item) {
+      item.focus();
+    }
   }
 
   render() {
     //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
-    const { settingsData } = this.state;
-    const menuitems = settingsData.settingsList.map(function(item, index) {
-      let currValue = '';
-      return (
-        <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
+    const {
+      settingsData
+    } = this.state;
+
+    let menuitems = [];
+    if (settingsData.settingsList) {
+      menuitems = settingsData.settingsList.map(function(item, index) {
+        let currValue = '';
+        return (
+          <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
             data-id={item.id} onClick={this.onMenuItemClick_}
             tabIndex="0" onBlur={this.onMenuItemBlur_}>
-          <div className="vop-menuitem-label">
-            { item.text }
+            <div className="vop-menuitem-label">
+              { item.text }
+            </div>
+            <div className="vop-menuitem-content">
+              <span className="vop-menuitem-content-text">{currValue}</span>
+            </div>
           </div>
-          <div className="vop-menuitem-content">
-            <span className="vop-menuitem-content-text">{currValue}</span>
-          </div>
-        </div>
-      );
-
-    }.bind(this));
+        );
+      }.bind(this));
+    }
 
     return (
-      <div className="vop-settings-menu" style="display: none;">
+      <div className="vop-settings-menu"
+        style={this.menuStyle}>
         <div className="vop-panel-menu">
           { menuitems }
         </div>
@@ -83,7 +102,7 @@ class UISettingsMenu extends Component {
     let menu;
     switch (nextFocus.dataset.id) {
       case '1':
-         menu = 'quality_menu';
+        menu = 'quality_menu';
         break;
       case '2':
         menu = 'audio_track_menu';
@@ -137,13 +156,29 @@ class UISettingsMenu extends Component {
 
   onPopupMenuChange(e) {
     if (e.menu === 'settings_menu') {
-      this.vopSettingsMenu.style.display = 'block';
-      let v = this.vopSettingsMenu.querySelector('.vop-menuitem');
-      if (v) {
-        v.focus();
+      this.settingsData = Object.assign({}, this.SETTINGS_DATA);
+
+      // Filter some menu items that don't need to show.
+      let tracks = this.player.getSubtitleTracks();
+
+      if (tracks.length === 0) {
+        for (let i = 0; i < this.settingsData.settingsList.length; i++) {
+          let item = this.settingsData.settingsList[i];
+          if (item.id === '3') {
+            this.settingsData.settingsList.splice(i, 1);
+            break;
+          }
+        }
       }
+
+      this.menuStyle = {display: 'block'};
+
+      // Display popup menu ui
+      this.setState({settingsData: this.settingsData});
     } else {
-      this.vopSettingsMenu.style.display = 'none';
+      this.menuStyle = {display: 'none'};
+      this.settingsData = {};
+      this.setState({settingsData: this.settingsData});
     }
   }
 }

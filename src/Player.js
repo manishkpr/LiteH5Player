@@ -404,6 +404,10 @@ function Player(idContainer) {
   }
 
   // subtitles
+  function getSubtitleTracks() {
+    return textTrackController_.getSubtitleTracks();
+  }
+
   function getCurrentSubtitleTrack() {
     return textTrackController_.getCurrentSubtitleTrack();
   }
@@ -784,6 +788,7 @@ function Player(idContainer) {
     // ads
     playAd: playAd,
     // subtitles
+    getSubtitleTracks: getSubtitleTracks,
     getCurrentSubtitleTrack: getCurrentSubtitleTrack,
     selectSubtitleTrack: selectSubtitleTrack,
     // thumbnail

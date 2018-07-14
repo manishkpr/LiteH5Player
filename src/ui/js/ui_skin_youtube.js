@@ -116,9 +116,6 @@ class UISkinYoutube extends Component {
       // audio track settings menu
       currAudioTrackId: '1',
 
-      // subtitle menu
-      currSubtitleId: '2',
-
       // FCC settings menu
       currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
       isEnableFCC: true,

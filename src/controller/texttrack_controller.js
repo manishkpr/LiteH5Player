@@ -209,6 +209,10 @@ function TextTrackController() {
     //}
   }
 
+  function getSubtitleTracks() {
+    return textTracks_;
+  }
+
   /**
    * @description Retuns undefined if current don't select any text track.
    */
@@ -230,6 +234,7 @@ function TextTrackController() {
   }
 
   let instance = {
+    getSubtitleTracks: getSubtitleTracks,
     getCurrentSubtitleTrack: getCurrentSubtitleTrack,
     selectSubtitleTrack: selectSubtitleTrack
   };
