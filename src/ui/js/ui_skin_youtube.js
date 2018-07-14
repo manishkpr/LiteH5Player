@@ -80,7 +80,7 @@ class UISkinYoutube extends Component {
         <UIToolTip main={this} />
         <UIGradientBottom main={this} />
         <UIBottomBar main={this} />
-        <UIBufferingOverlay />
+        <UIBufferingOverlay main={this} />
         <UIHugeButtonOverlay main={this} />
         <UIPlayOverlay main={this} />
         <UIErrorMsgOverlay main={this} />
@@ -135,9 +135,6 @@ class UISkinYoutube extends Component {
     this.onStateChange = this.onStateChange.bind(this);
 
     this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
-    
-    this.onMediaPlaying = this.onMediaPlaying.bind(this);
-    this.onMediaWaiting = this.onMediaWaiting.bind(this);
 
     this.onLog = this.onLog.bind(this);
 
@@ -218,10 +215,6 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-
-    this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
-
    
     this.player.on(oldmtn.Events.LOG, this.onLog);
     this.player.on(oldmtn.Events.ERROR, this.onError);
@@ -236,9 +229,6 @@ class UISkinYoutube extends Component {
     this.player.off(oldmtn.Events.STATE_CHANGE, this.onStateChange);
 
     this.player.off(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
-
-    this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
-    this.player.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
     // log
     this.player.off(oldmtn.Events.LOG, this.onLog);
@@ -511,14 +501,6 @@ class UISkinYoutube extends Component {
     this.vopPlayer.style.width = dstWidth.toString() + 'px';
     this.vopPlayer.style.height = dstHeight.toString() + 'px';
     this.player.resize(dstWidth, dstHeight);
-  }
-
-  onMediaWaiting() {
-    UITools.addClass(this.vopPlayer, 'vop-buffering');
-  }
-
-  onMediaPlaying() {
-    UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 
   onLog(e) {

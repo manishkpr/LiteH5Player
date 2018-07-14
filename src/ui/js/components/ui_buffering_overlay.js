@@ -1,11 +1,19 @@
-import { h } from 'preact';
-import Preact from 'preact'; 
+import { h, Component } from 'preact';
 
 import UITools from '../ui_tools';
 
-class UIBufferingOverlay extends Preact.Component {
+class UIBufferingOverlay extends Component {
   constructor(props) {
     super(props);
+
+    this.main = this.props.main;
+    this.player = this.main.player;
+
+    this.onMediaPlaying = this.onMediaPlaying.bind(this);
+    this.onMediaWaiting = this.onMediaWaiting.bind(this);
+
+    this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
+    this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
   }
 
   componentDidMount() {
@@ -31,6 +39,20 @@ class UIBufferingOverlay extends Preact.Component {
         </div>
       </div>
     );
+  }
+
+  onMediaWaiting() {
+    if (!this.vopPlayer) {
+      this.vopPlayer = document.querySelector('.html5-video-player');
+    }
+    UITools.addClass(this.vopPlayer, 'vop-buffering');
+  }
+
+  onMediaPlaying() {
+    if (!this.vopPlayer) {
+      this.vopPlayer = document.querySelector('.html5-video-player');
+    }
+    UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 }
 
