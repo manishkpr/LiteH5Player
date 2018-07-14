@@ -16,16 +16,19 @@ module.exports = (env, options) => {
     },
     module: {
       rules: [
-      // {
-      //   enforce: "pre",
-      //   test: /\.js$/,
-      //   include: [
-      //     path.join(__dirname, 'src')
-      //   ],
-      //   use: {
-      //     loader: "eslint-loader"
-      //   }
-      // },
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        include: [
+          path.join(__dirname, 'src')
+        ],
+        exclude: [
+          path.join(__dirname, 'externals')
+        ],
+        use: {
+          loader: "eslint-loader"
+        }
+      },
       {
         test: /\.js$/,
         include: [

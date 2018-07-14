@@ -12,7 +12,7 @@ import {
   isNumber,
   isFinite,
   filter
-} from '../../../utils/underscore';
+} from '../../../externals/underscore';
 
 class UICaptionOverlay extends Component {
   constructor(props) {
