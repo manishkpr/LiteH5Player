@@ -225,9 +225,9 @@ function getMediaInfo() {
       // { file: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
 
       // Webvtt Captions
-      { file: 'http://localhost/2/subtitle/track_0.vtt', kind: 'captions', label: 'test' },
-      //{ file: 'http://localhost/2/subtitle/track_en.vtt', kind: 'captions', label: 'english' },
-      //{ file: 'http://localhost/2/subtitle/track_zh.vtt', kind: 'captions', label: 'chinese' },
+      // { file: 'http://localhost/2/subtitle/track_0.vtt', kind: 'captions', label: 'test' },
+      // { file: 'http://localhost/2/subtitle/track_en.vtt', kind: 'captions', label: 'english' },
+      // { file: 'http://localhost/2/subtitle/track_zh.vtt', kind: 'captions', label: 'chinese' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }

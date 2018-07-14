@@ -21,16 +21,16 @@ class UISettingsMenu extends Component {
 
     this.SETTINGS_DATA = {
       settingsList: [{
-        id: '1',
+        id: ID.MENUITEM_QUALITY,
         text: 'Quality'
       }, {
-        id: '2',
+        id: ID.MENUITEM_AUDIO_TRACK,
         text: 'Language'
       }, {
-        id: '3',
+        id: ID.MENUITEM_FCC,
         text: 'Subtitle'
       }, {
-        id: '4',
+        id: ID.MENUITEM_XSPEED,
         text: 'XSpeed'
       }]
     };
@@ -101,16 +101,16 @@ class UISettingsMenu extends Component {
     myPrintLog('id: ' + nextFocus.dataset.id);
     let menu;
     switch (nextFocus.dataset.id) {
-      case '1':
+      case ID.MENUITEM_QUALITY:
         menu = 'quality_menu';
         break;
-      case '2':
+      case ID.MENUITEM_AUDIO_TRACK:
         menu = 'audio_track_menu';
         break;
-      case '3':
+      case ID.MENUITEM_FCC:
         menu = 'fcc_menu';
         break;
-      case '4':
+      case ID.MENUITEM_XSPEED:
         menu = 'xspeed_menu';
       default:
         break;
