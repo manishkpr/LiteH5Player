@@ -18,14 +18,10 @@ class UIProgressBar extends Component {
       movePos: 0
     };
     this.flagThumbnailMode = false;
-  }
 
-  componentDidMount() {
-    this.vopProgressBar = document.querySelector('.vop-progress-bar');
-    this.vopLoadProgress = document.querySelector('.vop-load-progress');
-    this.vopPlayProgress = document.querySelector('.vop-play-progress');
-    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
-    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
+    this.onProgressBarMouseDown_ = this.onProgressBarMouseDown.bind(this);
+    this.onProgressBarMouseMove_ = this.onProgressBarMouseMove.bind(this);
+    this.onProgressBarMouseLeave_ = this.onProgressBarMouseLeave.bind(this);
 
     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
@@ -36,6 +32,18 @@ class UIProgressBar extends Component {
     this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
     this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+  }
+
+  componentDidMount() {
+    this.vopProgressBar = document.querySelector('.vop-progress-bar');
+    this.vopLoadProgress = document.querySelector('.vop-load-progress');
+    this.vopPlayProgress = document.querySelector('.vop-play-progress');
+    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
+    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
+
+    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown_);
+    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove_);
+    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave_);
   }
 
   componentWillUnmount() {
@@ -65,10 +73,7 @@ class UIProgressBar extends Component {
     }
 
     return (
-      <div className='vop-progress-bar'
-        onMouseDown={this.onProgressBarMouseDown.bind(this)}
-        onMouseMove={this.onProgressBarMouseMove.bind(this)}
-        onMouseLeave={this.onProgressBarMouseLeave.bind(this)}>
+      <div className='vop-progress-bar'>
         <div className='vop-progress-list'>
           <div className={'vop-load-progress' + ' ' + endStyle.loadProgressTransform} ></div>
           <div className={'vop-hover-progress'}></div>
@@ -163,28 +168,34 @@ class UIProgressBar extends Component {
     this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, {
       movePos: movePos
     });
+    this.vopScrubberContainer.style.display = 'block';
   }
 
   onProgressBarMouseLeave(e) {
+    myPrintLog('+onProgressBarMouseLeave');
     this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
-    //myPrintLog('+onProgressBarMouseLeave');
+    this.vopScrubberContainer.style.display = 'none';
   }
 
   captureProgressBarMouseEvents() {
-    this.newProgressBarMousemove = this.docProgressBarMousemove.bind(this);
-    this.newProgressBarMouseup = this.docProgressBarMouseup.bind(this);
+    this.newProgressBarMouseMove = this.docProgressBarMouseMove.bind(this);
+    this.newProgressBarMouseUp = this.docProgressBarMouseUp.bind(this);
 
-    document.addEventListener('mousemove', this.newProgressBarMousemove, true);
-    document.addEventListener('mouseup', this.newProgressBarMouseup, true);
+    document.addEventListener('mousemove', this.newProgressBarMouseMove, true);
+    document.addEventListener('mouseup', this.newProgressBarMouseUp, true);
+    // Don't process mouse leave event when mouse is down, since we delegate it to mouseup event.
+    this.vopProgressBar.removeEventListener('mouseleave', this.onProgressBarMouseLeave_);
   }
 
   releaseProgressBarMouseEvents() {
-    document.removeEventListener('mousemove', this.newProgressBarMousemove, true);
-    document.removeEventListener('mouseup', this.newProgressBarMouseup, true);
+    document.removeEventListener('mousemove', this.newProgressBarMouseMove, true);
+    document.removeEventListener('mouseup', this.newProgressBarMouseUp, true);
+
+    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave_);
   }
 
-  docProgressBarMousemove(e) {
-    myPrintLog('+docProgressBarMousemove');
+  docProgressBarMouseMove(e) {
+    myPrintLog('+docProgressBarMouseMove');
 
     let movePos = this.getProgressMovePosition(e);
     if (this.progressBarContext.movePos === movePos) {
@@ -203,10 +214,11 @@ class UIProgressBar extends Component {
     this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, {
       movePos: movePos
     });
+    this.vopScrubberContainer.style.display = 'block';
   }
 
-  docProgressBarMouseup(e) {
-    myPrintLog('+docProgressBarMouseup');
+  docProgressBarMouseUp(e) {
+    //myPrintLog('+docProgressBarMouseUp');
     e.preventDefault();
     this.releaseProgressBarMouseEvents();
 
@@ -237,6 +249,7 @@ class UIProgressBar extends Component {
 
     //
     this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
+    this.vopScrubberContainer.style.display = 'none';
   }
 
   doEnterThumbnailMode() {
