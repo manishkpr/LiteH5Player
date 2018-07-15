@@ -25,6 +25,7 @@ module.exports = (env, options) => {
           path.join(__dirname, 'src/externals')
         ],
         use: {
+          // For options, see .eslintrc.js
           loader: "eslint-loader"
         }
       }, {
@@ -34,9 +35,8 @@ module.exports = (env, options) => {
           path.join(__dirname, 'third_party/hlsjs/src')
         ],
         use: {
+          // For options, see .babelrc
           loader: 'babel-loader'
-          // If you have .babelrc, the options can be emit. When execute babel-loader,
-          // it will read .babelrc automation.
         }
       }, {
         test: /\.(sa|sc|c)ss$/,

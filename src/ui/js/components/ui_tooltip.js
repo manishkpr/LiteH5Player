@@ -28,10 +28,16 @@ class UIToolTip extends Component {
     this.vopTooltipText = document.querySelector('.vop-tooltip-text');
 
     // UI Events
-    this.onProgressBarMouseMove = this.onProgressBarMouseMove.bind(this);
-    this.onProgressBarMouseLeave = this.onProgressBarMouseLeave.bind(this);
-    this.evEmitter.on(Events.PROGRESSBAR_MOUSEMOVE, this.onProgressBarMouseMove);
-    this.evEmitter.on(Events.PROGRESSBAR_MOUSELEAVE, this.onProgressBarMouseLeave);
+    this.onProgressBarMouseMove_ = this.onProgressBarMouseMove.bind(this);
+    this.onProgressBarMouseLeave_ = this.onProgressBarMouseLeave.bind(this);
+    this.evEmitter.on(Events.PROGRESSBAR_MOUSEMOVE, this.onProgressBarMouseMove_);
+    this.evEmitter.on(Events.PROGRESSBAR_MOUSELEAVE, this.onProgressBarMouseLeave_);
+  }
+
+
+  componentWillUnmount() {
+    this.evEmitter.off(Events.PROGRESSBAR_MOUSEMOVE, this.onProgressBarMouseMove_);
+    this.evEmitter.off(Events.PROGRESSBAR_MOUSELEAVE, this.onProgressBarMouseLeave_);
   }
 
   render() {
