@@ -3,6 +3,7 @@ import {
   Component
 } from 'preact';
 import Events from '../events';
+import UITools from '../ui_tools';
 
 class UIProgressBar extends Component {
   constructor(props) {
@@ -18,10 +19,22 @@ class UIProgressBar extends Component {
       movePos: 0
     };
     this.flagThumbnailMode = false;
+  }
+
+  componentDidMount() {
+    this.vopProgressBar = document.querySelector('.vop-progress-bar');
+    this.vopLoadProgress = document.querySelector('.vop-load-progress');
+    this.vopPlayProgress = document.querySelector('.vop-play-progress');
+    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
+    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
 
     this.onProgressBarMouseDown_ = this.onProgressBarMouseDown.bind(this);
     this.onProgressBarMouseMove_ = this.onProgressBarMouseMove.bind(this);
     this.onProgressBarMouseLeave_ = this.onProgressBarMouseLeave.bind(this);
+    
+    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown_);
+    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove_);
+    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave_);
 
     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
@@ -34,19 +47,11 @@ class UIProgressBar extends Component {
     this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
-  componentDidMount() {
-    this.vopProgressBar = document.querySelector('.vop-progress-bar');
-    this.vopLoadProgress = document.querySelector('.vop-load-progress');
-    this.vopPlayProgress = document.querySelector('.vop-play-progress');
-    this.vopHoverProgress = document.querySelector('.vop-hover-progress');
-    this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
-
-    this.vopProgressBar.addEventListener('mousedown', this.onProgressBarMouseDown_);
-    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove_);
-    this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave_);
-  }
-
   componentWillUnmount() {
+    this.vopProgressBar.removeEventListener('mousedown', this.onProgressBarMouseDown_);
+    this.vopProgressBar.removeEventListener('mousemove', this.onProgressBarMouseMove_);
+    this.vopProgressBar.removeEventListener('mouseleave', this.onProgressBarMouseLeave_);
+
     this.player.off(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
     this.player.off(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
     this.player.off(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
@@ -183,7 +188,8 @@ class UIProgressBar extends Component {
 
     document.addEventListener('mousemove', this.newProgressBarMouseMove, true);
     document.addEventListener('mouseup', this.newProgressBarMouseUp, true);
-    // Don't process mouse leave event when mouse is down, since we delegate it to mouseup event.
+    // Don't process mouse move/leave event when mouse is down, since we delegate it to document mouse move/up event.
+    this.vopProgressBar.removeEventListener('mousemove', this.onProgressBarMouseMove_);
     this.vopProgressBar.removeEventListener('mouseleave', this.onProgressBarMouseLeave_);
   }
 
@@ -191,6 +197,7 @@ class UIProgressBar extends Component {
     document.removeEventListener('mousemove', this.newProgressBarMouseMove, true);
     document.removeEventListener('mouseup', this.newProgressBarMouseUp, true);
 
+    this.vopProgressBar.addEventListener('mousemove', this.onProgressBarMouseMove_);
     this.vopProgressBar.addEventListener('mouseleave', this.onProgressBarMouseLeave_);
   }
 
@@ -241,15 +248,18 @@ class UIProgressBar extends Component {
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
+    //
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
+    if (!UITools.isPtInElement({x: e.clientX, y: e.clientY}, this.vopProgressBar)) {
+      this.vopScrubberContainer.style.display = 'none';
+    }
+
+    // player seeking
     if (this.progressBarContext.posBeforeMousedown != this.progressBarContext.movePos) {
       this.player.setPosition(this.progressBarContext.movePos);
     } else {
       this.progressBarContext = null;
     }
-
-    //
-    this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
-    this.vopScrubberContainer.style.display = 'none';
   }
 
   doEnterThumbnailMode() {
