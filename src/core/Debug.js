@@ -32,6 +32,13 @@ import EventBus from './EventBus';
 import Events from './CoreEvents';
 import FactoryMaker from './FactoryMaker';
 
+const LOG_LEVEL_NONE = 0;
+const LOG_LEVEL_FATAL = 1;
+const LOG_LEVEL_ERROR = 2;
+const LOG_LEVEL_WARNING = 3;
+const LOG_LEVEL_INFO = 4;
+const LOG_LEVEL_DEBUG = 5;
+
 /**
  * @module Debug
  */
@@ -39,6 +46,8 @@ function Debug() {
 
   let context = this.context;
   let eventBus = EventBus(context).getInstance();
+
+  const logFn = [];
 
   let instance,
     logToBrowserConsole,
@@ -51,6 +60,22 @@ function Debug() {
     showLogTimestamp = true;
     showCalleeName = true;
     startTime = new Date().getTime();
+
+    if (typeof window !== 'undefined' && window.console) {
+      logFn[LOG_LEVEL_FATAL] = getLogFn(window.console.error);
+      logFn[LOG_LEVEL_ERROR] = getLogFn(window.console.error);
+      logFn[LOG_LEVEL_WARNING] = getLogFn(window.console.warn);
+      logFn[LOG_LEVEL_INFO] = getLogFn(window.console.info);
+      logFn[LOG_LEVEL_DEBUG] = getLogFn(window.console.debug);
+    }
+  }
+
+  function getLogFn(fn) {
+    if (fn && fn.bind) {
+      return fn.bind(window.console);
+    }
+    // if not define, return the default function for reporting logs
+    return window.console.log.bind(window.console);
   }
 
   /**
@@ -92,13 +117,38 @@ function Debug() {
   function getLogToBrowserConsole() {
     return logToBrowserConsole;
   }
+
+  function fatal(...params) {
+    doLog(LOG_LEVEL_FATAL, ...params);
+  }
+
+  function error(...params) {
+    doLog(LOG_LEVEL_ERROR, ...params);
+  }
+  
+  function warn(...params) {
+    doLog(LOG_LEVEL_WARNING, ...params);
+  }
+  
+  function info(...params) {
+    doLog(LOG_LEVEL_INFO, ...params);
+  }
+
+  function debug(...params) {
+    doLog(LOG_LEVEL_DEBUG, ...params);
+  }
+
+  function log(...params) {
+    doLog(LOG_LEVEL_DEBUG, ...params);
+  }
+
   /**
    * This method will allow you send log messages to either the browser's console and/or dispatch an event to capture at the media player level.
    * @param {...*} arguments The message you want to log. The Arguments object is supported for this method so you can send in comma separated logging items.
    * @memberof module:Debug
    * @instance
    */
-  function log() {
+  function doLog(level, ...params) {
     let message = '';
     let logTime = null;
 
@@ -127,12 +177,12 @@ function Debug() {
       message += ' ';
     }
 
-    Array.apply(null, arguments).forEach(function(item) {
+    Array.apply(null, params).forEach(function(item) {
       message += item + ' ';
     });
 
-    if (logToBrowserConsole) {
-      console.log(message);
+    if (logFn[level]) {
+      logFn[level](message);
     }
 
     eventBus.trigger(Events.LOG, {
@@ -141,6 +191,11 @@ function Debug() {
   }
 
   instance = {
+    fatal: fatal,
+    error: error,
+    warn: warn,
+    info: info,
+    debug: debug,
     log: log,
     setLogTimestampVisible: setLogTimestampVisible,
     setCalleeNameVisible: setCalleeNameVisible,
@@ -154,4 +209,11 @@ function Debug() {
 }
 
 Debug.__h5player_factory_name = 'Debug';
-export default FactoryMaker.getSingletonFactory(Debug);
+const factory = FactoryMaker.getSingletonFactory(Debug);
+factory.LOG_LEVEL_NONE = LOG_LEVEL_NONE;
+factory.LOG_LEVEL_FATAL = LOG_LEVEL_FATAL;
+factory.LOG_LEVEL_ERROR = LOG_LEVEL_ERROR;
+factory.LOG_LEVEL_WARNING = LOG_LEVEL_WARNING;
+factory.LOG_LEVEL_INFO = LOG_LEVEL_INFO;
+factory.LOG_LEVEL_DEBUG = LOG_LEVEL_DEBUG;
+export default factory;

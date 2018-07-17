@@ -31,139 +31,161 @@
 /**
  * @module FactoryMaker
  */
-let FactoryMaker = (function () {
+let FactoryMaker = (function() {
 
-    let instance;
-    let extensions = [];
-    let singletonContexts = [];
+  let instance;
+  let extensions = [];
+  let singletonContexts = [];
 
-    function extend(name, childInstance, override, context) {
-        let extensionContext = getExtensionContext(context);
-        if (!extensionContext[name] && childInstance) {
-            extensionContext[name] = {instance: childInstance, override: override};
+  function extend(name, childInstance, override, context) {
+    let extensionContext = getExtensionContext(context);
+    if (!extensionContext[name] && childInstance) {
+      extensionContext[name] = {
+        instance: childInstance,
+        override: override
+      };
+    }
+  }
+
+  /**
+   * Use this method from your extended object.  this.factory is injected into your object.
+   * this.factory.getSingletonInstance(this.context, 'VideoModel')
+   * will return the video model for use in the extended object.
+   *
+   * @param {Object} context - injected into extended object as this.context
+   * @param {string} className - string name found in all dash.js objects
+   * with name __h5player_factory_name Will be at the bottom. Will be the same as the object's name.
+   * @returns {*} Context aware instance of specified singleton name.
+   * @memberof module:FactoryMaker
+   * @instance
+   */
+  function getSingletonInstance(context, className) {
+    for (let i in singletonContexts) {
+      let obj = singletonContexts[i];
+      if (obj.context === context && obj.name === className) {
+        return obj.instance;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Use this method to add an singleton instance to the system.  Useful for unit testing to mock objects etc.
+   *
+   * @param {Object} context
+   * @param {string} className
+   * @param {Object} instance
+   * @memberof module:FactoryMaker
+   * @instance
+   */
+  function setSingletonInstance(context, className, instance) {
+    for (let i in singletonContexts) {
+      let obj = singletonContexts[i];
+      if (obj.context === context && obj.name === className) {
+        singletonContexts[i].instance = instance;
+        return;
+      }
+    }
+    singletonContexts.push({
+      name: className,
+      context: context,
+      instance: instance
+    });
+  }
+
+  function getClassFactory(classConstructor) {
+    return function(context) {
+      if (context === undefined) {
+        context = {};
+      }
+
+      return {
+        create: function() {
+          return merge(classConstructor.__h5player_factory_name, classConstructor.apply({
+            context: context
+          }, arguments), context, arguments);
         }
-    }
-
-    /**
-     * Use this method from your extended object.  this.factory is injected into your object.
-     * this.factory.getSingletonInstance(this.context, 'VideoModel')
-     * will return the video model for use in the extended object.
-     *
-     * @param {Object} context - injected into extended object as this.context
-     * @param {string} className - string name found in all dash.js objects
-     * with name __h5player_factory_name Will be at the bottom. Will be the same as the object's name.
-     * @returns {*} Context aware instance of specified singleton name.
-     * @memberof module:FactoryMaker
-     * @instance
-     */
-    function getSingletonInstance(context, className) {
-        for (let i in singletonContexts) {
-            let obj = singletonContexts[i];
-            if (obj.context === context && obj.name === className) {
-                return obj.instance;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Use this method to add an singleton instance to the system.  Useful for unit testing to mock objects etc.
-     *
-     * @param {Object} context
-     * @param {string} className
-     * @param {Object} instance
-     * @memberof module:FactoryMaker
-     * @instance
-     */
-    function setSingletonInstance(context, className, instance) {
-        for (let i in singletonContexts) {
-            let obj = singletonContexts[i];
-            if (obj.context === context && obj.name === className) {
-                singletonContexts[i].instance = instance;
-                return;
-            }
-        }
-        singletonContexts.push({ name: className, context: context, instance: instance });
-    }
-
-    function getClassFactory(classConstructor) {
-        return function (context) {
-            if (context === undefined) {
-                context = {};
-            }
-
-            return {
-                create: function () {
-                    return merge(classConstructor.__h5player_factory_name, classConstructor.apply({ context: context }, arguments), context, arguments);
-                }
-            };
-        };
-    }
-
-    function getSingletonFactory(classConstructor) {
-        return function (context) {
-            let instance;
-            if (context === undefined) {
-                context = {};
-            }
-            return {
-                getInstance: function () {
-                    // If we don't have an instance yet check for one on the context
-                    if (!instance) {
-                        instance = getSingletonInstance(context, classConstructor.__h5player_factory_name);
-                    }
-                    // If there's no instance on the context then create one
-                    if (!instance) {
-                        instance = merge(classConstructor.__h5player_factory_name, classConstructor.apply({ context: context }, arguments), context, arguments);
-                        singletonContexts.push({ name: classConstructor.__h5player_factory_name, context: context, instance: instance });
-                    }
-                    return instance;
-                }
-            };
-        };
-    }
-
-    function merge(name, classConstructor, context, args) {
-        let extensionContext = getExtensionContext(context);
-        let extensionObject = extensionContext[name];
-        if (extensionObject) {
-            let extension = extensionObject.instance;
-            if (extensionObject.override) { //Override public methods in parent but keep parent.
-                extension = extension.apply({ context: context, factory: instance, parent: classConstructor}, args);
-                for (const prop in extension) {
-                    if (classConstructor.hasOwnProperty(prop)) {
-                        classConstructor[prop] = extension[prop];
-                    }
-                }
-            } else { //replace parent object completely with new object. Same as dijon.
-                return extension.apply({ context: context, factory: instance}, args);
-            }
-        }
-        return classConstructor;
-    }
-
-    function getExtensionContext(context) {
-        let extensionContext;
-        extensions.forEach(function (obj) {
-            if (obj === context) {
-                extensionContext = obj;
-            }
-        });
-        if (!extensionContext) {
-            extensionContext = extensions.push(context);
-        }
-        return extensionContext;
-    }
-
-    instance = {
-        extend: extend,
-        getSingletonInstance: getSingletonInstance,
-        setSingletonInstance: setSingletonInstance,
-        getSingletonFactory: getSingletonFactory,
-        getClassFactory: getClassFactory
+      };
     };
+  }
 
-    return instance;
+  function getSingletonFactory(classConstructor) {
+    return function(context) {
+      let instance;
+      if (context === undefined) {
+        context = {};
+      }
+      return {
+        getInstance: function() {
+          // If we don't have an instance yet check for one on the context
+          if (!instance) {
+            instance = getSingletonInstance(context, classConstructor.__h5player_factory_name);
+          }
+          // If there's no instance on the context then create one
+          if (!instance) {
+            instance = merge(classConstructor.__h5player_factory_name, classConstructor.apply({
+              context: context
+            }, arguments), context, arguments);
+            singletonContexts.push({
+              name: classConstructor.__h5player_factory_name,
+              context: context,
+              instance: instance
+            });
+          }
+          return instance;
+        }
+      };
+    };
+  }
+
+  function merge(name, classConstructor, context, args) {
+    let extensionContext = getExtensionContext(context);
+    let extensionObject = extensionContext[name];
+    if (extensionObject) {
+      let extension = extensionObject.instance;
+      if (extensionObject.override) { //Override public methods in parent but keep parent.
+        extension = extension.apply({
+          context: context,
+          factory: instance,
+          parent: classConstructor
+        }, args);
+        for (const prop in extension) {
+          if (classConstructor.hasOwnProperty(prop)) {
+            classConstructor[prop] = extension[prop];
+          }
+        }
+      } else { //replace parent object completely with new object. Same as dijon.
+        return extension.apply({
+          context: context,
+          factory: instance
+        }, args);
+      }
+    }
+    return classConstructor;
+  }
+
+  function getExtensionContext(context) {
+    let extensionContext;
+    extensions.forEach(function(obj) {
+      if (obj === context) {
+        extensionContext = obj;
+      }
+    });
+    if (!extensionContext) {
+      extensionContext = extensions.push(context);
+    }
+    return extensionContext;
+  }
+
+  instance = {
+    extend: extend,
+    getSingletonInstance: getSingletonInstance,
+    setSingletonInstance: setSingletonInstance,
+    getSingletonFactory: getSingletonFactory,
+    getClassFactory: getClassFactory
+  };
+
+  return instance;
 
 }());
 

@@ -22,8 +22,8 @@ class UIXSpeedMenu extends Preact.Component {
 
   render() {
     //myPrintLog('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
-
     let ret = (<div></div>);
+
     if (this.main.state.settingMenuUIData.currMenu === 'xspeed_menu') {
       const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>
         <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currSpeedId === item.id}
