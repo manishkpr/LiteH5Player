@@ -118,7 +118,7 @@ function Player(idContainer) {
     if (mediaCfg.textTrackUrl) {
       eventBus_.trigger(Events.TEXTTRACK_LOADING, {
         url: mediaCfg.textTrackUrl
-      })
+      });
     };
 
     // load webvtt thumbnail
@@ -498,9 +498,9 @@ function Player(idContainer) {
     streamController_ = StreamController(context_).getInstance();
     textTrackController_ = TextTrackController(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
-
     fragmentLoader_ = FragmentLoader(context_).create();
 
+    // html5 video poster
     if (context_.cfg.poster) {
       media_.poster = context_.cfg.poster;
     }
