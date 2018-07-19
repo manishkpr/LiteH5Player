@@ -19,7 +19,7 @@ function TextTrackController() {
   let textTrack_;
 
   function setup() {
-    eventBus_.on(Events.TEXTTRACK_LOADED, onTextTrackLoaded);
+    eventBus_.on(Events.TRACK_LOADED, onTextTrackLoaded);
     //addTextTrack();
   }
 

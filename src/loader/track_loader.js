@@ -17,12 +17,12 @@ function TrackLoader() {
   let track_;
 
   function setup() {
-    eventBus_.on(Events.TEXTTRACK_LOADING, onTextTrackLoading);
+    eventBus_.on(Events.TRACK_LOADING, onTrackLoading);
   }
 
-  function onTextTrackLoading(data) {
+  function onTrackLoading(data) {
     track_ = data.track;
-    
+
     let request = {
       url: track_.file
     };
@@ -36,7 +36,7 @@ function TrackLoader() {
     let data = StringUtils.ab2str_v1(buffer);
     let cueData = vttParser_.parse(data);
 
-    eventBus_.trigger(Events.TEXTTRACK_LOADED, { cueData: cueData, label: track_.label });
+    eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, label: track_.label });
   }
 
   let instance_ = {

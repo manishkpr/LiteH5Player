@@ -120,7 +120,7 @@ function Player(idContainer) {
     for (let i = 0; i < mediaCfg.tracks.length; i ++) {
       let track = mediaCfg.tracks[i];
       if (track.kind === 'captions') {
-        eventBus_.trigger(Events.TEXTTRACK_LOADING, { track: track });
+        eventBus_.trigger(Events.TRACK_LOADING, { track: track });
       }
     }
 

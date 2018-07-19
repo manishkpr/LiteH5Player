@@ -52,9 +52,9 @@ class CoreEvents {
     this.STREAM_UPDATED = 'streamUpdated'; // Loaded a stream has a specified bitrate.
     // thumbnail
     this.THUMBNAIL_LOADING = 'thumbnailLoading';
-    // subtitles
-    this.TEXTTRACK_LOADING = 'textTrackLoading';
-    this.TEXTTRACK_LOADED = 'textTrackLoaded';
+    // tracks(captions, thumbnails)
+    this.TRACK_LOADING = 'trackLoading';
+    this.TRACK_LOADED = 'trackLoaded';
     this.CUE_START = 'cueStart';
     this.CUE_END = 'cueEnd';
     // chromecast
