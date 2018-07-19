@@ -24,14 +24,12 @@ function TextEngine() {
   }
 
   function onTextTrackLoaded(e) {
-    if (!textTrack_) {
-      textTrack_ = media_.addTextTrack('subtitles', 'English', 'eng');
-      textTrack_.mode = 'showing';
-    }
+    let cueData = e.cueData;
+    let label = e.label;
+    textTrack_ = media_.addTextTrack('captions', label, label);
 
-    let cues = e.track;
-    for (let i = 0; i < cues.length; i++) {
-      let item = cues[i];
+    for (let i = 0; i < cueData.length; i++) {
+      let item = cueData[i];
       let data = {
         start: item.start,
         end: item.end,
@@ -41,6 +39,9 @@ function TextEngine() {
       let cue = createCue(data);
       textTrack_.addCue(cue);
     }
+
+    //
+    textTrack_.mode = 'showing';
   }
 
   function createCue(data) {

@@ -14,19 +14,17 @@ function TextTrackController() {
   let xhrLoader_ = context_.loader(context_).create();
   let vttParser_ = VTTParser(context_).getInstance();
 
-  let vttUrl_;
-  let textTracks_;
+  let track_;
 
   function setup() {
     eventBus_.on(Events.TEXTTRACK_LOADING, onTextTrackLoading);
   }
 
   function onTextTrackLoading(data) {
-    let url = data.url;
-
-    vttUrl_ = url;
+    track_ = data.track;
+    
     let request = {
-      url: vttUrl_
+      url: track_.file
     };
     let callbacks = {
       onSuccess: onRequestSuccess
@@ -36,9 +34,9 @@ function TextTrackController() {
 
   function onRequestSuccess(buffer) {
     let data = StringUtils.ab2str_v1(buffer);
-    textTracks_ = vttParser_.parse(data);
+    let cueData = vttParser_.parse(data);
 
-    eventBus_.trigger(Events.TEXTTRACK_LOADED, { track: textTracks_ });
+    eventBus_.trigger(Events.TEXTTRACK_LOADED, { cueData: cueData, label: track_.label });
   }
 
   let instance_ = {

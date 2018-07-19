@@ -114,18 +114,20 @@ function Player(idContainer) {
       url: mediaCfg.url
     });
 
-    // load subtitle url
-    if (mediaCfg.textTrackUrl) {
-      eventBus_.trigger(Events.TEXTTRACK_LOADING, {
-        url: mediaCfg.textTrackUrl
-      });
-    };
+    // load captions tracks
+    for (let i = 0; i < mediaCfg.tracks.length; i ++) {
+      let track = mediaCfg.tracks[i];
+      if (track.kind === 'captions') {
+        eventBus_.trigger(Events.TEXTTRACK_LOADING, { track: track });
+      }
+    }
 
-    // load webvtt thumbnail
-    if (mediaCfg.thumbnailUrl) {
-      eventBus_.trigger(Events.THUMBNAIL_LOADING, {
-        url: mediaCfg.thumbnailUrl
-      });
+    // load thumbnail tracks
+    for (let i = 0; i < mediaCfg.tracks.length; i ++) {
+      let track = mediaCfg.tracks[i];
+      if (track.kind === 'thumbnails') {
+        eventBus_.trigger(Events.THUMBNAIL_LOADING, { track: track });
+      }
     }
 
     if (adsEngine_) {

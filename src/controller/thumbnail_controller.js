@@ -14,19 +14,18 @@ function ThumbnailController() {
   let xhrLoader_ = context_.loader(context_).create();
   let vttParser_ = VTTParser(context_).getInstance();
 
-  let vttUrl_;
-  let thumbnails_;
+  let track_;
+  let thumbnailsData_;
 
   function setup() {
     eventBus_.on(Events.THUMBNAIL_LOADING, onThumbnailLoading);
   }
 
   function onThumbnailLoading(data) {
-    let url = data.url;
+    track_ = data.track;
 
-    vttUrl_ = url;
     let request = {
-      url: vttUrl_
+      url: track_.file
     };
     let callbacks = {
       onSuccess: onRequestThumbnailSuccess
@@ -65,22 +64,22 @@ function ThumbnailController() {
     }
 
     let data = StringUtils.ab2str_v1(buffer);
-    thumbnails_ = vttParser_.parse(data);
+    thumbnailsData_ = vttParser_.parse(data);
 
-    let lastSlash = vttUrl_.lastIndexOf('/');
-    let baseUrl = vttUrl_.substring(0, lastSlash);
-    for (let i = 0; i < thumbnails_.length; i++) {
-      thumbnails_[i].data = parseVttText(thumbnails_[i].data, baseUrl);
+    let lastSlash = track_.file.lastIndexOf('/');
+    let baseUrl = track_.file.substring(0, lastSlash);
+    for (let i = 0; i < thumbnailsData_.length; i++) {
+      thumbnailsData_[i].data = parseVttText(thumbnailsData_[i].data, baseUrl);
     }
   }
 
   function getThumbnail(time) {
-    if (!thumbnails_) {
+    if (!thumbnailsData_) {
       return null;
     }
 
-    for (let i in thumbnails_) {
-      let info = thumbnails_[i];
+    for (let i in thumbnailsData_) {
+      let info = thumbnailsData_[i];
       if (info.start <= time && time <= info.end) {
         return info;
       }

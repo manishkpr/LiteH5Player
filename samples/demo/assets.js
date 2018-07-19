@@ -72,8 +72,9 @@ function getInitConfig() {
 
   var cfg = {
     // Media
-    //poster: 'http://www.oldmtn.com/blog/wp-content/uploads/2018/01/poster.jpg',
-    autoplay: true,
+    //poster: 'http://10.2.68.64/2/poster/tos-poster.jpg',
+    poster: 'http://10.2.68.64/2/poster/bbb-poster.jpg',
+    //autoplay: true,
     mutedAutoplay: true,
 
     // advertising: {
@@ -152,9 +153,9 @@ function getMediaInfo() {
     //url: 'http://10.2.68.64/2/dash/testpic_2s/video.mpd',
     //url: 'http://10.2.68.64/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
-    //url: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
+    url: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.mp4',
-    url: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
+    //url: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
     //url: 'http://10.2.68.64/2/dash/testpic_2s/V300_with_cc1_and_cc3/first200.mp4',
     //url: 'http://10.2.68.64/2/pd/mp4/jwplayer_demo/test.mp4',
     //url: 'http://stream1.visualon.com:8188/customers/osmp/PD/H264/MP4/264_bl_320x172_24fps_h264_606kbps_aac_128kpbs.mp4',
@@ -212,15 +213,19 @@ function getMediaInfo() {
     //   drmInitData: drmInitData
     // },
 
-    //
-    textTrackUrl: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-en.webvtt',
-    //textTrackUrl: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-CH.webvtt',
-    //textTrackUrl: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-DE.webvtt',
-    //
-    thumbnailUrl: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.vtt'
-    //thumbnailUrl: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.vtt'
-    //thumbnailUrl: 'http://10.2.68.64/2/webvtt_thumbnail/multiple01/thumbnails.vtt'
-    //thumbnailUrl: 'http://10.2.68.64/2/webvtt_thumbnail/single01/thumbnails.vtt'
+    tracks: [
+      // Webvtt Thumbnails
+      { file: 'http://10.2.68.64/2/pd/mp4/big_buck_bunny/trailer_480p.vtt', kind: 'thumbnails', label: 'big_buck_bunny' },
+      // { file: 'http://10.2.68.64/2/pd/mp4/sintel/trailer.vtt', kind: 'thumbnails', label: 'sintel trailer' },
+      // { file: 'http://10.2.68.64/2/webvtt_thumbnail/multiple01/thumbnails.vtt', kind: 'thumbnails', label: 'multiple01' },
+      // { file: 'http://10.2.68.64/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
+
+      // Webvtt Captions
+      { file: 'http://10.2.68.64/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
+      //{ file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
+      // { file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
+      //{ file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }
+    ]
   };
 
   return info;

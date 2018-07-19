@@ -14,8 +14,15 @@ class UICaptionOverlay extends Preact.Component {
       text = this.main.cue.text;
     }
 
+    let captionStyle = {};
+    captionStyle.backgroundColor = 'yellow';
+    captionStyle.color = 'red';
+
+    // line-height: normal;
+    // text-align: center;
+
     return (
-      <div className="vop-caption-overlay">
+      <div className="vop-caption-overlay" style={captionStyle}>
         {text}
       </div>
     );
