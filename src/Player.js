@@ -10,7 +10,9 @@ import FetchLoader from './utils/fetch_loader';
 import FragmentLoader from './loader/fragment_loader';
 import PlaylistLoader from './loader/playlist_loader';
 
-import TextEngine from './text_engine';
+
+import TrackLoader from './loader/track_loader';
+
 import PlaybackController from './controller/playback_controller';
 import EMEController from './controller/eme_controller';
 import AdsController from './controller/ads_controller';
@@ -492,13 +494,13 @@ function Player(idContainer) {
   function initComponent() {
     playlistLoader_ = PlaylistLoader(context_).getInstance();
     playbackController_ = PlaybackController(context_).getInstance();
-    textEngine_ = TextEngine(context_).getInstance();
+    textEngine_ = TextTrackController(context_).getInstance();
     bufferController_ = BufferController(context_).getInstance();
     emeController_ = EMEController(context_).getInstance();
     parserController_ = ParserController(context_).getInstance();
     levelController_ = LevelController(context_).getInstance();
     streamController_ = StreamController(context_).getInstance();
-    textTrackController_ = TextTrackController(context_).getInstance();
+    textTrackController_ = TrackLoader(context_).getInstance();
     thumbnailController_ = ThumbnailController(context_).getInstance();
     fragmentLoader_ = FragmentLoader(context_).create();
 
