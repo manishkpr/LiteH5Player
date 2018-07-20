@@ -35,7 +35,7 @@ import Preact from 'preact';
 import {
   h
 } from 'preact';
-import UIBasic from './ui/js/ui_basic';
+import UIBasic from './ui_basic/js/ui_basic';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(idContainer) {
