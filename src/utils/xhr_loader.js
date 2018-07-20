@@ -27,9 +27,6 @@ class XHRLoaderCallback {
 
 
 function XHRLoader() {
-  let context_ = this.context;
-
-  //
   let request_ = null;
   let config_ = null;
   let callbacks_ = null;
@@ -39,9 +36,6 @@ function XHRLoader() {
 
   // for debug
   let enableLog_ = false;
-
-  function loadInternal() {
-  }
 
   function load(request, config, callbacks) {
     printlog('begin load time: ' + (new Date().getTime())/1000);
