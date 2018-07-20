@@ -113,7 +113,7 @@ function XHRLoader() {
       printlog('--onabort--, readystate: ' + xhr_.readyState);
     };
 
-    xhr_.onerror = function () {
+    xhr_.onerror = function (e) {
       printlog('--onerror--, readystate: ' + xhr_.readyState);
     };
 

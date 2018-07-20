@@ -6,12 +6,13 @@ import Debug from '../core/Debug';
 import VTTParser from '../utils/VTTParser';
 import StringUtils from '../utils/string_utils';
 
+import { ajax } from '../utils/ajax';
+
 function TrackLoader() {
   let context_ = this.context;
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
-  let xhrLoader_ = context_.loader(context_).create();
   let vttParser_ = VTTParser(context_).getInstance();
 
   let track_;
@@ -23,20 +24,17 @@ function TrackLoader() {
   function onTrackLoading(data) {
     track_ = data.track;
 
-    let request = {
-      url: track_.file
-    };
-    let callbacks = {
-      onSuccess: onRequestSuccess
+    function successHandler(xhr) {
+      let data = xhr.responseText;
+      let cueData = vttParser_.parse(data);
+
+      eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, label: track_.label });
     }
-    xhrLoader_.load(request, null, callbacks);
-  }
 
-  function onRequestSuccess(buffer) {
-    let data = StringUtils.ab2str_v1(buffer);
-    let cueData = vttParser_.parse(data);
+    function errorHandler(xhr) {
+    }
 
-    eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, label: track_.label });
+    track_.xhr = ajax(track_.file, successHandler, errorHandler);
   }
 
   let instance_ = {
