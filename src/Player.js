@@ -31,11 +31,7 @@ import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 // UI
-import Preact from 'preact';
-import {
-  h
-} from 'preact';
-import UIBasic from './ui_basic/js/ui_basic';
+import { dom_initUI } from './ui_basic/js/ui_basic';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(idContainer) {
@@ -43,8 +39,7 @@ function Player(idContainer) {
   let playerContainer_ = document.getElementById(idContainer);
 
   // Create internal basic UI elements first.
-  let root;
-  let uiBasic_ = Preact.render(<UIBasic/>, playerContainer_, root);
+  dom_initUI(playerContainer_);
 
   let media_ = document.querySelector('.vop-video');
   let adContainer_ = document.querySelector('.vop-ads-container');
