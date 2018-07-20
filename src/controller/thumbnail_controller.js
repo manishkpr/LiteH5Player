@@ -5,13 +5,14 @@ import Debug from '../core/Debug';
 
 import VTTParser from '../utils/VTTParser';
 import StringUtils from '../utils/string_utils';
+import XHRLoader from '../utils/xhr_loader';
 
 function ThumbnailController() {
   let context_ = this.context;
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
-  let xhrLoader_ = context_.loader(context_).create();
+  let xhrLoader_ = new XHRLoader();
   let vttParser_ = VTTParser(context_).getInstance();
 
   let track_;

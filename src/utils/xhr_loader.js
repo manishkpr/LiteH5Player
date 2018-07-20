@@ -1,7 +1,4 @@
-﻿
-import FactoryMaker from '../core/FactoryMaker';
-
-// Define xhr_loader internal structure FYI.
+﻿// Define xhr_loader internal structure FYI.
 
 class XHRLoaderRequest {
   constructor() {
@@ -25,7 +22,6 @@ class XHRLoaderCallback {
   }
 }
 
-
 function XHRLoader() {
   let request_ = null;
   let config_ = null;
@@ -33,9 +29,6 @@ function XHRLoader() {
 
   let xhr_ = null;
   let needFailureReport_ = false;
-
-  // for debug
-  let enableLog_ = false;
 
   function load(request, config, callbacks) {
     printlog('begin load time: ' + (new Date().getTime())/1000);
@@ -124,9 +117,7 @@ function XHRLoader() {
   }
 
   function printlog(log) {
-    if (enableLog_) {
-      console.log(log);
-    }
+    console.log(log);
   }
 
   let instance = {
@@ -136,7 +127,6 @@ function XHRLoader() {
   return instance;
 }
 
-XHRLoader.__h5player_factory_name = 'XHRLoader';
-export default FactoryMaker.getClassFactory(XHRLoader);
+export default XHRLoader;
 
 

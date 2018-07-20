@@ -221,7 +221,7 @@ function getMediaInfo() {
       // { file: 'http://10.2.68.64/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
 
       // Webvtt Captions
-      { file: 'http://10.2.68.64/2/subtitle/timetext.vtt11', kind: 'captions', label: 'TimeText' },
+      { file: 'http://10.2.68.64/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
       //{ file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
       // { file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
       //{ file: 'http://10.2.68.64/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }

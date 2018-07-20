@@ -5,7 +5,6 @@ import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
 import Debug from './core/Debug';
 
-import XHRLoader from './utils/xhr_loader';
 import FetchLoader from './utils/fetch_loader';
 import FragmentLoader from './loader/fragment_loader';
 import PlaylistLoader from './loader/playlist_loader';
@@ -87,8 +86,6 @@ function Player(idContainer) {
 
   function setup() {
     // init internal configuration
-    context_.loader = XHRLoader;
-    //context_.loader = FetchLoader;
 
     context_.media = media_;
   }

@@ -167,3 +167,8 @@ function TextTrackController() {
 
 TextTrackController.__h5player_factory_name = 'TextTrackController';
 export default FactoryMaker.getSingletonFactory(TextTrackController);
+
+
+
+
+

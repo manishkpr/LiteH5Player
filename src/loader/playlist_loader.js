@@ -4,13 +4,14 @@ import Events from '../core/CoreEvents';
 import Debug from '../core/Debug';
 
 import StringUtils from '../utils/string_utils';
+import XHRLoader from '../utils/xhr_loader';
 
 function PlaylistLoader() {
   let context_ = this.context;
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
 
-  let xhrLoader_ = new context_.loader(context_).create();
+  let xhrLoader_ = new XHRLoader();
   let request_;
 
   function setup() {
