@@ -108,19 +108,25 @@ function Player(idContainer) {
       url: mediaCfg.url
     });
 
-    // load captions tracks
-    for (let i = 0; i < mediaCfg.tracks.length; i ++) {
-      let track = mediaCfg.tracks[i];
-      if (track.kind === 'captions') {
-        eventBus_.trigger(Events.TRACK_LOADING, { track: track });
+    if (mediaCfg.tracks) {
+      // load captions tracks
+      for (let i = 0; i < mediaCfg.tracks.length; i++) {
+        let track = mediaCfg.tracks[i];
+        if (track.kind === 'captions') {
+          eventBus_.trigger(Events.TRACK_LOADING, {
+            track: track
+          });
+        }
       }
-    }
 
-    // load thumbnail tracks
-    for (let i = 0; i < mediaCfg.tracks.length; i ++) {
-      let track = mediaCfg.tracks[i];
-      if (track.kind === 'thumbnails') {
-        eventBus_.trigger(Events.THUMBNAIL_LOADING, { track: track });
+      // load thumbnail tracks
+      for (let i = 0; i < mediaCfg.tracks.length; i++) {
+        let track = mediaCfg.tracks[i];
+        if (track.kind === 'thumbnails') {
+          eventBus_.trigger(Events.THUMBNAIL_LOADING, {
+            track: track
+          });
+        }
       }
     }
 
