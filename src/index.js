@@ -3,7 +3,7 @@ import CommonUtils from './utils/common_utils';
 import Player from './Player';
 import CastReceiver from './cast/cast_receiver';
 
-import UIEngine from './ui/js/ui_engine';
+import UIEngine from './ui_dom/js/ui_engine';
 
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;

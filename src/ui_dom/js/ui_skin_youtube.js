@@ -64,12 +64,6 @@ class UISkinYoutube extends Component {
     //this.vopVideo.setAttribute('controls', 'true');
   }
 
-  toDOM() {
-    let container = document.createElement('div');
-
-    return container;
-  }
-
   render() {
     // Update current component.
     switch (this.playerState) {

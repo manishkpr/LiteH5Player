@@ -511,11 +511,11 @@ function Player(idContainer) {
       adsEngine_ = AdsController(context_).getInstance(adContainer_, media_, context_.cfg.advertising);
     }
     // chromecast
-    if (window.cast && window.cast.__platform__) {
-      // receiver don't need new CastSender
-    } else {
-      castSender_ = CastSender(context_).getInstance('E19ACDB8');
-    }
+    // if (window.cast && window.cast.__platform__) {
+    //   // receiver don't need new CastSender
+    // } else {
+    //   castSender_ = CastSender(context_).getInstance('E19ACDB8');
+    // }
   }
 
   function addEventListeners() {
