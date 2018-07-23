@@ -1,26 +1,19 @@
 @import '../ui_variables';
 
-.#{$skinYoutube} {
-  .vop-play-button {
-    &.icon-play {
-      background-image: url(../assets/svg/ic_play_arrow_24px.svg);
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    &.icon-pause {
-      background-image: url(../assets/svg/ic_pause_24px.svg);
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    &.icon-replay {
-      background-image: url(../assets/svg/ic_replay_24px.svg);
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-  }
+.vop-play-button {
+  background-image: url(../assets/svg/ic_play_arrow_24px.svg);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+.vop-player-playing .vop-play-button {
+  background-image: url(../assets/svg/ic_pause_24px.svg);
+}
 
+.vop-player-paused .vop-play-button {
+  background-image: url(../assets/svg/ic_play_arrow_24px.svg);
+}
 
+.vop-player-ended .vop-play-button {
+  background-image: url(../assets/svg/ic_replay_24px.svg);
+}

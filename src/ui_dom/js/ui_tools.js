@@ -1,6 +1,4 @@
 var UITools = {};
-
-
 UITools.enterFullscreen = function(v) {
   // Try to enter fullscreen mode in the browser
   let requestFullscreen =
@@ -74,8 +72,6 @@ UITools.isPtInElement = function(pt, element) {
     return false;
   }
 };
-
-
 
 export default UITools;
 

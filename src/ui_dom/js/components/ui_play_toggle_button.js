@@ -1,5 +1,7 @@
 import { Component } from './ui_component';
 
+import DOM from '../dom';
+
 class UIPlayToggleButton extends Component {
   constructor(props) {
     super(props);
@@ -9,11 +11,16 @@ class UIPlayToggleButton extends Component {
   }
 
   toDom() {
-    let button = document.createElement('button');
-    button.setAttribute('class', 'vop-button vop-play-button icon-play');
-    button.setAttribute('title', 'play');
+    let tag = 'button';
+    let attributes = {
+      'class': 'vop-button vop-play-button icon-play',
+      'title': 'play'
+    };
 
-    return button;
+    let dom = new DOM(tag, attributes);
+    dom.addEventListener('click', this.onUICmdPlay.bind(this));
+
+    return dom;
   }
 
   // old

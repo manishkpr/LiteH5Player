@@ -677,7 +677,9 @@ function Player(idContainer) {
   }
 
   function test() {
-    eventBus_.trigger(Events.TEST_MSG);
+    let video = document.querySelector('.vop-video');
+    let b = 2;
+    //eventBus_.trigger(Events.TEST_MSG);
 
     // sample2
     // let fetch1 = FetchLoader(context_).create();

@@ -20,24 +20,68 @@ import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 
+import UIPlayButtonOverlay from './components/ui_play_overlay';
 import UIChromecastOverlay from './components/ui_chromecast_overlay';
 
 import UIToolTip from './components/ui_tooltip';
 
+
 // 1. Render all components from React.
 // 2. Just change css in 'html5-player-video' to control components visiblity.
 // 3. 
-class UISkinYoutube extends Component {
-  constructor(props) {
-    super(props);
+class UISkinYoutube {
+  // new
+  constructor(player) {
+    this.player = player;
 
-    this.initVariable();
-    this.player = props.player;
-    this.state = {
-      settingMenuUIData: this.settingMenuUIData
-    };
+    // sub components
+    this.components = [];
+    this.uiCaptionOverlay_ = new UICaptionOverlay({main: this});
+    this.uiChromecastOverlay_ = new UIChromecastOverlay({main: this});
+    this.uiTitleBar_ = new UITitleBar({main: this});
+    this.uiPlayerBtnOverlay_ = new UIPlayButtonOverlay({main: this});
+    this.uiLogoOverlay_ = new UILogoOverlay({main: this});
+    this.uiBottomBar_ = new UIBottomBar({main: this});
+
+    this.components.push(this.uiChromecastOverlay_);
+    this.components.push(this.uiTitleBar_);
+    this.components.push(this.uiLogoOverlay_);
+    this.components.push(this.uiPlayerBtnOverlay_);
+    this.components.push(this.uiBottomBar_);
+
+    // old
+    // this.initVariable();
+    // this.player = props.player;
+    // this.state = {
+    //   settingMenuUIData: this.settingMenuUIData
+    // };
   }
 
+  toDom() {
+    let container = document.createElement('div');
+    container.setAttribute('class', 'vop-skin-youtube');
+
+    this.components.forEach(function(item, index) {
+      let element = item.toDom();
+      container.appendChild(element);
+    });
+
+    //
+    this.initUIElements();
+    //this.initUIElementsStyles();
+    this.initUIEventListeners();
+    this.initPlayerListeners();
+
+    //this.syncPlayerStateToUI();
+
+    return container;
+  }
+
+  play() {
+    this.player.play();
+  }
+
+  // old
   componentWillMount() {
     myPrintLog('UISkinYoutube, +componentWillMount');
   }
@@ -317,31 +361,6 @@ class UISkinYoutube extends Component {
     // reference variable of ad
     this.flagAdStarted = false;
     this.flagIsLinearAd = false;
-
-    //
-    this.onStateChange = this.onStateChange.bind(this);
-
-    this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
-    
-    this.onMediaPlaying = this.onMediaPlaying.bind(this);
-    this.onMediaWaiting = this.onMediaWaiting.bind(this);
-
-    this.onCueStart = this.onCueStart.bind(this);
-    this.onCueEnd = this.onCueEnd.bind(this);
-
-    this.onLog = this.onLog.bind(this);
-
-    // ad callback event
-    this.onAdStarted = this.onAdStarted.bind(this);
-    this.onAdComplete = this.onAdComplete.bind(this);
-    this.onAdCompanions = this.onAdCompanions.bind(this);
-
-    // chromecast
-    this.onCastConnected = this.onCastConnected.bind(this);
-    this.onCastDisconnected = this.onCastDisconnected.bind(this);
-
-    //
-    this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
   }
 
   // Title: init part
@@ -349,26 +368,26 @@ class UISkinYoutube extends Component {
     this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
-    this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
-    this.vopBottomBar = document.querySelector('.vop-bottom-bar');
+    // this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
+    // this.vopBottomBar = document.querySelector('.vop-bottom-bar');
 
-    this.vopProgressBar = document.querySelector('.vop-progress-bar');
+    // this.vopProgressBar = document.querySelector('.vop-progress-bar');
 
-    this.vopTooltip = document.querySelector('.vop-tooltip');
-    this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
-    this.vopTooltipText = document.querySelector('.vop-tooltip-text');
+    // this.vopTooltip = document.querySelector('.vop-tooltip');
+    // this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
+    // this.vopTooltipText = document.querySelector('.vop-tooltip-text');
 
-    this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
+    // this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
 
-    this.vopPlayButton = document.querySelector('.vop-play-button');
-    this.vopPauseButton = document.querySelector('.vop-pause-button');
-    this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
-    this.vopSettingsBtn = document.querySelector('.vop-settings-button');
+    // this.vopPlayButton = document.querySelector('.vop-play-button');
+    // this.vopPauseButton = document.querySelector('.vop-pause-button');
+    // this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
+    // this.vopSettingsBtn = document.querySelector('.vop-settings-button');
 
     //
-    this.vopVideo = document.querySelector('.vop-video');
-    this.vopVideo.removeAttribute('controls');
-    this.vopAdContainer = document.querySelector('.vop-ads-container');
+    // this.vopVideo = document.querySelector('.vop-video');
+    // this.vopVideo.removeAttribute('controls');
+    // this.vopAdContainer = document.querySelector('.vop-ads-container');
   }
 
   initUIElementsStyles() {
@@ -377,20 +396,20 @@ class UISkinYoutube extends Component {
   }
 
   initUIEventListeners() {
-    this.onPlayerMouseEnter = this.onPlayerMouseEnter.bind(this);
-    this.onPlayerMouseLeave = this.onPlayerMouseLeave.bind(this);
-    this.onPlayerMouseMove = this.onPlayerMouseMove.bind(this);
-    this.onPlayerMouseDown = this.onPlayerMouseDown.bind(this);
-    this.onPlayerMouseUp = this.onPlayerMouseUp.bind(this);
+    // this.onPlayerMouseEnter = this.onPlayerMouseEnter.bind(this);
+    // this.onPlayerMouseLeave = this.onPlayerMouseLeave.bind(this);
+    // this.onPlayerMouseMove = this.onPlayerMouseMove.bind(this);
+    // this.onPlayerMouseDown = this.onPlayerMouseDown.bind(this);
+    // this.onPlayerMouseUp = this.onPlayerMouseUp.bind(this);
 
-    this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter);
-    this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave);
-    this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove);
-    this.vopPlayer.addEventListener('mousedown', this.onPlayerMouseDown);
-    this.vopPlayer.addEventListener('mouseup', this.onPlayerMouseUp);
+    // this.vopPlayer.addEventListener('mouseenter', this.onPlayerMouseEnter);
+    // this.vopPlayer.addEventListener('mouseleave', this.onPlayerMouseLeave);
+    // this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove);
+    // this.vopPlayer.addEventListener('mousedown', this.onPlayerMouseDown);
+    // this.vopPlayer.addEventListener('mouseup', this.onPlayerMouseUp);
 
-    this.onAdContainerMouseDown = this.onAdContainerMouseDown.bind(this);
-    this.vopAdContainer.addEventListener('mousedown', this.onAdContainerMouseDown);
+    // this.onAdContainerMouseDown = this.onAdContainerMouseDown.bind(this);
+    // this.vopAdContainer.addEventListener('mousedown', this.onAdContainerMouseDown);
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -410,6 +429,7 @@ class UISkinYoutube extends Component {
       // Observer one or multiple elements
       ro.observe(this.vopPlayer);
     } else {
+      this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
       this.playerResizeSensor_ = new ResizeSensor(this.playerContainer, this.onResizeSensorCb);
     }
   }
@@ -425,26 +445,51 @@ class UISkinYoutube extends Component {
   }
 
   initPlayerListeners() {
-    this.player.on(oldmtn.Events.STATE_CHANGE, this.onStateChange);
+    this.onMediaLoadedMetaData = this.onMediaLoadedMetaData.bind(this);
+    
+    this.onMediaPaused = this.onMediaPaused.bind(this);
+    this.onMediaEnded = this.onMediaEnded.bind(this);
 
+    this.onMediaPlaying = this.onMediaPlaying.bind(this);
+    this.onMediaWaiting = this.onMediaWaiting.bind(this);
+
+
+    this.onCueStart = this.onCueStart.bind(this);
+    this.onCueEnd = this.onCueEnd.bind(this);
+
+    this.onLog = this.onLog.bind(this);
+
+    // ad callback event
+    this.onAdStarted = this.onAdStarted.bind(this);
+    this.onAdComplete = this.onAdComplete.bind(this);
+    this.onAdCompanions = this.onAdCompanions.bind(this);
+
+    // chromecast
+    this.onCastConnected = this.onCastConnected.bind(this);
+    this.onCastDisconnected = this.onCastDisconnected.bind(this);
+
+    //
     this.player.on(oldmtn.Events.MEDIA_LOADEDMETADATA, this.onMediaLoadedMetaData);
+
+    this.player.on(oldmtn.Events.MEDIA_PAUSED, this.onMediaPaused);
+    this.player.on(oldmtn.Events.MEDIA_ENDED, this.onMediaEnded);
 
     this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
-
-    this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
-    this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
+    
+    // this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
+    // this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
     
     this.player.on(oldmtn.Events.LOG, this.onLog);
 
-    // ad callback event
-    this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
-    this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
-    this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
+    // // ad callback event
+    // this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
+    // this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
+    // this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
 
-    // chrome cast
-    this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
-    this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
+    // // chrome cast
+    // this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
+    // this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
   }
 
   uninitPlayerListeners() {
@@ -837,20 +882,33 @@ class UISkinYoutube extends Component {
     this.player.resize(dstWidth, dstHeight);
   }
 
-  startBufferingUI() {
-    UITools.addClass(this.vopPlayer, 'vop-buffering');
+  removeStatus() {
+    UITools.removeClass(this.vopPlayer, 'vop-player-idle');
+    UITools.removeClass(this.vopPlayer, 'vop-player-playing');
+    UITools.removeClass(this.vopPlayer, 'vop-player-paused');
+    UITools.removeClass(this.vopPlayer, 'vop-player-buffering');
+    UITools.removeClass(this.vopPlayer, 'vop-player-waiting');
+    UITools.removeClass(this.vopPlayer, 'vop-player-ended');
   }
 
-  stopBufferingUI() {
-    UITools.removeClass(this.vopPlayer, 'vop-buffering');
+  onMediaPaused() {
+    this.removeStatus();
+    UITools.addClass(this.vopPlayer, 'vop-player-paused');
+  }
+
+  onMediaEnded() {
+    this.removeStatus();
+    UITools.addClass(this.vopPlayer, 'vop-player-ended');
   }
 
   onMediaWaiting() {
-    this.startBufferingUI();
+    this.removeStatus();
+    UITools.addClass(this.vopPlayer, 'vop-buffering');
   }
 
   onMediaPlaying() {
-    this.stopBufferingUI();
+    this.removeStatus();
+    UITools.addClass(this.vopPlayer, 'vop-player-playing');
   }
 
   onCueStart(e) {

@@ -1,5 +1,7 @@
 import { Component } from './ui_component';
 
+import DOM from '../dom';
+
 class UICaptionOverlay extends Component {
   constructor(props) {
     super(props);
@@ -8,12 +10,15 @@ class UICaptionOverlay extends Component {
   }
 
   toDom() {
-    let captionStyle = 'background-color: yellow; color: red';
-    let container = document.createElement('div');
-    container.setAttribute('class', 'vop-caption-overlay');
-    container.setAttribute('style', captionStyle);
+    let tag = 'div';
+    let attributes = {
+      'class': 'vop-caption-overlay',
+      'style': 'background-color: yellow; color: red'
+    };
 
-    return container;
+    let dom = new DOM(tag, attributes);
+
+    return dom;
   }
   // render() {
   //   let text = '';
