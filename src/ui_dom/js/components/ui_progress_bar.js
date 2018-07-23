@@ -1,4 +1,5 @@
 import { Component } from './ui_component';
+import DOM from '../dom';
 
 class UIProgressBar extends Component {
   constructor(props) {
@@ -6,11 +7,32 @@ class UIProgressBar extends Component {
 
     this.main = this.props.main;
     this.player = this.main.player;
+
+    // flags reference variable of progress bar
+    this.progressBarContext = null;
+    this.progressBarMoveContext = {
+      movePos: 0
+    };
+    this.flagThumbnailMode = false;
+
+    //
+    this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
+    this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
+    this.onMediaSeeked = this.onMediaSeeked.bind(this);
+    this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
+
+    this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
   }
 
   toDom() {
-    let container = document.createElement('div');
-    container.setAttribute('class', 'vop-progress-bar');
+    let tag = 'div';
+    let attributes = {
+        'class': 'vop-progress-bar'
+    };
+    let dom = new DOM(tag, attributes);
 
     let vProgressList = document.createElement('div');
     vProgressList.setAttribute('class', 'vop-progress-list');
@@ -31,10 +53,123 @@ class UIProgressBar extends Component {
     let vScrubberContainer = document.createElement('div');
     vScrubberContainer.setAttribute('class', 'vop-scrubber-container');
 
-    container.appendChild(vProgressList);
-    container.appendChild(vScrubberContainer);
+    dom.appendChild(vProgressList);
+    dom.appendChild(vScrubberContainer);
 
-    return container;
+    //
+    this.vopProgressBar = dom;
+    this.vopLoadProgress = vLoadProgress;
+    this.vopPlayProgress = vPlayProgress;
+    this.vopHoverProgress = vHoverProgress;
+    this.vopScrubberContainer = vScrubberContainer;
+
+    return dom;
+  }
+
+  onMediaDurationChanged() {
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
+    this.updateProgressBarUI(position, duration);
+  }
+
+  onMediaTimeupdated() {
+    //myPrintLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
+
+    // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
+    // in this situation, we won't update progress bar ui.
+    if (this.progressBarContext) {
+      // do nothing
+    } else {
+      //this.progressBarContext.movePos = this.player.getPosition();
+      let position = this.player.getPosition();
+      let duration = this.player.getDuration();
+      this.updateProgressBarUI(position, duration);
+      this.updateProgressBarHoverUI();
+    }
+  }
+  onMediaSeeked() {}
+  onAdTimeUpdate() {}
+
+  //
+  getProgressBarUIStyle(position, duration) {
+    // part - logic process
+    let uiPosition = 0;
+    let loadProgressTransform = '';
+    let playProgressTransform = '';
+    let scrubberContainerTransform = '';
+
+    let isLive = (duration === Infinity) ? true : false;
+    if (isLive) {
+      let seekable = this.player.getSeekableRange();
+      let buffered = this.player.getBufferedRanges();
+      //myPrintLog('seekable: ' + oldmtn.CommonUtils.TimeRangesToString(seekable) + ', buffered: ' + oldmtn.CommonUtils.TimeRangesToString(buffered));
+    } else {
+      let uiBufferedPos;
+      if (this.progressBarContext) {
+        uiPosition = this.progressBarContext.movePos;
+      } else {
+        uiPosition = position;
+      }
+
+      // part - output, update ui
+      // update time progress bar
+      uiBufferedPos = this.player.getValidBufferPosition(uiPosition);
+      loadProgressTransform = 'scaleX(' + uiBufferedPos / duration + ')';
+      playProgressTransform = 'scaleX(' + uiPosition / duration + ')';
+
+      // update time progress scrubber button
+      scrubberContainerTransform = 'translateX(' + ((uiPosition / duration) * this.vopProgressBar.clientWidth).toString() + 'px)';
+    }
+
+    let ret = {
+      loadProgressTransform: loadProgressTransform,
+      playProgressTransform: playProgressTransform,
+      scrubberContainerTransform: scrubberContainerTransform,
+      uiPosition: uiPosition
+    };
+
+    return ret;
+  }
+
+  updateProgressBarUI(position, duration) {
+    // part - input
+    let ret = this.getProgressBarUIStyle(position, duration);
+
+    // part - logic process
+    let isLive = (duration === Infinity) ? true : false;
+    if (isLive) {} else {
+      this.vopLoadProgress.style.transform = ret.loadProgressTransform;
+      this.vopPlayProgress.style.transform = ret.playProgressTransform;
+
+      // update time progress scrubber button
+      this.vopScrubberContainer.style.transform = ret.scrubberContainerTransform;
+    }
+  }
+
+  updateProgressBarHoverUI() {
+    let position = this.player.getPosition();
+    let duration = this.player.getDuration();
+
+    let movePos = 0;
+    if (this.progressBarContext) {
+      //myPrintLog('test0703, this.progressBarContext.movePos: ' + this.progressBarContext.movePos);
+    }
+    //myPrintLog('test0703, this.progressBarMoveContext.movePos: ' + this.progressBarMoveContext.movePos);
+    if (this.progressBarContext) {
+      movePos = this.progressBarContext.movePos;
+    } else if (this.progressBarMoveContext) {
+      movePos = this.progressBarMoveContext.movePos;
+    }
+    
+    //myPrintLog('test0703, movePost: ' + movePos);
+    if (movePos <= position) {
+      this.vopHoverProgress.style.transform = 'scaleX(0)';
+    } else {
+      let rect = this.vopProgressBar.getBoundingClientRect();
+      let offsetX = (position / duration) * rect.width;
+      this.vopHoverProgress.style.left = offsetX + 'px';
+      this.vopHoverProgress.style.transform = 'scaleX(' + (movePos - position) / duration + ')';
+    }
   }
 }
 
@@ -49,12 +184,12 @@ export default UIProgressBar;
 
 //     this.main = this.props.main;
 //     this.player = this.main.player;
-//     // flags reference variable of progress bar
-//     this.progressBarContext;
-//     this.progressBarMoveContext = {
-//       movePos: 0
-//     };
-//     this.flagThumbnailMode = false;
+    // // flags reference variable of progress bar
+    // this.progressBarContext;
+    // this.progressBarMoveContext = {
+    //   movePos: 0
+    // };
+    // this.flagThumbnailMode = false;
 //   }
 
 //   componentDidMount() {
@@ -64,15 +199,15 @@ export default UIProgressBar;
 //     this.vopHoverProgress = document.querySelector('.vop-hover-progress');
 //     this.vopScrubberContainer = document.querySelector('.vop-scrubber-container');
 
-//     this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
-//     this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
-//     this.onMediaSeeked = this.onMediaSeeked.bind(this);
-//     this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
+    // this.onMediaDurationChanged = this.onMediaDurationChanged.bind(this);
+    // this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
+    // this.onMediaSeeked = this.onMediaSeeked.bind(this);
+    // this.onAdTimeUpdate = this.onAdTimeUpdate.bind(this);
 
-//     this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
-//     this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
-//     this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
-//     this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
+    // this.player.on(oldmtn.Events.MEDIA_DURATION_CHANGED, this.onMediaDurationChanged);
+    // this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
+    // this.player.on(oldmtn.Events.MEDIA_SEEKED, this.onMediaSeeked);
+    // this.player.on(oldmtn.Events.AD_TIMEUPDATE, this.onAdTimeUpdate);
 //   }
 
 //   componentWillUnmount() {
@@ -123,19 +258,19 @@ export default UIProgressBar;
 //   }
 
 //   onMediaTimeupdated() {
-//     //myPrintLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
+    // //myPrintLog('+onMediaTimeupdated, position: ' + this.player.getPosition() + ', duration: ' + this.player.getDuration());
 
-//     // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
-//     // in this situation, we won't update progress bar ui.
-//     if (this.progressBarContext) {
-//       // do nothing
-//     } else {
-//       //this.progressBarContext.movePos = this.player.getPosition();
-//       let position = this.player.getPosition();
-//       let duration = this.player.getDuration();
-//       this.updateProgressBarUI(position, duration);
-//       this.updateProgressBarHoverUI();
-//     }
+    // // Sometime, the timeupdate will trigger after we mouse down on the progress bar,
+    // // in this situation, we won't update progress bar ui.
+    // if (this.progressBarContext) {
+    //   // do nothing
+    // } else {
+    //   //this.progressBarContext.movePos = this.player.getPosition();
+    //   let position = this.player.getPosition();
+    //   let duration = this.player.getDuration();
+    //   this.updateProgressBarUI(position, duration);
+    //   this.updateProgressBarHoverUI();
+    // }
 //   }
 
 //   onMediaSeeked() {

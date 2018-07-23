@@ -1,3 +1,4 @@
+import DOM from '../dom';
 import { Component } from './ui_component';
 
 import UIProgressBar from './ui_progress_bar';
@@ -16,15 +17,18 @@ class UIBottomBar extends Component {
   }
 
   toDom() {
-    let container = document.createElement('div');
-    container.setAttribute('class', 'vop-bottom-bar');
+    let tag = 'div';
+    let attributes = {
+      'class': 'vop-bottom-bar'
+    };
 
+    let dom = new DOM(tag, attributes);
     this.components.forEach(function(item, index) {
       let element = item.toDom();
-      container.appendChild(element);
+      dom.appendChild(element);
     });
 
-    return container;
+    return dom;
   }
 
   // render() {

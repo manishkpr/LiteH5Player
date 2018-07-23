@@ -1,4 +1,5 @@
-import { h, Component } from 'preact';
+import { Component } from './ui_component';
+import DOM from '../dom';
 
 class UIGradientBottom extends Component {
   constructor(props) {
@@ -7,12 +8,21 @@ class UIGradientBottom extends Component {
     this.main = this.props.main;
   }
 
-  render() {
-    return (
-      <div className="vop-gradient-bottom">
-      </div>
-    );
+  toDom() {
+    let tag = 'div';
+    let attributes = {
+      'class': 'vop-gradient-bottom'
+    };
+    let dom = new DOM(tag, attributes);
+    return dom;
   }
+
+  // render() {
+  //   return (
+  //     <div className="vop-gradient-bottom">
+  //     </div>
+  //   );
+  // }
 }
 
 export default UIGradientBottom;

@@ -7,6 +7,7 @@ import ResizeSensor from 'resize-sensor';
 import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
+import DOM from './dom';
 
 import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
@@ -41,12 +42,14 @@ class UISkinYoutube {
     this.uiTitleBar_ = new UITitleBar({main: this});
     this.uiPlayerBtnOverlay_ = new UIPlayButtonOverlay({main: this});
     this.uiLogoOverlay_ = new UILogoOverlay({main: this});
+    this.uiGradientBottom_ = new UIGradientBottom({main: this});
     this.uiBottomBar_ = new UIBottomBar({main: this});
 
     this.components.push(this.uiChromecastOverlay_);
     this.components.push(this.uiTitleBar_);
     this.components.push(this.uiLogoOverlay_);
     this.components.push(this.uiPlayerBtnOverlay_);
+    this.components.push(this.uiGradientBottom_);
     this.components.push(this.uiBottomBar_);
 
     // old
@@ -58,12 +61,15 @@ class UISkinYoutube {
   }
 
   toDom() {
-    let container = document.createElement('div');
-    container.setAttribute('class', 'vop-skin-youtube');
+    let tag = 'div';
+    let attributes = {
+      'class': 'vop-skin-youtube'
+    };
+    let dom = new DOM(tag, attributes);
 
     this.components.forEach(function(item, index) {
       let element = item.toDom();
-      container.appendChild(element);
+      dom.appendChild(element);
     });
 
     //
@@ -74,7 +80,7 @@ class UISkinYoutube {
 
     //this.syncPlayerStateToUI();
 
-    return container;
+    return dom;
   }
 
   play() {
