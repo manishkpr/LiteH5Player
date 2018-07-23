@@ -31,9 +31,11 @@ import UIToolTip from './components/ui_tooltip';
 // 2. Just change css in 'html5-player-video' to control components visiblity.
 // 3. 
 class UISkinYoutube {
-  // new
   constructor(player) {
     this.player = player;
+
+    //
+    this.initVariable();
 
     // sub components
     this.components = [];
@@ -155,7 +157,6 @@ class UISkinYoutube {
 
   ///////////////////////////////////////////////////////////////////////
   initVariable() {
-    this.player = null;
     this.playerState = '';
     this.ratio = 0.5625;
 
@@ -675,7 +676,7 @@ class UISkinYoutube {
 
   addAutohideAction() {
     UITools.addClass(this.vopPlayer, 'vop-autohide');
-    this.updateCaptionOverlay();
+    //this.updateCaptionOverlay();
   }
 
   removeAutohideAction() {
@@ -684,7 +685,7 @@ class UISkinYoutube {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-    this.updateCaptionOverlay();
+    //this.updateCaptionOverlay();
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -856,11 +857,11 @@ class UISkinYoutube {
   }
 
   onProgressBarMouseMove(e, movePos) {
-    this.updateTooltipUI(movePos);
+    //this.updateTooltipUI(movePos);
   }
 
   onProgressBarMouseLeave() {
-    this.vopTooltip.style.display = 'none';
+    //this.vopTooltip.style.display = 'none';
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -969,7 +970,7 @@ class UISkinYoutube {
         this.vopAdContainer.style.zIndex = '1';
 
         // Consider ad height.
-        this.updateCaptionOverlay();
+        //this.updateCaptionOverlay();
       }
     }
   }
