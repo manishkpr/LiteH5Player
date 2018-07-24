@@ -3,6 +3,7 @@ import {
 } from 'preact';
 
 import ResizeSensor from 'resize-sensor';
+import EventEmitter from 'events';
 
 import '../css/ui_skin_youtube.scss';
 
@@ -26,13 +27,13 @@ import UIChromecastOverlay from './components/ui_chromecast_overlay';
 
 import UIToolTip from './components/ui_tooltip';
 
-
 // 1. Render all components from React.
 // 2. Just change css in 'html5-player-video' to control components visiblity.
 // 3. 
 class UISkinYoutube {
   constructor(player) {
     this.player = player;
+    this.evEmitter = new EventEmitter();
 
     //
     this.initVariable();
@@ -792,19 +793,6 @@ class UISkinYoutube {
 
     this.updateUIState();
   }
-
-  onProgressBarMouseDown(e) {
-    myPrintLog('+onProgressBarMouseDown');
-  }
-
-  onProgressBarMouseMove(e, movePos) {
-    this.uiTooltip_.updateTooltipUI(true, movePos);
-  }
-
-  onProgressBarMouseLeave() {
-    this.uiTooltip_.updateTooltipUI(false);
-  }
-
   ////////////////////////////////////////////////////////////////////////////////////
   // this.player event callback
   onStateChange(e) {

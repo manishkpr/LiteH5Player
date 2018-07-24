@@ -4,6 +4,7 @@ import {
 
 import DOM from '../dom';
 import UITools from '../ui_tools';
+import Events from '../events';
 
 // Functionality:
 // 1. show tooltip thumbnail;
@@ -19,6 +20,12 @@ class UIToolTip extends Component {
 
     this.main = this.props.main;
     this.player = this.main.player;
+    this.evEmitter = this.main.evEmitter;
+
+    this.onProgressBarMouseMove = this.onProgressBarMouseMove.bind(this);
+    this.onProgressBarMouseLeave = this.onProgressBarMouseLeave.bind(this);
+    this.evEmitter.on(Events.PROGRESSBAR_MOUSEMOVE, this.onProgressBarMouseMove);
+    this.evEmitter.on(Events.PROGRESSBAR_MOUSELEAVE, this.onProgressBarMouseLeave);
   }
 
   toDom() {
@@ -133,6 +140,14 @@ class UIToolTip extends Component {
   //     </div>
   //   );
   // }
+
+  onProgressBarMouseMove() {
+    this.updateTooltipUI(true, movePos);
+  }
+
+  onProgressBarMouseLeave() {
+    this.updateTooltipUI(false);
+  }
 }
 
 export default UIToolTip;

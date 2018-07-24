@@ -1,12 +1,15 @@
 import { Component } from './ui_component';
 import DOM from '../dom';
 
+import Events from '../events';
+
 class UIProgressBar extends Component {
   constructor(props) {
     super(props);
 
     this.main = this.props.main;
     this.player = this.main.player;
+    this.evEmitter = this.main.evEmitter;
 
     // flags reference variable of progress bar
     this.progressBarContext = null;
@@ -137,11 +140,13 @@ class UIProgressBar extends Component {
     this.updateProgressBarHoverUI();
 
     // 
-    this.main.onProgressBarMouseMove(e, movePos);
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, { movePos: movePos });
+    //this.main.onProgressBarMouseMove(e, movePos);
   }
 
   onProgressBarMouseLeave(e) {
-    this.main.onProgressBarMouseLeave(e);
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
+    //this.main.onProgressBarMouseLeave(e);
     //myPrintLog('+onProgressBarMouseLeave');
   }
 
