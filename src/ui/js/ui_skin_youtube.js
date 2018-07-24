@@ -68,26 +68,26 @@ class UISkinYoutube extends Component {
   }
 
   render() {
-    // Update current component.
-    switch (this.playerState) {
-      case 'idle':
-        break;
-      case 'opening':
-        this.startBufferingUI();
-        break;
-      case 'opened':
-        this.stopBufferingUI();
-        break;
-      case 'ended':
-        this.removeAutohideAction();
-        break;
-      case 'closed':
-        break;
-      case 'playing':
-        break;
-      default:
-        break;
-    }
+    // // Update current component.
+    // switch (this.playerState) {
+    //   case 'idle':
+    //     break;
+    //   case 'opening':
+    //     this.startBufferingUI();
+    //     break;
+    //   case 'opened':
+    //     this.stopBufferingUI();
+    //     break;
+    //   case 'ended':
+    //     this.removeAutohideAction();
+    //     break;
+    //   case 'closed':
+    //     break;
+    //   case 'playing':
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     return (
       <div className="vop-skin-youtube">
@@ -541,9 +541,15 @@ class UISkinYoutube extends Component {
     UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState);
     UITools.addClass(this.vopPlayer, 'vop-player-' + state);
 
-    // Update all child components.
+    // // Update all child components.
     this.playerState = state;
-    this.updateUIState();
+    // this.updateUIState();
+
+    if (this.playerState === 'opening') {
+      UITools.addClass(this.vopPlayer, 'vop-buffering');
+    } else if (this.playerState === 'opened') {
+      UITools.removeClass(this.vopPlayer, 'vop-buffering');
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -779,20 +785,12 @@ class UISkinYoutube extends Component {
     this.player.resize(dstWidth, dstHeight);
   }
 
-  startBufferingUI() {
+  onMediaWaiting() {
     UITools.addClass(this.vopPlayer, 'vop-buffering');
   }
 
-  stopBufferingUI() {
-    UITools.removeClass(this.vopPlayer, 'vop-buffering');
-  }
-
-  onMediaWaiting() {
-    this.startBufferingUI();
-  }
-
   onMediaPlaying() {
-    this.stopBufferingUI();
+    UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 
   onCueStart(e) {
@@ -1138,7 +1136,7 @@ class UISkinYoutube extends Component {
     this.setState({
       settingMenuUIData: this.settingMenuUIData,
       // player state
-      playerState: this.playerState,
+      //playerState: this.playerState,
       // ad state
       flagAdStarted: this.flagAdStarted,
       flagIsLinearAd: this.flagIsLinearAd,

@@ -15,25 +15,8 @@ class UIPlayToggleButton extends Component {
   }
 
   render() {
-    let btnStyle = '';
-    switch(this.main.playerState) {
-      case 'idle':
-      case 'opened':
-      btnStyle = 'icon-play';
-      break;
-      case 'playing':
-      btnStyle = 'icon-pause';
-      break;
-      case 'paused':
-      btnStyle = 'icon-play';
-      break;
-      case 'ended':
-      btnStyle = 'icon-replay';
-      break;
-    }
-
     return (
-      <button className={'vop-button vop-play-button ' + btnStyle} title="play"
+      <button className={'vop-button vop-play-button'} title="play"
         onClick={this.onUICmdPlay.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>

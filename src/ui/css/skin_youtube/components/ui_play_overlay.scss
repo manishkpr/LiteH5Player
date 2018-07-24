@@ -8,7 +8,7 @@
     margin-left: -48px;
     margin-top: -48px;
     z-index: $zIndex_giant_button_container;
-    display: block;
+    display: none;
   }
   .vop-play-overlay {
     width: 96px;
@@ -20,4 +20,6 @@
   }
 }
 
-
+.vop-player-opened .#{$skinYoutube} .vop-play-overlay-container {
+  display: block;
+}
