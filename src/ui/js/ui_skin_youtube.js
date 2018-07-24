@@ -24,6 +24,8 @@ import UIChromecastOverlay from './components/ui_chromecast_overlay';
 
 import UIToolTip from './components/ui_tooltip';
 
+import EventEmitter from 'events';
+
 // 1. Render all components from React.
 // 2. Just change css in 'html5-player-video' to control components visiblity.
 // 3. 
@@ -33,6 +35,7 @@ class UISkinYoutube extends Component {
 
     this.initVariable();
     this.player = props.player;
+    this.evEmitter = new EventEmitter();
     this.state = {
       settingMenuUIData: this.settingMenuUIData
     };
@@ -543,67 +546,6 @@ class UISkinYoutube extends Component {
     this.updateUIState();
   }
 
-  updateTooltipUI(currMovePos) {
-    let thumbnail = this.player.getThumbnail(currMovePos);
-
-    function getTooltipOffsetX(currMovePos, tooltipWidth) {
-      // part - input
-      // bounding client rect can return the progress bar's rect relative to current page.
-      let rect = this.vopProgressBar.getBoundingClientRect();
-      let leftMin = 12 + this.vopProgressBar.offsetLeft;
-      let rightMax = leftMin + rect.width;
-
-      let duration = this.player.getDuration();
-        
-      let currPosWidth = (currMovePos / duration) * rect.width;
-      let tooltipLeft_RelativeToVideo = leftMin + currPosWidth - tooltipWidth / 2;
-      let tooltipRight_RelativeToVideo = leftMin + currPosWidth + tooltipWidth / 2;
-
-      if (tooltipLeft_RelativeToVideo < leftMin) {
-        tooltipLeft_RelativeToVideo = leftMin;
-      } else if (tooltipRight_RelativeToVideo > rightMax) {
-        tooltipLeft_RelativeToVideo = rightMax - tooltipWidth;
-      }
-
-      //myPrintLog('tooltipLeft_RelativeToVideo: ' + tooltipLeft_RelativeToVideo);
-
-      return tooltipLeft_RelativeToVideo;
-    }
-
-    if (thumbnail) {
-      UITools.addClass(this.vopTooltip, 'vop-tooltip-preview');
-      //myPrintLog('thumbnail info: ', thumbnail);
-      let isSprite = (thumbnail.data.w && thumbnail.data.h);
-      if (isSprite) {
-        this.vopTooltipBg.style.width = thumbnail.data.w.toString() + 'px';
-        this.vopTooltipBg.style.height = thumbnail.data.h.toString() + 'px';
-        this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ')' +
-          ' -' + thumbnail.data.x.toString() + 'px' +
-          ' -' + thumbnail.data.y.toString() + 'px';
-      } else {
-        this.vopTooltipBg.style.width = '158px';
-        this.vopTooltipBg.style.height = '90px';
-        this.vopTooltipBg.style.background = 'url(' + thumbnail.data.url + ') no-repeat';
-        this.vopTooltipBg.style.backgroundSize = '100% 100%';
-      }
-    } else {
-      UITools.removeClass(this.vopTooltip, 'vop-tooltip-preview');
-    }
-
-    // update tooltip offset
-    let strTime = oldmtn.CommonUtils.timeToString(currMovePos);
-    this.vopTooltipText.innerText = strTime;
-
-    // calculate metrics first
-    // A very large offset to hide tooltip.
-    this.vopTooltip.style.left = '10000px';
-    this.vopTooltip.style.display = 'block';
-
-    // set the correct offset of tooltip.
-    let offsetX = getTooltipOffsetX.call(this, currMovePos, this.vopTooltip.clientWidth);
-    this.vopTooltip.style.left = offsetX.toString() + 'px';
-  }
-
   ///////////////////////////////////////////////////////////////////////////
   // Title: Tool function
   updateCaptionOverlay() {
@@ -805,11 +747,11 @@ class UISkinYoutube extends Component {
   }
 
   onProgressBarMouseMove(e, movePos) {
-    this.updateTooltipUI(movePos);
+    //this.updateTooltipUI(movePos);
   }
 
   onProgressBarMouseLeave() {
-    this.vopTooltip.style.display = 'none';
+    //this.vopTooltip.style.display = 'none';
   }
 
   ////////////////////////////////////////////////////////////////////////////////////

@@ -74,7 +74,7 @@ function getInitConfig() {
     // Media
     //poster: 'http://localhost/2/poster/tos-poster.jpg',
     //poster: 'http://localhost/2/poster/bbb-poster.jpg',
-    autoplay: true,
+    autoplay: false,
     mutedAutoplay: true,
 
     // advertising: {
@@ -213,19 +213,19 @@ function getMediaInfo() {
     //   drmInitData: drmInitData
     // },
 
-    // tracks: [
-    //   // Webvtt Thumbnails
-    //   { file: 'http://localhost/2/pd/mp4/big_buck_bunny/trailer_480p.vtt', kind: 'thumbnails', label: 'big_buck_bunny' },
-    //   // { file: 'http://localhost/2/pd/mp4/sintel/trailer.vtt', kind: 'thumbnails', label: 'sintel trailer' },
-    //   // { file: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt', kind: 'thumbnails', label: 'multiple01' },
-    //   // { file: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
+    tracks: [
+      // Webvtt Thumbnails
+      { file: 'http://localhost/2/pd/mp4/big_buck_bunny/trailer_480p.vtt', kind: 'thumbnails', label: 'big_buck_bunny' },
+      // { file: 'http://localhost/2/pd/mp4/sintel/trailer.vtt', kind: 'thumbnails', label: 'sintel trailer' },
+      // { file: 'http://localhost/2/webvtt_thumbnail/multiple01/thumbnails.vtt', kind: 'thumbnails', label: 'multiple01' },
+      // { file: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
 
-    //   // Webvtt Captions
-    //   { file: 'http://localhost/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
-    //   //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
-    //   // { file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
-    //   //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }
-    // ]
+      // Webvtt Captions
+      //{ file: 'http://localhost/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
+      //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
+      // { file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
+      //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }
+    ]
   };
 
   return info;
