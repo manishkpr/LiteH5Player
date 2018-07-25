@@ -28,6 +28,8 @@ class UISettingsMenu extends Preact.Component {
   }
 
   render() {
+    return (<div></div>);
+
     let ret = (<div></div>);
     //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
     if (this.main.settingMenuUIData.currMenu === 'settings_menu') {

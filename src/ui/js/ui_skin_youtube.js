@@ -7,6 +7,7 @@ import ResizeSensor from 'resize-sensor';
 import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
+import Events from './events';
 
 import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
@@ -951,19 +952,6 @@ class UISkinYoutube extends Component {
     }
 
     this.updateUIState();
-  }
-
-  onSubtitleMenuItemBlur(e) {
-    if (e.relatedTarget) {
-      if (e.relatedTarget === this.vopSubtitlesBtn) {
-        if (this.settingMenuUIData.currMenu === 'settings_menu') {
-          // do nothing
-        }
-      }
-    } else {
-      this.settingMenuUIData.currMenu = 'none';
-      this.updateUIState();
-    }
   }
 
   onQualityMenuBack(e) {

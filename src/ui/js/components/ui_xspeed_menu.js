@@ -21,6 +21,8 @@ class UIXSpeedMenu extends Preact.Component {
   }
 
   render() {
+    return (<div></div>);
+    
     //myPrintLog('+render, UIXSpeedMenu: ' + this.main.state.settingMenuUIData.currMenu);
     let ret = (<div></div>);
 

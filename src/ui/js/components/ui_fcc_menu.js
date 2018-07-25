@@ -21,6 +21,8 @@ class UIFccMenu extends Preact.Component {
   }
 
   render() {
+    return (<div></div>);
+    
     //myPrintLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
 
     if (this.main.settingMenuUIData.currMenu === 'fcc_menu') {

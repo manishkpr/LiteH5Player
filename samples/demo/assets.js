@@ -74,7 +74,7 @@ function getInitConfig() {
     // Media
     //poster: 'http://localhost/2/poster/tos-poster.jpg',
     //poster: 'http://localhost/2/poster/bbb-poster.jpg',
-    autoplay: false,
+    autoplay: true,
     mutedAutoplay: true,
 
     // advertising: {

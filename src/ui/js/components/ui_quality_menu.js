@@ -25,6 +25,8 @@ class UIQualityMenu extends Preact.Component {
   }
 
   render() {
+    return (<div></div>);
+    
     //myPrintLog('+render, UIQualityMenu: ' + this.main.settingMenuUIData.currMenu);
     let ret = (<div></div>);
 

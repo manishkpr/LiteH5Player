@@ -21,6 +21,8 @@ class UIFccPropertyMenu extends Preact.Component {
   }
 
   render() {
+    return (<div></div>);
+    
     let currFccPropertyName = this.main.settingMenuUIData.currFccPropertyName;
 
     if (this.main.settingMenuUIData.currMenu === 'fcc_property_menu') {

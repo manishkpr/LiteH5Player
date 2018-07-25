@@ -1,12 +1,15 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, Component } from 'preact';
 
-class UISubtitleToggleButton extends Preact.Component {
+import Events from '../events';
+import ID from '../id';
+
+class UISubtitlesToggleButton extends Component {
   constructor(props) {
     super(props);
 
     this.main = this.props.main;
     this.player = this.main.player;
+    this.evEmitter = this.main.evEmitter;
   }
 
   componentDidMount() {
@@ -25,7 +28,7 @@ class UISubtitleToggleButton extends Preact.Component {
 
   render() {
     return (
-      <button className="vop-button vop-subtitles-button" title="subtitles"
+      <button data-id={ID.SUBTITLES_BUTTON} className="vop-button vop-subtitles-button" title="subtitles"
         onClick={this.onUICmdSubtitles.bind(this)}
         onMouseMove={this.onControlMouseMove.bind(this)}>
       </button>
@@ -33,7 +36,13 @@ class UISubtitleToggleButton extends Preact.Component {
   }
 
   onUICmdSubtitles() {
-    this.main.onUICmdSubtitles();
+    if (this.main.settingMenuUIData.currMenu !== 'subtitles_menu') {
+      this.main.settingMenuUIData.currMenu = 'subtitles_menu';
+    } else {
+      this.main.settingMenuUIData.currMenu = 'none';
+    }
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
+    //this.main.onUICmdSubtitles();
   }
 
   onControlMouseMove(e) {
@@ -58,4 +67,4 @@ class UISubtitleToggleButton extends Preact.Component {
   }
 }
 
-export default UISubtitleToggleButton;
+export default UISubtitlesToggleButton;
