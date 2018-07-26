@@ -15,9 +15,92 @@ class UIFccMenu extends Component {
     this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
 
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
+    this.onFccPropertyValueChange = this.onFccPropertyValueChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
-
+    this.evEmitter.on(Events.FCC_PROPERTY_VALUE_CHANGE, this.onFccPropertyValueChange);
     
+    this.fccData = {
+      currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
+      isEnableFCC: true,
+      fccPropertyList: [{
+        // white/black(default)/red/green/blue/yellow/magenta/cyan
+        name: 'background_color',
+        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+        currValue: 'black'
+      }, {
+        name: 'background_opacity',
+        values: ['0%', '25%', '50%', '75%', '100%'],
+        currValue: '100%'
+      }, {
+        // white/black(default)/red/green/blue/yellow/magenta/cyan
+        name: 'font_color',
+        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+        currValue: 'black'
+      }, {
+        name: 'font_opacity',
+        values: ['0%', '25%', '50%', '75%', '100%'],
+        currValue: '100%'
+      }, {
+        // Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic
+        name: 'font_family',
+        values: ['Arial', 'Courier', 'Times New Roman', 'Helvetica', 'Dom', 'Coronet', 'Gothic'],
+        currValue: 'Arial'
+      }, {
+        // none/dropshadow/raised(default)/depressed/uniform
+        name: 'font_edge_type',
+        values: ['none', 'leftDropShadow', 'rightDropShadow', 'raised', 'depressed', 'uniform'],
+        currValue: 'none'
+      }, {
+        // white/black/red/green/blue(default)/yellow/magenta/cyan
+        name: 'font_edge_color',
+        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+        currValue: 'black'
+      }, {
+        name: 'font_edge_opacity',
+        values: ['0%', '25%', '50%', '75%', '100%'],
+        currValue: '100%'
+      }, {
+        name: 'font_size',
+        values: ['50%', '75%', '100%', '150%', '200%', '300%', '400%'],
+        currValue: '100%'
+      }, {
+        name: 'font_bold',
+        values: ['true', 'false'],
+        currValue: 'false'
+      }, {
+        name: 'font_underline',
+        values: ['true', 'false'],
+        currValue: 'false'
+      }, {
+        name: 'font_italic',
+        values: ['true', 'false'],
+        currValue: 'false'
+      }, {
+        // white/black/red/green/blue(default)/yellow/magenta/cyan
+        name: 'window_color',
+        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
+        currValue: 'green'
+      }, {
+        name: 'window_color_opacity',
+        values: ['0%', '25%', '50%', '75%', '100%'],
+        currValue: '50%'
+      }, {
+        name: 'bounding_box',
+        values: ['Left', 'Top', 'Right', 'Bottom'],
+        currValue: 'Left'
+      }, {
+        name: 'horizontal_position',
+        values: ['left', 'center', 'right'],
+        currValue: 'left'
+      }, {
+        name: 'vertical_position',
+        values: ['top', 'middle', 'bottom'],
+        currValue: 'top'
+      }]
+    };
+    this.state = {
+      fccData: this.fccData
+    }
   }
 
   componentDidMount() {
@@ -25,9 +108,10 @@ class UIFccMenu extends Component {
   }
 
   render() {
-    //myPrintLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
+    myPrintLog('+render, UIFccMenu: ' + this.main.settingMenuUIData.currMenu);
+    const { fccData } = this.state;
 
-    const menuitems = this.main.settingMenuUIData.fccPropertyList.map((item, index) =>
+    const menuitems = fccData.fccPropertyList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
           data-id={item.name} onClick={this.onMenuItemClick_}
           tabIndex="0" onBlur={this.onMenuItemBlur_}>
@@ -60,11 +144,24 @@ class UIFccMenu extends Component {
   }
 
   onMenuItemClick(e) {
-    this.main.onFccMenuItemClick(e);
+    myPrintLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
+
+    this.main.settingMenuUIData.currMenu = 'fcc_property_menu';
+    //this.main.settingMenuUIData.currFccPropertyName = e.currentTarget.dataset.id;
+
+    let currFccPropertyName = e.currentTarget.dataset.id;
+    let fccProperty;
+    for (let i = 0; i < this.fccData.fccPropertyList.length; i ++) {
+      fccProperty = this.fccData.fccPropertyList[i];
+      if (currFccPropertyName === fccProperty.name) {
+        break;
+      }
+    }
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {menu: this.main.settingMenuUIData.currMenu, fccProperty: fccProperty});
   }
 
   onMenuItemBlur(e) {
-    if (this.main.settingMenuUIData.currMenu !== 'audio_track_menu') {
+    if (this.main.settingMenuUIData.currMenu !== 'fcc_menu') {
       return;
     }
     this.main.onFccMenuItemBlur(e);
@@ -79,6 +176,18 @@ class UIFccMenu extends Component {
       }
     } else {
       this.vopFccMenu.style.display = 'none';
+    }
+  }
+
+  onFccPropertyValueChange(e) {
+    let fccProperty = e.fccProperty;
+    for (let i = 0; i < this.fccData.fccPropertyList.length; i ++) {
+      let tmpFccProperty = this.fccData.fccPropertyList[i];
+      if (tmpFccProperty.name === fccProperty.name) {
+        this.fccData.fccPropertyList[i] = fccProperty;
+        this.setState({fccData: this.fccData});
+        break;
+      }
     }
   }
 }

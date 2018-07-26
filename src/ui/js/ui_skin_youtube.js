@@ -1036,7 +1036,9 @@ class UISkinYoutube extends Component {
     this.updateUIState();
   }
 
-  onFccMenuItemBlur(e) {}
+  onFccMenuItemBlur(e) {
+    this.onQualityMenuItemBlur(e);
+  }
 
   onFccPropertyMenuBack(e) {
     this.settingMenuUIData.currMenu = 'fcc_menu';
