@@ -7,6 +7,7 @@ class UIXSpeedMenu extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
 
     this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
@@ -15,6 +16,29 @@ class UIXSpeedMenu extends Component {
 
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
+
+    this.xspeedData = {
+      currSpeedId: '3',
+      xspeedList: [{
+        id: '1',
+        value: 0.25
+      }, {
+        id: '2',
+        value: 0.5
+      }, {
+        id: '3',
+        value: 1.0
+      }, {
+        id: '4',
+        value: 1.5
+      }, {
+        id: '5',
+        value: 2.0
+      }]
+    };
+    this.state = {
+      xspeedData: this.xspeedData
+    };
   }
 
   componentDidMount() {
@@ -22,8 +46,11 @@ class UIXSpeedMenu extends Component {
   }
 
   render() {
-    const menuitems = this.main.state.settingMenuUIData.xspeedList.map((item, index) =>
-      <div key={index} className="vop-menuitem" role="menuitemradio" aria-checked={this.main.state.settingMenuUIData.currSpeedId === item.id}
+    const { xspeedData } = this.state;
+
+    const menuitems = xspeedData.xspeedList.map((item, index) =>
+      <div key={index} className="vop-menuitem" role="menuitemradio"
+          aria-checked={xspeedData.currSpeedId === item.id}
           data-id={item.id} onClick={this.onMenuItemClick_}
           tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
@@ -52,7 +79,30 @@ class UIXSpeedMenu extends Component {
   }
 
   onMenuItemClick(e) {
-    this.main.onXSpeedMenuItemClick(e);
+    myPrintLog('+onXSpeedMenuItemClick');
+    let nextFocus = e.currentTarget;
+
+    this.xspeedData.currSpeedId = nextFocus.dataset.id;
+    this.setState({xspeedData: this.xspeedData});
+
+    // Change Player X-Speed
+    function getXSpeedValue(id) {
+      let value = '';
+      for (let i = 0; i < this.xspeedData.xspeedList.length; i++) {
+        let item = this.xspeedData.xspeedList[i];
+        if (item.id === id) {
+          value = item.value;
+          break;
+        }
+      }
+
+      return value;
+    }
+    let value = getXSpeedValue.call(this, this.xspeedData.currSpeedId);
+    this.player.setAudioPlaybackSpeed(parseFloat(value));
+
+    // old
+    //this.main.onXSpeedMenuItemClick(e);
   }
 
   onMenuItemBlur(e) {

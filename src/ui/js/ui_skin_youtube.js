@@ -1004,11 +1004,15 @@ class UISkinYoutube extends Component {
         // click on settings menu, do nothing, since onUICmdSettings will do it for us.
       } else {
         this.settingMenuUIData.currMenu = 'none';
-        this.updateUIState();
+        this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+          menu: this.settingMenuUIData.currMenu
+        });
       }
     } else {
       this.settingMenuUIData.currMenu = 'none';
-      this.updateUIState();
+      this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+        menu: this.settingMenuUIData.currMenu
+      });
     }
   }
 

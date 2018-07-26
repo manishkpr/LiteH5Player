@@ -7,6 +7,7 @@ class UIAudioTrackMenu extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
 
     this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
@@ -15,6 +16,32 @@ class UIAudioTrackMenu extends Component {
 
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
+
+    this.audioTrackData = {
+      audioTrackList: [{
+        id: '1',
+        lang: 'English'
+      }, {
+        id: '2',
+        lang: 'French'
+      }, {
+        id: '3',
+        lang: 'Chinese'
+      }, {
+        id: '4',
+        lang: 'Dutch'
+      }, {
+        id: '5',
+        lang: 'Spanish'
+      }, {
+        id: '6',
+        lang: 'Korean'
+      }],
+      currAudioTrackId: '1'
+    };
+    this.state = {
+      audioTrackData: this.audioTrackData
+    };
   }
 
   componentDidMount() {
@@ -22,9 +49,11 @@ class UIAudioTrackMenu extends Component {
   }
 
   render() {
-    const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
+    const { audioTrackData } = this.state;
+
+    const menuitems = audioTrackData.audioTrackList.map((item, index) =>
       <div key={index} className="vop-menuitem" role="menuitemradio"
-          aria-checked={this.main.settingMenuUIData.currAudioTrackId === item.id}
+          aria-checked={audioTrackData.currAudioTrackId === item.id}
           data-id={item.id} onClick={this.onMenuItemClick_}
           tabIndex="0" onBlur={this.onMenuItemBlur_}>
         <div className="vop-menuitem-label">
@@ -53,7 +82,9 @@ class UIAudioTrackMenu extends Component {
   }
 
   onMenuItemClick(e) {
-    this.main.onAudioTrackMenuItemClick(e);
+    let nextFocus = e.currentTarget;
+    this.audioTrackData.currAudioTrackId = nextFocus.dataset.id;
+    this.setState({audioTrackData: this.audioTrackData});
   }
 
   onMenuItemBlur(e) {

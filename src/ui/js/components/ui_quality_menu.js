@@ -8,6 +8,7 @@ class UIQualityMenu extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
     this.evEmitter = this.main.evEmitter;
 
     this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
@@ -99,27 +100,7 @@ class UIQualityMenu extends Component {
       return;
     }
 
-    myPrintLog('+onQualityMenuItemBlur');
-    let nextFocus = e.relatedTarget;
-    if (nextFocus) {
-      myPrintLog('className: ' + nextFocus.className);
-      if (nextFocus.className.indexOf('vop-panel-title') !== -1 ||
-        nextFocus.className.indexOf('vop-menuitem') !== -1 ||
-        nextFocus.className.indexOf('vop-settings-button') !== -1) {
-        // click on quality menu, do nothing
-        // click on settings menu, do nothing, since onUICmdSettings will do it for us.
-      } else {
-        this.main.settingMenuUIData.currMenu = 'none';
-        this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
-          menu: this.main.settingMenuUIData.currMenu
-        });
-      }
-    } else {
-      this.main.settingMenuUIData.currMenu = 'none';
-      this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
-        menu: this.main.settingMenuUIData.currMenu
-      });
-    }
+    this.main.onQualityMenuItemBlur(e);
   }
 
   onPopupMenuChange(e) {
