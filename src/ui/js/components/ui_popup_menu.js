@@ -18,7 +18,7 @@ class UIPopupMenu extends Preact.Component {
 
   render() {
     return (
-      <div className="vop-popup vop-settings-menu"
+      <div className="vop-popup vop-popup-menu"
         onMouseDown={this.onPopupMenuMouseDown.bind(this)}>
         <div className="vop-panel">
           <UISubtitlesMenu main={this.main} />

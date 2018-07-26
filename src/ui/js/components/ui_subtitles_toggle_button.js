@@ -42,7 +42,6 @@ class UISubtitlesToggleButton extends Component {
       this.main.settingMenuUIData.currMenu = 'none';
     }
     this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
-    //this.main.onUICmdSubtitles();
   }
 
   onControlMouseMove(e) {

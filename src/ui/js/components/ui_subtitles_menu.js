@@ -19,7 +19,7 @@ class UISubtitlesMenu extends Component {
   }
 
   componentDidMount(e) {
-    this.vopSubtitlesMenu = document.querySelector('.vop-subtitle-menu');
+    this.vopSubtitlesMenu = document.querySelector('.vop-subtitles-menu');
   }
 
   render() {
@@ -39,7 +39,7 @@ class UISubtitlesMenu extends Component {
     );
 
     return (
-      <div className="vop-subtitle-menu" style="display: none;">
+      <div className="vop-subtitles-menu" style="display: none;">
         <div className="vop-panel-header">
           <button className="vop-panel-title" onClick={this.onMenuBackClick_}>Subtitles</button>
         </div>
@@ -83,7 +83,7 @@ class UISubtitlesMenu extends Component {
   onPopupMenuChange(e) {
     if (e.menu === 'subtitles_menu') {
       this.vopSubtitlesMenu.style.display = 'block';
-      let v = document.querySelector('.vop-menuitem');
+      let v = this.vopSubtitlesMenu.querySelector('.vop-menuitem');
       if (v) {
         v.focus();
       }

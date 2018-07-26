@@ -2,7 +2,8 @@
 
 
 var ID = {
-  SUBTITLES_BUTTON: 'subtitles_button'
+  SUBTITLES_BUTTON: 'subtitles_button',
+  SETTINGS_BUTTON: 'settings_button'
 };
 
 
