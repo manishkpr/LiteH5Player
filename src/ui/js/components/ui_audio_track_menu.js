@@ -49,6 +49,8 @@ class UIAudioTrackMenu extends Component {
   }
 
   render() {
+    console.log('UIAudioTrackMenu, render');
+    
     const { audioTrackData } = this.state;
 
     const menuitems = audioTrackData.audioTrackList.map((item, index) =>

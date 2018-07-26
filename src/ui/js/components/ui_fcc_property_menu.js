@@ -1,14 +1,23 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, Component } from 'preact';
 
-class UIFccPropertyMenu extends Preact.Component {
+import Events from '../events';
+import ID from '../id';
+
+
+class UIFccPropertyMenu extends Component {
   constructor(props) {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
+    this.evEmitter = this.main.evEmitter;
+
     this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
     this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
     this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
+
+    this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
+    this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
   }
 
   componentDidUpdate() {
@@ -80,6 +89,9 @@ class UIFccPropertyMenu extends Preact.Component {
       return;
     }
     this.main.onFccPropertyMenuItemBlur(e);
+  }
+
+  onPopupMenuChange(e) {
   }
 }
 

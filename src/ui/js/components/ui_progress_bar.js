@@ -138,9 +138,6 @@ class UIProgressBar extends Component {
     let duration = this.player.getDuration();
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
-
-    //
-    this.main.onProgressBarMouseDown(e);
   }
 
   onProgressBarMouseMove(e) {
@@ -198,7 +195,7 @@ class UIProgressBar extends Component {
     this.updateProgressBarUI(position, duration);
     this.updateProgressBarHoverUI();
 
-    this.main.updateTooltipUI(movePos);
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSEMOVE, { movePos: movePos });
   }
 
   docProgressBarMouseup(e) {
@@ -232,7 +229,7 @@ class UIProgressBar extends Component {
     }
 
     //
-    this.main.onProgressBarMouseLeave();
+    this.evEmitter.emit(Events.PROGRESSBAR_MOUSELEAVE);
   }
 
   doEnterThumbnailMode() {

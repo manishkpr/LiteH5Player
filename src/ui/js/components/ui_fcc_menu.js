@@ -16,6 +16,8 @@ class UIFccMenu extends Component {
 
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
+
+    
   }
 
   componentDidMount() {

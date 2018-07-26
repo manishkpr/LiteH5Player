@@ -54,6 +54,8 @@ class UIQualityMenu extends Component {
   }
 
   render() {
+    console.log('UIQualityMenu, render');
+
     const { qualityData } = this.state;
 
     const menuitems = qualityData.qualityList.map((item, index) =>

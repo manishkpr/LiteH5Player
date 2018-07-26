@@ -46,6 +46,8 @@ class UIXSpeedMenu extends Component {
   }
 
   render() {
+    console.log('UIXSpeedMenu, render');
+
     const { xspeedData } = this.state;
 
     const menuitems = xspeedData.xspeedList.map((item, index) =>

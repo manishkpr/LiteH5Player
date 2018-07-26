@@ -749,18 +749,6 @@ class UISkinYoutube extends Component {
     this.updateUIState();
   }
 
-  onProgressBarMouseDown(e) {
-    myPrintLog('+onProgressBarMouseDown');
-  }
-
-  onProgressBarMouseMove(e, movePos) {
-    //this.updateTooltipUI(movePos);
-  }
-
-  onProgressBarMouseLeave() {
-    //this.vopTooltip.style.display = 'none';
-  }
-
   ////////////////////////////////////////////////////////////////////////////////////
   // this.player event callback
   onStateChange(e) {
