@@ -1,61 +1,55 @@
-import { h } from 'preact';
-import Preact from 'preact';
+import { h, Component } from 'preact';
+import Events from '../events';
+import ID from '../id';
 
-
-class UIAudioTrackMenu extends Preact.Component {
+class UIAudioTrackMenu extends Component {
   constructor(props) {
     super(props);
 
     this.main = this.props.main;
+    this.evEmitter = this.main.evEmitter;
+
     this.onMenuBackClick_ = this.onMenuBackClick.bind(this);
     this.onMenuItemClick_ = this.onMenuItemClick.bind(this);
     this.onMenuItemBlur_ = this.onMenuItemBlur.bind(this);
+
+    this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
+    this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
   }
 
-  componentDidUpdate() {
-    if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
-      let v = document.querySelector('.vop-menuitem');
-      if (v) {
-        v.focus();
-      }
-    }
+  componentDidMount() {
+    this.vopAudioTrackMenu = document.querySelector('.vop-audio-track-menu');
   }
 
   render() {
-    return (<div></div>);
-    
-    //myPrintLog('+render, UIAudioTrackMenu: ' + this.main.settingMenuUIData.currMenu);
-    let ret = (<div></div>);
-
-    if (this.main.settingMenuUIData.currMenu === 'audio_track_menu') {
-      const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
-        <div key={index} className="vop-menuitem" role="menuitemradio"
+    const menuitems = this.main.settingMenuUIData.audioTrackList.map((item, index) =>
+      <div key={index} className="vop-menuitem" role="menuitemradio"
           aria-checked={this.main.settingMenuUIData.currAudioTrackId === item.id}
           data-id={item.id} onClick={this.onMenuItemClick_}
           tabIndex="0" onBlur={this.onMenuItemBlur_}>
-          <div className="vop-menuitem-label">
-            <span>{ item.lang }</span>
-          </div>
+        <div className="vop-menuitem-label">
+          <span>{ item.lang }</span>
         </div>
-      );
+      </div>
+    );
 
-      ret = (
-        <div>
-          <div className="vop-panel-header">
-            <button className="vop-panel-title" onClick={this.onMenuBackClick_}>AudioTrack</button>
-          </div>
-          <div className="vop-panel-menu">
-            { menuitems }
-          </div>
+    return (
+      <div className="vop-audio-track-menu" style="display: none;">
+        <div className="vop-panel-header">
+          <button className="vop-panel-title" onClick={this.onMenuBackClick_}>AudioTrack</button>
         </div>
-      );
-    }
-
-    return ret;
+        <div className="vop-panel-menu">
+          { menuitems }
+        </div>
+      </div>
+    );
   }
 
   onMenuBackClick(e) {
-    this.main.onAudioTrackMenuBack(e);
+    this.main.settingMenuUIData.currMenu = 'settings_menu';
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu
+    });
   }
 
   onMenuItemClick(e) {
@@ -67,6 +61,18 @@ class UIAudioTrackMenu extends Preact.Component {
       return;
     }
     this.main.onAudioTrackMenuItemBlur(e);
+  }
+
+  onPopupMenuChange(e) {
+    if (e.menu === 'audio_track_menu') {
+      this.vopAudioTrackMenu.style.display = 'block';
+      let v = this.vopAudioTrackMenu.querySelector('.vop-menuitem');
+      if (v) {
+        v.focus();
+      }
+    } else {
+      this.vopAudioTrackMenu.style.display = 'none';
+    }
   }
 }
 

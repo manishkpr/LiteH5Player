@@ -26,7 +26,6 @@ class UISettingsMenu extends Component {
 
   render() {
     //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
-
     const menuitems = this.main.settingMenuUIData.settingsList.map(function(item, index) {
       let currValue = '';
       switch (item.id) {
@@ -89,7 +88,33 @@ class UISettingsMenu extends Component {
   }
 
   onMenuItemClick(e) {
-    this.main.onMainMenuItemClick(e);
+    myPrintLog('+onMainMenuItemClick, ' +
+      ' this.settingMenuUIData.currMenu: ' + this.main.settingMenuUIData.currMenu +
+      ', text: ' + e.target.innerText);
+    let nextFocus = e.currentTarget;
+
+    myPrintLog('id: ' + nextFocus.dataset.id);
+    let menu;
+    switch (nextFocus.dataset.id) {
+      case '1':
+         menu = 'quality_menu';
+        break;
+      case '2':
+        menu = 'audio_track_menu';
+        break;
+      case '3':
+        menu = 'fcc_menu';
+        break;
+      case '4':
+        menu = 'xspeed_menu';
+      default:
+        break;
+    }
+
+    this.main.settingMenuUIData.currMenu = menu;
+    this.evEmitter.emit(Events.POPUPMENU_CHANGE, {
+      menu: this.main.settingMenuUIData.currMenu
+    });
   }
 
   onMenuItemBlur(e) {
