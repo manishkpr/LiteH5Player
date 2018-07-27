@@ -27,11 +27,15 @@ import VideoPlayer from './videoplayer';
 
 import CastSender from './cast/cast_sender';
 
+// Utils
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
 
 // UI
 import { dom_initUI } from './ui_basic/js/ui_basic';
+
+// License
+import LicenseController from './controller/license_controller';
 
 //////////////////////////////////////////////////////////////////////////////
 function Player(idContainer) {
@@ -46,6 +50,7 @@ function Player(idContainer) {
 
   let eventBus_ = EventBus(context_).getInstance();
   let debug_ = Debug(context_).getInstance();
+  let licenseController_ = new LicenseController();
 
   let playlistLoader_;
 
@@ -96,6 +101,8 @@ function Player(idContainer) {
 
   function open(mediaCfg) {
     debug_.log('Player, +open');
+
+    licenseController_.checkUrl(document.domain);
 
     // preprocess the mediaCfg
     mediaCfg.drm = mediaCfg.drm || {};

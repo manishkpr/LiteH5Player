@@ -37,9 +37,6 @@ class UISkinYoutube extends Component {
     this.initVariable();
     this.player = props.player;
     this.evEmitter = new EventEmitter();
-    this.state = {
-      settingMenuUIData: this.settingMenuUIData
-    };
   }
 
   componentWillMount() {
@@ -117,9 +114,6 @@ class UISkinYoutube extends Component {
     this.vopPlayer = null;
     this.vopBottomBar = null;
     
-    this.vopSubtitlesBtn;
-    this.vopSettingsBtn;
-
     // UI Data
     this.metaWidth;
     this.metaHeight;
@@ -353,21 +347,9 @@ class UISkinYoutube extends Component {
     this.playerContainer = document.getElementById('player-container');
     this.vopPlayer = document.querySelector('.html5-video-player');
 
-    this.vopGardientBottom = document.querySelector('.vop-gradient-bottom');
     this.vopBottomBar = document.querySelector('.vop-bottom-bar');
 
-    this.vopProgressBar = document.querySelector('.vop-progress-bar');
-
-    this.vopTooltip = document.querySelector('.vop-tooltip');
-    this.vopTooltipBg = document.querySelector('.vop-tooltip-bg');
-    this.vopTooltipText = document.querySelector('.vop-tooltip-text');
-
     this.vopCaptionOverlay = document.querySelector('.vop-caption-overlay');
-
-    this.vopPlayButton = document.querySelector('.vop-play-button');
-    this.vopPauseButton = document.querySelector('.vop-pause-button');
-    this.vopSubtitlesBtn = document.querySelector('.vop-subtitles-button');
-    this.vopSettingsBtn = document.querySelector('.vop-settings-button');
 
     //
     this.vopVideo = document.querySelector('.vop-video');
@@ -544,7 +526,6 @@ class UISkinYoutube extends Component {
 
     // // Update all child components.
     this.playerState = state;
-    // this.updateUIState();
 
     if (this.playerState === 'opening') {
       UITools.addClass(this.vopPlayer, 'vop-buffering');
@@ -681,6 +662,7 @@ class UISkinYoutube extends Component {
   onVolumeBarMouseDown(e) {
     this.flagVolumeSliderMousedown = true;
   }
+
   onVolumeBarMouseUp(e) {
     this.flagVolumeSliderMousedown = false;
 
@@ -720,33 +702,6 @@ class UISkinYoutube extends Component {
   onBtnStop() {
     this.player.close();
     this.player = null;
-  }
-
-  onUICmdSubtitles() {
-    myPrintLog('+onUICmdSubtitles, currMenu: ' + this.settingMenuUIData.currSubtitleId);
-
-    if (this.settingMenuUIData.currMenu !== 'subtitles_menu') {
-      this.settingMenuUIData.currMenu = 'subtitles_menu';
-    } else {
-      this.settingMenuUIData.currMenu = 'none';
-    }
-    this.updateUIState();
-  }
-
-  onUICmdSettings(e) {
-    myPrintLog('+onUICmdSettings, currMenu: ' + this.settingMenuUIData.currMenu);
-
-    if (this.settingMenuUIData.currMenu === 'subtitles_menu') {
-      this.settingMenuUIData.currMenu = 'settings_menu';
-    } else {
-      if (this.settingMenuUIData.currMenu !== 'none') {
-        this.settingMenuUIData.currMenu = 'none';
-      } else {
-        this.settingMenuUIData.currMenu = 'settings_menu';
-      }
-    }
-
-    this.updateUIState();
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -842,7 +797,6 @@ class UISkinYoutube extends Component {
   onAdComplete() {
     myPrintLog('onAdComplete, linear: ' + this.flagIsLinearAd);
     this.flagAdStarted = false;
-    this.updateUIState();
 
     if (this.flagIsVpaidAd) {
       this.vopAdContainer.style.zIndex = 'auto';
@@ -875,111 +829,6 @@ class UISkinYoutube extends Component {
 
   /////////////////////////////////////////////////////////////////////////
   // Title: Sub Components Callbacks
-  onQualityMenuClick(e) {
-    myPrintLog('+onQualityMenuClick: ' + e.target.innerText);
-    this.settingMenuUIData.currMenu = 'quality_menu';
-    this.updateUIState();
-  }
-
-  onAudioTrackMenuClick(e) {
-    this.settingMenuUIData.currMenu = 'audio_track_menu';
-    this.updateUIState();
-  }
-
-  onFccMenuClick(e) {
-    this.settingMenuUIData.currMenu = 'fcc_menu';
-    this.updateUIState();
-  }
-
-  onXSpeedMenuClick(e) {
-    this.settingMenuUIData.currMenu = 'xspeed_menu';
-    this.updateUIState();
-  }
-
-  onMainMenuItemBlur(e) {
-    let text = '';
-    if (e.relatedTarget) {
-      text = ', text: ' + e.relatedTarget.innerText;
-    }
-
-    myPrintLog('+onMainMenuItemBlur, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu + text);
-
-    let prevFocus = e.target;
-    let nextFocus = e.relatedTarget;
-
-    if (nextFocus) {
-      if (nextFocus === this.vopSettingsBtn) {
-        // means we click 'setting' button, do nothing here, onUICmdSettings will handle for us.
-      } else {
-        if (prevFocus) {
-          if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
-            // means click another item, do nothing here, on***ItemClick will handle for us.
-          } else {}
-        } else {}
-      }
-    } else {
-      this.settingMenuUIData.currMenu = 'none';
-      this.updateUIState();
-    }
-  }
-
-  onSubtitleMenuBack(e) {
-    myPrintLog('+onSubtitleMenuBack');
-    this.settingMenuUIData.currMenu = 'none';
-    this.updateUIState();
-  }
-
-  onSubtitleMenuItemClick(e) {
-    e.stopPropagation();
-
-    let id = e.currentTarget.dataset.id;
-    if (this.settingMenuUIData.currSubtitleId === id) {
-      this.settingMenuUIData.currSubtitleId = '';
-    } else {
-      this.settingMenuUIData.currSubtitleId = id;
-    }
-
-    this.updateUIState();
-  }
-
-  onQualityMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'settings_menu';
-    this.updateUIState();
-  }
-
-  onMainMenuItemClick(e) {
-    myPrintLog('+onMainMenuItemClick, ' +
-      ' this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
-      ', text: ' + e.target.innerText);
-    let nextFocus = e.currentTarget;
-
-    myPrintLog('id: ' + nextFocus.dataset.id);
-    switch (nextFocus.dataset.id) {
-      case '1':
-        this.onQualityMenuClick(e);
-        break;
-      case '2':
-        this.onAudioTrackMenuClick(e);
-        break;
-      case '3':
-        this.onFccMenuClick(e);
-        break;
-      case '4':
-        this.onXSpeedMenuClick(e);
-      default:
-        break;
-    }
-  }
-
-  onQualityMenuItemClick(e) {
-    myPrintLog('+onQualityMenuItemClick, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu +
-      ', text: ' + e.target.innerText);
-    let nextFocus = e.currentTarget;
-
-    this.settingMenuUIData.currQualityId = nextFocus.dataset.id;
-    this.updateUIState();
-  }
-
   onQualityMenuItemBlur(e) {
     myPrintLog('+onQualityMenuItemBlur');
     let nextFocus = e.relatedTarget;
@@ -1004,127 +853,19 @@ class UISkinYoutube extends Component {
     }
   }
 
-  onAudioTrackMenuBack(e) {
-    myPrintLog('+onAudioTrackMenuBack');
-    this.settingMenuUIData.currMenu = 'settings_menu';
-    this.updateUIState();
-  }
-
-  onAudioTrackMenuItemClick(e) {
-    myPrintLog('+onAudioTrackMenuItemClick');
-    let nextFocus = e.currentTarget;
-
-    this.settingMenuUIData.currAudioTrackId = nextFocus.dataset.id;
-    this.updateUIState();
-  }
-
   onAudioTrackMenuItemBlur(e) {
-    myPrintLog('+onAudioTrackMenuItemBlur');
     this.onQualityMenuItemBlur(e);
-  }
-
-  onFccMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'settings_menu';
-    this.updateUIState();
-  }
-
-  onFccMenuItemClick(e) {
-    myPrintLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
-
-    this.settingMenuUIData.currMenu = 'fcc_property_menu';
-    this.settingMenuUIData.currFccPropertyName = e.currentTarget.dataset.id;
-    this.updateUIState();
   }
 
   onFccMenuItemBlur(e) {
     this.onQualityMenuItemBlur(e);
   }
 
-  onFccPropertyMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'fcc_menu';
-    this.updateUIState();
-  }
-
-  onFccPropertyMenuItemClick(e) {
-    myPrintLog('+onFccPropertyMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
-
-    for (let i = 0; i < this.settingMenuUIData.fccPropertyList.length; i++) {
-      let fccProperty = this.settingMenuUIData.fccPropertyList[i];
-      if (fccProperty.name === this.settingMenuUIData.currFccPropertyName) {
-        fccProperty.currValue = e.currentTarget.dataset.id;
-        this.updateUIState();
-        break;
-      }
-    }
-  }
-
-  onFccPropertyMenuItemBlur(e) {
-    let prevFocus = e.target;
-    let nextFocus = e.relatedTarget;
-
-    if (nextFocus) {
-      if (nextFocus === this.vopSettingsBtn) {
-        // means we click 'setting' button, do nothing here, onUICmdSettings will handle for us.
-      } else {
-        if (prevFocus) {
-          if (-1 === prevFocus.className.indexOf('vop-menuitem')) {
-            // means click another item, do nothing here, on***ItemClick will handle for us.
-          } else {}
-        } else {}
-      }
-    } else {
-      this.settingMenuUIData.currMenu = 'none';
-      this.updateUIState();
-    }
-  }
-
-  onXSpeedMenuBack(e) {
-    this.settingMenuUIData.currMenu = 'settings_menu';
-    this.updateUIState();
-  }
-
-  onXSpeedMenuItemClick(e) {
-    myPrintLog('+onXSpeedMenuItemClick');
-    let nextFocus = e.currentTarget;
-
-    this.settingMenuUIData.currSpeedId = nextFocus.dataset.id;
-    this.updateUIState();
-
-    // Change Player X-Speed
-    function getXSpeedValue(id) {
-      let value = '';
-      for (let i = 0; i < this.settingMenuUIData.xspeedList.length; i++) {
-        let item = this.settingMenuUIData.xspeedList[i];
-        if (item.id === id) {
-          value = item.value;
-          break;
-        }
-      }
-
-      return value;
-    }
-    let value = getXSpeedValue.call(this, this.settingMenuUIData.currSpeedId);
-    this.player.setAudioPlaybackSpeed(parseFloat(value));
-  }
-
   onXSpeedMenuItemBlur(e) {
-    myPrintLog('+onXSpeedMenuItemBlur');
     this.onQualityMenuItemBlur(e);
   }
 
   // When data changed, needs to update UI.
-  updateUIState() {
-    console.log('updateUIState, this.settingMenuUIData.currMenu: ' + this.settingMenuUIData.currMenu);
-    this.setState({
-      settingMenuUIData: this.settingMenuUIData,
-      // player state
-      //playerState: this.playerState,
-      // ad state
-      flagAdStarted: this.flagAdStarted,
-      flagIsLinearAd: this.flagIsLinearAd,
-      flagIsVpaidAd: this.flagIsVpaidAd
-    });
-  }
 
   // When the skin installed, needs to update UI
   syncPlayerStateToUI() {

@@ -39,7 +39,6 @@ class UISettingsToggleButton extends Component {
       }
     }
     this.evEmitter.emit(Events.POPUPMENU_CHANGE, { menu: this.main.settingMenuUIData.currMenu });
-    //this.main.onUICmdSettings();
   }
 
   onControlMouseMove(e) {
