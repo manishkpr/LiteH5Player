@@ -67,27 +67,6 @@ class UISkinYoutube extends Component {
   }
 
   render() {
-    // // Update current component.
-    // switch (this.playerState) {
-    //   case 'idle':
-    //     break;
-    //   case 'opening':
-    //     this.startBufferingUI();
-    //     break;
-    //   case 'opened':
-    //     this.stopBufferingUI();
-    //     break;
-    //   case 'ended':
-    //     this.removeAutohideAction();
-    //     break;
-    //   case 'closed':
-    //     break;
-    //   case 'playing':
-    //     break;
-    //   default:
-    //     break;
-    // }
-
     return (
       <div className="vop-skin-youtube">
         <UIChromecastOverlay main={this} />
