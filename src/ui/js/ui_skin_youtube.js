@@ -8,6 +8,7 @@ import '../css/ui_skin_youtube.scss';
 
 import UITools from './ui_tools';
 import Events from './events';
+import { ErrorTypes } from '../../core/errors';
 
 import UITitleBar from './components/ui_title_bar';
 import UIPopupMenu from './components/ui_popup_menu';
@@ -20,7 +21,7 @@ import UIHugeButtonOverlay from './components/ui_hugebutton_overlay';
 import UIBufferingOverlay from './components/ui_buffering_overlay';
 import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
-
+import UIErrorMsgOverlay from './components/ui_error_msg_overlay';
 import UIChromecastOverlay from './components/ui_chromecast_overlay';
 
 import UIToolTip from './components/ui_tooltip';
@@ -100,6 +101,7 @@ class UISkinYoutube extends Component {
         <UIBufferingOverlay />
         <UIHugeButtonOverlay main={this} />
         <UIPlayOverlay main={this} />
+        <UIErrorMsgOverlay main={this} />
       </div>
     );
   }
@@ -422,6 +424,7 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
     
     this.player.on(oldmtn.Events.LOG, this.onLog);
+    this.player.on(oldmtn.Events.ERROR, this.onError);
 
     // ad callback event
     this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
@@ -447,6 +450,7 @@ class UISkinYoutube extends Component {
 
     // log
     this.player.off(oldmtn.Events.LOG, this.onLog);
+    this.player.off(oldmtn.Events.ERROR, this.onError);
 
     // ad callback event
     this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
@@ -756,6 +760,12 @@ class UISkinYoutube extends Component {
 
   onLog(e) {
     printLogUI(e.message);
+  }
+
+  onError(e) {
+    if (e.type === ErrorTypes.LICENSE_ERROR) {
+      console.log('--ErrorTypes.LICENSE_ERROR--');
+    }
   }
 
   onAdStarted(e) {

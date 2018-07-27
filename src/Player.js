@@ -3,6 +3,7 @@
 import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/CoreEvents';
+import { ErrorTypes } from './core/errors';
 import Debug from './core/Debug';
 
 import FetchLoader from './utils/fetch_loader';
@@ -102,7 +103,10 @@ function Player(idContainer) {
   function open(mediaCfg) {
     debug_.log('Player, +open');
 
-    licenseController_.checkUrl(document.domain);
+    if (!licenseController_.checkUrl(document.domain)) {
+      eventBus_.trigger(Events.ERROR, { type: ErrorTypes.LICENSE_ERROR });
+      return false;
+    }
 
     // preprocess the mediaCfg
     mediaCfg.drm = mediaCfg.drm || {};

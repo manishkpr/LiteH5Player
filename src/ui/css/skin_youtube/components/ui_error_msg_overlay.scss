@@ -1,0 +1,23 @@
+@import '../ui_variables';
+
+.#{$skinYoutube} {
+  .vop-error-msg-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: $zIndex_errormsg_overlay;
+    background-color: black;
+    display: none;
+  }
+
+  .vop-error-msg-text {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    right: 20%;
+    text-align: center;
+    font-size: 2.0em;
+    color: white;
+  }
+}
+

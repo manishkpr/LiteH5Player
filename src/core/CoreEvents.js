@@ -38,9 +38,6 @@ class CoreEvents {
     // ads custom events
     this.AD_LOADING_COMPLETE = 'adLoadingComplete';
 
-    // log event
-    this.LOG = 'log';
-
     // DOM Events
     this.FULLSCREEN_CHANGE = 'fullscreenChange';
 
@@ -50,6 +47,9 @@ class CoreEvents {
     this.FINDING_PARSER = 'findingParser';
     this.FOUND_PARSER = 'foundParser';
     this.STREAM_UPDATED = 'streamUpdated'; // Loaded a stream has a specified bitrate.
+    // log event
+    this.LOG = 'log';
+    this.ERROR = 'error';
     // thumbnail
     this.THUMBNAIL_LOADING = 'thumbnailLoading';
     // tracks(captions, thumbnails)

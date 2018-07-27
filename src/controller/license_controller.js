@@ -8,6 +8,7 @@ const IPADDRESS_REGEX = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25
 
 class LicenseController {
   constructor(props) {
+    this.whitelist = [];
   }
 
   setWhitelist(whitelist) {
@@ -24,7 +25,7 @@ class LicenseController {
     let ret = false;
     if (url.toLowerCase() === 'localhost') {
       ret = true;
-    } else {
+    } else if (this.whitelist.length > 0) {
       // check ip address
       let arrRegex = url.match(IPADDRESS_REGEX);
       //console.log(`check ip: ${url} ==> ip: ${arrRegex}`);
