@@ -77,37 +77,37 @@ function getInitConfig() {
     autoplay: true,
     mutedAutoplay: true,
 
-    // advertising: {
-    //   //tag: ad67741,
-    //   //tag: ad67720,
-    //   //tag: ad67966,
-    //   //tag: ad68010,
-    //   //tag: ad68010_local,
-    //   //tag: yun_test_ad01,
-    //   //tag: ad_vpaid01,
-    //   //tag: ad_vpaid02,
-    //   //tag: Single_Inline_Linear,
-    //   //tag: Single_Inline_Linear_local,
-    //   //tag: Single_Skippable_Inline,
-    //   tag: Single_Non_linear_Inline,
-    //   //tag: Single_Non_linear_Inline2,
-    //   //tag: VMAP_Pre_roll_Bumper,
-    //   //tag: VMAP_Post_roll_Bumper,
-    //   //tag: VMAP_Post_roll,
-    //   //tag: VMAP_Pre_Mid_Post,
-    //   //tag: VMAP_Pre_3Mid_Post,
-    //   //tag: VMAP_5Ads_Every_10_Secs,
-    //   //tag: VMAP_Pre_10_20_Post,
-    //   //tag: VMAP_Pre_10_20Skip_Post,
-    //   //tag: ad_jwplayer_nonlinear,
-    //   //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
-    //   //enablePreloading: true,
-    //   //autoplayadsmuted: true,
-    //   //vpaidmode: 'insecure',
-    //   //forceNonLinearFullSlot: false,
-    //   //locale: 'fr',
-    //   //companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
-    // }
+    advertising: {
+      //tag: ad67741,
+      //tag: ad67720,
+      //tag: ad67966,
+      //tag: ad68010,
+      //tag: ad68010_local,
+      //tag: yun_test_ad01,
+      //tag: ad_vpaid01,
+      //tag: ad_vpaid02,
+      //tag: Single_Inline_Linear,
+      //tag: Single_Inline_Linear_local,
+      //tag: Single_Skippable_Inline,
+      tag: Single_Non_linear_Inline,
+      //tag: Single_Non_linear_Inline2,
+      //tag: VMAP_Pre_roll_Bumper,
+      //tag: VMAP_Post_roll_Bumper,
+      //tag: VMAP_Post_roll,
+      //tag: VMAP_Pre_Mid_Post,
+      //tag: VMAP_Pre_3Mid_Post,
+      //tag: VMAP_5Ads_Every_10_Secs,
+      //tag: VMAP_Pre_10_20_Post,
+      //tag: VMAP_Pre_10_20Skip_Post,
+      //tag: ad_jwplayer_nonlinear,
+      //tag: 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525',
+      //enablePreloading: true,
+      //autoplayadsmuted: true,
+      //vpaidmode: 'insecure',
+      //forceNonLinearFullSlot: false,
+      //locale: 'fr',
+      //companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
+    }
   };
 
   return cfg;
@@ -221,9 +221,9 @@ function getMediaInfo() {
       // { file: 'http://localhost/2/webvtt_thumbnail/single01/thumbnails.vtt', kind: 'thumbnails', label: 'single01' },
 
       // Webvtt Captions
-      //{ file: 'http://localhost/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
+      { file: 'http://localhost/2/subtitle/timetext.vtt', kind: 'captions', label: 'TimeText' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-CH.webvtt', kind: 'captions', label: 'Chinese' },
-      // { file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
+      //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-DE.webvtt', kind: 'captions', label: 'Detuch' },
       //{ file: 'http://localhost/2/pd/mp4/tears_of_steel/TOS-en.webvtt', kind: 'captions', label: 'English' }
     ]
   };

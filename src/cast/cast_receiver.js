@@ -1,7 +1,7 @@
 'use strict';
 
 import EventBus from '../core/EventBus';
-import Events from '../core/CoreEvents';
+import Events from '../core/events';
 import Debug from '../core/Debug';
 
 import CastUtils from './cast_utils';

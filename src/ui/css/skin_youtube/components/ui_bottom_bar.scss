@@ -7,10 +7,14 @@
     right: 12px;
     bottom: 0px;
     z-index: $zIndex_control_bar;
+    display: block;
   }
 }
 
 
 
-
-
+.vop-player-idle .#{$skinYoutube} .vop-bottom-bar,
+.vop-player-opening .#{$skinYoutube} .vop-bottom-bar,
+.vop-player-opened .#{$skinYoutube} .vop-bottom-bar {
+  display: none;
+}

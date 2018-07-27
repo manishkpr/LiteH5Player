@@ -84,5 +84,5 @@ class CoreEvents {
   }
 }
 
-let coreEvents = new CoreEvents();
-export default coreEvents;
+let Events = new CoreEvents();
+export default Events;

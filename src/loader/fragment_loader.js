@@ -1,6 +1,6 @@
 import FactoryMaker from '../core/FactoryMaker';
 import EventBus from '../core/EventBus';
-import Events from '../core/CoreEvents';
+import Events from '../core/events';
 import Debug from '../core/Debug';
 
 import XHRLoader from '../utils/xhr_loader';

@@ -23,8 +23,9 @@ import UILogoOverlay from './components/ui_logo_overlay';
 import UIPlayOverlay from './components/ui_play_overlay';
 import UIErrorMsgOverlay from './components/ui_error_msg_overlay';
 import UIChromecastOverlay from './components/ui_chromecast_overlay';
-
 import UIToolTip from './components/ui_tooltip';
+
+import UIAdsContainer from './components/ui_ads_container';
 
 import EventEmitter from 'events';
 
@@ -38,6 +39,8 @@ class UISkinYoutube extends Component {
     this.initVariable();
     this.player = props.player;
     this.evEmitter = new EventEmitter();
+
+    this.adsContainer = new UIAdsContainer({main: this});
   }
 
   componentWillMount() {
@@ -537,7 +540,7 @@ class UISkinYoutube extends Component {
 
   addAutohideAction() {
     UITools.addClass(this.vopPlayer, 'vop-autohide');
-    this.updateCaptionOverlay();
+    //this.updateCaptionOverlay();
   }
 
   removeAutohideAction() {
@@ -546,7 +549,7 @@ class UISkinYoutube extends Component {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-    this.updateCaptionOverlay();
+    //this.updateCaptionOverlay();
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -748,54 +751,13 @@ class UISkinYoutube extends Component {
   }
 
   onAdStarted(e) {
-    // BD
-    let videos = document.getElementsByTagName('video');
-    myPrintLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
-    // ED
+    this.updateUIStateMachine('playing');
 
     // Hide all popup menu.
     this.settingMenuUIData.currMenu = 'none';
-  
-    this.flagAdStarted = true;
-    this.flagIsLinearAd = e.linear;
-    this.flagIsVpaidAd = e.vpaid;
-    // FIXME: How to trigger playing state when ad start play.
-    this.updateUIStateMachine('playing');
-
-    // update control bar ui
-    if (this.flagIsVpaidAd) {
-      this.vopAdContainer.style.zIndex = '3';
-    } else {
-      if (this.flagIsLinearAd) {
-        this.vopAdContainer.style.zIndex = '1';
-      } else {
-        let adDstWidth = this.vopPlayer.clientWidth;
-        let adDstHeight = e.height + 10;
-        this.player.resize(adDstWidth, e.height + 5);
-        this.vopAdContainer.style.bottom = this.vopBottomBar.clientHeight.toString() + 'px';
-        //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
-        this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
-        this.vopAdContainer.style.zIndex = '1';
-
-        // Consider ad height.
-        this.updateCaptionOverlay();
-      }
-    }
   }
 
   onAdComplete() {
-    myPrintLog('onAdComplete, linear: ' + this.flagIsLinearAd);
-    this.flagAdStarted = false;
-
-    if (this.flagIsVpaidAd) {
-      this.vopAdContainer.style.zIndex = 'auto';
-    } else {
-      if (this.flagIsLinearAd) {
-        this.vopAdContainer.style.zIndex = 'auto';
-      } else {
-        this.vopAdContainer.style.zIndex = 'auto';
-      }
-    }
   }
 
   onAdCompanions(e) {

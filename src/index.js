@@ -1,4 +1,5 @@
-﻿import Events from './core/CoreEvents';
+﻿import Events from './core/events';
+import { ErrorTypes } from './core/errors';
 import CommonUtils from './utils/common_utils';
 import Player from './Player';
 import CastReceiver from './cast/cast_receiver';
@@ -15,6 +16,7 @@ if (!oldmtn) {
 
 oldmtn.Player = Player;
 oldmtn.Events = Events;
+oldmtn.ErrorTypes = ErrorTypes;
 oldmtn.CastReceiver = CastReceiver;
 
 oldmtn.CommonUtils = CommonUtils;

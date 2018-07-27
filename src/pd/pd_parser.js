@@ -1,5 +1,5 @@
 import FactoryMaker from '../core/FactoryMaker';
-import Events from '../core/CoreEvents';
+import Events from '../core/events';
 import EventBus from '../core/EventBus';
 import Debug from '../core/Debug';
 

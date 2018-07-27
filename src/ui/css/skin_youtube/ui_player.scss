@@ -3,27 +3,14 @@
 /*********************************************************************************************/
 /************ Begin Player State ************/
 /* state: idle */
-.vop-player-idle .vop-bottom-bar {
-  display: none;
-}
-
 
 /* state: opening */
-.vop-player-opening .vop-bottom-bar {
-  display: none;
-}
 
 /* state: opened */
-
-
-.vop-player-opened .vop-bottom-bar {
-  display: none;
-}
 
 /* state: playing */
 
 /* state: paused */
-
 
 /* state: ended */
 

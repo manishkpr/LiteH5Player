@@ -29,7 +29,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 import EventBus from './EventBus';
-import Events from './CoreEvents';
+import Events from './events';
 import FactoryMaker from './FactoryMaker';
 
 const LOG_LEVEL_NONE = 0;

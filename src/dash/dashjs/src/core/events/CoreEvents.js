@@ -37,7 +37,7 @@ import EventsBase from './EventsBase';
  * @class
  * @ignore
  */
-class CoreEvents extends EventsBase {
+class events extends EventsBase {
     constructor () {
         super();
         this.BUFFERING_COMPLETED = 'bufferingCompleted';
@@ -78,4 +78,4 @@ class CoreEvents extends EventsBase {
     }
 }
 
-export default CoreEvents;
+export default events;
