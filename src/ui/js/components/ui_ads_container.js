@@ -11,7 +11,10 @@ class UIAdsContainer {
     this.player = this.main.player;
 
     this.vopAdContainer = document.querySelector('.vop-ads-container');
+    this.onAdContainerMouseDown = this.onAdContainerMouseDown.bind(this);
+    this.vopAdContainer.addEventListener('mousedown', this.onAdContainerMouseDown);
 
+    //
     this.onAdStarted = this.onAdStarted.bind(this);
     this.onAdComplete = this.onAdComplete.bind(this);
     this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
@@ -23,7 +26,7 @@ class UIAdsContainer {
     let videos = document.getElementsByTagName('video');
     myPrintLog('onAdStarted, linear: ' + e.linear + ', videos length: ' + videos.length);
     // ED
-    
+
     if (!this.vopPlayer) {
       this.vopPlayer = document.querySelector('.html5-video-player');
     }
@@ -67,6 +70,14 @@ class UIAdsContainer {
       } else {
         this.vopAdContainer.style.zIndex = 'auto';
       }
+    }
+  }
+
+  onAdContainerMouseDown(e) {
+    // If ad is playing, it will overlay on the top of 'html5-video-player',
+    // when click on ad, we should stop this event transfer to its parent.
+    if (this.flagAdStarted) {
+      e.stopPropagation();
     }
   }
 }

@@ -338,7 +338,6 @@ class UISkinYoutube extends Component {
     //
     this.vopVideo = document.querySelector('.vop-video');
     this.vopVideo.removeAttribute('controls');
-    this.vopAdContainer = document.querySelector('.vop-ads-container');
   }
 
   initUIElementsStyles() {
@@ -358,9 +357,6 @@ class UISkinYoutube extends Component {
     this.vopPlayer.addEventListener('mousemove', this.onPlayerMouseMove);
     this.vopPlayer.addEventListener('mousedown', this.onPlayerMouseDown);
     this.vopPlayer.addEventListener('mouseup', this.onPlayerMouseUp);
-
-    this.onAdContainerMouseDown = this.onAdContainerMouseDown.bind(this);
-    this.vopAdContainer.addEventListener('mousedown', this.onAdContainerMouseDown);
 
     // resize listener
     //if (window.ResizeObserver) {
@@ -607,14 +603,6 @@ class UISkinYoutube extends Component {
     if (this.flagPlayerMouseDown) {
       this.flagPlayerMouseDown = false;
       this.onUICmdPlay();
-    }
-  }
-
-  onAdContainerMouseDown(e) {
-    // If ad is playing, it will overlay on the top of 'html5-video-player',
-    // when click on ad, we should stop this event transfer to its parent.
-    if (this.flagAdStarted) {
-      e.stopPropagation();
     }
   }
 
