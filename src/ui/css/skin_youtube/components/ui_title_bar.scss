@@ -6,6 +6,7 @@
     top: 6px;
     z-index: $zIndex_titlebar;
     padding: 12px;
+    pointer-events: none;
   }
   .vop-titlebar-title {
     color: #FFFFFF;

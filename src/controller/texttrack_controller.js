@@ -42,6 +42,8 @@ function TextTrackController() {
 
     //
     textTrack_.mode = 'showing';
+
+    // Trigger text track found event.
   }
 
   function createCue(data) {

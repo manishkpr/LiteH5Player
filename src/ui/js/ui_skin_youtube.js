@@ -75,8 +75,8 @@ class UISkinYoutube extends Component {
         <UIChromecastOverlay main={this} />
         <UITitleBar main={this} />
         <UILogoOverlay />
-        <UIPopupMenu main={this} />
         <UICaptionOverlay main={this} />
+        <UIPopupMenu main={this} />
         <UIToolTip main={this} />
         <UIGradientBottom main={this} />
         <UIBottomBar main={this} />
