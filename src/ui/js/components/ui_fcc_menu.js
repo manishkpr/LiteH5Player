@@ -147,7 +147,6 @@ class UIFccMenu extends Component {
     myPrintLog('+onFccMenuItemClick, e.currentTarget.dataset.id: ' + e.currentTarget.dataset.id);
 
     this.main.settingMenuUIData.currMenu = 'fcc_property_menu';
-    //this.main.settingMenuUIData.currFccPropertyName = e.currentTarget.dataset.id;
 
     let currFccPropertyName = e.currentTarget.dataset.id;
     let fccProperty;

@@ -525,7 +525,9 @@ function Player(idContainer) {
     if (window.cast && window.cast.__platform__) {
       // receiver don't need new CastSender
     } else {
-      castSender_ = CastSender(context_).getInstance('E19ACDB8');
+      if (context_.cfg.cast && context_.cfg.cast.applicationID) {
+        castSender_ = CastSender(context_).getInstance(context_.cfg.cast.applicationID);
+      }
     }
   }
 

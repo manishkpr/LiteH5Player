@@ -110,190 +110,21 @@ class UISkinYoutube extends Component {
       currMenu: 'none', // none, settings_menu, quality_menu, audio_track_menu, fcc_menu, fcc_property_menu, subtitles_menu, xspeed_menu
 
       // main setting menu
-      settingsList: [{
-        id: '1',
-        text: 'Quality'
-      }, {
-        id: '2',
-        text: 'Language'
-      }, {
-        id: '3',
-        text: 'Subtitle'
-      }, {
-        id: '4',
-        text: 'XSpeed'
-      }],
-
       // quality settings menu
-      qualityList: [{
-        id: '6',
-        bitrate: '1080p'
-      }, {
-        id: '5',
-        bitrate: '720p'
-      }, {
-        id: '4',
-        bitrate: '480p'
-      }, {
-        id: '3',
-        bitrate: '360p'
-      }, {
-        id: '2',
-        bitrate: '240p'
-      }, {
-        id: '1',
-        bitrate: '144p'
-      }, {
-        id: '-1',
-        bitrate: 'Auto'
-      }],
-      isQualityAuto: true,
       currQualityId: '2',
 
       // audio track settings menu
-      audioTrackList: [{
-        id: '1',
-        lang: 'English'
-      }, {
-        id: '2',
-        lang: 'French'
-      }, {
-        id: '3',
-        lang: 'Chinese'
-      }, {
-        id: '4',
-        lang: 'Dutch'
-      }, {
-        id: '5',
-        lang: 'Spanish'
-      }, {
-        id: '6',
-        lang: 'Korean'
-      }],
       currAudioTrackId: '1',
 
       // subtitle menu
-      subtitleTracks: [{
-        id: '1',
-        lang: 'English'
-      }, {
-        id: '2',
-        lang: 'French'
-      }, {
-        id: '3',
-        lang: 'Chinese'
-      }, {
-        id: '4',
-        lang: 'Dutch'
-      }, {
-        id: '5',
-        lang: 'Spanish'
-      }, {
-        id: '6',
-        lang: 'Korean'
-      }, {
-        id: '7',
-        lang: 'Thai'
-      }],
       currSubtitleId: '2',
 
       // FCC settings menu
       currFccPropertyName: 'background_color', // only valid when currMenu is 'fcc_property_menu'.
       isEnableFCC: true,
-      fccPropertyList: [{
-        // white/black(default)/red/green/blue/yellow/magenta/cyan
-        name: 'background_color',
-        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-        currValue: 'black'
-      }, {
-        name: 'background_opacity',
-        values: ['0%', '25%', '50%', '75%', '100%'],
-        currValue: '100%'
-      }, {
-        // white/black(default)/red/green/blue/yellow/magenta/cyan
-        name: 'font_color',
-        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-        currValue: 'black'
-      }, {
-        name: 'font_opacity',
-        values: ['0%', '25%', '50%', '75%', '100%'],
-        currValue: '100%'
-      }, {
-        // Arial(default)/Courier/Times New Roman/Helvetica/Dom/Coronet/Gothic
-        name: 'font_family',
-        values: ['Arial', 'Courier', 'Times New Roman', 'Helvetica', 'Dom', 'Coronet', 'Gothic'],
-        currValue: 'Arial'
-      }, {
-        // none/dropshadow/raised(default)/depressed/uniform
-        name: 'font_edge_type',
-        values: ['none', 'leftDropShadow', 'rightDropShadow', 'raised', 'depressed', 'uniform'],
-        currValue: 'none'
-      }, {
-        // white/black/red/green/blue(default)/yellow/magenta/cyan
-        name: 'font_edge_color',
-        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-        currValue: 'black'
-      }, {
-        name: 'font_edge_opacity',
-        values: ['0%', '25%', '50%', '75%', '100%'],
-        currValue: '100%'
-      }, {
-        name: 'font_size',
-        values: ['50%', '75%', '100%', '150%', '200%', '300%', '400%'],
-        currValue: '100%'
-      }, {
-        name: 'font_bold',
-        values: ['true', 'false'],
-        currValue: 'false'
-      }, {
-        name: 'font_underline',
-        values: ['true', 'false'],
-        currValue: 'false'
-      }, {
-        name: 'font_italic',
-        values: ['true', 'false'],
-        currValue: 'false'
-      }, {
-        // white/black/red/green/blue(default)/yellow/magenta/cyan
-        name: 'window_color',
-        values: ['white', 'black', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan'],
-        currValue: 'green'
-      }, {
-        name: 'window_color_opacity',
-        values: ['0%', '25%', '50%', '75%', '100%'],
-        currValue: '50%'
-      }, {
-        name: 'bounding_box',
-        values: ['Left', 'Top', 'Right', 'Bottom'],
-        currValue: 'Left'
-      }, {
-        name: 'horizontal_position',
-        values: ['left', 'center', 'right'],
-        currValue: 'left'
-      }, {
-        name: 'vertical_position',
-        values: ['top', 'middle', 'bottom'],
-        currValue: 'top'
-      }],
 
       // X-Speed
-      currSpeedId: '3',
-      xspeedList: [{
-        id: '1',
-        value: 0.25
-      }, {
-        id: '2',
-        value: 0.5
-      }, {
-        id: '3',
-        value: 1.0
-      }, {
-        id: '4',
-        value: 1.5
-      }, {
-        id: '5',
-        value: 2.0
-      }]
+      currSpeedId: '3'
     };
 
     // reference variable of ad
@@ -308,19 +139,12 @@ class UISkinYoutube extends Component {
     this.onMediaPlaying = this.onMediaPlaying.bind(this);
     this.onMediaWaiting = this.onMediaWaiting.bind(this);
 
-    this.onCueStart = this.onCueStart.bind(this);
-    this.onCueEnd = this.onCueEnd.bind(this);
-
     this.onLog = this.onLog.bind(this);
 
     // ad callback event
     this.onAdStarted = this.onAdStarted.bind(this);
     this.onAdComplete = this.onAdComplete.bind(this);
     this.onAdCompanions = this.onAdCompanions.bind(this);
-
-    // chromecast
-    this.onCastConnected = this.onCastConnected.bind(this);
-    this.onCastDisconnected = this.onCastDisconnected.bind(this);
 
     //
     this.onResizeSensorCb = this.onResizeSensorCb.bind(this);
@@ -398,9 +222,7 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.on(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
-    this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
-    this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
-    
+   
     this.player.on(oldmtn.Events.LOG, this.onLog);
     this.player.on(oldmtn.Events.ERROR, this.onError);
 
@@ -408,10 +230,6 @@ class UISkinYoutube extends Component {
     this.player.on(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.on(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
     this.player.on(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
-
-    // chrome cast
-    this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
-    this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
   }
 
   uninitPlayerListeners() {
@@ -422,10 +240,6 @@ class UISkinYoutube extends Component {
     this.player.off(oldmtn.Events.MEDIA_WAITING, this.onMediaWaiting);
     this.player.off(oldmtn.Events.MEDIA_PLAYING, this.onMediaPlaying);
 
-    // subtitle
-    this.player.off(oldmtn.Events.CUE_START, this.onCueStart);
-    this.player.off(oldmtn.Events.CUE_END, this.onCueEnd);
-
     // log
     this.player.off(oldmtn.Events.LOG, this.onLog);
     this.player.off(oldmtn.Events.ERROR, this.onError);
@@ -434,10 +248,6 @@ class UISkinYoutube extends Component {
     this.player.off(oldmtn.Events.AD_STARTED, this.onAdStarted);
     this.player.off(oldmtn.Events.AD_COMPLETE, this.onAdComplete);
     this.player.off(oldmtn.Events.AD_COMPANIONS, this.onAdCompanions);
-
-    // chrome cast
-    this.player.off(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
-    this.player.off(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
   }
 
   playerOpen(mediaCfg) {
@@ -506,7 +316,7 @@ class UISkinYoutube extends Component {
     UITools.removeClass(this.vopPlayer, 'vop-player-' + this.playerState);
     UITools.addClass(this.vopPlayer, 'vop-player-' + state);
 
-    // // Update all child components.
+    // Update all child components.
     this.playerState = state;
 
     if (this.playerState === 'opening') {
@@ -711,23 +521,6 @@ class UISkinYoutube extends Component {
     UITools.removeClass(this.vopPlayer, 'vop-buffering');
   }
 
-  onCueStart(e) {
-    this.cue = e.cue;
-
-    let text;
-    if (this.cue && this.cue.text) {
-      text = this.cue.text;
-    } else {
-      text = '';
-    }
-    this.vopCaptionOverlay.innerText = text;
-  }
-
-  onCueEnd(e) {
-    this.cue = null;
-    this.vopCaptionOverlay.innerText = '';
-  }
-
   onLog(e) {
     printLogUI(e.message);
   }
@@ -756,14 +549,6 @@ class UISkinYoutube extends Component {
         v.innerHTML = companion.content;
       }
     }
-  }
-
-  onCastConnected() {
-    UITools.addClass(this.vopPlayer, 'vop-chromecast-connected');
-  }
-
-  onCastDisconnected() {
-    UITools.removeClass(this.vopPlayer, 'vop-chromecast-connected');
   }
 
   /////////////////////////////////////////////////////////////////////////

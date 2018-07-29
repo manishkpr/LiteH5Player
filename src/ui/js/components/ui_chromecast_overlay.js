@@ -5,6 +5,11 @@ class UIChromecastOverlay extends Component {
     super(props);
 
     this.main = this.props.main;
+
+    this.onCastConnected = this.onCastConnected.bind(this);
+    this.onCastDisconnected = this.onCastDisconnected.bind(this);
+    this.player.on(oldmtn.Events.CAST_CONNECTED, this.onCastConnected);
+    this.player.on(oldmtn.Events.CAST_DISCONNECTED, this.onCastDisconnected);
   }
 
   render() {
@@ -18,6 +23,23 @@ class UIChromecastOverlay extends Component {
       </div>
     );
   }
+
+  onCastConnected() {
+    if (!this.vopPlayer) {
+      this.vopPlayer = document.querySelector('.html5-video-player');
+    }
+
+    UITools.addClass(this.vopPlayer, 'vop-chromecast-connected');
+  }
+
+  onCastDisconnected() {
+    if (!this.vopPlayer) {
+      this.vopPlayer = document.querySelector('.html5-video-player');
+    }
+
+    UITools.removeClass(this.vopPlayer, 'vop-chromecast-connected');
+  }
+
 }
 
 export default UIChromecastOverlay;

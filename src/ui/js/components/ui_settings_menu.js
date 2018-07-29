@@ -18,6 +18,26 @@ class UISettingsMenu extends Component {
 
     this.onPopupMenuChange = this.onPopupMenuChange.bind(this);
     this.evEmitter.on(Events.POPUPMENU_CHANGE, this.onPopupMenuChange);
+
+    this.settingsData = {
+      settingsList: [{
+        id: '1',
+        text: 'Quality'
+      }, {
+        id: '2',
+        text: 'Language'
+      }, {
+        id: '3',
+        text: 'Subtitle'
+      }, {
+        id: '4',
+        text: 'XSpeed'
+      }]
+    };
+
+    this.state = {
+      settingsData: this.settingsData
+    }
   }
 
   componentDidMount(e) {
@@ -26,43 +46,9 @@ class UISettingsMenu extends Component {
 
   render() {
     //myPrintLog(`UISettingsMenu, render, ${this.main.settingMenuUIData.currMenu}`);
-    const menuitems = this.main.settingMenuUIData.settingsList.map(function(item, index) {
+    const { settingsData } = this.state;
+    const menuitems = settingsData.settingsList.map(function(item, index) {
       let currValue = '';
-      switch (item.id) {
-        case '1':
-          for (let i = 0; i < this.main.settingMenuUIData.qualityList.length; i++) {
-            let currItem = this.main.settingMenuUIData.qualityList[i];
-            if (currItem.id === this.main.settingMenuUIData.currQualityId) {
-              currValue = currItem.bitrate;
-            }
-          }
-          break;
-        case '2':
-          for (let i = 0; i < this.main.settingMenuUIData.audioTrackList.length; i++) {
-            let currItem = this.main.settingMenuUIData.audioTrackList[i];
-            if (currItem.id === this.main.settingMenuUIData.currAudioTrackId) {
-              currValue = currItem.lang;
-            }
-          }
-          break;
-        case '3':
-          for (let i = 0; i < this.main.settingMenuUIData.subtitleTracks.length; i++) {
-            let currItem = this.main.settingMenuUIData.subtitleTracks[i];
-            if (currItem.id === this.main.settingMenuUIData.currSubtitleId) {
-              currValue = currItem.lang;
-            }
-          }
-          break;
-        case '4':
-          for (let i = 0; i < this.main.settingMenuUIData.xspeedList.length; i++) {
-            let currItem = this.main.settingMenuUIData.xspeedList[i];
-            if (currItem.id === this.main.settingMenuUIData.currSpeedId) {
-              currValue = currItem.value;
-            }
-          }
-          break;
-      }
-
       return (
         <div key={index} className="vop-menuitem" role="menuitem" aria-haspopup="true"
             data-id={item.id} onClick={this.onMenuItemClick_}

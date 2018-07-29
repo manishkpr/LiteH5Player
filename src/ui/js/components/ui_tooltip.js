@@ -31,9 +31,6 @@ class UIToolTip extends Component {
     this.evEmitter.on(Events.PROGRESSBAR_MOUSELEAVE, this.onProgressBarMouseLeave);
   }
 
-  componentDidUpdate() {
-  }
-
   render() {
     //myPrintLog('UIToolTip, render');
 
