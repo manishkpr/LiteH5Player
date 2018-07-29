@@ -5,6 +5,7 @@ class UIChromecastOverlay extends Component {
     super(props);
 
     this.main = this.props.main;
+    this.player = this.main.player;
 
     this.onCastConnected = this.onCastConnected.bind(this);
     this.onCastDisconnected = this.onCastDisconnected.bind(this);

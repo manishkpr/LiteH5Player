@@ -3,6 +3,7 @@ import { h, Component } from 'preact';
 import UITools from '../ui_tools';
 import Events from '../events';
 import ID from '../id';
+import CONSTS from '../consts';
 
 class UIAdsContainer {
   constructor(props) {
@@ -30,8 +31,6 @@ class UIAdsContainer {
     if (!this.vopPlayer) {
       this.vopPlayer = document.querySelector('.html5-video-player');
     }
-    // FIXME: Actually, although bottom bar was display(none), we need to get its height.
-    const BOTTOM_BAR_HEIGHT = 41;
 
     this.flagAdStarted = true;
     this.flagIsLinearAd = e.linear;
@@ -47,7 +46,7 @@ class UIAdsContainer {
         let adDstWidth = this.vopPlayer.clientWidth;
         let adDstHeight = e.height + 10;
         this.player.resize(adDstWidth, e.height + 5);
-        this.vopAdContainer.style.bottom = BOTTOM_BAR_HEIGHT.toString() + 'px';
+        this.vopAdContainer.style.bottom = CONSTS.BOTTOM_BAR_HEIGHT.toString() + 'px';
         //this.vopAdContainer.style.width = adDstWidth.toString() + 'px';
         this.vopAdContainer.style.height = adDstHeight.toString() + 'px';
         this.vopAdContainer.style.zIndex = '1';

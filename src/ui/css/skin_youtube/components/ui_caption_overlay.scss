@@ -7,9 +7,10 @@
     font-size: 24px;
     display: block;
     z-index: $zIndex_caption_overlay;
+    bottom: 0px;
     -moz-user-select: none;
     -ms-user-select: none;
-    -webkit-user-select: none
+    -webkit-user-select: none;
   }
 }
 

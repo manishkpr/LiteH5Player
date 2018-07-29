@@ -1,16 +1,23 @@
 import { h, Component } from 'preact';
 
+import Events from '../events';
+import CONSTS from '../consts';
+
 class UICaptionOverlay extends Component {
   constructor(props) {
     super(props);
 
     this.main = this.props.main;
     this.player = this.main.player;
+    this.evEmitter = this.main.evEmitter;
 
     this.onCueStart = this.onCueStart.bind(this);
     this.onCueEnd = this.onCueEnd.bind(this);
     this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
     this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
+
+    this.onAutoHideChange = this.onAutoHideChange.bind(this);
+    this.evEmitter.on(Events.AUTOHIDE_CHANGE, this.onAutoHideChange);
   }
 
   componentDidMount() {
@@ -52,6 +59,15 @@ class UICaptionOverlay extends Component {
   onCueEnd(e) {
     this.cue = null;
     this.vopCaptionOverlay.innerText = '';
+  }
+
+  onAutoHideChange(e) {
+    const height = CONSTS.BOTTOM_BAR_HEIGHT;
+    if (e.autohide) {
+      this.vopCaptionOverlay.style.bottom = '0px';
+    } else {
+      this.vopCaptionOverlay.style.bottom = height.toString() + 'px';
+    }
   }
 }
 

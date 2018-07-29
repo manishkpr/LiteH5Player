@@ -346,7 +346,7 @@ class UISkinYoutube extends Component {
 
   addAutohideAction() {
     UITools.addClass(this.vopPlayer, 'vop-autohide');
-    //this.updateCaptionOverlay();
+    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, { autohide: true });
   }
 
   removeAutohideAction() {
@@ -355,7 +355,7 @@ class UISkinYoutube extends Component {
       clearTimeout(this.timerHideControlBar);
       this.timerHideControlBar = null;
     }
-    //this.updateCaptionOverlay();
+    this.evEmitter.emit(Events.AUTOHIDE_CHANGE, { autohide: false });
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -369,7 +369,7 @@ class UISkinYoutube extends Component {
   }
 
   onPlayerMouseMove(e) {
-    let element_name = (e && e.target) ? e.target.className : 'null';
+    //let element_name = (e && e.target) ? e.target.className : 'null';
     //myPrintLog('+onPlayerMouseMove, element: ' + element_name);
     if (this.playerState !== 'playing') {
       return;
