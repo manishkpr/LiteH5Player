@@ -25,14 +25,15 @@ function TrackLoader() {
     function successHandler(xhr) {
       let data = xhr.responseText;
       let cueData = vttParser_.parse(data);
+      track_.data = cueData;
 
-      eventBus_.trigger(Events.TRACK_LOADED, { cueData: cueData, kind: track_.kind, label: track_.label });
+      eventBus_.trigger(Events.TRACK_LOADED, { track: track_ });
     }
 
     function errorHandler(xhr) {
     }
 
-    track_.xhr = ajax(track_.file, successHandler, errorHandler);
+    ajax(track_.file, successHandler, errorHandler);
   }
 
   let instance_ = {

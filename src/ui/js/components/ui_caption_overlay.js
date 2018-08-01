@@ -1,7 +1,18 @@
-import { h, Component } from 'preact';
+import {
+  h,
+  Component
+} from 'preact';
 
 import Events from '../events';
 import CONSTS from '../consts';
+
+import {
+  identity,
+  difference,
+  isNumber,
+  isFinite,
+  filter
+} from '../../../utils/underscore';
 
 class UICaptionOverlay extends Component {
   constructor(props) {
@@ -14,16 +25,11 @@ class UICaptionOverlay extends Component {
     this.onTrackAdded = this.onTrackAdded.bind(this);
     this.player.on(oldmtn.Events.TRACK_ADDED, this.onTrackAdded);
 
-    this.onCueStart = this.onCueStart.bind(this);
-    this.onCueEnd = this.onCueEnd.bind(this);
-    this.player.on(oldmtn.Events.CUE_START, this.onCueStart);
-    this.player.on(oldmtn.Events.CUE_END, this.onCueEnd);
+    this.onMediaTimeupdated = this.onMediaTimeupdated.bind(this);
+    this.player.on(oldmtn.Events.MEDIA_TIMEUPDATE, this.onMediaTimeupdated);
 
     this.onAutoHideChange = this.onAutoHideChange.bind(this);
     this.evEmitter.on(Events.AUTOHIDE_CHANGE, this.onAutoHideChange);
-
-    //
-    
   }
 
   componentDidMount() {
@@ -31,11 +37,6 @@ class UICaptionOverlay extends Component {
   }
 
   render() {
-    let text = '';
-    if (this.cue && this.cue.text) {
-      text = this.cue.text;
-    }
-
     let captionStyle = {};
     captionStyle.backgroundColor = 'yellow';
     captionStyle.color = 'red';
@@ -45,26 +46,23 @@ class UICaptionOverlay extends Component {
 
     return (
       <div className="vop-caption-overlay" style={captionStyle}>
-        {text}
       </div>
     );
   }
 
-  onCueStart(e) {
-    this.cue = e.cue;
+  onMediaTimeupdated(e) {
+    let pos = this.player.getPosition();
 
-    let text;
-    if (this.cue && this.cue.text) {
-      text = this.cue.text;
-    } else {
-      text = '';
+    const cues = this.getCurrentCues(this.textTrack_.data, pos);
+    // BD
+    if (cues.length > 0) {
+      cues.forEach((item) => {
+        console.log('item: ', item);
+      });
     }
-    this.vopCaptionOverlay.innerText = text;
-  }
-
-  onCueEnd(e) {
-    this.cue = null;
-    this.vopCaptionOverlay.innerText = '';
+    // ED
+    this.updateCurrentCues(cues);
+    this.renderCues();
   }
 
   onAutoHideChange(e) {
@@ -77,12 +75,36 @@ class UICaptionOverlay extends Component {
   }
 
   onTrackAdded(e) {
+    if (this.currTrackId_ !== e.currTrackId) {
+      this.textTrack_ = e.track;
+      this.currTrackId_ = e.currTrackId;
+    }
+  }
 
+  // Tools
+  getCurrentCues(allCues, pos) {
+    return filter(allCues, function(cue) {
+      return pos >= (cue.start) && (!cue.end || pos <= cue.end);
+    });
+  }
+
+  updateCurrentCues(cues) {
+    // Render with vtt.js if there are cues, clear if there are none
+    if (!cues.length) {
+      this.currentCues_ = [];
+    } else if (difference(cues, this.currentCues_).length) {
+      this.currentCues_ = cues;
+    }
+  }
+
+  renderCues() {
+    if (this.currentCues_.length > 0) {
+      const cue = this.currentCues_[0];
+      this.vopCaptionOverlay.innerText = cue.data;
+    } else {
+      this.vopCaptionOverlay.innerText = '';
+    }
   }
 }
 
 export default UICaptionOverlay;
-
-
-
-

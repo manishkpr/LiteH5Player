@@ -24,11 +24,32 @@ function TextTrackController() {
   }
 
   function onTextTrackLoaded(e) {
+    if (currTrackId_ === '') {
+      currTrackId_ = 0;
+    }
+    textTracks_.push(e.track);
+
+    eventBus_.trigger(Events.TRACK_ADDED, { track: e.track, currTrackId: currTrackId_ });
+  }
+
+  function onTextTrackLoaded_old(e) {
     let cueData = e.cueData;
     let kind = e.kind;
     let label = e.label;
     var textTrack = media_.addTextTrack(kind, label, label);
     textTrack.mode = 'hidden';
+    textTrack.oncuechange = function(e) {
+      const activeCues = e.currentTarget.activeCues;
+      console.log('activeCues: ', activeCues[0]);
+
+      // Get the most recent start time. Cues are sorted by start time in ascending order by the browser
+      const startTime = activeCues[activeCues.length - 1].startTime;
+
+      let c = this;
+      let a = 2;
+      let b = a;
+    };
+
     let trackId = (media_.textTracks.length - 1).toString();
 
     for (let i = 0; i < cueData.length; i++) {
@@ -80,21 +101,12 @@ function TextTrackController() {
     // FIXME: Need to hide ttml render if you want to hide a texttrack while a cue is showing.
     // IDEA: Create a series of div for each text track.
     cue.onenter = function() {
-      let track = findTrackById(cue.data.trackId);
-
-      if (track.mode === 'showing') {
-        let data = this.data;
-        console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
-        eventBus_.trigger(Events.CUE_START, {cue: data});
-      }
+      let data = this.data;
+      console.log(`onenter, [${data.start}, ${data.end}] = ${data.text}`);
     };
     cue.onexit = function() {
-      let track = findTrackById(cue.data.trackId);
-      if (track.mode === 'showing') {
-        let data = this.data;
-        console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);
-        eventBus_.trigger(Events.CUE_END, {cue: data});
-      }
+      let data = this.data;
+      console.log(`onexit, [${data.start}, ${data.end}] = ${data.text}`);
     };
 
     return cue;
