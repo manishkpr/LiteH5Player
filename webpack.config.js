@@ -117,7 +117,10 @@ $ webpack --devtool source-map
 a. scotch-react-todo
 b. react-css-modules-webpack
 
-
+// Title: use eslint in webpack
+1. Install eslint & eslint-loader
+2. 'eslint init' to generate .eslintrc.js config file.
+3. config webpack.config.js
 
 
 

@@ -33,7 +33,7 @@
     transform: scaleX(0.4);
   }
   .vop-play-progress {
-    background-color: rgb(255, 152, 0);
+    background-color: $clr_front;
     transform: scaleX(0.5);
   }
   .vop-hover-progress {
@@ -53,7 +53,7 @@
     border-radius: 6.5px;
     top: -4px;
     left: -6.5px;
-    background-color: rgb(255, 152, 0);
+    background-color: $clr_front;
     transform: translateX(0px);
     pointer-events: none;
   }

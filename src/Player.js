@@ -125,7 +125,7 @@ function Player(idContainer) {
     });
 
     if (mediaCfg.tracks) {
-      // load captions tracks
+      // load subtitles tracks
       for (let i = 0; i < mediaCfg.tracks.length; i++) {
         let track = mediaCfg.tracks[i];
         //
@@ -137,7 +137,7 @@ function Player(idContainer) {
             track.lang = track.label = 'texttrack_' + i.toString();
           }
         }
-        if (track.kind === 'captions') {
+        if (track.kind === 'subtitles') {
           eventBus_.trigger(Events.TRACK_LOADING, {
             track: track
           });

@@ -1,7 +1,4 @@
-import {
-  h,
-  render
-} from 'preact';
+import { h, render } from 'preact';
 import UISkinYoutube from './ui_skin_youtube';
 
 window.myPrintLog = function(msg, level) {
@@ -13,7 +10,6 @@ window.myPrintLog = function(msg, level) {
 class UIEngine {
   constructor(player) {
     this.player = player;
-
     this.h5VideoPlayer_ = document.querySelector('.html5-video-player');
   }
 
