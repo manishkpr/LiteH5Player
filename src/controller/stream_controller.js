@@ -6,9 +6,7 @@ import Debug from '../core/Debug';
 import TimeRanges from '../utils/timeRanges';
 
 import Demuxer from '../../third_party/hlsjs/src/demux/demuxer';
-import {
-  hlsDefaultConfig
-} from '../../third_party/hlsjs/src/config';
+import { hlsDefaultConfig } from '../../third_party/hlsjs/src/config';
 
 export const State = {
   STOPPED: 'STOPPED',
@@ -80,8 +78,7 @@ function StreamController() {
   }
 
   // Begin events functions
-  function onManifestParsed() {
-  }
+  function onManifestParsed() {}
 
   function onStreamUpdated(e) {
     streamInfo_ = e.streamInfo;

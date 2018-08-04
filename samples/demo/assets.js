@@ -63,7 +63,7 @@ function getInitConfig() {
   var ad67720 = 'https://projects.kaltura.com/mdale/hotelVastAd.xml?myRefurl=http%3A//myref.com/%3Ffoo%3Dbar%26cat%3Ddog{utility.nativeAdId';
   var ad68010 = 'https://googleads.g.doubleclick.net/pagead/ads?sdkv=h.3.193.1&sdki=3c0d&video_product_type=0&correlator=3883587295669830&client=ca-video-pub-1256482085642647&url=https%3A%2F%2Fdemos.flowplayer.com%2Fads%2Fimage_text.html&adk=3577526078&num_ads=3&channel&output=xml_vast3&sz=982x409.15625&adsafe=high&hl=en&slotname=9152678419&ea=0&image_size=200x200%2C250x250%2C300x250%2C336x280%2C450x50%2C468x60%2C480x70%2C728x90&ad_type=image_text&eid=324123021&u_tz=480&u_his=1&u_java=false&u_h=1080&u_w=1920&u_ah=1040&u_aw=1920&u_cd=24&u_nplug=4&u_nmime=5&dt=1519957339350&unviewed_position_start=1&videoad_start_delay=1&u_so=l&osd=2&frm=0&sdr=1&is_amp=0&t_pyv=allow&min_ad_duration=0&max_ad_duration=110000&ca_type=image&description_url=https%3A%2F%2Fdemos.flowplayer.com%2Fads%2Fimage_text.html&mpt=Flowplayer&mpv=7.2.4&ref=https%3A%2F%2Fflowplayer.com%2Fdemos&ged=ve4_td36_tt33_pd36_la3000_er0.0.0.0_vi0.0.929.1511_vp0_eb16491';
   var ad68010_local = 'http://localhost/2/ads/ad68010.xml';
-  
+
   // ad67966
   var ad_vpaid01 = 'https://rtr.innovid.com/r1.5554946ab01d97.36996823;cb=%2525%25CACHEBUSTER%2525%2525';
   var ad_vpaid02 = 'https://www.radiantmediaplayer.com/vast/tags/vpaid-1-js-linear.xml';
@@ -108,7 +108,7 @@ function getInitConfig() {
     //   //locale: 'fr',
     //   //companions: [ { width: 728, height: 90, id: 'idCompanionAd' } ]
     // },
-     
+
     // cast: {
     //   appId: 'E19ACDB8'
     // }
@@ -157,7 +157,7 @@ function getMediaInfo() {
     //url: 'http://localhost/2/dash/testpic_2s/video.mpd',
     //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
-    url: 'http://localhost/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
+    //url: 'http://localhost/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
     //url: 'http://localhost/2/pd/mp4/big_buck_bunny/BigBuckBunny_640x360.mp4',
     //url: 'http://localhost/2/pd/mp4/sintel/trailer.mp4',
     //url: 'http://localhost/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
@@ -170,7 +170,7 @@ function getMediaInfo() {
     //url: 'http://localhost/2/error/1/audio_48kbps.m3u8',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
-    //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
+    url: 'http://localhost/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',
@@ -195,7 +195,6 @@ function getMediaInfo() {
     //url: 'http://localhost/2/hls/error/MEDIA_ERROR/2/master.m3u8',
     //--Item: Task
     //url: 'http://localhost/tasklink/2017/65275/index_1_av.m3u8',
-
 
     // vContents.push('http://localhost/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');
     // //pdContent.push('http://localhost/tasklink/65421_chromecast/content_wv_shaka/v-0144p-0100k-libx264.mp4');

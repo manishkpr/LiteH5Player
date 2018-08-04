@@ -5,11 +5,7 @@ import Debug from '../core/Debug';
 
 import StringUtils from '../utils/string_utils';
 
-import {
-  Fragment,
-  TrackInfo,
-  PeriodInfo
-} from '../common/common';
+import { Fragment, TrackInfo, PeriodInfo } from '../common/common';
 
 import M3U8Parser from '../../third_party/hlsjs/src/loader/m3u8-parser';
 

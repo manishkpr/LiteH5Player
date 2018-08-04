@@ -3,9 +3,7 @@
 import FactoryMaker from './core/FactoryMaker';
 import EventBus from './core/EventBus';
 import Events from './core/events';
-import {
-  ErrorTypes
-} from './core/errors';
+import { ErrorTypes } from './core/errors';
 import Debug from './core/Debug';
 
 import FetchLoader from './utils/fetch_loader';
