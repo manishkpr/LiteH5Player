@@ -18,7 +18,7 @@ import SubtitleTrackController from './controller/subtitle-track-controller';
 import SubtitleStreamController from './controller/subtitle-stream-controller';
 import EMEController from './controller/eme-controller';
 
-import { requestMediaKeySystemAccess } from './helper/mediakeys-helper';
+import { requestMediaKeySystemAccess } from './utils/mediakeys-helper';
 
 export var hlsDefaultConfig = {
   autoStartLoad: true, // used by stream-controller
@@ -93,8 +93,7 @@ export var hlsDefaultConfig = {
             requestMediaKeySystemAccess // used by eme-controller
 };
 
-//if (__USE_SUBTITLES__) {
-if (true) {
+if (__USE_SUBTITLES__) {
   hlsDefaultConfig.subtitleStreamController = SubtitleStreamController;
   hlsDefaultConfig.subtitleTrackController = SubtitleTrackController;
   hlsDefaultConfig.timelineController = TimelineController;
@@ -107,12 +106,11 @@ if (true) {
   hlsDefaultConfig.captionsTextTrack2LanguageCode = 'es'; // used by timeline-controller
 }
 
-//if (__USE_ALT_AUDIO__) {
-if (true) {
+if (__USE_ALT_AUDIO__) {
   hlsDefaultConfig.audioStreamController = AudioStreamController;
   hlsDefaultConfig.audioTrackController = AudioTrackController;
 }
 
-//if (__USE_EME_DRM__)
-if (true)
+if (__USE_EME_DRM__) {
   hlsDefaultConfig.emeController = EMEController;
+}
