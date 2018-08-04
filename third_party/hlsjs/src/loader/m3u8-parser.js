@@ -2,6 +2,7 @@
 import URLToolkit from 'url-toolkit';
 
 import Fragment from './fragment';
+import Level from './level';
 import LevelKey from './level-key';
 
 import AttrList from '../utils/attr-list';
@@ -144,10 +145,19 @@ export default class M3U8Parser {
     return medias;
   }
 
+  /**
+   * [parseLevelPlaylist description]
+   * @param  {string} string     Content of current manifest.
+   * @param  {string} baseurl    The level url.
+   * @param  {[type]} id         [description]
+   * @param  {[type]} type       [description]
+   * @param  {[type]} levelUrlId [description]
+   * @return {[type]}            [description]
+   */
   static parseLevelPlaylist (string, baseurl, id, type, levelUrlId) {
     let currentSN = 0,
       totalduration = 0,
-      level = { type: null, version: null, url: baseurl, fragments: [], live: true, startSN: 0 },
+      level = new Level(baseurl),
       levelkey = new LevelKey(),
       cc = 0,
       prevFrag = null,

@@ -15,6 +15,19 @@ export default class Fragment {
       [Fragment.ElementaryStreamTypes.AUDIO]: false,
       [Fragment.ElementaryStreamTypes.VIDEO]: false
     };
+
+    // Begin oldmtn
+    this.cc;
+    this.duration; // value of #EXTINF (e.g. #EXTINF:9.9766)
+    this.level; // 
+    this.rawByteRange; // value of #EXT-X-BYTERANGE (e.g. #EXT-X-BYTERANGE:326744@0)
+    this.relurl; // e.g. 'stream01.ts'
+    // If its CMAF mp4 initilization header, then sn is 'initSegment',
+    // sn(sequence number) compute through #EXT-X-MEDIA-SEQUENCE.(e.g. the first fragment sn is (#EXT-X-MEDIA-SEQUENCE + 1))
+    this.sn;
+    this.start; // start time compute through every time specified by #EXTINF
+    this.type; // see LevelType(main, audio, subtitle)
+    // End oldmtn
   }
 
   /**
