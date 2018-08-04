@@ -158,7 +158,7 @@ function getMediaInfo() {
     //url: 'http://localhost/2/pd/fmp4/microsoft_sample/test_segment_template.mpd',
     //--Item: pd
     url: 'http://localhost/2/pd/mp4/big_buck_bunny/trailer_480p.mp4',
-    url: 'http://localhost/2/pd/mp4/big_buck_bunny/BigBuckBunny_640x360.mp4',
+    //url: 'http://localhost/2/pd/mp4/big_buck_bunny/BigBuckBunny_640x360.mp4',
     //url: 'http://localhost/2/pd/mp4/sintel/trailer.mp4',
     //url: 'http://localhost/2/pd/mp4/tears_of_steel/tears_of_steel_720p.mp4',
     //url: 'http://localhost/2/dash/testpic_2s/V300_with_cc1_and_cc3/first200.mp4',
