@@ -8,6 +8,8 @@ import TimeRanges from '../utils/timeRanges';
 import Demuxer from '../../third_party/hlsjs/src/demux/demuxer';
 import { hlsDefaultConfig } from '../../third_party/hlsjs/src/config';
 
+import FragmentDownloader from '../utils/fragment_downloader';
+
 export const State = {
   STOPPED: 'STOPPED',
   IDLE: 'IDLE',
@@ -113,9 +115,9 @@ function StreamController() {
   }
 
   function onFragParsingInitSegment(data) {
+    debug_.log('+onFragParsingInitSegment');
     eventBus_.trigger(Events.BUFFER_CODEC, data.tracks);
 
-    debug_.log('+onFragParsingInitSegment');
     for (let trackName in data.tracks) {
       let track = data.tracks[trackName];
       let initSegment = track.initSegment;
@@ -125,6 +127,8 @@ function StreamController() {
           content: 'initSegment',
           data: initSegment
         });
+
+        FragmentDownloader.saveInitSegment(initSegment, trackName);
       }
     }
   }
@@ -141,6 +145,9 @@ function StreamController() {
     // ED
 
     debug_.log(`+onFragParsingData, cnt:${cnt}`);
+
+    FragmentDownloader.saveSegment(data.data1, data.data2, data.type);
+
     [data.data1, data.data2].forEach((buffer, index) => {
       if (buffer) {
         debug_.log(`push data, index:${index}`);

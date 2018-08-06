@@ -170,8 +170,8 @@ function getMediaInfo() {
     //url: 'http://localhost/2/error/1/audio_48kbps.m3u8',
     //--Item: hls part
     //url: 'http://localhost/2/hls/av_muxed/test.m3u8',
-    url: 'http://localhost/2/hls/av_nonmuxed/gear1/prog_index.m3u8',
-    //url: 'http://localhost/2/hls/videoonly01/test.m3u8',
+    //url: 'http://localhost/2/hls/av_nonmuxed/gear1/prog_index.m3u8',
+    url: 'http://localhost/2/hls/videoonly01/test.m3u8',
     //--Item: HLS CMAF
     //url: 'http://localhost/2/hls/cmaf01/video/180_250000/test.m3u8',
     //url: 'http://localhost/2/dash/test2_main_index/Video1/cmaf.m3u8',

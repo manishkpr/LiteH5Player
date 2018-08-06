@@ -24,17 +24,15 @@ import TextTrackController from './controller/texttrack_controller';
 import ThumbnailController from './controller/thumbnail_controller';
 
 import VideoPlayer from './videoplayer';
-
 import CastSender from './cast/cast_sender';
 
 // Utils
 import TimeRanges from './utils/timeRanges';
 import CommonUtils from './utils/common_utils';
+import FileSaver from './externals/FileSaver';
 
 // UI
-import {
-  dom_initUI
-} from './ui_basic/js/ui_basic';
+import { dom_initUI } from './ui_basic/js/ui_basic';
 
 // License
 import LicenseController from './controller/license_controller';
@@ -97,6 +95,8 @@ function Player(idContainer) {
 
     initComponent();
     addEventListeners();
+
+    initExternalUtils();
   }
 
   function uninit() {}
@@ -613,6 +613,10 @@ function Player(idContainer) {
     document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
     document.removeEventListener('msfullscreenchange', onFullScreenChange);
     document.removeEventListener('MSFullscreenChange', onFullScreenChange);
+  }
+
+  function initExternalUtils() {
+    oldmtn.FileSaver = FileSaver;
   }
 
   function onFullScreenChange() {
