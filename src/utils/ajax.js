@@ -40,7 +40,7 @@ function _requestError(options) {
   };
 }
 
-export function ajax(url, completeCallback, errorCallback) {
+export function ajax(url, completeCallback, errorCallback, args) {
   printlog('begin load time: ' + (new Date().getTime()) / 1000);
 
   // save input parameters
@@ -48,7 +48,8 @@ export function ajax(url, completeCallback, errorCallback) {
     xhr: null,
     url: url,
     oncomplete: completeCallback,
-    onerror: errorCallback
+    onerror: errorCallback,
+    responseType: (args && args.responseType) ? args.responseType : '',
   };
 
   printlog('ajax: ' + options.url);
@@ -61,6 +62,7 @@ export function ajax(url, completeCallback, errorCallback) {
 
   xhr.onreadystatechange = _readyStateChangeHandler(options);
   xhr.onerror = _requestError(options);
+  xhr.responseType = options.responseType;
 
   printlog('--before send--, readyState: ' + xhr.readyState);
   xhr.send();

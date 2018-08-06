@@ -157,6 +157,12 @@ function onUICmdCastTest() {
   omPlayer.castTest();
 }
 
+// Split Mp4
+function onBtnSplitMP4() {
+  var v = new oldmtn.SplitMP4();
+  v.test1();
+}
+
 /////////////////////////////////////////////////////////////////////////
 // dynamic load main.css file
 window.onload = function() {

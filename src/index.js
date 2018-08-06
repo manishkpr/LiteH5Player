@@ -6,6 +6,10 @@ import CastReceiver from './cast/cast_receiver';
 
 import UIEngine from './ui/js/ui_engine';
 
+// Test
+import SplitMP4 from '../third_party/mp4/splitmp4';
+
+
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
 
@@ -24,6 +28,8 @@ oldmtn.CommonUtils = CommonUtils;
 oldmtn.UIEngine = UIEngine;
 
 /////////////////////////////////////////////////////////////////////////
+
+oldmtn.SplitMP4 = SplitMP4;
 
 export default oldmtn;
 

@@ -14,3 +14,6 @@ see webpack.config.js
 
 
 
+### License
+
+[MIT](http://opensource.org/licenses/MIT)
