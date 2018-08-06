@@ -25,7 +25,7 @@ export var hlsDefaultConfig = {
   liveMaxLatencyDuration: undefined, // used by stream-controller
   liveDurationInfinity: false, // used by buffer-controller
   maxMaxBufferLength: 600, // used by stream-controller
-  enableWorker: true, // used by demuxer
+  enableWorker: false, // used by demuxer
   enableSoftwareAES: true, // used by decrypter
   manifestLoadingTimeOut: 10000, // used by playlist-loader
   manifestLoadingMaxRetry: 1, // used by playlist-loader
